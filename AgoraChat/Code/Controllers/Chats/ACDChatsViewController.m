@@ -69,8 +69,15 @@
 {
     self.view.backgroundColor = [UIColor clearColor];
     self.viewModel = [[EaseConversationViewModel alloc] init];
-    self.viewModel.canRefresh = YES;
-    self.viewModel.badgeLabelCenterVector = CGVectorMake(-16, 0);
+    self.viewModel.canRefresh = YES;                                //是否可刷新
+    self.viewModel.badgeLabelCenterVector = CGVectorMake(-16, 0);   //未读数角标中心偏移量
+    
+//    self.viewModel.avatarType = Rectangular;                        //头像类型
+//    self.viewModel.nameLabelColor = [UIColor blueColor];            //会话名称颜色
+//    self.viewModel.detailLabelColor = [UIColor redColor];           //会话详情颜色
+//    self.viewModel.timeLabelColor = [UIColor systemPinkColor];      //会话时间颜色
+//    self.viewModel.cellBgColor = [UIColor lightGrayColor];              //会话cell背景色
+//    self.viewModel.badgeLabelBgColor = [UIColor purpleColor];         //未读数背景色
 
     self.easeConvsVC = [[EaseConversationsViewController alloc] initWithModel:self.viewModel];
     self.easeConvsVC.delegate = self;
