@@ -36,6 +36,7 @@ static NSString *cellIdentifier = @"AgoraGroupEnterCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Create";
+    
     [self setNavBar];
     
     if (self.accessType == ACDGroupEnterAccessTypeChat) {

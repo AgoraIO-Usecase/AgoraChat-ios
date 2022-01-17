@@ -320,6 +320,7 @@
     ACDGroupEnterController *groupEnterVC = ACDGroupEnterController.new;
     groupEnterVC.accessType = ACDGroupEnterAccessTypeChat;
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:groupEnterVC];
+    nav.view.backgroundColor = [UIColor whiteColor];
     [self.navigationController presentViewController:nav animated:YES completion:nil];
 
 }

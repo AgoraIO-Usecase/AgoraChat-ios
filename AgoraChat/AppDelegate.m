@@ -18,6 +18,7 @@
 #import "AgoraChatDEMoHelper.h"
 #import "AgoraChatHttpRequest.h"
 
+#import <AgoraChat/AgoraChatOptions+PrivateDeploy.h>
 
 #define EaseIMAppKey @"easemob-demo#easeim"
 #define ChatDemoUIAppKey @"easemob-demo#chatdemoui"
@@ -25,7 +26,7 @@
 #define MeidongAppkey @"41117440#383391"
 #define Appkey @"61308276#489779"
 #define Appkey1 @"61117440#460199"
-
+#define AppkeyIM @"81117440#512733" //国内
 
 @interface AppDelegate () <AgoraChatClientDelegate,UNUserNotificationCenterDelegate>
 @property (nonatomic, strong) NSString *userName;
@@ -109,7 +110,7 @@
 
 - (void)initUIKit
 {
-    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:MeidongAppkey];
+    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:AppkeyIM];
     
     // Hyphenate cert keys
     NSString *apnsCertName = nil;
@@ -126,10 +127,20 @@
     [options setIsDeleteMessagesWhenExitChatRoom:NO];
     [options setUsingHttpsOnly:YES];
     [options setIsAutoLogin:YES];
+
+#warning 国内部署设置
+//    [self internalSpecOption:options];
+    
     [EaseChatKitManager initWithAgoraChatOptions:options];
 
 }
 
+- (void)internalSpecOption:(AgoraChatOptions *)option {
+    option.enableDnsConfig = NO;
+    option.restServer = @"https://a1.chat.agora.io";
+    option.chatServer = @"https://msync-im-tls.chat.agora.io";
+    option.chatPort = 6717;
+}
 
 - (void)loadViewController {
     BOOL isAutoLogin = [AgoraChatClient sharedClient].isAutoLogin;

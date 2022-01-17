@@ -106,7 +106,9 @@ MISScrollPageControllerDelegate,ACDGroupInfoViewControllerDelegate>
     ACDGroupEnterController *groupEnterVC = ACDGroupEnterController.new;
     
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:groupEnterVC];
+    nav.view.backgroundColor = [UIColor whiteColor];
     [self.navigationController presentViewController:nav animated:YES completion:nil];
+    
 }
 
 - (void)goGroupInfoPageWithGroupId:(NSString *)groupId withAccessType:(ACDGroupInfoAccessType)accessType {

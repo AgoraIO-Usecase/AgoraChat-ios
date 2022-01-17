@@ -7,6 +7,10 @@
 
 #import "AgoraChatHttpRequest.h"
 
+//#define AppServerHost @"https://a41.easemob.com"
+#define AppServerHost @"https://a1.easemob.com" //国内部署
+
+
 @interface AgoraChatHttpRequest() <NSURLSessionDelegate>
 @property (readonly, nonatomic, strong) NSURLSession *session;
 @end
@@ -39,7 +43,7 @@
                           pwd:(NSString *)pwd
                    completion:(void (^)(NSInteger statusCode, NSString *aUsername))aCompletionBlock
 {
-    NSURL *url = [NSURL URLWithString:@"https://a41.easemob.com/app/chat/user/register"];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/app/chat/user/register",AppServerHost]];
     NSMutableURLRequest *request = [NSMutableURLRequest
                                                 requestWithURL:url];
     request.HTTPMethod = @"POST";
@@ -65,8 +69,8 @@
                   nickName:(NSString *)nickName
                 completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
 {
-    NSURL *USUrl = [NSURL URLWithString:@"https://a41.easemob.com/app/chat/user/login"];
-    //NSURL *SingaporeUrl = [NSURL URLWithString:@"https://a61.easemob.com/app/chat/user/login"];
+    
+    NSURL *USUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/app/chat/user/login",AppServerHost]];
     NSMutableURLRequest *request = [NSMutableURLRequest
                                                 requestWithURL:USUrl];
     request.HTTPMethod = @"POST";

@@ -36,7 +36,7 @@
     [self.leftButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self).offset(kAgroaPadding * 2.0);
         make.left.equalTo(self).offset(kAgroaPadding);
-        make.width.equalTo(@30.0);
+        make.width.equalTo(@40.0);
         make.bottom.equalTo(self).offset(-5.0);
 
     }];
@@ -51,7 +51,6 @@
         make.centerY.equalTo(self.leftButton);
         make.left.equalTo(self.leftButton.mas_right).offset(kAgroaPadding*0.5);
         make.width.equalTo(@30.0);
-
     }];
     
     [self.leftLabel mas_makeConstraints:^(MASConstraintMaker *make) {
