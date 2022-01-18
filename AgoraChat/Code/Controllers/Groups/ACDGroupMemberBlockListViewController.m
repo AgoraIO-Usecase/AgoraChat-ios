@@ -126,11 +126,8 @@
 {
     NSInteger pageSize = 50;
     ACD_WS
-    [self showHint:NSLocalizedString(@"hud.load", @"Load data...")];
-    //[self showHudInView:self.view hint:NSLocalizedString(@"hud.load", @"Load data...")];
 
     [[AgoraChatClient sharedClient].groupManager getGroupBlacklistFromServerWithId:self.group.groupId pageNumber:self.page pageSize:pageSize completion:^(NSArray *aMembers, AgoraChatError *aError) {
-        [self hideHud];
         
         [self endRefresh];
         if (!aError) {

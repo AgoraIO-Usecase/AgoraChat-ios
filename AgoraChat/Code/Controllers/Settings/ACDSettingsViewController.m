@@ -44,7 +44,6 @@ typedef enum : NSUInteger {
 @end
 
 @implementation ACDSettingsViewController
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -98,6 +97,14 @@ typedef enum : NSUInteger {
     [super didReceiveMemoryWarning];
 
 }
+
+#pragma mark public method
+- (void)networkChanged:(AgoraChatConnectionState)connectionState {
+    if (connectionState == AgoraChatConnectionConnected) {
+        [self fetchUserInfo];
+    }
+}
+
 
 #pragma mark - Action
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -250,6 +257,7 @@ typedef enum : NSUInteger {
     [self.table reloadData];
 }
 
+
 #pragma mark UIImagePickerControllerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
@@ -337,6 +345,7 @@ typedef enum : NSUInteger {
     
     return UITableViewCell.new;
 }
+
 
 
 #pragma mark getter and setter

@@ -189,10 +189,9 @@
     NSInteger pageSize = 50;
         
     ACD_WS
-    [self showHint:@"Load data..."];
+
     [[AgoraChatClient sharedClient].groupManager getGroupMemberListFromServerWithId:self.groupId cursor:aCursor pageSize:pageSize completion:^(AgoraChatCursorResult *aResult, AgoraChatError *aError) {
         weakSelf.cursor = aResult.cursor;
-        [weakSelf hideHud];
 
         [self endRefresh];
         

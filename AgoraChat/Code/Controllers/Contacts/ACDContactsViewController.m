@@ -138,7 +138,7 @@ MISScrollPageControllerDelegate,ACDGroupInfoViewControllerDelegate>
 
 
 - (void)reloadContacts {
-
+    [self.contactListVC reloadContacts];
 }
 
 - (void)reloadContactRequests {

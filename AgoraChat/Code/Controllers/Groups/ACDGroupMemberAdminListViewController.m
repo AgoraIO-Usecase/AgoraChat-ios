@@ -108,13 +108,10 @@
 - (void)tableViewDidTriggerHeaderRefresh
 {
     __weak typeof(self) weakSelf = self;
-    [self showHint:NSLocalizedString(@"hud.load", @"Load data...")];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
         AgoraChatError *error = nil;
         AgoraChatGroup *group = [[AgoraChatClient sharedClient].groupManager getGroupSpecificationFromServerWithId:weakSelf.group.groupId error:&error];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf hideHud];
-        });
+       
         
         if (!error) {
             weakSelf.group = group;
