@@ -12,7 +12,6 @@
 #import <UserNotifications/UserNotifications.h>
 #import "AgoraMainViewController.h"
 #import "AgoraLoginViewController.h"
-#import "AgoraNewLoginViewController.h"
 
 #import "AgoraLaunchViewController.h"
 #import "AgoraChatDEMoHelper.h"
@@ -20,13 +19,9 @@
 
 #import <AgoraChat/AgoraChatOptions+PrivateDeploy.h>
 
-#define EaseIMAppKey @"easemob-demo#easeim"
-#define ChatDemoUIAppKey @"easemob-demo#chatdemoui"
-#define HongKongAppkey @"52366312#441909"
-#define MeidongAppkey @"41117440#383391"
-#define Appkey @"61308276#489779"
-#define Appkey1 @"61117440#460199"
-#define AppkeyIM @"81117440#512733" //国内
+
+
+
 
 @interface AppDelegate () <AgoraChatClientDelegate,UNUserNotificationCenterDelegate>
 @property (nonatomic, strong) NSString *userName;
@@ -55,9 +50,8 @@
     }
             
     [self initAccount];
-//    [self initSDK];
     [self initUIKit];
-    
+        
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginStateChange:)
                                                  name:KNOTIFICATION_LOGINCHANGE
@@ -78,29 +72,6 @@
     return YES;
 }
 
-- (void)initSDK {
-    // init HyphenateSDK
-    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:EaseIMAppKey];
-    
-    // Hyphenate cert keys
-    NSString *apnsCertName = nil;
-#if ChatDemo_DEBUG
-    apnsCertName = @"ChatDemoDevPush";
-#else
-    apnsCertName = @"ChatDemoProPush";
-#endif
-    
-    [options setApnsCertName:apnsCertName];
-    [options setEnableConsoleLog:YES];
-    [options setIsDeleteMessagesWhenExitGroup:NO];
-    [options setIsDeleteMessagesWhenExitChatRoom:NO];
-    [options setUsingHttpsOnly:YES];
-    [options setIsAutoLogin:YES];
-    [options setEnableDeliveryAck:YES];
-    
-    [[AgoraChatClient sharedClient] initializeSDKWithOptions:options];
-}
-
 - (void)initAccount
 {
     NSUserDefaults *shareDefault = [NSUserDefaults standardUserDefaults];
@@ -110,7 +81,7 @@
 
 - (void)initUIKit
 {
-    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:AppkeyIM];
+    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:Appkey];
     
     // Hyphenate cert keys
     NSString *apnsCertName = nil;
@@ -278,8 +249,7 @@
 }
 
 - (void)loadLoginPage {
-//    AgoraLoginViewController *login = [[AgoraLoginViewController alloc] init];
-    AgoraNewLoginViewController *login = [[AgoraNewLoginViewController alloc] init];
+    AgoraLoginViewController *login = [[AgoraLoginViewController alloc] init];
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:login];
     navigationController.navigationBarHidden = YES;

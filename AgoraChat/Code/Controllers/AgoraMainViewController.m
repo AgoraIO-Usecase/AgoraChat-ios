@@ -9,8 +9,6 @@
 
 #import "AgoraMainViewController.h"
 
-#import "AgoraContactsViewController.h"
-//#import "AgoraChatsViewController.h"
 #import "AgoraSettingsViewController.h"
 #import "AgoraChatDemoHelper.h"
 #import "AgoraCDDeviceManager.h"
@@ -92,7 +90,6 @@ static NSString *kGroupName = @"GroupName";
 - (void)loadViewControllers
 {
 //    self.title = NSLocalizedString(@"title.contacts", @"Contacts");
-//    _contactsVC = [[AgoraContactsViewController alloc] init];
     _contactsVC = [[ACDContactsViewController alloc] init];
     _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@""
                                                    image:[ImageWithName(@"TabBar.bundle/tabbar_contacts")

@@ -8,16 +8,13 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "AgoraContactsViewController.h"
 #import "AgoraMainViewController.h"
 #import "AgoraPushNotificationViewController.h"
-#import "AgoraChatsViewController.h"
 #import "AgoraSettingsViewController.h"
 #import "ACDContactsViewController.h"
+#import "ACDChatsViewController.h"
 
 @interface AgoraChatDemoHelper : NSObject<AgoraChatClientDelegate, AgoraChatContactManagerDelegate, AgoraChatGroupManagerDelegate, AgoraChatManagerDelegate, AgoraChatroomManagerDelegate>
-
-//@property (nonatomic, weak) AgoraContactsViewController *contactsVC;
 
 @property (nonatomic, weak) ACDContactsViewController *contactsVC;
 
@@ -27,7 +24,7 @@
 
 @property (nonatomic, weak) AgoraPushNotificationViewController *pushVC;
 
-@property (nonatomic, weak) AgoraChatsViewController *chatsVC;
+@property (nonatomic, weak)  ACDChatsViewController  *chatsVC;
 
 + (instancetype)shareHelper;
 

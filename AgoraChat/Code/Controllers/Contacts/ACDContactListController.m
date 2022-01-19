@@ -8,7 +8,6 @@
 
 #import "ACDContactListController.h"
 #import "MISScrollPage.h"
-#import "AgoraContactsViewController.h"
 #import "AgoraContactListSectionHeader.h"
 #import "AgoraAddContactViewController.h"
 #import "ACDContactInfoViewController.h"
@@ -18,7 +17,6 @@
 #import "ACDContactCell.h"
 #import "AgoraUserModel.h"
 #import "AgoraApplyManager.h"
-#import "AgoraGroupsViewController.h"
 #import "AgoraApplyRequestCell.h"
 #import "AgoraChatDemoHelper.h"
 #import "AgoraRealtimeSearchUtils.h"

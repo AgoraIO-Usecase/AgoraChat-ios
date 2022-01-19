@@ -11,7 +11,6 @@
 #import "ACDGroupEnterCell.h"
 #import "ACDContactCell.h"
 
-#import "AgoraCreateNewGroupViewController.h"
 #import "ACDCreateNewGroupViewController.h"
 
 #import "ACDPublicGroupListViewController.h"

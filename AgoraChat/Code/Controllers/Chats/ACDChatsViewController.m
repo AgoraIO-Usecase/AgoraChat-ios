@@ -269,6 +269,12 @@
     }];
 }
 
+- (void)tableViewDidTriggerHeaderRefresh
+{
+    [self refreshTableViewWithData];
+}
+
+
 #pragma mark - searchButtonAction
 
 - (void)searchButtonAction

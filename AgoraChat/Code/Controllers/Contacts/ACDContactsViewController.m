@@ -16,7 +16,6 @@
 #import "AgoraChatDemoHelper.h"
 #import "AgoraApplyManager.h"
 
-#import "AgoraCreateViewController.h"
 #import "ACDGroupEnterController.h"
 
 #import "ACDGroupInfoViewController.h"
