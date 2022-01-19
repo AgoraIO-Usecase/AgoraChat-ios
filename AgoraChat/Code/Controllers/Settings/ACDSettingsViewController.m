@@ -57,34 +57,50 @@ typedef enum : NSUInteger {
 }
 
 - (void)fetchUserInfo {
+    
+    [self preloadHeaderView];
+
     [AgoraChatUserInfoManagerHelper fetchOwnUserInfoCompletion:^(AgoraChatUserInfo * _Nonnull ownUserInfo) {
             self.userInfo = ownUserInfo;
             self.myNickName = self.userInfo.nickName ?:self.userInfo.userId;
-          
+            
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.userInfoHeaderView.nameLabel.text = self.myNickName;
-                self.userInfoHeaderView.userIdLabel.text = [NSString stringWithFormat:@"AgoraID: %@",self.userInfo.userId];
-                if (self.userInfo.avatarUrl) {
-                    [self.userInfoHeaderView.avatarImageView sd_setImageWithURL:[NSURL URLWithString:self.userInfo.avatarUrl] placeholderImage:ImageWithName(@"defatult_avatar_1")];
-                }else {
-                    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-                    
-                    NSString *imageName = [userDefault valueForKey:[NSString stringWithFormat:@"%@_avatar",self.userInfo.userId]];
-                             
-                    if (imageName == nil) {
-                        imageName = @"defatult_avatar_1";
-                    }
-                    [self.userInfoHeaderView.avatarImageView sd_setImageWithURL:nil placeholderImage:ImageWithName(imageName)];
-                }
-                [self.table reloadData];
+                [self updateHeaderView];
             });
     }];
+}
+
+- (void)preloadHeaderView {
+    self.myNickName = AgoraChatClient.sharedClient.currentUsername;
+    self.userInfo.userId = self.myNickName;
+    [self updateHeaderView];
+}
+
+- (void)updateHeaderView {
+    self.userInfoHeaderView.nameLabel.text = self.myNickName;
+    NSString *userId = self.userInfo.userId ?:self.myNickName;
+    self.userInfoHeaderView.userIdLabel.text = [NSString stringWithFormat:@"AgoraID: %@",userId];
+
+    if (self.userInfo.avatarUrl) {
+        [self.userInfoHeaderView.avatarImageView sd_setImageWithURL:[NSURL URLWithString:self.userInfo.avatarUrl] placeholderImage:ImageWithName(@"defatult_avatar_1")];
+    }else {
+        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        
+        NSString *imageName = [userDefault valueForKey:[NSString stringWithFormat:@"%@_avatar",self.userInfo.userId]];
+                 
+        if (imageName == nil) {
+            imageName = @"defatult_avatar_1";
+        }
+        [self.userInfoHeaderView.avatarImageView sd_setImageWithURL:nil placeholderImage:ImageWithName(imageName)];
+    }
+    [self.table reloadData];
 }
 
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
+    [self fetchUserInfo];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -102,6 +118,8 @@ typedef enum : NSUInteger {
 - (void)networkChanged:(AgoraChatConnectionState)connectionState {
     if (connectionState == AgoraChatConnectionConnected) {
         [self fetchUserInfo];
+    }else {
+        [self preloadHeaderView];
     }
 }
 

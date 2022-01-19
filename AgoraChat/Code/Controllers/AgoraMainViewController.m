@@ -33,13 +33,8 @@ static NSString *kGroupName = @"GroupName";
 
 @interface AgoraMainViewController () <AgoraChatManagerDelegate, AgoraChatGroupManagerDelegate, AgoraChatClientDelegate>
 {
-//    AgoraContactsViewController *_contactsVC;
     ACDContactsViewController *_contactsVC;
-
     ACDChatsViewController *_chatsVC;
-    
-    //AgoraChatsViewController *_chatsVC;
-//    AgoraSettingsViewController *_settingsVC;
     ACDSettingsViewController *_settingsVC;
 }
 
@@ -313,12 +308,12 @@ static NSString *kGroupName = @"GroupName";
 
 - (void)playSoundAndVibration
 {
-    NSTimeInterval timeInterval = [[NSDate date]
-                                   timeIntervalSinceDate:self.lastPlaySoundDate];
-    if (timeInterval < kDefaultPlaySoundInterval) {
-        NSLog(@"skip ringing & vibration %@, %@", [NSDate date], self.lastPlaySoundDate);
-        return;
-    }
+//    NSTimeInterval timeInterval = [[NSDate date]
+//                                   timeIntervalSinceDate:self.lastPlaySoundDate];
+//    if (timeInterval < kDefaultPlaySoundInterval) {
+//        NSLog(@"skip ringing & vibration %@, %@", [NSDate date], self.lastPlaySoundDate);
+//        return;
+//    }
 
     self.lastPlaySoundDate = [NSDate date];
     
