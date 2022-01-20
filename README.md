@@ -23,7 +23,7 @@ Before proceeding, ensure that you have the following:
 
 Follow the steps to add the Agora Chat UIKit into your project and run the demo.
 
-1. Clone the UIKit repositoty to your local machine.
+1. Clone this repositoty to your local machine.
 
    ```shell
    git clone git@github.com:AgoraIO-Usecase/AgoraChat-ios.git
@@ -56,8 +56,8 @@ Agora provides the full set of documentation and API Reference at [Agora Chat do
 ## Related Resources
 
 - Check our [FAQ](https://docs.agora.io/en/faq) to see if your issue has been recorded.
-- Repositories managed by developer communities can be found at [Agora Community](https://github.com/AgoraIO-Community)
-- If you encounter problems during integration, feel free to ask questions in [Stack Overflow](https://stackoverflow.com/questions/tagged/agora.io)
+- Repositories managed by developer communities can be found at [Agora Community](https://github.com/AgoraIO-Community).
+- If you encounter problems during integration, feel free to ask questions in [Stack Overflow](https://stackoverflow.com/questions/tagged/agora.io).
 
 ## License
 
