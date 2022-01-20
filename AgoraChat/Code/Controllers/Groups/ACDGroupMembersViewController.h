@@ -11,7 +11,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ACDGroupMembersViewController : UIViewController
+
 - (instancetype)initWithGroup:(AgoraChatGroup *)aGroup;
+- (void)updateWithGroup:(AgoraChatGroup *)agoraGroup;
 
 @end
 

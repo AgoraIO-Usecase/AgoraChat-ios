@@ -16,6 +16,11 @@
 #define Appkey @"41117440#383391"
 #define AppServerHost @"https://a41.easemob.com"
 
+#elif ACDENV == 1
+//easeim
+#define Appkey @"easemob-demo#easeim"
+#define AppServerHost @"https://a41.easemob.com"
+
 #elif ACDENV == 2
 //ebs
 #define Appkey @"81446724#514456" //ebs

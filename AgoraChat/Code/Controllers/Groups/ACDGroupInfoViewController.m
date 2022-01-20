@@ -32,6 +32,7 @@
 @property (nonatomic, strong) NSArray *cells;
 @property (nonatomic, strong) AgoraChatGroup *group;
 @property (nonatomic, strong) NSString *groupId;
+@property (nonatomic, strong) ACDGroupMembersViewController *groupMembersVC;
 
 @end
 
@@ -120,6 +121,8 @@
     if (obj && [obj isKindOfClass:[AgoraChatGroup class]]) {
         self.group = (AgoraChatGroup *)obj;
     }
+    
+    [self fetchGroupInfo];
 }
 
 - (void)buildCells {
@@ -163,6 +166,7 @@
             weakSelf.group = aGroup;
             NSLog(@"%s aGroup.occupants:%@",__func__,aGroup.occupants);
             [weakSelf updateUI];
+            [weakSelf.groupMembersVC updateWithGroup:weakSelf.group];
         }else {
             [weakSelf showHint:NSLocalizedString(@"group.fetchInfoFail", @"failed to get the group details, please try again later")];
         }
@@ -497,8 +501,8 @@
         _membersCell.detailLabel.text = @"100";
         ACD_WS
         _membersCell.tapCellBlock = ^{
-        ACDGroupMembersViewController *vc = [[ACDGroupMembersViewController alloc] initWithGroup:weakSelf.group];
-        [weakSelf.navigationController pushViewController:vc animated:YES];
+        
+        [weakSelf.navigationController pushViewController:self.groupMembersVC animated:YES];
             
         };
     }
@@ -572,6 +576,13 @@
         _cells = NSArray.new;
     }
     return _cells;
+}
+
+- (ACDGroupMembersViewController *)groupMembersVC {
+    if (_groupMembersVC == nil) {
+        _groupMembersVC = [[ACDGroupMembersViewController alloc] initWithGroup:self.group];
+    }
+    return _groupMembersVC;
 }
 
 @end
