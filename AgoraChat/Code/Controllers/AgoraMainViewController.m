@@ -23,7 +23,7 @@
 #define kGroupMessageAtList      @"em_at_list"
 #define kGroupMessageAtAll       @"all"
 
-static const CGFloat kDefaultPlaySoundInterval = 3.0;
+static const CGFloat kDefaultPlaySoundInterval = 1.0;
 
 static NSString *kMessageType = @"MessageType";
 static NSString *kConversationChatter = @"ConversationChatter";
@@ -305,12 +305,12 @@ static NSString *kGroupName = @"GroupName";
 
 - (void)playSoundAndVibration
 {
-//    NSTimeInterval timeInterval = [[NSDate date]
-//                                   timeIntervalSinceDate:self.lastPlaySoundDate];
-//    if (timeInterval < kDefaultPlaySoundInterval) {
-//        NSLog(@"skip ringing & vibration %@, %@", [NSDate date], self.lastPlaySoundDate);
-//        return;
-//    }
+    NSTimeInterval timeInterval = [[NSDate date]
+                                   timeIntervalSinceDate:self.lastPlaySoundDate];
+    if (timeInterval < kDefaultPlaySoundInterval) {
+        NSLog(@"skip ringing & vibration %@, %@", [NSDate date], self.lastPlaySoundDate);
+        return;
+    }
 
     self.lastPlaySoundDate = [NSDate date];
     

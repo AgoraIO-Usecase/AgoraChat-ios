@@ -102,6 +102,21 @@
     [self.table reloadData];
 }
 
+#pragma mark public method
+- (void)cancelSearchState {
+    self.searchBar.text = @"";
+    [self.searchBar setShowsCancelButton:NO animated:NO];
+    [self.searchBar resignFirstResponder];
+    [[AgoraRealtimeSearchUtils defaultUtil] realtimeSearchDidFinish];
+    _isSearchState = NO;
+    if (self.searchCancelBlock) {
+        self.searchCancelBlock();
+    }
+    [self.searchResults removeAllObjects];
+    self.table.scrollEnabled = !_isSearchState;
+    [self.table reloadData];
+}
+
 #pragma mark getter and setter
 - (UISearchBar*)searchBar
 {
@@ -112,7 +127,6 @@
         _searchBar.showsCancelButton = NO;
         _searchBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor] size:_searchBar.bounds.size];
         [_searchBar setSearchFieldBackgroundPositionAdjustment:UIOffsetMake(0, 0)];
-//        [_searchBar setSearchFieldBackgroundImage:[UIImage imageWithColor:COLOR_HEX(0xF2F2F2) size:CGSizeMake(_searchBar.bounds.size.width - 50.0, _searchBar.bounds.size.height)] forState:UIControlStateNormal];
                 
         UITextField *searchField = [_searchBar valueForKey:@"searchField"];
           if (searchField) {

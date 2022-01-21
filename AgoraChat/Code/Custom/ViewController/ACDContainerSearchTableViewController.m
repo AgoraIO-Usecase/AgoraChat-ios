@@ -36,9 +36,12 @@
 
 - (void)viewWillDisappearForIndex:(NSUInteger)index{
     self.editing = NO;
+    [self.searchBar resignFirstResponder];
+    [self cancelSearchState];
 }
 
 - (void)viewDidDisappearForIndex:(NSUInteger)index{
+    
 }
 
 

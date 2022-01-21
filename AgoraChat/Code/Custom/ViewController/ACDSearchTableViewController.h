@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) void (^searchResultBlock)(void);
 @property (nonatomic, copy) void (^searchCancelBlock)(void);
 
+- (void)cancelSearchState;
 
 @end
 

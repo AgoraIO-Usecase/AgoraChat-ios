@@ -271,7 +271,7 @@
 
 - (void)tableViewDidTriggerHeaderRefresh
 {
-    [self refreshTableViewWithData];
+//    [self refreshTableViewWithData];
 }
 
 

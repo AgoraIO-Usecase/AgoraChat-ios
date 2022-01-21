@@ -262,17 +262,8 @@ static AgoraChatDemoHelper *helper = nil;
 {
     NSString *msgstr = [NSString stringWithFormat:NSLocalizedString(@"group.invite", @"%@ invite you to group: %@ [%@]"), aInviter, aGroup.subject, aGroup.groupId];
     [self showAlertWithMessage:msgstr];
-    NSArray *vcArray = _mainVC.navigationController.viewControllers;
-    AgoraGroupsViewController *groupsVc = nil;
-    for (UIViewController *vc in vcArray) {
-        if ([vc isKindOfClass:[AgoraGroupsViewController class]]) {
-            groupsVc = (AgoraGroupsViewController *)vc;
-            break;
-        }
-    }
-    if (groupsVc) {
-        [groupsVc loadGroupsFromCache];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
+    
 }
 
 - (void)joinGroupRequestDidDecline:(NSString *)aGroupId
