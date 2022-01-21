@@ -23,6 +23,8 @@
 
 @implementation ACDRequestCell
 - (void)prepare {
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     [self.contentView addSubview:self.iconImageView];
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.contentLabel];

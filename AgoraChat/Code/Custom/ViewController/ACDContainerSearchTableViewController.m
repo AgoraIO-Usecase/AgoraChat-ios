@@ -26,6 +26,7 @@
 }
 
 - (void)viewDidLoadedForIndex:(NSUInteger)index{
+    
 }
 
 - (void)viewWillAppearForIndex:(NSUInteger)index{
@@ -36,7 +37,6 @@
 
 - (void)viewWillDisappearForIndex:(NSUInteger)index{
     self.editing = NO;
-    [self.searchBar resignFirstResponder];
     [self cancelSearchState];
 }
 

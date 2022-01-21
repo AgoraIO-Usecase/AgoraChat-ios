@@ -47,6 +47,7 @@
     [self tableDidTriggerHeaderRefresh];
 }
 
+
 #pragma mark refresh and load more
 - (void)didStartRefresh {
     [self tableDidTriggerHeaderRefresh];
@@ -191,22 +192,20 @@
     return cell;
 }
 
-#pragma mark - Table view delegate
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    AgoraUserModel *model = nil;
-    if (self.isSearchState) {
-        model = self.searchResults[indexPath.row];
-    }else {
-        model = self.dataArray[indexPath.section][indexPath.row];
-    }
-    
-    if (self.selectedBlock) {
-        self.selectedBlock(model.hyphenateId);
-    }
-}
-
-
+//#pragma mark - Table view delegate
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    AgoraUserModel *model = nil;
+//    if (self.isSearchState) {
+//        model = self.searchResults[indexPath.row];
+//    }else {
+//        model = self.dataArray[indexPath.section][indexPath.row];
+//    }
+//
+//    if (self.selectedBlock) {
+//        self.selectedBlock(model.hyphenateId);
+//    }
+//}
 
 #pragma mark getter and setter
 - (UITableView *)table {
@@ -221,6 +220,7 @@
         [_table registerClass:[ACDContactCell class] forCellReuseIdentifier:[ACDContactCell reuseIdentifier]];
         _table.sectionIndexColor = SectionIndexTextColor;
         _table.sectionIndexBackgroundColor = [UIColor clearColor];
+        _table.allowsMultipleSelection = NO;
 
     }
     return _table;

@@ -13,7 +13,7 @@
 #define KJOINBUTTON_IMAGE   [UIImage imageNamed:@"Button_Join.png"]
 #define KJOINBUTTON_TITLE   NSLocalizedString(@"group.requested", @"Requested")
 
-@interface ACDGroupNewCell()<UIAlertViewDelegate>
+@interface ACDGroupNewCell()
 
 @property (nonatomic, strong)  UILabel *numberCountLabel;
 

@@ -45,15 +45,21 @@
 
 
 #pragma mark - UISearchBarDelegate
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
-    [searchBar setShowsCancelButton:YES animated:YES];
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     _isSearchState = YES;
-    self.table.userInteractionEnabled = NO;
-    return YES;
+    if ([searchBar.text isEqualToString:@""]) {
+        self.table.userInteractionEnabled = NO;
+        [self.searchResults removeAllObjects];
+        [self.table reloadData];
+    }else {
+        self.table.userInteractionEnabled = YES;
+    }
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
+    [searchBar setShowsCancelButton:NO animated:YES];
     self.table.userInteractionEnabled = YES;
+    [self.searchBar resignFirstResponder];
 }
 
 - (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
