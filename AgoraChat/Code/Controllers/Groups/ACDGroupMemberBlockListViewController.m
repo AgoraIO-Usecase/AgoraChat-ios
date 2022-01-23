@@ -26,7 +26,7 @@
     self = [super init];
     if (self) {
         self.group = aGroup;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithNotification:) name:KAgora_REFRESH_GROUP_INFO object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateGroupMemberWithNotification:) name:KACD_REFRESH_GROUP_MEMBER object:nil];
     }
     
     return self;
@@ -62,8 +62,16 @@
 
 
 
-#pragma mark updateUIWithNotification
-- (void)updateUIWithNotification:(NSNotification *)notify {
+#pragma mark NSNotification
+- (void)updateGroupMemberWithNotification:(NSNotification *)aNotification {
+    NSDictionary *dic = (NSDictionary *)aNotification.object;
+    NSString* groupId = dic[kACDGroupId];
+    ACDGroupMemberListType type = [dic[kACDGroupMemberListType] integerValue];
+    
+    if (![self.group.groupId isEqualToString:groupId] || type != ACDGroupMemberListTypeBlock) {
+        return;
+    }
+    
     [self tableViewDidTriggerHeaderRefresh];
 }
 
@@ -90,7 +98,13 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    NSString *name = self.dataArray[indexPath.row];
+    NSString *name = @"";
+    if (self.isSearchState) {
+        name = self.searchResults[indexPath.row];
+    }else {
+        name = self.dataArray[indexPath.row];
+    }
+    
     AgoraUserModel *model = [[AgoraUserModel alloc] initWithHyphenateId:name];
     cell.model = model;
     
@@ -136,6 +150,7 @@
             }
 
             [weakSelf.dataArray addObjectsFromArray:aMembers];
+            weakSelf.searchSource = self.dataArray;
             [weakSelf.table reloadData];
         } else {
             NSString *errorStr = [NSString stringWithFormat:NSLocalizedString(@"group.ban.fetchFail", @"Fail to get blacklist: %@"), aError.errorDescription];

@@ -64,6 +64,7 @@
 
 - (void)addNotifications {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshGroupList:) name:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
+    
 }
 
 - (void)removeNotifications {

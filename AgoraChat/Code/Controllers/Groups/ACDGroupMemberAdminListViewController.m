@@ -28,11 +28,12 @@
     self = [super init];
     if (self) {
         self.group = aGroup;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithNotification:) name:KAgora_REFRESH_GROUP_INFO object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateGroupMemberWithNotification:) name:KACD_REFRESH_GROUP_MEMBER object:nil];
     }
     return self;
 }
-
+ 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -42,8 +43,11 @@
 }
 
 - (void)buildAdmins {
-    [self.dataArray addObject:self.group.owner];
-    [self.dataArray addObjectsFromArray:self.group.adminList];
+    NSMutableArray *tempArray = NSMutableArray.new;
+    [tempArray addObject:self.group.owner];
+    [tempArray addObjectsFromArray:self.group.adminList];
+    self.dataArray = tempArray;
+    self.searchSource = self.dataArray;
     [self.table reloadData];
 }
 
@@ -63,6 +67,7 @@
     return self.dataArray.count;
 }
 
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return [ACDContactCell height];
 }
@@ -74,12 +79,18 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    NSString *name = self.dataArray[indexPath.row];
+    NSString *name = @"";
+    if (self.isSearchState) {
+        name = self.searchResults[indexPath.row];
+    }else {
+        name = self.dataArray[indexPath.row];
+    }
+    
     AgoraUserModel *model = [[AgoraUserModel alloc] initWithHyphenateId:name];
     cell.model = model;
     ACD_WS
     cell.tapCellBlock = ^{
-        [weakSelf actionSheetWithUserId:name memberListType:ACDGroupMemberListTypeALL group:weakSelf.group];
+        [weakSelf actionSheetWithUserId:model.hyphenateId memberListType:ACDGroupMemberListTypeALL group:weakSelf.group];
     };
 
     return cell;
@@ -90,18 +101,19 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-
-- (void)updateUIWithNotification:(NSNotification *)aNotification
-{
-    id obj = aNotification.object;
-    if (obj && [obj isKindOfClass:[AgoraChatGroup class]]) {
-        self.group = (AgoraChatGroup *)obj;
+#pragma mark NSNotification
+- (void)updateGroupMemberWithNotification:(NSNotification *)aNotification {
+    NSDictionary *dic = (NSDictionary *)aNotification.object;
+    NSString* groupId = dic[kACDGroupId];
+    ACDGroupMemberListType type = [dic[kACDGroupMemberListType] integerValue];
+    
+    if (![self.group.groupId isEqualToString:groupId] || type != ACDGroupMemberListTypeAdmin) {
+        return;
     }
-    [self.dataArray removeAllObjects];
-    [self.dataArray addObject:self.group.owner];
-    [self.dataArray addObjectsFromArray:self.group.adminList];
-    [self.table reloadData];
+    
+    [self tableViewDidTriggerHeaderRefresh];
 }
+
 
 #pragma mark - data
 
@@ -116,9 +128,7 @@
         if (!error) {
             weakSelf.group = group;
             dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.dataArray removeAllObjects];
-                [weakSelf.dataArray addObjectsFromArray:weakSelf.group.adminList];
-                [weakSelf.table reloadData];
+                [weakSelf buildAdmins];
             });
         }
         else{

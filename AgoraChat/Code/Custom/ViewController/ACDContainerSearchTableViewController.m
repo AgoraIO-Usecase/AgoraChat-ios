@@ -30,6 +30,8 @@
 }
 
 - (void)viewWillAppearForIndex:(NSUInteger)index{
+    [self cancelSearchState];
+
 }
 
 - (void)viewDidAppearForIndex:(NSUInteger)index{

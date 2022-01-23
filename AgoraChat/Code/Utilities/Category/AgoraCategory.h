@@ -19,6 +19,7 @@
 #import "UIImage+Util.h"
 #import "UIAlertAction+Custom.h"
 #import "UITabBar+RedPoint.h"
+#import "NSObject+Hint.h"
 
 #endif /* AgoraCategory_h */
 

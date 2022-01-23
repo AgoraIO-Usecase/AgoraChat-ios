@@ -45,7 +45,13 @@
 
 
 #pragma mark - UISearchBarDelegate
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+    [searchBar setShowsCancelButton:YES animated:YES];
+    return YES;
+}
+
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+
     _isSearchState = YES;
     if ([searchBar.text isEqualToString:@""]) {
         self.table.userInteractionEnabled = NO;

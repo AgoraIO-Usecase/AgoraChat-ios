@@ -119,11 +119,14 @@
 {
     id obj = notification.object;
     if (obj && [obj isKindOfClass:[AgoraChatGroup class]]) {
-        self.group = (AgoraChatGroup *)obj;
+        AgoraChatGroup *group = (AgoraChatGroup *)obj;
+        if ([group.groupId isEqualToString:self.group.groupId]) {
+            self.group = group;
+            [self fetchGroupInfo];
+        }
     }
-    
-    [self fetchGroupInfo];
 }
+
 
 - (void)buildCells {
     if (self.accessType == ACDGroupInfoAccessTypeSearch) {
@@ -164,7 +167,6 @@
         [weakSelf hideHud];
         if (aError == nil) {
             weakSelf.group = aGroup;
-            NSLog(@"%s aGroup.occupants:%@",__func__,aGroup.occupants);
             [weakSelf updateUI];
             [weakSelf.groupMembersVC updateWithGroup:weakSelf.group];
         }else {

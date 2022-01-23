@@ -142,10 +142,12 @@ MISScrollPageControllerDelegate,AgoraGroupUIProtocol>
 {
     id obj = aNotification.object;
     if (obj && [obj isKindOfClass:[AgoraChatGroup class]]) {
-        self.group = (AgoraChatGroup *)obj;
+        AgoraChatGroup *group = (AgoraChatGroup *)obj;
+        if ([group.groupId isEqualToString:self.group.groupId]) {
+            self.group = group;
+            [self updateNavTitle];
+        }
     }
-    
-    [self updateNavTitle];
 }
 
 - (void)updateNavTitle {
@@ -156,6 +158,7 @@ MISScrollPageControllerDelegate,AgoraGroupUIProtocol>
 - (void)updateWithGroup:(AgoraChatGroup *)agoraGroup {
     self.group = agoraGroup;
     [self updateNavTitle];
+    [self.allVC updateUI];
 }
 
 #pragma mark action

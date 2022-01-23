@@ -10,6 +10,8 @@
 #define KAgora_REFRESH_GROUPLIST_NOTIFICATION     @"refreshGroups_notification"
 #define KAgora_RAgoraOVEGROUP_NOTIFICATION           @"removeGroups_notification"
 #define KAgora_REFRESH_GROUP_INFO  @"UpdateGroupInfo_notification"
+#define KACD_REFRESH_GROUP_MEMBER  @"KACD_REFRESH_GROUP_MEMBER"
+
 
 #define KAgora_REFRESH_CHATROOMLIST_NOTIFICATION     @"refreshChatrooms_notification"
 #define KAgora_REFRESH_CHATROOM_INFO  @"UpdateChatroomInfo_notification"

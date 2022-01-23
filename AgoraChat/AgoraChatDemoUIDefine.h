@@ -77,4 +77,7 @@
 #define USERINFO_LIST @"userinfo_list"
 
 
+#define kACDGroupMemberListType @"kACDGroupMemberListType"
+#define kACDGroupId @"kACDGroupId"
+
 #endif /* AgoraChatChatDemoUIDefine_h */

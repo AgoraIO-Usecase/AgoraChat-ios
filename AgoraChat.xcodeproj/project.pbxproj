@@ -193,6 +193,7 @@
 		9ECE67842757908D007CF85F /* add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9ECE67822757908C007CF85F /* add@2x.png */; };
 		9ECE67852757908D007CF85F /* add@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9ECE67832757908D007CF85F /* add@3x.png */; };
 		9ECE678827586E6B007CF85F /* ACDAddContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ECE678727586E6B007CF85F /* ACDAddContactViewController.m */; };
+		C004B421279D33D0009E5E3E /* NSObject+Hint.m in Sources */ = {isa = PBXBuildFile; fileRef = C004B420279D33D0009E5E3E /* NSObject+Hint.m */; };
 		D20E26D71DCA011C00B3FAC6 /* icon_info.png in Resources */ = {isa = PBXBuildFile; fileRef = D20E26D41DCA011C00B3FAC6 /* icon_info.png */; };
 		D20E26D81DCA011C00B3FAC6 /* icon_info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D20E26D51DCA011C00B3FAC6 /* icon_info@2x.png */; };
 		D20E26D91DCA011C00B3FAC6 /* icon_info@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D20E26D61DCA011C00B3FAC6 /* icon_info@3x.png */; };
@@ -965,6 +966,8 @@
 		9ECE67832757908D007CF85F /* add@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add@3x.png"; sourceTree = "<group>"; };
 		9ECE678627586E6B007CF85F /* ACDAddContactViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACDAddContactViewController.h; sourceTree = "<group>"; };
 		9ECE678727586E6B007CF85F /* ACDAddContactViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACDAddContactViewController.m; sourceTree = "<group>"; };
+		C004B41F279D33D0009E5E3E /* NSObject+Hint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+Hint.h"; sourceTree = "<group>"; };
+		C004B420279D33D0009E5E3E /* NSObject+Hint.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Hint.m"; sourceTree = "<group>"; };
 		D20E26D41DCA011C00B3FAC6 /* icon_info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_info.png; sourceTree = "<group>"; };
 		D20E26D51DCA011C00B3FAC6 /* icon_info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_info@2x.png"; sourceTree = "<group>"; };
 		D20E26D61DCA011C00B3FAC6 /* icon_info@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_info@3x.png"; sourceTree = "<group>"; };
@@ -1993,6 +1996,8 @@
 			children = (
 				7F6CC95E26575DB200BA60BB /* NSObject+AgoraAlertView.h */,
 				7F6CC95F26575DB200BA60BB /* NSObject+AgoraAlertView.m */,
+				C004B41F279D33D0009E5E3E /* NSObject+Hint.h */,
+				C004B420279D33D0009E5E3E /* NSObject+Hint.m */,
 				7F0516C0269FE0D200B2C795 /* AgoraCategory.h */,
 				D24327EC1DAA444C00EDCDAB /* UIView+HyphenateView.h */,
 				D24327ED1DAA444C00EDCDAB /* UIView+HyphenateView.m */,
@@ -2251,45 +2256,45 @@
 		D2BF7CC01D9111DA0090AA66 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				9ECE66D3273B6E9C007CF85F /* AgoraChatColorDefine.h */,
+				EC19F5402738C5B600F88012 /* ACDUtil.h */,
+				EC19F5412738C5B600F88012 /* ACDUtil.m */,
 				7F6CC90A26568D8E00BA60BB /* AgoraApplyManager.h */,
 				7F6CC90426568D8E00BA60BB /* AgoraApplyManager.m */,
+				9ECE66D3273B6E9C007CF85F /* AgoraChatColorDefine.h */,
+				9ECE66D5273B6EC2007CF85F /* AgoraChatDateHelper.h */,
+				9ECE66D4273B6EC2007CF85F /* AgoraChatDateHelper.m */,
 				7F6CC90726568D8E00BA60BB /* AgoraChatDemoHelper.h */,
 				7F6CC90626568D8E00BA60BB /* AgoraChatDemoHelper.m */,
+				7F663CF1265F7F86003F74B8 /* AgoraChatUserInfo+expireTime.h */,
+				7F663CF2265F7F86003F74B8 /* AgoraChatUserInfo+expireTime.m */,
 				7F663CE8265E5DF7003F74B8 /* AgoraChatUserInfoManagerHelper.h */,
 				7F663CE9265E5DF7003F74B8 /* AgoraChatUserInfoManagerHelper.m */,
 				7F6CC90926568D8E00BA60BB /* AgoraColorUtils.h */,
+				D24327B71DAA024A00EDCDAB /* AgoraMessageReadManager.h */,
+				D24327B81DAA024A00EDCDAB /* AgoraMessageReadManager.m */,
 				7F6CC90826568D8E00BA60BB /* AgoraNotificationNames.h */,
 				7F6CC90B26568D8E00BA60BB /* AgoraRealtimeSearchUtil.h */,
 				7F6CC90D26568D8E00BA60BB /* AgoraRealtimeSearchUtil.m */,
 				7F6CC90526568D8E00BA60BB /* AgoraSDKHelper.h */,
 				7F6CC90C26568D8E00BA60BB /* AgoraSDKHelper.m */,
+				D24327EB1DAA444C00EDCDAB /* Category */,
+				7F0516D226A0118600B2C795 /* CustomBase */,
+				D24327BA1DAA395F00EDCDAB /* DeviceHelper */,
+				D243280A1DAE19F900EDCDAB /* Emoji */,
+				716634011DB0E03F00C92E27 /* EMRealtimeSearchUtils */,
 				711158FF1DB7278B005158BB /* NSArray+AgoraSortContacts.h */,
 				711159001DB7278B005158BB /* NSArray+AgoraSortContacts.m */,
-				7F663CF1265F7F86003F74B8 /* AgoraChatUserInfo+expireTime.h */,
-				7F663CF2265F7F86003F74B8 /* AgoraChatUserInfo+expireTime.m */,
+				9ECE66D7273B6ECF007CF85F /* SearchController */,
 				7F3E7F9E267B2314009CEAB6 /* UIColor+Util.h */,
 				7F3E7F9F267B2314009CEAB6 /* UIColor+Util.m */,
-				EC1B2C2A27465A9100A6FA6E /* UITabBar+RedPoint.h */,
-				EC1B2C2B27465A9100A6FA6E /* UITabBar+RedPoint.m */,
-				9ECE66D5273B6EC2007CF85F /* AgoraChatDateHelper.h */,
-				9ECE66D4273B6EC2007CF85F /* AgoraChatDateHelper.m */,
-				EC19F5402738C5B600F88012 /* ACDUtil.h */,
-				EC19F5412738C5B600F88012 /* ACDUtil.m */,
-				9ECE674D274DE7C0007CF85F /* UIViewController+ComponentSize.h */,
-				9ECE674E274DE7C0007CF85F /* UIViewController+ComponentSize.m */,
-				EC19F5432738C60700F88012 /* UIImage+Util.h */,
-				EC19F5442738C60700F88012 /* UIImage+Util.m */,
-				9ECE66D7273B6ECF007CF85F /* SearchController */,
-				7F0516D226A0118600B2C795 /* CustomBase */,
-				D243280A1DAE19F900EDCDAB /* Emoji */,
-				D24327EB1DAA444C00EDCDAB /* Category */,
-				D24327BA1DAA395F00EDCDAB /* DeviceHelper */,
-				D24327B71DAA024A00EDCDAB /* AgoraMessageReadManager.h */,
-				D24327B81DAA024A00EDCDAB /* AgoraMessageReadManager.m */,
-				716634011DB0E03F00C92E27 /* EMRealtimeSearchUtils */,
 				71D4A1CF1D9C9229006FACB7 /* UIImage+ImageEffect.h */,
 				71D4A1D01D9C9229006FACB7 /* UIImage+ImageEffect.m */,
+				EC19F5432738C60700F88012 /* UIImage+Util.h */,
+				EC19F5442738C60700F88012 /* UIImage+Util.m */,
+				EC1B2C2A27465A9100A6FA6E /* UITabBar+RedPoint.h */,
+				EC1B2C2B27465A9100A6FA6E /* UITabBar+RedPoint.m */,
+				9ECE674D274DE7C0007CF85F /* UIViewController+ComponentSize.h */,
+				9ECE674E274DE7C0007CF85F /* UIViewController+ComponentSize.m */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -3615,6 +3620,7 @@
 				7F6CC8D226568C6F00BA60BB /* AgoraContactInfoCell.m in Sources */,
 				7F6CC87C26568C0000BA60BB /* AgoraLocationViewController.m in Sources */,
 				7F6CC84C26568B4600BA60BB /* AgoraMemberSelectViewController.m in Sources */,
+				C004B421279D33D0009E5E3E /* NSObject+Hint.m in Sources */,
 				7FB1589226A19AE300B995F3 /* UITextField+DarkMode.m in Sources */,
 				7F663CA1265B9FDA003F74B8 /* AgoraChatToolBar.m in Sources */,
 				EC54DCEA2721502200ABEE3E /* UIView+MISHelper.m in Sources */,

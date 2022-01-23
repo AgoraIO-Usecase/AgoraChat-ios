@@ -33,7 +33,7 @@
         self.group = aGroup;
         self.groupId = self.group.groupId;
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithNotification:) name:KAgora_REFRESH_GROUP_INFO object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateGroupMemberWithNotification:) name:KACD_REFRESH_GROUP_MEMBER object:nil];
     }
     
     return self;
@@ -48,18 +48,6 @@
     [self useRefresh];
     [self tableViewDidTriggerHeaderRefresh];
 }
-
-//- (void)updateUIWithResultList:(NSArray *)sourceList IsHeader:(BOOL)isHeader {
-//
-//    if (isHeader) {
-//        [self.dataArray removeAllObjects];
-//        [self.dataArray addObject:self.group.owner];
-//        [self.dataArray addObjectsFromArray:self.group.adminList];
-//    }
-//
-//    [self.dataArray addObjectsFromArray:sourceList];
-//    self.searchSource = self.dataArray;
-//}
 
 - (void)updateUIWithResultList:(NSArray *)sourceList IsHeader:(BOOL)isHeader {
     
@@ -104,11 +92,23 @@
     [super didReceiveMemoryWarning];
 }
 
-
-#pragma mark updateUIWithNotification
-- (void)updateUIWithNotification:(NSNotification *)notify {
+- (void)updateUI {
     [self tableViewDidTriggerHeaderRefresh];
 }
+
+#pragma mark updateUIWithNotification
+- (void)updateGroupMemberWithNotification:(NSNotification *)aNotification {
+    NSDictionary *dic = (NSDictionary *)aNotification.object;
+    NSString* groupId = dic[kACDGroupId];
+    
+    if (![self.group.groupId isEqualToString:groupId]) {
+        return;
+    }
+    
+    [self tableViewDidTriggerHeaderRefresh];
+
+}
+
 
 
 #pragma mark - Table view data source
@@ -137,7 +137,13 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    AgoraUserModel *model = self.dataArray[indexPath.section][indexPath.row];
+    AgoraUserModel *model = nil;
+    if (self.isSearchState) {
+        model = self.searchResults[indexPath.row];
+    }else {
+        model = self.dataArray[indexPath.section][indexPath.row];
+    }
+    
     cell.model =  model;
     if (model.hyphenateId == self.group.owner) {
         cell.detailLabel.text = @"owner";
