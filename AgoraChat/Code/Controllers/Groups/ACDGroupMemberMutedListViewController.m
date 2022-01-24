@@ -16,6 +16,7 @@
 @interface ACDGroupMemberMutedListViewController ()
 
 @property (nonatomic, strong) AgoraChatGroup *group;
+@property (nonatomic, strong) NSMutableArray *members;
 
 @end
 
@@ -76,15 +77,18 @@
 
 
 #pragma mark - Table view data source
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)table {
+    if (self.isSearchState) {
+        return 1;
+    }
+    return  self.sectionTitles.count;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (self.isSearchState) {
         return self.searchResults.count;
     }
-    return self.dataArray.count;
+    return ((NSArray *)self.dataArray[section]).count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -97,18 +101,18 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    NSString *name = @"";
+    AgoraUserModel *model = nil;
     if (self.isSearchState) {
-        name = self.searchResults[indexPath.row];
+        model = self.searchResults[indexPath.row];
     }else {
-        name = self.dataArray[indexPath.row];
+        model = self.dataArray[indexPath.section][indexPath.row];
     }
-    AgoraUserModel *model = [[AgoraUserModel alloc] initWithHyphenateId:name];
+
     cell.model = model;
     
     ACD_WS
     cell.tapCellBlock = ^{
-        [weakSelf actionSheetWithUserId:name memberListType:ACDGroupMemberListTypeMute group:weakSelf.group];
+        [weakSelf actionSheetWithUserId:model.hyphenateId memberListType:ACDGroupMemberListTypeMute group:weakSelf.group];
     };
     
     return cell;
@@ -143,13 +147,7 @@
         [self endRefresh];
 
         if (!aError) {
-            if (aIsHeader) {
-                [weakSelf.dataArray removeAllObjects];
-            }
-
-            [weakSelf.dataArray addObjectsFromArray:aMembers];
-            weakSelf.searchSource = weakSelf.dataArray;
-            [weakSelf.table reloadData];
+            [self updateUIWithResultList:aMembers IsHeader:aIsHeader];
         } else {
             NSString *errorStr = [NSString stringWithFormat:NSLocalizedString(@"group.mute.fetchFail", @"fail to get mutes: %@"), aError.errorDescription];
             [weakSelf showHint:errorStr];
@@ -163,5 +161,18 @@
     }];
 }
 
+- (void)updateUIWithResultList:(NSArray *)sourceList IsHeader:(BOOL)isHeader {
+    
+    if (isHeader) {
+        [self.members removeAllObjects];
+    }
+    [self.members addObjectsFromArray:sourceList];
+    
+    [self sortContacts:self.members];
+
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        [self.table reloadData];
+    });
+}
 
 @end

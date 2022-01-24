@@ -129,6 +129,25 @@
     [self.table reloadData];
 }
 
+- (void)sortContacts:(NSArray *)contacts {
+    if (contacts.count == 0) {
+        self.dataArray = [@[] mutableCopy];
+        self.sectionTitles = [@[] mutableCopy];
+        self.searchSource = [@[] mutableCopy];
+        return;
+    }
+    
+    NSMutableArray *sectionTitles = nil;
+    NSMutableArray *searchSource = nil;
+    NSArray *sortArray = [NSArray sortContacts:contacts
+                                 sectionTitles:&sectionTitles
+                                  searchSource:&searchSource];
+    [self.dataArray removeAllObjects];
+    [self.dataArray addObjectsFromArray:sortArray];
+    self.sectionTitles = [NSMutableArray arrayWithArray:sectionTitles];
+    self.searchSource = [NSMutableArray arrayWithArray:searchSource];
+}
+
 #pragma mark getter and setter
 - (UISearchBar*)searchBar
 {
@@ -171,6 +190,14 @@
     }
     return _searchResults;
 }
+
+- (NSMutableArray *)members {
+    if (_members == nil) {
+        _members = NSMutableArray.new;
+    }
+    return _members;
+}
+
 
 @end
 #undef kSearchBarHeight

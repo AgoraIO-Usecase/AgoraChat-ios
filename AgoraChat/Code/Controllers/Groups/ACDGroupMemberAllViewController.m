@@ -20,7 +20,6 @@
 @property (nonatomic, strong) NSString *groupId;
 @property (nonatomic, strong) AgoraChatGroup *group;
 @property (nonatomic, strong) NSString *cursor;
-@property (nonatomic, strong) NSMutableArray *members;
 
 @end
 
@@ -61,30 +60,12 @@
     
     [self sortContacts:self.members];
 
-    WEAK_SELF
     dispatch_async(dispatch_get_main_queue(), ^(){
-        [weakSelf.table reloadData];
+        [self.table reloadData];
     });
 }
 
-- (void)sortContacts:(NSArray *)contacts {
-    if (contacts.count == 0) {
-        self.dataArray = [@[] mutableCopy];
-        self.sectionTitles = [@[] mutableCopy];
-        self.searchSource = [@[] mutableCopy];
-        return;
-    }
-    
-    NSMutableArray *sectionTitles = nil;
-    NSMutableArray *searchSource = nil;
-    NSArray *sortArray = [NSArray sortContacts:contacts
-                                 sectionTitles:&sectionTitles
-                                  searchSource:&searchSource];
-    [self.dataArray removeAllObjects];
-    [self.dataArray addObjectsFromArray:sortArray];
-    self.sectionTitles = [NSMutableArray arrayWithArray:sectionTitles];
-    self.searchSource = [NSMutableArray arrayWithArray:searchSource];
-}
+
 
 
 
@@ -218,13 +199,6 @@
         [weakSelf.table reloadData];
 
     }];
-}
-
-- (NSMutableArray *)members {
-    if (_members == nil) {
-        _members = NSMutableArray.new;
-    }
-    return _members;
 }
 
 

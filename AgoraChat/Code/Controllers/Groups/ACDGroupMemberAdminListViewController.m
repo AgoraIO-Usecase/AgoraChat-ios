@@ -46,25 +46,32 @@
     NSMutableArray *tempArray = NSMutableArray.new;
     [tempArray addObject:self.group.owner];
     [tempArray addObjectsFromArray:self.group.adminList];
-    self.dataArray = tempArray;
-    self.searchSource = self.dataArray;
-    [self.table reloadData];
+    
+    [self sortContacts:tempArray];
+    
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        [self.table reloadData];
+    });
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
 #pragma mark - Table view data source
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)table {
+    if (self.isSearchState) {
+        return 1;
+    }
+    return  self.sectionTitles.count;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (self.isSearchState) {
         return self.searchResults.count;
     }
-    return self.dataArray.count;
+    return ((NSArray *)self.dataArray[section]).count;
 }
 
 
@@ -78,15 +85,14 @@
         cell = [[ACDContactCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDContactCell reuseIdentifier]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    
-    NSString *name = @"";
+        
+    AgoraUserModel *model = nil;
     if (self.isSearchState) {
-        name = self.searchResults[indexPath.row];
+        model = self.searchResults[indexPath.row];
     }else {
-        name = self.dataArray[indexPath.row];
+        model = self.dataArray[indexPath.section][indexPath.row];
     }
     
-    AgoraUserModel *model = [[AgoraUserModel alloc] initWithHyphenateId:name];
     cell.model = model;
     ACD_WS
     cell.tapCellBlock = ^{
