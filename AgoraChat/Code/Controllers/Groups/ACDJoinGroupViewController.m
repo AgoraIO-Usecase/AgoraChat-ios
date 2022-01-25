@@ -55,18 +55,6 @@
     ACD_WS
     [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow
                          animated:YES];
-//    [[AgoraChatClient sharedClient].groupManager joinPublicGroup:groupId
-//                                               completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
-//           [MBProgressHUD hideAllHUDsForView:[UIApplication sharedApplication].keyWindow animated:YES];
-//           if (!aError) {
-//
-//           }
-//           else {
-//               NSString *msg = NSLocalizedString(@"group.requestFailure", @"Failed to apply to the group");
-//               [weakSelf showAlertWithMessage:msg];
-//           }
-//       }
-//     ];
     
     [[AgoraChatClient sharedClient].groupManager requestToJoinPublicGroup:groupId message:@"" completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
         [MBProgressHUD hideAllHUDsForView:[UIApplication sharedApplication].keyWindow animated:YES];
@@ -74,7 +62,7 @@
 
         }
         else {
-            NSString *msg = NSLocalizedString(@"group.requestFailure", @"Failed to apply to the group");
+            NSString *msg = aError.errorDescription;
             [self showHint:msg];
         }
     }];
