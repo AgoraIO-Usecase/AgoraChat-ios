@@ -16,7 +16,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "UIViewController+DismissKeyboard.h"
 
-#define KAgora_GROUP_MAgoraBERSCOUNT         2000
+#define KAgora_GROUP_MAgoraBERSCOUNT         3000
 
 @interface AgoraCreateNewGroupViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, AgoraGroupUIProtocol>
 

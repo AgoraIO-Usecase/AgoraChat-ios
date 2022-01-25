@@ -19,7 +19,7 @@
 #import "ACDMAXGroupNumberCell.h"
 #import "ACDGroupMemberSelectViewController.h"
 
-#define KAgora_GROUP_MAgoraBERSCOUNT         2000
+#define KAgora_GROUP_MAgoraBERSCOUNT     3000
 
 
 static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell";
@@ -165,11 +165,13 @@ static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell
     if (self.maxGroupNumberCell.maxGroupMemberField.text.length > 0) {
 
         NSInteger maxNumber = [self.maxGroupNumberCell.maxGroupMemberField.text integerValue];
-        if (maxNumber < 3 || maxNumber > 2000) {
-            [self showHint:@"Member quantity: 3 to 2000"];
+        if (maxNumber < 3 || maxNumber > 3000) {
+            [self showHint:KACDGroupCreateMemberLimit];
             self.groupOptions.maxUsersCount = 200;
             return;
         }
+        
+        self.groupOptions.maxUsersCount = maxNumber;
     }
 
     
@@ -280,7 +282,9 @@ static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell
 //    [self updateMemberCountLabel];
     
     for (AgoraUserModel *model in modelArray) {
-        [self.invitees addObject:model.hyphenateId];
+        if (![self.invitees containsObject:model.hyphenateId]) {
+            [self.invitees addObject:model.hyphenateId];
+        }
     }
     
   
