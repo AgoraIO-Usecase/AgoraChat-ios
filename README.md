@@ -16,7 +16,7 @@ This page shows how to run the sample project.
 
 Before proceeding, ensure that you have the following:
 
-- Xcode 10.0 or later.
+- Xcode 11.0 or later.
 - CocoaPods. Refer to [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) if you have not installed CocoaPods.
 
 ## Run the sample project
