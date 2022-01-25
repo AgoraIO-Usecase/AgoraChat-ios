@@ -242,13 +242,11 @@
     }
     [self backAction];
 
-//    [self dismissViewControllerAnimated:YES completion:nil];
     
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
@@ -413,6 +411,13 @@
 #pragma mark - AgoraGroupUIProtocol
 
 - (void)addSelectOccupants:(NSArray<AgoraUserModel *> *)modelArray {
+    NSInteger maxCount = _hasInvitees.count + modelArray.count;
+    if (maxCount > _maxInviteCount) {
+        [self showHint:@"Member quantity: 3 to 2000"];
+        return;
+    }
+    
+    
     [self.selectContacts addObjectsFromArray:modelArray];
     for (AgoraUserModel *model in modelArray) {
         [_hasInvitees addObject:model.hyphenateId];
