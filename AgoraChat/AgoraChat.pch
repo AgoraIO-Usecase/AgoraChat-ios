@@ -40,5 +40,6 @@
 #import "NSArray+AgoraSortContacts.h"
 #import <chat-uikit/EaseChatKit.h>
 #import "AgoraChatDemoHelper.h"
+#import "ACDConfig.h"
 
 #endif

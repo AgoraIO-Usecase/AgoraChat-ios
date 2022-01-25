@@ -20,7 +20,6 @@
 @property (nonatomic, strong) NSString *groupId;
 @property (nonatomic, strong) AgoraChatGroup *group;
 @property (nonatomic, strong) NSString *cursor;
-@property (nonatomic, strong) NSMutableArray *members;
 
 @end
 
@@ -33,7 +32,7 @@
         self.group = aGroup;
         self.groupId = self.group.groupId;
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithNotification:) name:KAgora_REFRESH_GROUP_INFO object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateGroupMemberWithNotification:) name:KACD_REFRESH_GROUP_MEMBER object:nil];
     }
     
     return self;
@@ -49,18 +48,6 @@
     [self tableViewDidTriggerHeaderRefresh];
 }
 
-//- (void)updateUIWithResultList:(NSArray *)sourceList IsHeader:(BOOL)isHeader {
-//
-//    if (isHeader) {
-//        [self.dataArray removeAllObjects];
-//        [self.dataArray addObject:self.group.owner];
-//        [self.dataArray addObjectsFromArray:self.group.adminList];
-//    }
-//
-//    [self.dataArray addObjectsFromArray:sourceList];
-//    self.searchSource = self.dataArray;
-//}
-
 - (void)updateUIWithResultList:(NSArray *)sourceList IsHeader:(BOOL)isHeader {
     
     if (isHeader) {
@@ -73,30 +60,12 @@
     
     [self sortContacts:self.members];
 
-    WEAK_SELF
     dispatch_async(dispatch_get_main_queue(), ^(){
-        [weakSelf.table reloadData];
+        [self.table reloadData];
     });
 }
 
-- (void)sortContacts:(NSArray *)contacts {
-    if (contacts.count == 0) {
-        self.dataArray = [@[] mutableCopy];
-        self.sectionTitles = [@[] mutableCopy];
-        self.searchSource = [@[] mutableCopy];
-        return;
-    }
-    
-    NSMutableArray *sectionTitles = nil;
-    NSMutableArray *searchSource = nil;
-    NSArray *sortArray = [NSArray sortContacts:contacts
-                                 sectionTitles:&sectionTitles
-                                  searchSource:&searchSource];
-    [self.dataArray removeAllObjects];
-    [self.dataArray addObjectsFromArray:sortArray];
-    self.sectionTitles = [NSMutableArray arrayWithArray:sectionTitles];
-    self.searchSource = [NSMutableArray arrayWithArray:searchSource];
-}
+
 
 
 
@@ -104,11 +73,23 @@
     [super didReceiveMemoryWarning];
 }
 
-
-#pragma mark updateUIWithNotification
-- (void)updateUIWithNotification:(NSNotification *)notify {
+- (void)updateUI {
     [self tableViewDidTriggerHeaderRefresh];
 }
+
+#pragma mark updateUIWithNotification
+- (void)updateGroupMemberWithNotification:(NSNotification *)aNotification {
+    NSDictionary *dic = (NSDictionary *)aNotification.object;
+    NSString* groupId = dic[kACDGroupId];
+    
+    if (![self.group.groupId isEqualToString:groupId]) {
+        return;
+    }
+    
+    [self tableViewDidTriggerHeaderRefresh];
+
+}
+
 
 
 #pragma mark - Table view data source
@@ -137,7 +118,13 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    AgoraUserModel *model = self.dataArray[indexPath.section][indexPath.row];
+    AgoraUserModel *model = nil;
+    if (self.isSearchState) {
+        model = self.searchResults[indexPath.row];
+    }else {
+        model = self.dataArray[indexPath.section][indexPath.row];
+    }
+    
     cell.model =  model;
     if (model.hyphenateId == self.group.owner) {
         cell.detailLabel.text = @"owner";
@@ -189,10 +176,9 @@
     NSInteger pageSize = 50;
         
     ACD_WS
-    [self showHint:@"Load data..."];
+
     [[AgoraChatClient sharedClient].groupManager getGroupMemberListFromServerWithId:self.groupId cursor:aCursor pageSize:pageSize completion:^(AgoraChatCursorResult *aResult, AgoraChatError *aError) {
         weakSelf.cursor = aResult.cursor;
-        [weakSelf hideHud];
 
         [self endRefresh];
         
@@ -213,13 +199,6 @@
         [weakSelf.table reloadData];
 
     }];
-}
-
-- (NSMutableArray *)members {
-    if (_members == nil) {
-        _members = NSMutableArray.new;
-    }
-    return _members;
 }
 
 

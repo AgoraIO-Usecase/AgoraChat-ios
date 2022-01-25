@@ -9,7 +9,6 @@
 
 #import "AgoraMemberSelectViewController.h"
 #import "AgoraUserModel.h"
-//#import "AgoraMemberCollectionCell.h"
 #import "AgoraRealtimeSearchUtils.h"
 #import "NSArray+AgoraSortContacts.h"
 #import "AgoraGroupMemberCell.h"
@@ -22,7 +21,7 @@
 
 #define kSearchBarHeight 32.0
 
-@interface AgoraMemberSelectViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDelegate, AgoraGroupUIProtocol>
+@interface AgoraMemberSelectViewController ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDelegate>
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
@@ -77,6 +76,7 @@
 //    [self.selectConllection registerNib:[UINib nibWithNibName:@"AgoraMemberCollection_Edit_Cell" bundle:nil] forCellWithReuseIdentifier:@"AgoraMemberCollection_Edit_Cell"];
     
     [self.selectConllection registerClass:[ACDMemberCollectionCell class] forCellWithReuseIdentifier:[ACDMemberCollectionCell reuseIdentifier]];
+    
     
     self.tableView.tableFooterView = [UIView new];
     self.selectConllection.backgroundColor = UIColor.whiteColor;
@@ -242,13 +242,11 @@
     }
     [self backAction];
 
-//    [self dismissViewControllerAnimated:YES completion:nil];
     
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
@@ -280,8 +278,9 @@
     AgoraGroupMemberCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (!cell) {
         cell = [[AgoraGroupMemberCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-        
     }
+    
+   
     
     AgoraUserModel *model = nil;
     if (_isSearchState) {
@@ -295,7 +294,45 @@
     cell.isEditing = YES;
     cell.model = model;
     cell.delegate = self;
+    
+    ACD_WS
+    cell.tapCellBlock = ^{
+        if ([_hasInvitees containsObject:model.hyphenateId]) {
+            [weakSelf removeOccupant:model];
+        }else {
+            [weakSelf addOccupant:model];
+        }
+        
+        NSIndexPath *indexPath = nil;
+        if (_isSearchState) {
+            indexPath = [weakSelf.tableView indexPathForCell:cell];
+        }else {
+            indexPath = [weakSelf.tableView indexPathForCell:cell];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        });
+    };
+    
     return cell;
+}
+
+- (void)addOccupant:(AgoraUserModel *)userModel {
+    NSInteger maxCount = _hasInvitees.count + 1;
+    if (maxCount > _maxInviteCount) {
+        [self showHint:KACDGroupCreateMemberLimit];
+        return;
+    }
+    
+    [self.selectContacts addObject:userModel];
+    [_hasInvitees addObject:userModel.hyphenateId];
+    
+    [self updateDoneUserInteractionEnabled:YES];
+    [self updateHeaderView:YES];
+}
+
+- (void)removeOccupant:(AgoraUserModel *)userModel {
+    [self removeOccupantsFromDataSource:@[userModel]];
 }
 
 #pragma mark - UITableViewDelegate
@@ -304,18 +341,6 @@
     return 54.0f;
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-//    if (_isSearchState) {
-//        return 0;
-//    }
-//    return [AgoraSectionTitleHeader sectionHeight];
-//}
-//
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-//    AgoraSectionTitleHeader *headerView = [[AgoraSectionTitleHeader alloc] init];
-//    headerView.title = _sectionTitles[section];
-//    return headerView;
-//}
 
 #pragma mark - UIScrollViewDelegate
 
@@ -358,8 +383,9 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake(collectionView.frame.size.width / 5, collectionView.frame.size.height);
+    return CGSizeMake(collectionView.frame.size.width / 5, collectionView.frame.size.height + 10.0);
 }
+
 
 #pragma mark - UISearchBarDelegate
 
@@ -408,21 +434,6 @@
     _isSearchState = NO;
     self.tableView.scrollEnabled = !_isSearchState;
     [self.tableView reloadData];
-}
-
-#pragma mark - AgoraGroupUIProtocol
-
-- (void)addSelectOccupants:(NSArray<AgoraUserModel *> *)modelArray {
-    [self.selectContacts addObjectsFromArray:modelArray];
-    for (AgoraUserModel *model in modelArray) {
-        [_hasInvitees addObject:model.hyphenateId];
-    }
-    [self updateDoneUserInteractionEnabled:YES];
-    [self updateHeaderView:YES];
-}
-
-- (void)removeSelectOccupants:(NSArray<AgoraUserModel *> *)modelArray {
-    [self removeOccupantsFromDataSource:modelArray];
 }
 
 @end

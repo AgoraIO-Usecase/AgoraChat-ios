@@ -19,7 +19,7 @@
 #import "ACDMAXGroupNumberCell.h"
 #import "ACDGroupMemberSelectViewController.h"
 
-#define KAgora_GROUP_MAgoraBERSCOUNT         2000
+#define KAgora_GROUP_MAgoraBERSCOUNT     3000
 
 
 static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell";
@@ -37,6 +37,7 @@ static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell
 @property (nonatomic, assign) BOOL isAllowMemberInvite;
 @property (nonatomic, strong) NSMutableArray<NSString *> *invitees;
 @property (nonatomic, strong) UIButton *createBtn;
+@property (nonatomic, strong) AgoraChatGroupOptions *groupOptions;
 
 
 
@@ -161,7 +162,20 @@ static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell
         return;
     }
     
-    AgoraMemberSelectViewController *selectVC = [[AgoraMemberSelectViewController alloc] initWithInvitees:@[] maxInviteCount:0];
+    if (self.maxGroupNumberCell.maxGroupMemberField.text.length > 0) {
+
+        NSInteger maxNumber = [self.maxGroupNumberCell.maxGroupMemberField.text integerValue];
+        if (maxNumber < 3 || maxNumber > 3000) {
+            [self showHint:KACDGroupCreateMemberLimit];
+            self.groupOptions.maxUsersCount = 200;
+            return;
+        }
+        
+        self.groupOptions.maxUsersCount = maxNumber;
+    }
+
+    
+    AgoraMemberSelectViewController *selectVC = [[AgoraMemberSelectViewController alloc] initWithInvitees:@[] maxInviteCount:self.groupOptions.maxUsersCount];
     selectVC.style = AgoraContactSelectStyle_Add;
     selectVC.title = @"Add Members";
     selectVC.delegate = self;
@@ -195,10 +209,7 @@ static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell
     if (textField == self.maxGroupNumberCell.maxGroupMemberField) {
 
         NSInteger maxNumber = [textField.text integerValue];
-        if (maxNumber > 2000) {
-            [self showHint:@"max number can not exceed 2000"];
-            textField.text = @"2000";
-        }
+        self.groupOptions.maxUsersCount = maxNumber;
     }
     
     if (textField == self.groupNameCell.titleTextField) {
@@ -271,16 +282,17 @@ static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell
 //    [self updateMemberCountLabel];
     
     for (AgoraUserModel *model in modelArray) {
-        [self.invitees addObject:model.hyphenateId];
+        if (![self.invitees containsObject:model.hyphenateId]) {
+            [self.invitees addObject:model.hyphenateId];
+        }
     }
     
-    AgoraChatGroupOptions *options = [[AgoraChatGroupOptions alloc] init];
-    options.maxUsersCount = KAgora_GROUP_MAgoraBERSCOUNT;
+  
     if (_isPublic) {
-        options.style = _isAllowMemberInvite ? AgoraChatGroupStylePublicJoinNeedApproval : AgoraChatGroupStylePublicOpenJoin;
+        self.groupOptions.style = _isAllowMemberInvite ? AgoraChatGroupStylePublicJoinNeedApproval : AgoraChatGroupStylePublicOpenJoin;
     }
     else {
-        options.style = _isAllowMemberInvite ? AgoraChatGroupStylePrivateMemberCanInvite : AgoraChatGroupStylePrivateOnlyOwnerInvite;
+        self.groupOptions.style = _isAllowMemberInvite ? AgoraChatGroupStylePrivateMemberCanInvite : AgoraChatGroupStylePrivateOnlyOwnerInvite;
     }
     
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.inviteToJoin", @"%@ invite you to join the group [%@]"),[AgoraChatClient sharedClient].currentUsername, self.groupNameCell.titleTextField.text];
@@ -290,7 +302,7 @@ static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell
                                                      description:self.descriptionCell.contentTextView.text
                                                         invitees:self.invitees
                                                          message:message
-                                                         setting:options
+                                                         setting:self.groupOptions
                                                       completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
       if (!aError) {
         dispatch_async(dispatch_get_main_queue(), ^(){
@@ -356,6 +368,13 @@ static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell
         _invitees = [NSMutableArray array];
     }
     return _invitees;
+}
+
+- (AgoraChatGroupOptions *)groupOptions {
+    if (_groupOptions == nil) {
+        _groupOptions = AgoraChatGroupOptions.new;
+    }
+    return _groupOptions;
 }
 
 @end

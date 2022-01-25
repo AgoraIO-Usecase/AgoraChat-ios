@@ -39,7 +39,7 @@
                           pwd:(NSString *)pwd
                    completion:(void (^)(NSInteger statusCode, NSString *aUsername))aCompletionBlock
 {
-    NSURL *url = [NSURL URLWithString:@"https://a41.easemob.com/app/chat/user/register"];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/app/chat/user/register",AppServerHost]];
     NSMutableURLRequest *request = [NSMutableURLRequest
                                                 requestWithURL:url];
     request.HTTPMethod = @"POST";
@@ -65,10 +65,12 @@
                   nickName:(NSString *)nickName
                 completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
 {
-    NSURL *USUrl = [NSURL URLWithString:@"https://a41.easemob.com/app/chat/user/login"];
-    //NSURL *SingaporeUrl = [NSURL URLWithString:@"https://a61.easemob.com/app/chat/user/login"];
+    
+    NSURL *loginURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/app/chat/user/login",AppServerHost]];
+    NSLog(@"%s loginURL:%@",__func__,loginURL.absoluteString);
+    
     NSMutableURLRequest *request = [NSMutableURLRequest
-                                                requestWithURL:USUrl];
+                                                requestWithURL:loginURL];
     request.HTTPMethod = @"POST";
     
     NSMutableDictionary *headerDict = [[NSMutableDictionary alloc]init];

@@ -18,10 +18,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSMutableArray *searchSource;
 @property (nonatomic, strong, readonly) NSMutableArray *searchResults;
 @property (nonatomic, assign, readonly) BOOL isSearchState;
+@property (nonatomic, strong) NSMutableArray *members;
+
 
 @property (nonatomic, copy) void (^searchResultBlock)(void);
 @property (nonatomic, copy) void (^searchCancelBlock)(void);
 
+- (void)cancelSearchState;
+- (void)loadAllDatas;
+- (void)sortContacts:(NSArray *)contacts;
 
 @end
 

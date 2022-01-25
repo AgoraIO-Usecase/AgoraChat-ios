@@ -26,7 +26,7 @@
     self = [super init];
     if (self) {
         self.group = aGroup;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithNotification:) name:KAgora_REFRESH_GROUP_INFO object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateGroupMemberWithNotification:) name:KACD_REFRESH_GROUP_MEMBER object:nil];
     }
     
     return self;
@@ -62,22 +62,33 @@
 
 
 
-#pragma mark updateUIWithNotification
-- (void)updateUIWithNotification:(NSNotification *)notify {
+#pragma mark NSNotification
+- (void)updateGroupMemberWithNotification:(NSNotification *)aNotification {
+    NSDictionary *dic = (NSDictionary *)aNotification.object;
+    NSString* groupId = dic[kACDGroupId];
+    ACDGroupMemberListType type = [dic[kACDGroupMemberListType] integerValue];
+    
+    if (![self.group.groupId isEqualToString:groupId] || type != ACDGroupMemberListTypeBlock) {
+        return;
+    }
+    
     [self tableViewDidTriggerHeaderRefresh];
 }
 
 
 #pragma mark - Table view data source
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)table {
+    if (self.isSearchState) {
+        return 1;
+    }
+    return  self.sectionTitles.count;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (self.isSearchState) {
         return self.searchResults.count;
     }
-    return self.dataArray.count;
+    return ((NSArray *)self.dataArray[section]).count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -90,13 +101,18 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    NSString *name = self.dataArray[indexPath.row];
-    AgoraUserModel *model = [[AgoraUserModel alloc] initWithHyphenateId:name];
+    AgoraUserModel *model = nil;
+    if (self.isSearchState) {
+        model = self.searchResults[indexPath.row];
+    }else {
+        model = self.dataArray[indexPath.section][indexPath.row];
+    }
+
     cell.model = model;
     
     ACD_WS
     cell.tapCellBlock = ^{
-        [weakSelf actionSheetWithUserId:name memberListType:ACDGroupMemberListTypeBlock group:weakSelf.group];
+        [weakSelf actionSheetWithUserId:model.hyphenateId memberListType:ACDGroupMemberListTypeBlock group:weakSelf.group];
     };
     
     return cell;
@@ -126,20 +142,12 @@
 {
     NSInteger pageSize = 50;
     ACD_WS
-    [self showHint:NSLocalizedString(@"hud.load", @"Load data...")];
-    //[self showHudInView:self.view hint:NSLocalizedString(@"hud.load", @"Load data...")];
 
     [[AgoraChatClient sharedClient].groupManager getGroupBlacklistFromServerWithId:self.group.groupId pageNumber:self.page pageSize:pageSize completion:^(NSArray *aMembers, AgoraChatError *aError) {
-        [self hideHud];
         
         [self endRefresh];
         if (!aError) {
-            if (aIsHeader) {
-                [weakSelf.dataArray removeAllObjects];
-            }
-
-            [weakSelf.dataArray addObjectsFromArray:aMembers];
-            [weakSelf.table reloadData];
+            [self updateUIWithResultList:aMembers IsHeader:aIsHeader];
         } else {
             NSString *errorStr = [NSString stringWithFormat:NSLocalizedString(@"group.ban.fetchFail", @"Fail to get blacklist: %@"), aError.errorDescription];
             [weakSelf showHint:errorStr];
@@ -151,6 +159,20 @@
             [self useLoadMore];
         }
     }];
+}
+
+- (void)updateUIWithResultList:(NSArray *)sourceList IsHeader:(BOOL)isHeader {
+    
+    if (isHeader) {
+        [self.members removeAllObjects];
+    }
+    [self.members addObjectsFromArray:sourceList];
+    
+    [self sortContacts:self.members];
+
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        [self.table reloadData];
+    });
 }
 
 @end

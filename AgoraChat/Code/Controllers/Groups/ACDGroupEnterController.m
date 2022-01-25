@@ -11,7 +11,6 @@
 #import "ACDGroupEnterCell.h"
 #import "ACDContactCell.h"
 
-#import "AgoraCreateNewGroupViewController.h"
 #import "ACDCreateNewGroupViewController.h"
 
 #import "ACDPublicGroupListViewController.h"
@@ -36,6 +35,7 @@ static NSString *cellIdentifier = @"AgoraGroupEnterCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Create";
+    
     [self setNavBar];
     
     if (self.accessType == ACDGroupEnterAccessTypeChat) {

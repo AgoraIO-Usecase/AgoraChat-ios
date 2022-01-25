@@ -47,6 +47,8 @@ MISScrollPageControllerDelegate,AgoraGroupUIProtocol>
     self = [self init];
     if (self) {
         self.group = aGroup;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithNotification:) name:KAgora_REFRESH_GROUP_INFO object:nil];
+
     }
     return self;
 }
@@ -57,6 +59,8 @@ MISScrollPageControllerDelegate,AgoraGroupUIProtocol>
     
     [self placeAndLayoutSubviews];
     
+    [self updateNavTitle];
+
     [self.pageController reloadData];
     
 }
@@ -133,6 +137,29 @@ MISScrollPageControllerDelegate,AgoraGroupUIProtocol>
     self.navigationController.navigationBarHidden = NO;
 }
 
+#pragma mark Notification
+- (void)updateUIWithNotification:(NSNotification *)aNotification
+{
+    id obj = aNotification.object;
+    if (obj && [obj isKindOfClass:[AgoraChatGroup class]]) {
+        AgoraChatGroup *group = (AgoraChatGroup *)obj;
+        if ([group.groupId isEqualToString:self.group.groupId]) {
+            self.group = group;
+            [self updateNavTitle];
+        }
+    }
+}
+
+- (void)updateNavTitle {
+    _navView.leftLabel.text = @"Members";
+    _navView.leftSubLabel.text = [NSString stringWithFormat:@"(%@)",@(self.group.occupantsCount)];
+}
+
+- (void)updateWithGroup:(AgoraChatGroup *)agoraGroup {
+    self.group = agoraGroup;
+    [self updateNavTitle];
+    [self.allVC updateUI];
+}
 
 #pragma mark action
 - (void)backAction
@@ -265,8 +292,6 @@ MISScrollPageControllerDelegate,AgoraGroupUIProtocol>
 - (ACDGroupMemberNavView *)navView {
     if (_navView == nil) {
         _navView = [[ACDGroupMemberNavView alloc] init];
-        _navView.leftLabel.text = @"Members";
-        _navView.leftSubLabel.text = [NSString stringWithFormat:@"(%@)",@(self.group.occupantsCount)];
        
         if (_group.permissionType == AgoraChatGroupPermissionTypeMember) {
             if (_group.setting.style == AgoraChatGroupStylePrivateMemberCanInvite) {

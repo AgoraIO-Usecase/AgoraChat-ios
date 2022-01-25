@@ -26,9 +26,12 @@
 }
 
 - (void)viewDidLoadedForIndex:(NSUInteger)index{
+    
 }
 
 - (void)viewWillAppearForIndex:(NSUInteger)index{
+    [self cancelSearchState];
+
 }
 
 - (void)viewDidAppearForIndex:(NSUInteger)index{
@@ -36,9 +39,11 @@
 
 - (void)viewWillDisappearForIndex:(NSUInteger)index{
     self.editing = NO;
+    [self cancelSearchState];
 }
 
 - (void)viewDidDisappearForIndex:(NSUInteger)index{
+    
 }
 
 

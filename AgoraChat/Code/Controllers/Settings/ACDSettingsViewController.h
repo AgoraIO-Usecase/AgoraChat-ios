@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ACDSettingsViewController : UIViewController
 - (void)reloadNotificationStatus;
+- (void)networkChanged:(AgoraChatConnectionState)connectionState;
 
 @end
 

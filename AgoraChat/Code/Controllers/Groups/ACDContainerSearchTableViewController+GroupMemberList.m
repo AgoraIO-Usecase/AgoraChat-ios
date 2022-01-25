@@ -146,62 +146,35 @@ static NSString *groupIdKey = @"groupId";
 
 - (NSDictionary *)alertActionDics {
         NSMutableDictionary *alertActionDics = NSMutableDictionary.new;
-//        UIAlertAction *makeAdminAction = [self alertActionWithTitle:@"Make Admin" completion:^{
-//            [self makeAdmin];
-//        }];
   
     UIAlertAction *makeAdminAction = [UIAlertAction alertActionWithTitle:@"Make Admin" iconImage:ImageWithName(@"admin") textColor:TextLabelBlackColor alignment:NSTextAlignmentLeft completion:^{
         [self makeAdmin];
     }];
 
-    
-//        UIAlertAction *makeMuteAction = [self alertActionWithTitle:@"Mute" completion:^{
-//            [self makeMute];
-//        }];
 
     UIAlertAction *makeMuteAction = [UIAlertAction alertActionWithTitle:@"Mute" iconImage:ImageWithName(@"mute") textColor:TextLabelBlackColor alignment:NSTextAlignmentLeft completion:^{
         [self makeMute];
     }];
     
-//        UIAlertAction *makeBlockAction = [self alertActionWithTitle:@"Move to Blocked List" completion:^{
-//            [self makeBlock];
-//        }];
-
     UIAlertAction *makeBlockAction = [UIAlertAction alertActionWithTitle:@"Move to Blocked List" iconImage:ImageWithName(@"blocked") textColor:TextLabelBlackColor alignment:NSTextAlignmentLeft completion:^{
         [self makeBlock];
     }];
     
-        
-//        UIAlertAction *makeRemoveGroupAction = [self alertActionWithTitle:@"Remove From Group" completion:^{
-//            [self makeRemoveGroup];
-//        }];
-//
+    
     UIAlertAction *makeRemoveGroupAction = [UIAlertAction alertActionWithTitle:@"Remove From Group" iconImage:ImageWithName(@"remove") textColor:TextLabelPinkColor alignment:NSTextAlignmentLeft completion:^{
         [self makeRemoveGroup];
     }];
 
-    
-//        UIAlertAction *makeUnAdminAction = [self alertActionWithTitle:@"Remove as Admin" completion:^{
-//            [self unAdmin];
-//        }];
-    
+        
     UIAlertAction *makeUnAdminAction = [UIAlertAction alertActionWithTitle:@"Remove as Admin" iconImage:ImageWithName(@"remove_admin") textColor:TextLabelBlackColor alignment:NSTextAlignmentLeft completion:^{
         [self unAdmin];
     }];
 
-    
-//        UIAlertAction *makeUnMuteAction = [self alertActionWithTitle:@"Unmute" completion:^{
-//            [self unMute];
-//        }];
 
     UIAlertAction *makeUnMuteAction = [UIAlertAction alertActionWithTitle:@"Unmute" iconImage:ImageWithName(@"Unmute") textColor:TextLabelBlackColor alignment:NSTextAlignmentLeft completion:^{
         [self unMute];
     }];
     
-        
-//        UIAlertAction *makeUnBlockAction = [self alertActionWithTitle:@"Remove from Blocked List" completion:^{
-//            [self unBlock];
-//        }];
     
     UIAlertAction *makeUnBlockAction = [UIAlertAction alertActionWithTitle:@"Remove from Blocked List" iconImage:ImageWithName(@"Unblock") textColor:TextLabelBlackColor alignment:NSTextAlignmentLeft completion:^{
         [self unBlock];
@@ -233,7 +206,7 @@ static NSString *groupIdKey = @"groupId";
 - (void)makeAdmin {
     AgoraChatError *error = nil;
     [[AgoraChatClient sharedClient].groupManager addAdmin:self.selectedUserId toGroup:self.groupId error:&error];
-    [self handleActionTitle:@"add admin" responseError:error];
+    [self handleActionWithMemberListType:ACDGroupMemberListTypeAdmin responseError:error];
 }
 
 
@@ -243,8 +216,7 @@ static NSString *groupIdKey = @"groupId";
     AgoraChatError *error = nil;
     [[AgoraChatClient sharedClient].groupManager removeAdmin:self.selectedUserId fromGroup:self.groupId error:&error];
     
-    [self handleActionTitle:@"remove admin" responseError:error];
-
+    [self handleActionWithMemberListType:ACDGroupMemberListTypeAdmin responseError:error];
 }
 
 
@@ -252,14 +224,14 @@ static NSString *groupIdKey = @"groupId";
     AgoraChatError *error = nil;
     [[AgoraChatClient sharedClient].groupManager muteMembers:@[self.selectedUserId] muteMilliseconds:-1 fromGroup:self.groupId error:&error];
     
-    [self handleActionTitle:@"Mute" responseError:error];
+    [self handleActionWithMemberListType:ACDGroupMemberListTypeMute responseError:error];
 
 }
 
 - (void)unMute {
     AgoraChatError *error = nil;
     [[AgoraChatClient sharedClient].groupManager unmuteMembers:@[self.selectedUserId] fromGroup:self.groupId error:&error];
-    [self handleActionTitle:@"unmute" responseError:error];
+    [self handleActionWithMemberListType:ACDGroupMemberListTypeMute responseError:error];
 
 }
 
@@ -267,30 +239,30 @@ static NSString *groupIdKey = @"groupId";
 - (void)makeBlock {
     AgoraChatError *error = nil;
     [[AgoraChatClient sharedClient].groupManager blockOccupants:@[self.selectedUserId] fromGroup:self.groupId error:&error];
-    [self handleActionTitle:@"block" responseError:error];
-
+    [self handleActionWithMemberListType:ACDGroupMemberListTypeBlock responseError:error];
 }
 
 - (void)unBlock {
     AgoraChatError *error = nil;
     [[AgoraChatClient sharedClient].groupManager unblockOccupants:@[self.selectedUserId] forGroup:self.groupId error:&error];
-    [self handleActionTitle:@"unBlock" responseError:error];
-
+    [self handleActionWithMemberListType:ACDGroupMemberListTypeBlock responseError:error];
 }
 
 
 - (void)makeRemoveGroup {
     AgoraChatError *error = nil;
     [[AgoraChatClient sharedClient].groupManager removeOccupants:@[self.selectedUserId] fromGroup:self.groupId error:&error];
-    [self handleActionTitle:@"remove" responseError:error];
-
+    [self handleActionWithMemberListType:ACDGroupMemberListTypeALL responseError:error];
 }
 
-- (void)handleActionTitle:(NSString *)title
-            responseError:(AgoraChatError *)error {
+- (void)handleActionWithMemberListType:(ACDGroupMemberListType)memberListType
+                         responseError:(AgoraChatError *)error {
+    if (self.isSearchState) {
+        [self cancelSearchState];
+    }
+    
     if (error == nil) {
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:self.groupId];
+        [[NSNotificationCenter defaultCenter] postNotificationName:KACD_REFRESH_GROUP_MEMBER object:@{kACDGroupId:self.groupId,kACDGroupMemberListType:@(memberListType)}];
     }else {
         [self showHint:error.errorDescription];
     }

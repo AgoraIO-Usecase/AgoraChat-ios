@@ -10,7 +10,7 @@
 #import "ACDImageTextButtonView.h"
 
 #define kMeHeaderImageViewHeight  140.0f
-#define kBackIconSize 28.0f
+#define kBackIconSize 40.0f
 
 
 @interface ACDInfoHeaderView ()
@@ -260,8 +260,7 @@
         _userIdLabel.font = [UIFont systemFontOfSize:12.0f];
         _userIdLabel.numberOfLines = 1;
         _userIdLabel.textColor = COLOR_HEX(0x999999);
-        _userIdLabel.text = @"001";
-//        _userIdLabel.backgroundColor = UIColor.redColor;
+        _userIdLabel.text = @"";
         _userIdLabel.textAlignment = NSTextAlignmentCenter;
     }
     return _userIdLabel;

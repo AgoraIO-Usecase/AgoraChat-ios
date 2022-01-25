@@ -47,13 +47,25 @@
 #pragma mark - UISearchBarDelegate
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:YES animated:YES];
-    _isSearchState = YES;
-    self.table.userInteractionEnabled = NO;
     return YES;
 }
 
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+
+    _isSearchState = YES;
+    if ([searchBar.text isEqualToString:@""]) {
+        self.table.userInteractionEnabled = NO;
+        [self.searchResults removeAllObjects];
+        [self.table reloadData];
+    }else {
+        self.table.userInteractionEnabled = YES;
+    }
+}
+
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
+    [searchBar setShowsCancelButton:NO animated:YES];
     self.table.userInteractionEnabled = YES;
+    [self.searchBar resignFirstResponder];
 }
 
 - (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
@@ -102,6 +114,40 @@
     [self.table reloadData];
 }
 
+#pragma mark public method
+- (void)cancelSearchState {
+    self.searchBar.text = @"";
+    [self.searchBar setShowsCancelButton:NO animated:NO];
+    [self.searchBar resignFirstResponder];
+    [[AgoraRealtimeSearchUtils defaultUtil] realtimeSearchDidFinish];
+    _isSearchState = NO;
+    if (self.searchCancelBlock) {
+        self.searchCancelBlock();
+    }
+    [self.searchResults removeAllObjects];
+    self.table.scrollEnabled = !_isSearchState;
+    [self.table reloadData];
+}
+
+- (void)sortContacts:(NSArray *)contacts {
+    if (contacts.count == 0) {
+        self.dataArray = [@[] mutableCopy];
+        self.sectionTitles = [@[] mutableCopy];
+        self.searchSource = [@[] mutableCopy];
+        return;
+    }
+    
+    NSMutableArray *sectionTitles = nil;
+    NSMutableArray *searchSource = nil;
+    NSArray *sortArray = [NSArray sortContacts:contacts
+                                 sectionTitles:&sectionTitles
+                                  searchSource:&searchSource];
+    [self.dataArray removeAllObjects];
+    [self.dataArray addObjectsFromArray:sortArray];
+    self.sectionTitles = [NSMutableArray arrayWithArray:sectionTitles];
+    self.searchSource = [NSMutableArray arrayWithArray:searchSource];
+}
+
 #pragma mark getter and setter
 - (UISearchBar*)searchBar
 {
@@ -112,7 +158,6 @@
         _searchBar.showsCancelButton = NO;
         _searchBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor] size:_searchBar.bounds.size];
         [_searchBar setSearchFieldBackgroundPositionAdjustment:UIOffsetMake(0, 0)];
-//        [_searchBar setSearchFieldBackgroundImage:[UIImage imageWithColor:COLOR_HEX(0xF2F2F2) size:CGSizeMake(_searchBar.bounds.size.width - 50.0, _searchBar.bounds.size.height)] forState:UIControlStateNormal];
                 
         UITextField *searchField = [_searchBar valueForKey:@"searchField"];
           if (searchField) {
@@ -145,6 +190,14 @@
     }
     return _searchResults;
 }
+
+- (NSMutableArray *)members {
+    if (_members == nil) {
+        _members = NSMutableArray.new;
+    }
+    return _members;
+}
+
 
 @end
 #undef kSearchBarHeight

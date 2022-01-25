@@ -77,4 +77,9 @@
 #define USERINFO_LIST @"userinfo_list"
 
 
+#define kACDGroupMemberListType @"kACDGroupMemberListType"
+#define kACDGroupId @"kACDGroupId"
+
+#define KACDGroupCreateMemberLimit @"Member quantity: 3 to 2000"
+
 #endif /* AgoraChatChatDemoUIDefine_h */

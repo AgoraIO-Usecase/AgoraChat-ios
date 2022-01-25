@@ -16,7 +16,6 @@
 #import "AgoraChatDemoHelper.h"
 #import "AgoraApplyManager.h"
 
-#import "AgoraCreateViewController.h"
 #import "ACDGroupEnterController.h"
 
 #import "ACDGroupInfoViewController.h"
@@ -106,7 +105,9 @@ MISScrollPageControllerDelegate,ACDGroupInfoViewControllerDelegate>
     ACDGroupEnterController *groupEnterVC = ACDGroupEnterController.new;
     
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:groupEnterVC];
+    nav.view.backgroundColor = [UIColor whiteColor];
     [self.navigationController presentViewController:nav animated:YES completion:nil];
+    
 }
 
 - (void)goGroupInfoPageWithGroupId:(NSString *)groupId withAccessType:(ACDGroupInfoAccessType)accessType {
@@ -136,7 +137,7 @@ MISScrollPageControllerDelegate,ACDGroupInfoViewControllerDelegate>
 
 
 - (void)reloadContacts {
-
+    [self.contactListVC reloadContacts];
 }
 
 - (void)reloadContactRequests {
@@ -194,6 +195,9 @@ MISScrollPageControllerDelegate,ACDGroupInfoViewControllerDelegate>
     self.currentPageIndex = index;
 }
 
+
+- (void)scrollPageController:(id)pageController childViewController:(id<MISScrollPageControllerContentSubViewControllerDelegate>)childViewController willDisappearForIndex:(NSUInteger)index {
+}
 
 #pragma mark - setter or getter
 - (MISScrollPageController*)pageController{

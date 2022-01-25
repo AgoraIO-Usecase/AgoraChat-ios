@@ -28,11 +28,12 @@
     self = [super init];
     if (self) {
         self.group = aGroup;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithNotification:) name:KAgora_REFRESH_GROUP_INFO object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateGroupMemberWithNotification:) name:KACD_REFRESH_GROUP_MEMBER object:nil];
     }
     return self;
 }
-
+ 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -42,26 +43,37 @@
 }
 
 - (void)buildAdmins {
-    [self.dataArray addObject:self.group.owner];
-    [self.dataArray addObjectsFromArray:self.group.adminList];
-    [self.table reloadData];
+    NSMutableArray *tempArray = NSMutableArray.new;
+    [tempArray addObject:self.group.owner];
+    [tempArray addObjectsFromArray:self.group.adminList];
+    
+    [self sortContacts:tempArray];
+    
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        [self.table reloadData];
+    });
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
 #pragma mark - Table view data source
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)table {
+    if (self.isSearchState) {
+        return 1;
+    }
+    return  self.sectionTitles.count;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (self.isSearchState) {
         return self.searchResults.count;
     }
-    return self.dataArray.count;
+    return ((NSArray *)self.dataArray[section]).count;
 }
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return [ACDContactCell height];
@@ -73,13 +85,18 @@
         cell = [[ACDContactCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDContactCell reuseIdentifier]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
+        
+    AgoraUserModel *model = nil;
+    if (self.isSearchState) {
+        model = self.searchResults[indexPath.row];
+    }else {
+        model = self.dataArray[indexPath.section][indexPath.row];
+    }
     
-    NSString *name = self.dataArray[indexPath.row];
-    AgoraUserModel *model = [[AgoraUserModel alloc] initWithHyphenateId:name];
     cell.model = model;
     ACD_WS
     cell.tapCellBlock = ^{
-        [weakSelf actionSheetWithUserId:name memberListType:ACDGroupMemberListTypeALL group:weakSelf.group];
+        [weakSelf actionSheetWithUserId:model.hyphenateId memberListType:ACDGroupMemberListTypeALL group:weakSelf.group];
     };
 
     return cell;
@@ -90,38 +107,34 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-
-- (void)updateUIWithNotification:(NSNotification *)aNotification
-{
-    id obj = aNotification.object;
-    if (obj && [obj isKindOfClass:[AgoraChatGroup class]]) {
-        self.group = (AgoraChatGroup *)obj;
+#pragma mark NSNotification
+- (void)updateGroupMemberWithNotification:(NSNotification *)aNotification {
+    NSDictionary *dic = (NSDictionary *)aNotification.object;
+    NSString* groupId = dic[kACDGroupId];
+    ACDGroupMemberListType type = [dic[kACDGroupMemberListType] integerValue];
+    
+    if (![self.group.groupId isEqualToString:groupId] || type != ACDGroupMemberListTypeAdmin) {
+        return;
     }
-    [self.dataArray removeAllObjects];
-    [self.dataArray addObject:self.group.owner];
-    [self.dataArray addObjectsFromArray:self.group.adminList];
-    [self.table reloadData];
+    
+    [self tableViewDidTriggerHeaderRefresh];
 }
+
 
 #pragma mark - data
 
 - (void)tableViewDidTriggerHeaderRefresh
 {
     __weak typeof(self) weakSelf = self;
-    [self showHint:NSLocalizedString(@"hud.load", @"Load data...")];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
         AgoraChatError *error = nil;
         AgoraChatGroup *group = [[AgoraChatClient sharedClient].groupManager getGroupSpecificationFromServerWithId:weakSelf.group.groupId error:&error];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf hideHud];
-        });
+       
         
         if (!error) {
             weakSelf.group = group;
             dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.dataArray removeAllObjects];
-                [weakSelf.dataArray addObjectsFromArray:weakSelf.group.adminList];
-                [weakSelf.table reloadData];
+                [weakSelf buildAdmins];
             });
         }
         else{

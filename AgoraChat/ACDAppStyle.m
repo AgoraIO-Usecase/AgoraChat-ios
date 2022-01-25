@@ -34,9 +34,10 @@
                                                       NSFontAttributeName : NFont(12.0f),
                                                       NSForegroundColorAttributeName : COLOR_HEX(0x114EFF)
                                                       } forState:UIControlStateSelected];
-//    UITabBar.appearance.backgroundImage = IMAGE_HEX(0xFFFFFF);
-//    UITabBar.appearance.shadowImage = IMAGE_HEX(0xFFFFFF);
-    
+
+    UITabBar.appearance.shadowImage = [[UIImage alloc] init];
+    UITabBar.appearance.backgroundColor = UIColor.whiteColor;
+
     UITabBarItem.appearance.badgeColor = TextLabelPinkColor;
 
 }

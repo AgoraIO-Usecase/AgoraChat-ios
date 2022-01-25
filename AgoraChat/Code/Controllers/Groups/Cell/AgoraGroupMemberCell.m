@@ -11,7 +11,7 @@
 
 @interface AgoraGroupMemberCell()
 @property (nonatomic, strong)  UILabel *identityLabel;
-@property (nonatomic, strong)  UIButton *selectButton;
+@property (nonatomic, strong)  UIImageView *selectImageView;
 
 @end
 
@@ -20,7 +20,6 @@
 - (void)prepareForReuse {
     [super prepareForReuse];
     self.accessoryType = UITableViewCellAccessoryNone;
-    self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     _isEditing = NO;
     _isSelected = NO;
@@ -28,23 +27,25 @@
 }
 
 - (void)prepare {
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
+    [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
     [self.contentView addSubview:self.iconImageView];
     [self.contentView addSubview:self.nameLabel];
-    [self.contentView addSubview:self.selectButton];
+    [self.contentView addSubview:self.selectImageView];
 }
 
 
 - (void)placeSubViews {
     self.iconImageView.layer.cornerRadius = kContactAvatarHeight * 0.5;
     
-    [self.selectButton mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.selectImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.contentView).offset(16.0f);
     }];
     
     [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
-        make.left.equalTo(self.selectButton.mas_right).offset(10.0f);
+        make.left.equalTo(self.selectImageView.mas_right).offset(10.0f);
         make.size.mas_equalTo(kContactAvatarHeight);
     }];
     
@@ -56,34 +57,7 @@
 
 
 
-#pragma mark action
-
-- (void)selectMemberAction:(UIButton *)sender {
-    
-    _selectButton.selected = !sender.isSelected;
-    
-    if (_delegate) {
-        if (_selectButton.selected && [_delegate respondsToSelector:@selector(addSelectOccupants:)]) {
-            [_delegate addSelectOccupants:@[_model]];
-        }
-        else if ([_delegate respondsToSelector:@selector(removeSelectOccupants:)]) {
-            [_delegate removeSelectOccupants:@[_model]];
-        }
-    }
-}
-
 #pragma mark getter and setter
-- (UIButton *)selectButton {
-    if (_selectButton == nil) {
-        _selectButton = [[UIButton alloc] init];
-        [_selectButton addTarget:self action:@selector(selectMemberAction:) forControlEvents:UIControlEventTouchUpInside];
-        [_selectButton setImage:ImageWithName(@"member_normal") forState:UIControlStateNormal];
-        [_selectButton setImage:ImageWithName(@"member_selected") forState:UIControlStateSelected];
-
-    }
-    return _selectButton;
-}
-
 - (void)setIsGroupOwner:(BOOL)isGroupOwner {
     _isGroupOwner = isGroupOwner;
     if (_isGroupOwner) {
@@ -97,15 +71,20 @@
 - (void)setIsEditing:(BOOL)isEditing {
     _isEditing = isEditing;
     if (_isGroupOwner) {
-        _selectButton.hidden = YES;
+//        _selectButton.hidden = YES;
         return;
     }
-    _selectButton.hidden = !_isEditing;
+//    _selectButton.hidden = !_isEditing;
 }
 
 - (void)setIsSelected:(BOOL)isSelected {
     _isSelected = isSelected;
-    _selectButton.selected = _isSelected;
+    if (isSelected) {
+        [self.selectImageView setImage:ImageWithName(@"member_selected")];
+    }else {
+        [self.selectImageView setImage:ImageWithName(@"member_normal")];
+    }
+
 }
 
 - (void)setModel:(AgoraUserModel *)model {
@@ -118,7 +97,22 @@
     else {
         self.iconImageView.image = _model.defaultAvatarImage;
     }
+    
+//    if (_model.selected) {
+//        [self.selectImageView setImage:ImageWithName(@"member_selected")];
+//    }else {
+//        [self.selectImageView setImage:ImageWithName(@"member_normal")];
+//    }
         
+}
+
+#pragma mark gettter and setter
+- (UIImageView *)selectImageView {
+    if (_selectImageView == nil) {
+        _selectImageView = UIImageView.new;
+        [self.selectImageView setImage:ImageWithName(@"member_normal")];
+    }
+    return _selectImageView;
 }
 
 @end

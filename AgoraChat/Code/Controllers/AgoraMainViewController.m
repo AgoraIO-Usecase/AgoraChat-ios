@@ -9,8 +9,6 @@
 
 #import "AgoraMainViewController.h"
 
-#import "AgoraContactsViewController.h"
-//#import "AgoraChatsViewController.h"
 #import "AgoraSettingsViewController.h"
 #import "AgoraChatDemoHelper.h"
 #import "AgoraCDDeviceManager.h"
@@ -25,7 +23,7 @@
 #define kGroupMessageAtList      @"em_at_list"
 #define kGroupMessageAtAll       @"all"
 
-static const CGFloat kDefaultPlaySoundInterval = 3.0;
+static const CGFloat kDefaultPlaySoundInterval = 1.0;
 
 static NSString *kMessageType = @"MessageType";
 static NSString *kConversationChatter = @"ConversationChatter";
@@ -33,13 +31,8 @@ static NSString *kGroupName = @"GroupName";
 
 @interface AgoraMainViewController () <AgoraChatManagerDelegate, AgoraChatGroupManagerDelegate, AgoraChatClientDelegate>
 {
-//    AgoraContactsViewController *_contactsVC;
     ACDContactsViewController *_contactsVC;
-
     ACDChatsViewController *_chatsVC;
-    
-    //AgoraChatsViewController *_chatsVC;
-//    AgoraSettingsViewController *_settingsVC;
     ACDSettingsViewController *_settingsVC;
 }
 
@@ -97,7 +90,6 @@ static NSString *kGroupName = @"GroupName";
 - (void)loadViewControllers
 {
 //    self.title = NSLocalizedString(@"title.contacts", @"Contacts");
-//    _contactsVC = [[AgoraContactsViewController alloc] init];
     _contactsVC = [[ACDContactsViewController alloc] init];
     _contactsVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@""
                                                    image:[ImageWithName(@"TabBar.bundle/tabbar_contacts")
@@ -271,6 +263,7 @@ static NSString *kGroupName = @"GroupName";
 - (void)connectionStateDidChange:(AgoraChatConnectionState)aConnectionState
 {
     [_chatsVC networkChanged:aConnectionState];
+    [_settingsVC networkChanged:aConnectionState];
 }
 
 - (void)userAccountDidLoginFromOtherDevice

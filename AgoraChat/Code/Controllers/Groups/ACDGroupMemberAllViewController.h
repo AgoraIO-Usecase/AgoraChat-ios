@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithGroup:(AgoraChatGroup *)aGroup;
 
+- (void)updateUI;
+
 @end
 
 NS_ASSUME_NONNULL_END

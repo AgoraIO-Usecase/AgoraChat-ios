@@ -28,6 +28,7 @@
     [self.addButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.titleImageView);
         make.right.equalTo(self).offset(-kAgroaPadding);
+        make.size.equalTo(@40.0);
     }];
 }
 

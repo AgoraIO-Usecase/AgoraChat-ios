@@ -11,9 +11,9 @@
 #import "AgoraApplyManager.h"
 #import <UserNotifications/UserNotifications.h>
 #import "AgoraGroupsViewController.h"
-#import "AgoraChatViewController.h"
 #import "AgoraGroupInfoViewController.h"
 #import "AgoraNotificationNames.h"
+#import "ACDChatViewController.h"
 
 static AgoraChatDemoHelper *helper = nil;
 
@@ -197,10 +197,12 @@ static AgoraChatDemoHelper *helper = nil;
         [self showAlertWithMessage:msgstr];
     }
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
+
     NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:_mainVC.navigationController.viewControllers];
-    AgoraChatViewController *chatViewContrller = nil;
+    ACDChatViewController *chatViewContrller = nil;
     for (id viewController in viewControllers) {
-        if ([viewController isKindOfClass:[AgoraChatViewController class]] && [aGroup.groupId isEqualToString:[(AgoraChatViewController*)viewController conversationId]]) {
+        if ([viewController isKindOfClass:[ACDChatViewController class]] && [aGroup.groupId isEqualToString:[(ACDChatViewController*)viewController conversationId]]) {
             chatViewContrller = viewController;
             break;
         }
@@ -262,17 +264,8 @@ static AgoraChatDemoHelper *helper = nil;
 {
     NSString *msgstr = [NSString stringWithFormat:NSLocalizedString(@"group.invite", @"%@ invite you to group: %@ [%@]"), aInviter, aGroup.subject, aGroup.groupId];
     [self showAlertWithMessage:msgstr];
-    NSArray *vcArray = _mainVC.navigationController.viewControllers;
-    AgoraGroupsViewController *groupsVc = nil;
-    for (UIViewController *vc in vcArray) {
-        if ([vc isKindOfClass:[AgoraGroupsViewController class]]) {
-            groupsVc = (AgoraGroupsViewController *)vc;
-            break;
-        }
-    }
-    if (groupsVc) {
-        [groupsVc loadGroupsFromCache];
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
+    
 }
 
 - (void)joinGroupRequestDidDecline:(NSString *)aGroupId

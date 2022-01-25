@@ -12,7 +12,6 @@
 #import "AgoraGroupModel.h"
 #import "AgoraNotificationNames.h"
 #import "AgoraGroupInfoViewController.h"
-#import "AgoraCreateViewController.h"
 
 #import "ACDGroupNewCell.h"
 #import "ACDNoDataPromptView.h"
@@ -65,6 +64,7 @@
 
 - (void)addNotifications {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshGroupList:) name:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
+    
 }
 
 - (void)removeNotifications {

@@ -62,6 +62,8 @@ typedef enum : NSUInteger {
 
 - (void)loadContactInfo {
     self.contactInfoHeaderView.nameLabel.text = _model.nickname;
+    self.contactInfoHeaderView.userIdLabel.text = _model.hyphenateId;
+    
     self.contactInfoHeaderView.avatarImageView.image = _model.defaultAvatarImage;
     if (_model.avatarURLPath.length > 0) {
         NSURL *avatarUrl = [NSURL URLWithString:_model.avatarURLPath];
