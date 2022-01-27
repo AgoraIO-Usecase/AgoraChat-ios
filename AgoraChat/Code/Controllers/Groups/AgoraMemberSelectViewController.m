@@ -310,7 +310,9 @@
             indexPath = [weakSelf.tableView indexPathForCell:cell];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            if (indexPath) {
+                [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            }
         });
     };
     

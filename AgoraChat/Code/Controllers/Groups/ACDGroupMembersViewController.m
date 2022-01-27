@@ -168,7 +168,11 @@ MISScrollPageControllerDelegate,AgoraGroupUIProtocol>
 }
 
 - (void)addGroupMember {
-    AgoraMemberSelectViewController *selectVC = [[AgoraMemberSelectViewController alloc] initWithInvitees:@[] maxInviteCount:0];
+    NSMutableArray *hasInvitees = NSMutableArray.new;
+    [hasInvitees addObject:self.group.owner];
+    [hasInvitees addObjectsFromArray:self.group.memberList];
+    
+    AgoraMemberSelectViewController *selectVC = [[AgoraMemberSelectViewController alloc] initWithInvitees:hasInvitees maxInviteCount:self.group.settings.maxUsers];
     selectVC.style = AgoraContactSelectStyle_Invite;
     selectVC.title = @"Add Members";
     selectVC.delegate = self;
@@ -293,13 +297,18 @@ MISScrollPageControllerDelegate,AgoraGroupUIProtocol>
     if (_navView == nil) {
         _navView = [[ACDGroupMemberNavView alloc] init];
        
-        if (_group.permissionType == AgoraChatGroupPermissionTypeMember) {
+        if(_group.permissionType == AgoraChatGroupPermissionTypeNone){
+            _navView.rightButton.hidden = YES;
+        }else if (_group.permissionType == AgoraChatGroupPermissionTypeMember) {
             if (_group.setting.style == AgoraChatGroupStylePrivateMemberCanInvite) {
                 _navView.rightButton.hidden = NO;
             }else {
                 _navView.rightButton.hidden = YES;
             }
+        }else {
+            _navView.rightButton.hidden = NO;
         }
+        
         ACD_WS
         _navView.leftButtonBlock = ^{
             [weakSelf backAction];
