@@ -9,7 +9,6 @@
 #import "ACDSettingsViewController.h"
 #import "UIImage+ImageEffect.h"
 #import "AgoraUserModel.h"
-#import "AgoraContactInfoCell.h"
 #import "AgoraChatDemoHelper.h"
 #import "ACDInfoHeaderView.h"
 #import "ACDInfoCell.h"
