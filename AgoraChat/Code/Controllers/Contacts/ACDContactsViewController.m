@@ -197,6 +197,7 @@ MISScrollPageControllerDelegate,ACDGroupInfoViewControllerDelegate>
 
 
 - (void)scrollPageController:(id)pageController childViewController:(id<MISScrollPageControllerContentSubViewControllerDelegate>)childViewController willDisappearForIndex:(NSUInteger)index {
+    NSLog(@"%s index:%@",__func__,@(index));
 }
 
 #pragma mark - setter or getter
