@@ -67,6 +67,8 @@
 
 - (void)setupNavbar {
 
+    self.navigationController.navigationBar.backgroundColor = UIColor.whiteColor;
+        
     if (self.accessType == ACDGroupInfoAccessTypeSearch) {
         self.title = @"Public Groups";
 
