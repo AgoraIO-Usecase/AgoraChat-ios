@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ACDTransferOwnerViewController : ACDSearchTableViewController
+@interface ACDGroupTransferOwnerViewController : ACDSearchTableViewController
 @property (nonatomic,copy) void(^transferOwnerBlock)(void);
 
 @property (nonatomic,assign) BOOL isLeaveGroup;

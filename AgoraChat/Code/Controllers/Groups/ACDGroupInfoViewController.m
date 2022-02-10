@@ -13,10 +13,8 @@
 #import "ACDInfoDetailCell.h"
 #import "ACDInfoSwitchCell.h"
 #import "ACDGroupMembersViewController.h"
-
-#import "AgoraGroupTransferOwnerViewController.h"
 #import "ACDChatViewController.h"
-#import "ACDTransferOwnerViewController.h"
+#import "ACDGroupTransferOwnerViewController.h"
 
 #define kGroupInfoHeaderViewHeight 360.0
 
@@ -255,7 +253,7 @@
 }
 
 - (void)goTransferOwnerWithIsLeaveGroup:(BOOL)isLeaveGroup {
-    ACDTransferOwnerViewController *vc = [[ACDTransferOwnerViewController alloc] initWithGroup:self.group];
+    ACDGroupTransferOwnerViewController *vc = [[ACDGroupTransferOwnerViewController alloc] initWithGroup:self.group];
     vc.isLeaveGroup = isLeaveGroup;
     [self.navigationController pushViewController:vc animated:YES];
 }

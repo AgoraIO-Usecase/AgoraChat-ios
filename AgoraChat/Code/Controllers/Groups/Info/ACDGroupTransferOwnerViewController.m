@@ -6,13 +6,13 @@
 //  Copyright © 2021 easemob. All rights reserved.
 //
 
-#import "ACDTransferOwnerViewController.h"
+#import "ACDGroupTransferOwnerViewController.h"
 #import "ACDInfoDetailCell.h"
 #import "UIViewController+HUD.h"
 #import "AgoraNotificationNames.h"
 #import "AgoraUserModel.h"
 
-@interface ACDTransferOwnerViewController ()
+@interface ACDGroupTransferOwnerViewController ()
 
 @property (nonatomic, strong) AgoraChatGroup *group;
 @property (nonatomic, strong) NSString *cursor;
@@ -20,7 +20,7 @@
 
 @end
 
-@implementation ACDTransferOwnerViewController
+@implementation ACDGroupTransferOwnerViewController
 
 - (instancetype)initWithGroup:(AgoraChatGroup *)aGroup
 {

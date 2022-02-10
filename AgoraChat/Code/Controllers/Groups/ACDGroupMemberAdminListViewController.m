@@ -9,7 +9,6 @@
 #import "ACDGroupMemberAdminListViewController.h"
 #import "AgoraMemberCell.h"
 #import "UIViewController+HUD.h"
-#import "AgoraAddAdminViewController.h"
 #import "AgoraNotificationNames.h"
 #import "ACDContactCell.h"
 #import "ACDContainerSearchTableViewController+GroupMemberList.h"

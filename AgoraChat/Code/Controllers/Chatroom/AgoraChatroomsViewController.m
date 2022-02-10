@@ -8,7 +8,6 @@
  */
 
 #import "AgoraChatroomsViewController.h"
-#import "AgoraGroupCell.h"
 #import "AgoraGroupModel.h"
 #import "AgoraNotificationNames.h"
 #import "ACDChatViewController.h"

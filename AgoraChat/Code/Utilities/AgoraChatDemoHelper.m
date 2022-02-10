@@ -10,7 +10,6 @@
 #import "AgoraChatDemoHelper.h"
 #import "AgoraApplyManager.h"
 #import <UserNotifications/UserNotifications.h>
-#import "AgoraGroupsViewController.h"
 #import "AgoraNotificationNames.h"
 #import "ACDChatViewController.h"
 
