@@ -13,10 +13,8 @@
 #import "ACDInfoDetailCell.h"
 #import "ACDInfoSwitchCell.h"
 #import "ACDGroupMembersViewController.h"
-
-#import "AgoraGroupTransferOwnerViewController.h"
 #import "ACDChatViewController.h"
-#import "ACDTransferOwnerViewController.h"
+#import "ACDGroupTransferOwnerViewController.h"
 
 #define kGroupInfoHeaderViewHeight 360.0
 
@@ -48,6 +46,8 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
+        self.navigationController.navigationBarHidden = YES;
+
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithNotification:) name:KAgora_REFRESH_GROUP_INFO object:nil];
     }
     return self;
@@ -64,6 +64,9 @@
 }
 
 - (void)setupNavbar {
+
+    self.navigationController.navigationBar.backgroundColor = UIColor.whiteColor;
+        
     if (self.accessType == ACDGroupInfoAccessTypeSearch) {
         self.title = @"Public Groups";
 
@@ -92,6 +95,7 @@
     }else {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:ImageWithName(@"black_goBack") style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
     }
+    self.navigationController.navigationBarHidden = NO;
 
 }
 
@@ -249,7 +253,7 @@
 }
 
 - (void)goTransferOwnerWithIsLeaveGroup:(BOOL)isLeaveGroup {
-    ACDTransferOwnerViewController *vc = [[ACDTransferOwnerViewController alloc] initWithGroup:self.group];
+    ACDGroupTransferOwnerViewController *vc = [[ACDGroupTransferOwnerViewController alloc] initWithGroup:self.group];
     vc.isLeaveGroup = isLeaveGroup;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -366,8 +370,7 @@
                
            }
            else {
-               NSString *msg = NSLocalizedString(@"group.requestFailure", @"Failed to apply to the group");
-               [weakSelf showAlertWithMessage:msg];
+               [weakSelf showHint:aError.errorDescription];
            }
        }
      ];
@@ -380,18 +383,15 @@
     [[AgoraChatClient sharedClient].groupManager requestToJoinPublicGroup:groupId
            message:message
         completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
-            if (!aError) {
-                [MBProgressHUD hideAllHUDsForView:[UIApplication sharedApplication].keyWindow animated:YES];
+            [MBProgressHUD hideAllHUDsForView:[UIApplication sharedApplication].keyWindow animated:YES];
 
+            if (!aError) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
 
 //                [weakSelf updateUI];
             }
             else {
-                [MBProgressHUD hideAllHUDsForView:[UIApplication sharedApplication].keyWindow animated:YES];
-
-                NSString *msg = NSLocalizedString(@"group.requestFailure", @"Failed to apply to the group");
-                [weakSelf showAlertWithMessage:msg];
+                [weakSelf showHint:aError.errorDescription];
             }
         }];
 }
@@ -504,7 +504,7 @@
         ACD_WS
         _membersCell.tapCellBlock = ^{
         
-        [weakSelf.navigationController pushViewController:self.groupMembersVC animated:YES];
+        [weakSelf.navigationController pushViewController:weakSelf.groupMembersVC animated:YES];
             
         };
     }

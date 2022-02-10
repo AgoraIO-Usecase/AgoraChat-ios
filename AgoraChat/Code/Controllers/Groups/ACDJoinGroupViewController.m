@@ -52,21 +52,12 @@
 
 
 - (void)joinToPublicGroup:(NSString *)groupId {
-    ACD_WS
+    
+    
+    [self cancelSearchState];
+
     [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow
                          animated:YES];
-//    [[AgoraChatClient sharedClient].groupManager joinPublicGroup:groupId
-//                                               completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
-//           [MBProgressHUD hideAllHUDsForView:[UIApplication sharedApplication].keyWindow animated:YES];
-//           if (!aError) {
-//
-//           }
-//           else {
-//               NSString *msg = NSLocalizedString(@"group.requestFailure", @"Failed to apply to the group");
-//               [weakSelf showAlertWithMessage:msg];
-//           }
-//       }
-//     ];
     
     [[AgoraChatClient sharedClient].groupManager requestToJoinPublicGroup:groupId message:@"" completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
         [MBProgressHUD hideAllHUDsForView:[UIApplication sharedApplication].keyWindow animated:YES];
@@ -74,7 +65,7 @@
 
         }
         else {
-            NSString *msg = NSLocalizedString(@"group.requestFailure", @"Failed to apply to the group");
+            NSString *msg = aError.errorDescription;
             [self showHint:msg];
         }
     }];
@@ -82,6 +73,28 @@
 
 
 - (void)sendAddContact:(NSString *)contactName {
+    
+    if (contactName.length == 0) {
+        [self showHint:NSLocalizedString(@"contact.noinput", @"No input contact name")];
+
+        return;
+    }
+    
+    if ([self isContainInMyContacts:contactName]) {
+        self.searchBar.text = @"";
+        [self showHint:NSLocalizedString(@"contact.repeatContact", @"This contact has been added")];
+
+        return;
+    }
+    
+    if ([[contactName uppercaseString] isEqualToString:[[AgoraChatClient sharedClient].currentUsername uppercaseString]]) {
+        self.searchBar.text = @"";
+        [self showHint:NSLocalizedString(@"contact.addOwner", @"Not allowed to send their own friends to apply for")];
+        return;
+    }
+    
+    [self cancelSearchState];
+    
     NSString *requestMessage = [NSString stringWithFormat:@"%@ add you as a friend",AgoraChatClient.sharedClient.currentUsername];
     WEAK_SELF
     [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
@@ -99,6 +112,13 @@
     }];
 }
 
+- (BOOL)isContainInMyContacts:(NSString *)contactName {
+    NSArray *contacts = [[AgoraChatClient sharedClient].contactManager getContacts];
+    if ([contacts containsObject:contactName]) {
+        return YES;
+    }
+    return NO;
+}
 
 
 #pragma mark - UISearchBarDelegate

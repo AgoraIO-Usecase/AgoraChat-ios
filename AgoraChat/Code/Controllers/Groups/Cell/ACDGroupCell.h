@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ACDGroupNewCell : ACDCustomCell
+@interface ACDGroupCell : ACDCustomCell
 @property (nonatomic, strong) AgoraGroupModel *model;
 @property (nonatomic, assign) id<AgoraGroupUIProtocol> delegate;
 

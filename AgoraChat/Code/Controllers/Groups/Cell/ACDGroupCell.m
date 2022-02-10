@@ -6,20 +6,19 @@
 //  Copyright © 2021 easemob. All rights reserved.
 //
 
-#import "ACDGroupNewCell.h"
-#import "AgoraGroupCell.h"
+#import "ACDGroupCell.h"
 #import "AgoraGroupModel.h"
 
 #define KJOINBUTTON_IMAGE   [UIImage imageNamed:@"Button_Join.png"]
 #define KJOINBUTTON_TITLE   NSLocalizedString(@"group.requested", @"Requested")
 
-@interface ACDGroupNewCell()
+@interface ACDGroupCell()
 
 @property (nonatomic, strong)  UILabel *numberCountLabel;
 
 @end
 
-@implementation ACDGroupNewCell
+@implementation ACDGroupCell
 
 - (void)prepare {
     [self.contentView addSubview:self.iconImageView];

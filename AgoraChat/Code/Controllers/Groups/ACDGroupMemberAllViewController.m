@@ -7,7 +7,6 @@
 //
 
 #import "ACDGroupMemberAllViewController.h"
-#import "AgoraGroupOccupantsViewController.h"
 #import "UIViewController+HUD.h"
 #import "AgoraNotificationNames.h"
 #import "ACDContainerSearchTableViewController+GroupMemberList.h"

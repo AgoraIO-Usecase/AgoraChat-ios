@@ -8,11 +8,9 @@
  */
 
 #import "AgoraChatroomsViewController.h"
-#import "AgoraGroupCell.h"
 #import "AgoraGroupModel.h"
 #import "AgoraNotificationNames.h"
-#import "AgoraGroupInfoViewController.h"
-#import "AgoraChatViewController.h"
+#import "ACDChatViewController.h"
 
 #import "AgoraChatroomCell.h"
 #import "UIViewController+HUD.h"
@@ -108,7 +106,7 @@
     [ext setObject:chatroom.subject forKey:@"subject"];
     conversation.ext = ext;
     
-    AgoraChatViewController *chatViewController = [[AgoraChatViewController alloc] initWithConversationId:chatroom.chatroomId conversationType:AgoraChatConversationTypeChatRoom];
+    ACDChatViewController *chatViewController = [[ACDChatViewController alloc] initWithConversationId:chatroom.chatroomId conversationType:AgoraChatConversationTypeChatRoom];
     chatViewController.title = chatroom.subject;
     [self.navigationController pushViewController:chatViewController animated:YES];
 }

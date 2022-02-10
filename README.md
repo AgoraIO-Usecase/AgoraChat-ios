@@ -1,52 +1,66 @@
-## Description
-Agora chat demo app. This messaging app demonstrates how to use the agora chat platform, SDK and backend API to build and deploy a mobile app with integrated chat features. Developers can leverage this app as a reference example to build their own apps integrated with the agora chat service. 
-For more information, please visit Hyphenate docs at [https://hyphenateinc.github.io](https://hyphenateinc.github.io).
+# Run the AgoraChat UIKit Demo
 
-- Real-time one-to-one, group chat, and chat room
-- File, image, video, voice message, and location sharing
-- Push notifications
+## Overview
 
+The Agora Chat UIKit enables you to quickly embed real-time messaging in your app without extra efforts on the UI. This repository contains a sample project that uses the Agora Chat platform, the Agora Chat UIKit, and backend API to build and develip a mobile app with the following integrated chat features:
 
+- Real-time one-to-one chat, group chat, and chatroom.
+- Sending file, image, video, voice, and location messages.
+- Push nitifications.
 
-This page introduces how to run the iOS sample project.
+![](chat_uikit_app.png)
 
-## Prerequisites 
+This page shows how to run the sample project.
 
-- Make sure you have made the preparations mentioned here.
-- Prepare the development environment:
-  - Xcode 10.0 or later
-  - CocoaPods
+## Prerequisites
 
-- Real iOS devices, such as iPhone or iPad.
+Before proceeding, ensure that you have the following:
 
-Follow these steps to run the sample project:
+- Xcode 11.0 or later.
+- CocoaPods. Refer to [Getting Started with CocoaPods](https://guides.cocoapods.org/using/getting-started.html#getting-started) if you have not installed CocoaPods.
 
-1.Clone the repository to your local machine.
+## Run the sample project
 
-```
-git clone git@github.com:HyphenateInc/Hyphenate-Demo-iOS.git
-```
+Follow the steps to add the Agora Chat UIKit into your project and run the demo.
 
-2.Install dependencies.
+1. Clone this repositoty to your local machine.
 
-```
-pod install
-```
+   ```shell
+   git clone git@github.com:AgoraIO-Usecase/AgoraChat-ios.git
+   ```
 
-3.Open the iOS project 
+2. Navigate to the root path of this project and run the following command to add UIKit into your project:
 
-```
-open ChatDemo-UI3.0.xcworkspace
-```
+   ```shell
+   pod install
+   ```
 
-4.Run the project with `command + r`.
+3. Open the project with the following command:
 
-## Connect us
+   ```shell
+   open AgoraChat.xcworkspace
+   ```
 
-- You can read the full set of documentations and API reference at [Agora chat documents](https://hyphenateinc.github.io/).
+4. Press `command + r` to run the project. And you can see the app launched on the simulator.
 
-- You can submit an [issue](https://github.com/HyphenateInc/Hyphenate-Demo-iOS/issues) if you find any bug in the sample project. 
+You are all set! Feel free to play with this sample project and explore features of the Agora Chat UIKit.
+
+## Feedback
+
+If you have any problems or suggestions regarding the sample projects, feel free to file an issue.
+
+## Reference
+
+Agora provides the full set of documentation and API Reference at [Agora Chat documents](https://docs-preprod.agora.io/en/test/agora_chat_overview?platform=Android).
+
+## Related Resources
+
+- Check our [FAQ](https://docs.agora.io/en/faq) to see if your issue has been recorded.
+- Repositories managed by developer communities can be found at [Agora Community](https://github.com/AgoraIO-Community).
+- If you encounter problems during integration, feel free to ask questions in [Stack Overflow](https://stackoverflow.com/questions/tagged/agora.io).
 
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
+
+

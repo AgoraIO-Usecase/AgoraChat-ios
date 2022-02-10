@@ -53,6 +53,7 @@ MISScrollPageControllerDelegate,ACDGroupInfoViewControllerDelegate>
 
 
 - (void)placeAndLayoutSubviews {
+
     UIView *container = UIView.new;
     container.backgroundColor = UIColor.whiteColor;
     container.clipsToBounds = YES;
@@ -92,12 +93,18 @@ MISScrollPageControllerDelegate,ACDGroupInfoViewControllerDelegate>
 {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
+    self.navView.hidden = NO;
+    self.segView.hidden = NO;
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     self.navigationController.navigationBarHidden = NO;
+    self.navView.hidden = YES;
+    self.segView.hidden = YES;
+
 }
 
 - (void)goAddPage {
@@ -135,7 +142,9 @@ MISScrollPageControllerDelegate,ACDGroupInfoViewControllerDelegate>
     
 }
 
-
+- (void)loadContactsFromServer {
+    
+}
 - (void)reloadContacts {
     [self.contactListVC reloadContacts];
 }
@@ -197,6 +206,7 @@ MISScrollPageControllerDelegate,ACDGroupInfoViewControllerDelegate>
 
 
 - (void)scrollPageController:(id)pageController childViewController:(id<MISScrollPageControllerContentSubViewControllerDelegate>)childViewController willDisappearForIndex:(NSUInteger)index {
+    NSLog(@"%s index:%@",__func__,@(index));
 }
 
 #pragma mark - setter or getter

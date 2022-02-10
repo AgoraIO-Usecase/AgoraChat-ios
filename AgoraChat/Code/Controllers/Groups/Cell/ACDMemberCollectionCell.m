@@ -9,7 +9,7 @@
 #import "ACDMemberCollectionCell.h"
 #import "AgoraUserModel.h"
 
-#define kIconHeight 58.0f
+#define kIconHeight 60.0f
 
 @interface ACDMemberCollectionCell()
 
@@ -48,7 +48,7 @@
     }];
     
     [self.nickNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.avatarImageView.mas_bottom).offset(kAgroaPadding * 0.8);
+        make.top.equalTo(self.avatarImageView.mas_bottom).offset(kAgroaPadding * 0.5);
         make.centerX.equalTo(self.avatarImageView);
         make.left.right.equalTo(self.avatarImageView);
 
@@ -59,9 +59,7 @@
 
 
 - (void)setModel:(AgoraUserModel *)model {
-//    if (_deleteImageView && [self.reuseIdentifier isEqualToString:@"AgoraMemberCollection_Edit_Cell"]) {
-//        _deleteImageView.hidden = NO;
-//    }
+
     _model = model;
     if (!_model) {
         _nickNameLabel.text = @"";

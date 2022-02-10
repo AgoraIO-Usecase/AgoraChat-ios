@@ -7,14 +7,13 @@
 //
 
 #import "ACDContactInfoViewController.h"
-#import "AgoraContactInfoViewController.h"
 #import "UIImage+ImageEffect.h"
 #import "AgoraUserModel.h"
-#import "AgoraContactInfoCell.h"
 #import "AgoraChatDemoHelper.h"
 #import "ACDChatViewController.h"
 #import "ACDInfoHeaderView.h"
 #import "ACDInfoCell.h"
+#import "AgoraContactsUIProtocol.h"
 
 #define kContactInfoHeaderViewHeight 360.0
 

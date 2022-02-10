@@ -8,12 +8,9 @@
 
 #import "ACDGroupListViewController.h"
 #import "MISScrollPage.h"
-#import "AgoraGroupCell.h"
 #import "AgoraGroupModel.h"
 #import "AgoraNotificationNames.h"
-#import "AgoraGroupInfoViewController.h"
-
-#import "ACDGroupNewCell.h"
+#import "ACDGroupCell.h"
 #import "ACDNoDataPromptView.h"
 #import "ACDGroupInfoViewController.h"
 
@@ -107,10 +104,10 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *cellIdentifier = @"AgoraGroupCell";
-    ACDGroupNewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    static NSString *cellIdentifier = @"ACDGroupCell";
+    ACDGroupCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (!cell) {
-        cell = [[ACDGroupNewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[ACDGroupCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
     if (self.isSearchState) {

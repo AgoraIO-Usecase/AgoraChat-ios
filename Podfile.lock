@@ -22,7 +22,7 @@ PODS:
 
 DEPENDENCIES:
   - Agora_Chat_iOS
-  - chat-uikit (from `../AgoraChat-UIKit-ios/`)
+  - chat-uikit (from `../AgoraChat-UIKit-ios`)
   - FMDB
   - Masonry
   - MJRefresh
@@ -44,7 +44,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   chat-uikit:
-    :path: "../AgoraChat-UIKit-ios/"
+    :path: "../AgoraChat-UIKit-ios"
 
 SPEC CHECKSUMS:
   Agora_Chat_iOS: cf79f6f677f0bb5b1a14494b7d26ea5122f74bab
@@ -59,6 +59,6 @@ SPEC CHECKSUMS:
   SDWebImage: a72e880a8fe0f7fc31efe15aaed443c074d2a80c
   WHToast: 7d393091940215c2b8bcf78422d1855f9bfa3975
 
-PODFILE CHECKSUM: f9ae1e8ff9367c3dd619e7248ff9222cf0d48c80
+PODFILE CHECKSUM: b68d2a2fd870a89ae8d34cd5d15c53c4c6d6eaae
 
 COCOAPODS: 1.11.2
