@@ -13,6 +13,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ACDUtil : NSObject
 + (NSAttributedString *)attributeContent:(NSString *)content color:(UIColor *)color font:(UIFont *)font;
 
++ (UIBarButtonItem *)customBarButtonItem:(NSString *)title
+                                  action:(SEL)action
+                            actionTarget:(id)actionTarget;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -1,3 +1,4 @@
+#import "ACDGroupDescriptionViewController.h"
 //
 //  ACDGroupInfoViewController.m
 //  ChatDemo-UI3.0
@@ -15,6 +16,7 @@
 #import "ACDGroupMembersViewController.h"
 #import "ACDChatViewController.h"
 #import "ACDGroupTransferOwnerViewController.h"
+#import "ACDGroupDescriptionViewController.h"
 
 #define kGroupInfoHeaderViewHeight 360.0
 
@@ -300,6 +302,28 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+- (void)updateGroupDescription {
+    ACDGroupDescriptionViewController *vc = [[ACDGroupDescriptionViewController alloc] initWithString:self.group.description placeholder:@"" isEditable:YES];
+    vc.doneCompletion = ^BOOL(NSString * _Nonnull aString) {
+        
+        AgoraChatError *error = nil;
+        AgoraChatGroup * group = [AgoraChatClient.sharedClient.groupManager changeDescription:aString forGroup:self.group.groupId error:&error];
+        if (error == nil) {
+            self.group = group;
+            [self updateUI];
+            return YES;
+        }else {
+            return NO;
+        }
+        
+    };
+
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+    
+
+}
+
 - (void)updateGroupWithSubject:(NSString *)subject {
     
     ACD_WS
@@ -326,6 +350,12 @@
             }];
             [alertController addAction:changeNicknameAction];
 
+            
+            UIAlertAction *changDescriptionAction = [UIAlertAction alertActionWithTitle:@"Change the Description" iconImage:ImageWithName(@"action_icon_edit") textColor:TextLabelBlackColor alignment:NSTextAlignmentLeft completion:^{
+                [self updateGroupDescription];
+            }];
+            [alertController addAction:changDescriptionAction];
+            
         }
                 
     
