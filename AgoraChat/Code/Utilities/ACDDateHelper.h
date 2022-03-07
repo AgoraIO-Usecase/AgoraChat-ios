@@ -16,7 +16,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AgoraChatDateHelper : NSObject
+@interface ACDDateHelper : NSObject
 
 + (NSDate *)dateWithTimeIntervalInMilliSecondSince1970:(double)aMilliSecond;
 

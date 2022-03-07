@@ -342,3 +342,6 @@
 "chatroom.announcementUpdate" = "Chatroom Announcement Update";
 "chatroom.clearAnnouncement" = "Chatroom:%@ Announcement is clear";
 "chatroom.updateAnnouncement" = "Chatroom:%@ Announcement: %@";
+
+
+"fromPrompt" = "%@ from %@ %.2lf MB";

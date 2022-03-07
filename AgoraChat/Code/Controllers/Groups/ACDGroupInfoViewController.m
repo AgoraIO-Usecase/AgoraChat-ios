@@ -1,4 +1,3 @@
-#import "ACDGroupDescriptionViewController.h"
 //
 //  ACDGroupInfoViewController.m
 //  ChatDemo-UI3.0
@@ -17,6 +16,8 @@
 #import "ACDChatViewController.h"
 #import "ACDGroupTransferOwnerViewController.h"
 #import "ACDGroupDescriptionViewController.h"
+#import "ACDGroupNoticeViewController.h"
+#import "ACDGroupSharedFilesViewController.h"
 
 #define kGroupInfoHeaderViewHeight 360.0
 
@@ -24,6 +25,8 @@
 @property (nonatomic, strong) ACDInfoHeaderView *groupInfoHeaderView;
 @property (nonatomic, strong) ACDJoinGroupCell *joinGroupCell;
 @property (nonatomic, strong) ACDInfoDetailCell *membersCell;
+@property (nonatomic, strong) ACDInfoDetailCell *groupNoticesCell;
+@property (nonatomic, strong) ACDInfoDetailCell *groupFilesCell;
 @property (nonatomic, strong) ACDInfoSwitchCell *allowSearchCell;
 @property (nonatomic, strong) ACDInfoSwitchCell *allowInviteCell;
 @property (nonatomic, strong) ACDInfoCell *leaveCell;
@@ -140,11 +143,11 @@
         self.groupInfoHeaderView.isHideChatButton = YES;
     }else {
         if (self.group.permissionType == AgoraChatGroupPermissionTypeOwner) {
-            self.cells = @[self.membersCell,self.transferOwnerCell,self.disbandCell];
+            self.cells = @[self.membersCell,self.groupNoticesCell,self.groupFilesCell,self.transferOwnerCell,self.disbandCell];
         } else if(self.group.permissionType == AgoraChatGroupPermissionTypeAdmin){
-            self.cells = @[self.membersCell,self.leaveCell];
+            self.cells = @[self.membersCell,self.groupNoticesCell,self.groupFilesCell,self.leaveCell];
         }else {
-            self.cells = @[self.membersCell,self.leaveCell];
+            self.cells = @[self.membersCell,self.groupNoticesCell,self.groupFilesCell,self.leaveCell];
         }
     }
 
@@ -190,12 +193,14 @@
 }
 
 
-
 - (BOOL)isCanInvite
 {
     return (self.group.permissionType == AgoraChatGroupPermissionTypeOwner || self.group.permissionType == AgoraChatGroupPermissionTypeAdmin || self.group.setting.style == AgoraChatGroupStylePrivateMemberCanInvite);
 }
 
+- (BOOL)isEditable {
+    return (self.group.permissionType == AgoraChatGroupPermissionTypeOwner || self.group.permissionType == AgoraChatGroupPermissionTypeAdmin );
+}
 
 - (void)leaveGroup
 {
@@ -303,7 +308,7 @@
 }
 
 - (void)updateGroupDescription {
-    ACDGroupDescriptionViewController *vc = [[ACDGroupDescriptionViewController alloc] initWithString:self.group.description placeholder:@"" isEditable:YES];
+    ACDGroupDescriptionViewController *vc = [[ACDGroupDescriptionViewController alloc] initWithString:self.group.description placeholder:@"" isEditable:[self isEditable]];
     vc.doneCompletion = ^BOOL(NSString * _Nonnull aString) {
         
         AgoraChatError *error = nil;
@@ -319,9 +324,8 @@
     };
 
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    nav.view.backgroundColor = [UIColor whiteColor];
     [self.navigationController presentViewController:nav animated:YES completion:nil];
-    
-
 }
 
 - (void)updateGroupWithSubject:(NSString *)subject {
@@ -378,6 +382,31 @@
     [self.navigationController pushViewController:chatViewController animated:YES];
 }
 
+- (void)goGroupNotice {
+    ACDGroupNoticeViewController *vc = [[ACDGroupNoticeViewController alloc] initWithString:self.group.announcement placeholder:@"" isEditable:[self isEditable]];
+    vc.doneCompletion = ^BOOL(NSString * _Nonnull aString) {
+        AgoraChatError *error = nil;
+        AgoraChatGroup * group = [AgoraChatClient.sharedClient.groupManager updateGroupAnnouncementWithId:self.group.groupId announcement:aString error:&error];
+        if (error == nil) {
+            self.group = group;
+            [self updateUI];
+            return YES;
+        }else {
+            return NO;
+        }
+    };
+    
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    nav.view.backgroundColor = [UIColor whiteColor];
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
+- (void)goGroupShareFilePage {
+    ACDGroupSharedFilesViewController *vc = [[ACDGroupSharedFilesViewController alloc] initWithGroup:self.group];
+    [self.navigationController pushViewController:vc animated:YES];
+
+}
+
 #pragma mark - Join Public Group
 - (void)requestJoinGroup {
     if (self.group.setting.style == AgoraChatGroupStylePublicOpenJoin) {
@@ -417,8 +446,6 @@
 
             if (!aError) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
-
-//                [weakSelf updateUI];
             }
             else {
                 [weakSelf showHint:aError.errorDescription];
@@ -541,6 +568,38 @@
     return _membersCell;
 }
 
+- (ACDInfoDetailCell *)groupNoticesCell {
+    if (_groupNoticesCell == nil) {
+        _groupNoticesCell = [[ACDInfoDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDInfoDetailCell reuseIdentifier]];
+        _groupNoticesCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        [_groupNoticesCell.iconImageView setImage:ImageWithName(@"groupInfo_notice")];
+        _groupNoticesCell.nameLabel.text = @"Group Notice";
+        _groupNoticesCell.detailLabel.text = @"";
+        ACD_WS
+        _groupNoticesCell.tapCellBlock = ^{
+            [weakSelf goGroupNotice];
+        };
+    }
+    return _groupNoticesCell;
+}
+
+- (ACDInfoDetailCell *)groupFilesCell {
+    if (_groupFilesCell == nil) {
+        _groupFilesCell = [[ACDInfoDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDInfoDetailCell reuseIdentifier]];
+        _groupFilesCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        [_groupFilesCell.iconImageView setImage:ImageWithName(@"groupInfo_files")];
+        _groupFilesCell.nameLabel.text = @"Group Files";
+        _groupFilesCell.detailLabel.text = @"";
+        ACD_WS
+        _groupFilesCell.tapCellBlock = ^{
+            [weakSelf goGroupShareFilePage];
+        };
+        
+    }
+    return _groupFilesCell;
+}
+    
+    
 - (ACDInfoSwitchCell *)allowSearchCell {
     if (_allowSearchCell == nil) {
         _allowSearchCell = [[ACDInfoSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDInfoSwitchCell reuseIdentifier]];
@@ -617,6 +676,7 @@
     return _groupMembersVC;
 }
 
+    
 @end
 
 #undef kGroupInfoHeaderViewHeight

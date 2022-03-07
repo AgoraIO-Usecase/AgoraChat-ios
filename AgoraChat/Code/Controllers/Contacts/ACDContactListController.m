@@ -91,7 +91,6 @@
         [contacts removeObject:blockId];
     }
     [self sortContacts:contacts];
-    
 }
 
 - (void)sortContacts:(NSArray *)contacts {

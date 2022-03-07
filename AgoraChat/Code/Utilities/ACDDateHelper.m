@@ -6,13 +6,13 @@
 //  Copyright © 2019 XieYajie. All rights reserved.
 //
 
-#import "AgoraChatDateHelper.h"
+#import "ACDDateHelper.h"
 
 #define DATE_COMPONENTS (NSCalendarUnitYear| NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekOfYear |  NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond | NSCalendarUnitWeekday | NSCalendarUnitWeekdayOrdinal)
 
 #define CURRENT_CALENDAR [NSCalendar currentCalendar]
 
-@interface AgoraChatDateHelper()
+@interface ACDDateHelper()
 
 @property (nonatomic, strong) NSDateFormatter *dfYMD;
 @property (nonatomic, strong) NSDateFormatter *dfHM;
@@ -27,14 +27,14 @@
 @end
 
 
-static AgoraChatDateHelper *shared = nil;
-@implementation AgoraChatDateHelper
+static ACDDateHelper *shared = nil;
+@implementation ACDDateHelper
 
 + (instancetype)shareHelper
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        shared = [[AgoraChatDateHelper alloc] init];
+        shared = [[ACDDateHelper alloc] init];
     });
     
     return shared;
@@ -147,13 +147,13 @@ static AgoraChatDateHelper *shared = nil;
 
 + (NSString *)formattedTimeFromTimeInterval:(long long)aTimeInterval
 {
-    NSDate *date = [AgoraChatDateHelper dateWithTimeIntervalInMilliSecondSince1970:aTimeInterval];
-    return [AgoraChatDateHelper formattedTime:date];
+    NSDate *date = [ACDDateHelper dateWithTimeIntervalInMilliSecondSince1970:aTimeInterval];
+    return [ACDDateHelper formattedTime:date];
 }
 
 + (NSString *)formattedTime:(NSDate *)aDate
 {
-    AgoraChatDateHelper *helper = [AgoraChatDateHelper shareHelper];
+    ACDDateHelper *helper = [ACDDateHelper shareHelper];
     
     NSString *dateNow = [helper.dfYMD stringFromDate:[NSDate date]];
     NSDateComponents *components = [[NSDateComponents alloc] init];
@@ -163,7 +163,7 @@ static AgoraChatDateHelper *shared = nil;
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     NSDate *date = [gregorian dateFromComponents:components];
     
-    NSInteger hour = [AgoraChatDateHelper hoursFromDate:aDate toDate:date];
+    NSInteger hour = [ACDDateHelper hoursFromDate:aDate toDate:date];
     NSDateFormatter *dateFormatter = nil;
     NSString *ret = @"";
     

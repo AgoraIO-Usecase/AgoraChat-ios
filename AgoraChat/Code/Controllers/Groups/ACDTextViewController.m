@@ -38,7 +38,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     [self _setupSubviews];
 }
 
@@ -53,7 +52,7 @@
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"done", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
     }
     
-    self.view.backgroundColor = UIColor.clearColor;
+    self.view.backgroundColor = UIColor.whiteColor;
     UIView *bgView = [[UIView alloc] init];
     bgView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:bgView];

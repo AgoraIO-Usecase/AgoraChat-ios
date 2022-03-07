@@ -237,8 +237,6 @@
 
 - (void)loadMainPage {
     AgoraMainViewController *main = [[AgoraMainViewController alloc] init];
-//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:main];
-//    navigationController.interactivePopGestureRecognizer.delegate = (id)self;
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     if (!navigationController || (navigationController && ![navigationController.viewControllers[0] isKindOfClass:[AgoraMainViewController class]])) {
         navigationController = [[UINavigationController alloc] initWithRootViewController:main];

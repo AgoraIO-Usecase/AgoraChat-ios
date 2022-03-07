@@ -344,3 +344,5 @@
 "chatroom.announcementUpdate" = "聊天室公告更新";
 "chatroom.clearAnnouncement" = "聊天室:%@ 公告被删除";
 "chatroom.updateAnnouncement" = "聊天室:%@ 公告内容: %@";
+
+"fromPrompt" = "%@ 来自 %@ %.2lf MB";
