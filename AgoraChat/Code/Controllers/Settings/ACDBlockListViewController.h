@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AgoraBlockListViewController : AgoraBaseRefreshTableController
+@interface ACDBlockListViewController : AgoraBaseRefreshTableController
 @property (nonatomic,strong) NSArray *blockList;
 
 @end

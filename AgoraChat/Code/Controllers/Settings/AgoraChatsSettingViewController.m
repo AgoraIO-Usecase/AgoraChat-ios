@@ -8,7 +8,7 @@
  */
 
 #import "AgoraChatsSettingViewController.h"
-#import "AgoraBlockListViewController.h"
+#import "ACDBlockListViewController.h"
 
 @interface AgoraChatsSettingViewController ()
 @property (nonatomic, strong) UISwitch *autoAcceptSitch;
@@ -110,7 +110,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.hasBlockList && indexPath.row == 1) {
-        AgoraBlockListViewController *vc = [[AgoraBlockListViewController alloc] init];
+        ACDBlockListViewController *vc = [[ACDBlockListViewController alloc] init];
         vc.blockList = self.blockList;
         [self.navigationController pushViewController:vc animated:YES];
     }

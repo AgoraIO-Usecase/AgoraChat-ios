@@ -6,24 +6,28 @@
 //  Copyright © 2021 easemob. All rights reserved.
 //
 
-#import "AgoraBlockListViewController.h"
+#import "ACDBlockListViewController.h"
 #import "AgoraBlackListCell.h"
 
 static NSString *cellIndentifier = @"AgoraBlackListCellIndentifier";
 
-@interface AgoraBlockListViewController ()
+@interface ACDBlockListViewController ()
 
 @end
 
-@implementation AgoraBlockListViewController
+@implementation ACDBlockListViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationItem.leftBarButtonItem = [ACDUtil customLeftButtonItem:@"Blocked List" action:@selector(back) actionTarget:self];
+
     [self.tableView registerClass:[AgoraBlackListCell class] forCellReuseIdentifier:cellIndentifier];
-    [self.tableView reloadData];
+    [self updateUI];
 }
 
-
+- (void)back {
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 #pragma mark private method
 - (void)updateUI {

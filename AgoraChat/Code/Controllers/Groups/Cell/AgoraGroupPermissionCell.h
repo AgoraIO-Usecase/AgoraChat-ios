@@ -25,7 +25,9 @@ typedef NS_ENUM(NSUInteger, AgoraGroupInfoType) {
 
 @property (strong, nonatomic) IBOutlet UISwitch *permissionSwitch;
 
-@property (copy, nonatomic) void (^ReturnSwitchState)(BOOL isOn);
+@property (strong, nonatomic) IBOutlet UILabel *permissionDescriptionLabel;
+
+@property (copy, nonatomic) void (^switchStateBlock)(BOOL isOn);
 
 @property (strong, nonatomic) AgoraGroupPermissionModel *model;
 

@@ -34,4 +34,21 @@
     return customNavItem;
 }
 
++ (UIBarButtonItem *)customLeftButtonItem:(NSString *)title
+                                   action:(SEL)action
+                             actionTarget:(id)actionTarget {
+    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 8, 15)];
+    [backButton setImage:[UIImage imageNamed:@"black_goBack"] forState:UIControlStateNormal];
+    [backButton addTarget:actionTarget action:action forControlEvents:UIControlEventTouchUpInside];
+
+    [backButton setTitle:title forState:UIControlStateNormal];
+    [backButton setTitleColor:TextLabelBlackColor forState:UIControlStateNormal];
+    UIBarButtonItem *customNavItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+
+    return customNavItem;
+
+    
+}
+
+
 @end
