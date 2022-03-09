@@ -20,6 +20,8 @@
 #import "UserInfoStore.h"
 #import "ACDGeneralViewController.h"
 #import "ACDPrivacyViewController.h"
+#import "AgoraPushNotificationViewController.h"
+#import "ACDNotificationViewController.h"
 
 
 #define kInfoHeaderViewHeight 320.0
@@ -197,6 +199,15 @@ typedef enum : NSUInteger {
     about.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:about animated:YES];
 }
+
+- (void)goNotificationPage {
+//    AgoraPushNotificationViewController *about = [[AgoraPushNotificationViewController alloc] init];
+    ACDNotificationViewController *about = [[ACDNotificationViewController alloc] init];
+
+    about.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:about animated:YES];
+}
+
 
 - (void)headerViewTapAction {
    
@@ -459,7 +470,7 @@ typedef enum : NSUInteger {
         _notificationsCell.nameLabel.text= @"Notifications";
         ACD_WS
         _notificationsCell.tapCellBlock = ^{
-            [weakSelf goAboutPage];
+            [weakSelf goNotificationPage];
         };
     }
     return  _notificationsCell;

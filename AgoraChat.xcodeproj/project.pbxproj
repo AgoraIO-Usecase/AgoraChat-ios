@@ -166,6 +166,8 @@
 		C04341FC27D620D900EB058B /* SPDateTimePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C04341FA27D620D900EB058B /* SPDateTimePickerView.m */; };
 		C04341FF27D7007E00EB058B /* ACDGeneralViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C04341FE27D7007E00EB058B /* ACDGeneralViewController.m */; };
 		C043420227D7383300EB058B /* ACDPrivacyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C043420027D7383300EB058B /* ACDPrivacyViewController.m */; };
+		C043420527D89EC600EB058B /* ACDNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C043420427D89EC600EB058B /* ACDNotificationViewController.m */; };
+		C043420827D8A8ED00EB058B /* ACDTitleSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C043420727D8A8ED00EB058B /* ACDTitleSwitchCell.m */; };
 		C0579D8B27CF7A740028A0D3 /* ACDGroupDescriptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0579D8A27CF7A740028A0D3 /* ACDGroupDescriptionViewController.m */; };
 		C0579D9027CF8C740028A0D3 /* ACDTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0579D8E27CF8C740028A0D3 /* ACDTextView.m */; };
 		C0579D9127CF8C740028A0D3 /* ACDTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0579D8F27CF8C740028A0D3 /* ACDTextViewController.m */; };
@@ -905,6 +907,10 @@
 		C04341FE27D7007E00EB058B /* ACDGeneralViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACDGeneralViewController.m; sourceTree = "<group>"; };
 		C043420027D7383300EB058B /* ACDPrivacyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACDPrivacyViewController.m; sourceTree = "<group>"; };
 		C043420127D7383300EB058B /* ACDPrivacyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACDPrivacyViewController.h; sourceTree = "<group>"; };
+		C043420327D89EC600EB058B /* ACDNotificationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACDNotificationViewController.h; sourceTree = "<group>"; };
+		C043420427D89EC600EB058B /* ACDNotificationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACDNotificationViewController.m; sourceTree = "<group>"; };
+		C043420627D8A8ED00EB058B /* ACDTitleSwitchCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACDTitleSwitchCell.h; sourceTree = "<group>"; };
+		C043420727D8A8ED00EB058B /* ACDTitleSwitchCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACDTitleSwitchCell.m; sourceTree = "<group>"; };
 		C0579D8927CF7A740028A0D3 /* ACDGroupDescriptionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACDGroupDescriptionViewController.h; sourceTree = "<group>"; };
 		C0579D8A27CF7A740028A0D3 /* ACDGroupDescriptionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACDGroupDescriptionViewController.m; sourceTree = "<group>"; };
 		C0579D8C27CF8C730028A0D3 /* ACDTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACDTextView.h; sourceTree = "<group>"; };
@@ -2154,6 +2160,8 @@
 				EC19F52C273558C500F88012 /* ACDModifyAvatarViewController.m */,
 				EC570E962730DA2F00CBC408 /* ACDSettingsViewController.h */,
 				EC570E972730DA2F00CBC408 /* ACDSettingsViewController.m */,
+				C043420327D89EC600EB058B /* ACDNotificationViewController.h */,
+				C043420427D89EC600EB058B /* ACDNotificationViewController.m */,
 				C04341FD27D7007E00EB058B /* ACDGeneralViewController.h */,
 				C04341FE27D7007E00EB058B /* ACDGeneralViewController.m */,
 				C043420127D7383300EB058B /* ACDPrivacyViewController.h */,
@@ -2782,6 +2790,8 @@
 				EC54DDFD272A45B100ABEE3E /* ACDInfoDetailCell.m */,
 				EC54DDF9272A455D00ABEE3E /* ACDInfoSwitchCell.h */,
 				EC54DDFA272A455D00ABEE3E /* ACDInfoSwitchCell.m */,
+				C043420627D8A8ED00EB058B /* ACDTitleSwitchCell.h */,
+				C043420727D8A8ED00EB058B /* ACDTitleSwitchCell.m */,
 				EC54DD0E2722653B00ABEE3E /* ACDCustomCell.h */,
 				EC54DD0F2722653B00ABEE3E /* ACDCustomCell.m */,
 				EC00E2202744BC8B00EEB474 /* ACDTitleDetailCell.h */,
@@ -3538,11 +3548,13 @@
 				7F6CC93026568DC300BA60BB /* AgoraAudioPlayerUtil.m in Sources */,
 				7F6CC90126568D5000BA60BB /* AgoraApplyModel.m in Sources */,
 				C0579D8B27CF7A740028A0D3 /* ACDGroupDescriptionViewController.m in Sources */,
+				C043420827D8A8ED00EB058B /* ACDTitleSwitchCell.m in Sources */,
 				711159011DB7278B005158BB /* NSArray+AgoraSortContacts.m in Sources */,
 				7F6CC93C26568E0F00BA60BB /* AgoraRealtimeSearchUtils.m in Sources */,
 				D24327B91DAA024A00EDCDAB /* AgoraMessageReadManager.m in Sources */,
 				EC19F55A27395A9800F88012 /* UIAlertAction+Custom.m in Sources */,
 				7F6CC8AE26568C3600BA60BB /* AgoraChatBaseBubbleView.m in Sources */,
+				C043420527D89EC600EB058B /* ACDNotificationViewController.m in Sources */,
 				9ECE6704274271DB007CF85F /* Reachability.m in Sources */,
 				EC54DCED2721502200ABEE3E /* MISScrollPageControllerDelegate.m in Sources */,
 				EC54DDFE272A45B100ABEE3E /* ACDInfoDetailCell.m in Sources */,

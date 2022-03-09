@@ -22,8 +22,15 @@ static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.navigationItem.leftBarButtonItem = [ACDUtil customLeftButtonItem:@"General" action:@selector(back) actionTarget:self];
+
     self.noDisturbState = AgoraChatClient.sharedClient.pushManager.pushOptions.silentModeEnabled ?@"ON":@"Off";
     [self.table reloadData];
+}
+
+
+- (void)back {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Table view data source
