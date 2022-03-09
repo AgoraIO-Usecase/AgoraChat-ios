@@ -22,3 +22,5 @@
 #define KAgora_UPDATE_CONVERSATIONS @"UpdateConversations"
 
 #define KAgora_CreateGroup @"createGroup"
+
+#define KACD_REFRESH_CONTACTS  @"KACD_REFRESH_CONTACTS"

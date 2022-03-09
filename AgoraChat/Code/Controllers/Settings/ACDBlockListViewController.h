@@ -6,11 +6,11 @@
 //  Copyright © 2021 easemob. All rights reserved.
 //
 
-#import "AgoraBaseRefreshTableController.h"
+#import "ACDContainerSearchTableViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ACDBlockListViewController : AgoraBaseRefreshTableController
+@interface ACDBlockListViewController : ACDContainerSearchTableViewController
 @property (nonatomic,strong) NSArray *blockList;
 
 @end
