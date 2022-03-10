@@ -87,9 +87,9 @@
 {
     
     static NSString *ident = @"Cell";
-    AgoraChatCustomBaseCell *cell = [tableView dequeueReusableCellWithIdentifier:ident];
+    ACDCustomBaseCell *cell = [tableView dequeueReusableCellWithIdentifier:ident];
     if (!cell) {
-        cell = [[AgoraChatCustomBaseCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:ident];
+        cell = [[ACDCustomBaseCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:ident];
     }
     
     if (indexPath.row == 0) {

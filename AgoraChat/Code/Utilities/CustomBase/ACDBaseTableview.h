@@ -1,5 +1,5 @@
 //
-//  AgoraChatBaseCell.h
+//  AgoraChatBaseTableview.h
 //  ChatDemo-UI3.0
 //
 //  Created by liujinliang on 2021/7/15.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AgoraChatCustomBaseCell : UITableViewCell
+@interface ACDBaseTableview : UITableView
 
 @end
 

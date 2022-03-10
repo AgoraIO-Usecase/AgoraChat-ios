@@ -6,13 +6,13 @@
 //  Copyright © 2021 easemob. All rights reserved.
 //
 
-#import "AgoraChatCustomTableViewController.h"
+#import "ACDCustomTableViewController.h"
 
-@interface AgoraChatCustomTableViewController ()
+@interface ACDCustomTableViewController ()
 
 @end
 
-@implementation AgoraChatCustomTableViewController
+@implementation ACDCustomTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

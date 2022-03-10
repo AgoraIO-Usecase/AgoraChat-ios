@@ -6,9 +6,9 @@
 //  Copyright © 2021 easemob. All rights reserved.
 //
 
-#import "AgoraChatCustomBaseCell.h"
+#import "ACDCustomBaseCell.h"
 
-@implementation AgoraChatCustomBaseCell
+@implementation ACDCustomBaseCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {

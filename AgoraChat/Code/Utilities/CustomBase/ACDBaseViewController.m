@@ -6,13 +6,13 @@
 //  Copyright © 2021 easemob. All rights reserved.
 //
 
-#import "AgoraChatBaseViewController.h"
+#import "ACDBaseViewController.h"
 
-@interface AgoraChatBaseViewController ()
+@interface ACDBaseViewController ()
 
 @end
 
-@implementation AgoraChatBaseViewController
+@implementation ACDBaseViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

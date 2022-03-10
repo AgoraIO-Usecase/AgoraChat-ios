@@ -6,9 +6,9 @@
 //  Copyright © 2021 easemob. All rights reserved.
 //
 
-#import "AgoraChatBaseTableview.h"
+#import "ACDBaseTableview.h"
 
-@implementation AgoraChatBaseTableview
+@implementation ACDBaseTableview
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];

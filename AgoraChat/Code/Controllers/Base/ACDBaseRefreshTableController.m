@@ -7,17 +7,17 @@
  * the property of Hyphenate Inc.
  */
 
-#import "AgoraBaseRefreshTableController.h"
+#import "ACDBaseRefreshTableController.h"
 
 #import "MJRefresh.h"
 
-@interface AgoraBaseRefreshTableController ()
+@interface ACDBaseRefreshTableController ()
 
 @property (nonatomic, strong) UIRefreshControl *footRefreshControl;
 
 @end
 
-@implementation AgoraBaseRefreshTableController
+@implementation ACDBaseRefreshTableController
 
 - (instancetype)initWithStyle:(UITableViewStyle)style
 {

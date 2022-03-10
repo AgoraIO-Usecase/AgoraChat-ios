@@ -6,9 +6,9 @@
 //  Copyright © 2021 easemob. All rights reserved.
 //
 
-#import "AgoraChatBaseTextField.h"
+#import "ACDBaseTextField.h"
 
-@implementation AgoraChatBaseTextField
+@implementation ACDBaseTextField
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];

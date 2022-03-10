@@ -7,9 +7,9 @@
  * the property of Hyphenate Inc.
  */
 
-#import "AgoraBaseRefreshTableController.h"
+#import "ACDBaseRefreshTableController.h"
 
-@interface AgoraAddAdminViewController : AgoraBaseRefreshTableController
+@interface AgoraAddAdminViewController : ACDBaseRefreshTableController
 
 - (instancetype)initWithGroupId:(NSString *)aGroupId;
 

@@ -1,5 +1,5 @@
 //
-//  AgoraChatBaseTableview.h
+//  AgoraChatBaseViewController.h
 //  ChatDemo-UI3.0
 //
 //  Created by liujinliang on 2021/7/15.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AgoraChatBaseTableview : UITableView
+@interface ACDBaseViewController : UIViewController
 
 @end
 

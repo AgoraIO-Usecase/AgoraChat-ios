@@ -1,8 +1,8 @@
 //
-//  AgoraChatCustomTableViewController.h
+//  AgoraChatBaseTextField.h
 //  ChatDemo-UI3.0
 //
-//  Created by liujinliang on 2021/7/15.
+//  Created by liujinliang on 2021/7/16.
 //  Copyright © 2021 easemob. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AgoraChatCustomTableViewController : UITableViewController
+@interface ACDBaseTextField : UITextField
 
 @end
 
