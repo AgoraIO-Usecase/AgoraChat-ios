@@ -77,7 +77,6 @@
 - (void)goBlockListPage {
     ACDBlockListViewController *controller = [[ACDBlockListViewController alloc] init];
     [self.navigationController pushViewController:controller animated:YES];
-
 }
 
 #pragma mark - Table view delegate

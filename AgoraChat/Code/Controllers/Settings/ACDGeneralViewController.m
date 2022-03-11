@@ -9,6 +9,7 @@
 #import "ACDGeneralViewController.h"
 #import "ACDTitleDetailCell.h"
 #import "AgoraGroupPermissionCell.h"
+#import "ACDNoDisturbViewController.h"
 
 static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell";
 
@@ -31,6 +32,12 @@ static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell
 
 - (void)back {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark private method
+- (void)goNodisturbPage {
+    ACDNoDisturbViewController *vc = ACDNoDisturbViewController.new;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Table view data source
@@ -62,6 +69,9 @@ static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell
     if (indexPath.row == 0) {
         noDisturbCell.nameLabel.text = @"Do Not Disturb";
         noDisturbCell.detailLabel.text = self.noDisturbState;
+        noDisturbCell.tapCellBlock = ^{
+            [self goNodisturbPage];
+        };
         return noDisturbCell;
     }else if(indexPath.row == 1) {
         cell.permissionTitleLabel.text = @"Show Typing";

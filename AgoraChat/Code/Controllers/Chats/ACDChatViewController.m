@@ -18,6 +18,7 @@
 #import "AgoraUserModel.h"
 #import "ACDGroupInfoViewController.h"
 #import "ACDAddContactViewController.h"
+#import "ACDChatDetailViewController.h"
 
 
 @interface ACDChatViewController ()<EaseChatViewControllerDelegate, AgoraChatroomManagerDelegate, AgoraChatGroupManagerDelegate, EaseMessageCellDelegate>
@@ -268,6 +269,7 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+
 #pragma mark - AgoraChatGroupManagerDelegate
 
 - (void)didLeaveGroup:(AgoraChatGroup *)aGroup reason:(AgoraChatGroupLeaveReason)aReason
@@ -366,7 +368,7 @@
 - (ACDChatNavigationView *)navigationView {
     if (_navigationView == nil) {
         _navigationView = [[ACDChatNavigationView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 80.0f)];
-    
+        _navigationView.rightButton.hidden = NO;
         _navigationView.leftLabel.text = self.navTitle;
         ACD_WS
         _navigationView.leftButtonBlock = ^{
@@ -375,6 +377,10 @@
         
         _navigationView.chatButtonBlock = ^{
             [weakSelf goInfoPage];
+        };
+        
+        _navigationView.rightButtonBlock = ^{
+            [weakSelf goChatDetailPage];
         };
     }
     return _navigationView;
@@ -411,6 +417,32 @@
     
     vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)goChatDetailPage {
+    if (self.conversationType == AgoraChatConversationTypeChat) {
+        [self goChatDetailWithContactId:self.conversationId];
+    }
+    
+    if (self.conversationType == AgoraChatConversationTypeGroupChat) {
+        [self goGroupDetailWithContactId:self.conversationId];
+    }
+}
+
+- (void)goChatDetailWithContactId:(NSString *)contactId {
+    ACDChatDetailViewController *vc = [[ACDChatDetailViewController alloc] init];
+    
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+
+- (void)goGroupDetailWithContactId:(NSString *)contactId {
+    ACDChatDetailViewController *vc = [[ACDChatDetailViewController alloc] init];
+    
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+    
 }
 
 @end
