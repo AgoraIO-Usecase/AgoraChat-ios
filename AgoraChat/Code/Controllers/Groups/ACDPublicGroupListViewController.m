@@ -12,14 +12,14 @@
 #import "AgoraNotificationNames.h"
 
 #import "ACDGroupCell.h"
-#import "ACDNoDataPromptView.h"
+#import "ACDNoDataPlaceHolderView.h"
 #import "ACDGroupInfoViewController.h"
 
 
 #define KPUBLICGROUP_PAGE_COUNT    20
 
 @interface ACDPublicGroupListViewController ()<MISScrollPageControllerContentSubViewControllerDelegate>
-@property (nonatomic, strong) ACDNoDataPromptView *noDataPromptView;
+@property (nonatomic, strong) ACDNoDataPlaceHolderView *noDataPromptView;
 @property (nonatomic, strong) NSString *cursor;
 
 
@@ -255,9 +255,9 @@
     return _table;
 }
 
-- (ACDNoDataPromptView *)noDataPromptView {
+- (ACDNoDataPlaceHolderView *)noDataPromptView {
     if (_noDataPromptView == nil) {
-        _noDataPromptView = ACDNoDataPromptView.new;
+        _noDataPromptView = ACDNoDataPlaceHolderView.new;
         [_noDataPromptView.noDataImageView setImage:ImageWithName(@"no_search_result")];
         _noDataPromptView.prompt.text = @"The Group Does Not Exist";
         _noDataPromptView.hidden = YES;

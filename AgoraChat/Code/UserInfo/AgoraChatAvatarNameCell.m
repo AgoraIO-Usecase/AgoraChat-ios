@@ -38,6 +38,9 @@
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     _avatarView = [[UIImageView alloc] init];
+    _avatarView.layer.cornerRadius = 40 * 0.5;
+    _avatarView.clipsToBounds = YES;
+    
     [self.contentView addSubview:_avatarView];
     [_avatarView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView).offset(14);

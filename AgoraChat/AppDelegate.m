@@ -167,8 +167,11 @@
                 } else {
                     alertStr = NSLocalizedString(@"login appserver failure", @"Sign in appserver failure");
                 }
+                
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:alertStr delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"renewToken.ok", @"Ok"), nil];
                 [alert show];
+                
+//                [self.window.rootViewController showHint:alertStr];
             });
         }];
     }

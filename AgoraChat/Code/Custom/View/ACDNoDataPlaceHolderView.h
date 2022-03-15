@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ACDNoDataPromptView : UIView
+@interface ACDNoDataPlaceHolderView : UIView
 
 /// 无数据占位图
 @property (nonatomic,strong,readonly) UIImageView *noDataImageView;

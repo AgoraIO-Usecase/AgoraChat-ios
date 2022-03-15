@@ -6,10 +6,10 @@
 //  Copyright © 2021 easemob. All rights reserved.
 //
 
-#import "ACDNoDataPromptView.h"
+#import "ACDNoDataPlaceHolderView.h"
 #import <Masonry/Masonry.h>
 
-@interface ACDNoDataPromptView ()
+@interface ACDNoDataPlaceHolderView ()
 
 @property (nonatomic,strong) UIImageView *noDataImageView;
 @property (nonatomic,strong) UILabel *prompt;
@@ -17,7 +17,7 @@
 
 @end
 
-@implementation ACDNoDataPromptView
+@implementation ACDNoDataPlaceHolderView
 
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {

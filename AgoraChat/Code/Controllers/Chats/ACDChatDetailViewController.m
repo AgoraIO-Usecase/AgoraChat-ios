@@ -12,6 +12,7 @@
 #import "ACDNoDisturbViewController.h"
 #import "ACDInfoSwitchCell.h"
 #import "ACDInfoDetailCell.h"
+#import "ACDChatRecordViewController.h"
 
 
 @interface ACDChatDetailViewController ()
@@ -19,10 +20,23 @@
 @property (nonatomic,strong) ACDInfoDetailCell *searchHistoryCell;
 @property (nonatomic,strong) ACDInfoSwitchCell *silentModeCell;
 @property (nonatomic,strong) ACDInfoSwitchCell *pinTopCell;
+@property (nonatomic, strong) AgoraChatConversation *conversation;
+@property (nonatomic, strong) EaseConversationModel *conversationModel;
 
 @end
 
 @implementation ACDChatDetailViewController
+- (instancetype)initWithCoversation:(AgoraChatConversation *)aConversation
+{
+    self = [super init];
+    if (self) {
+        _conversation = aConversation;
+        _conversationModel = [[EaseConversationModel alloc]initWithConversation:_conversation];
+    }
+    
+    return self;
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -40,7 +54,7 @@
 
 #pragma mark private method
 - (void)goNodisturbPage {
-    ACDNoDisturbViewController *vc = ACDNoDisturbViewController.new;
+    ACDNoDisturbViewController *vc = [[ACDNoDisturbViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -83,7 +97,8 @@
         _searchHistoryCell.detailLabel.text = @"";
         ACD_WS
         _searchHistoryCell.tapCellBlock = ^{
-
+            ACDChatRecordViewController *chatRrcordController = [[ACDChatRecordViewController alloc]initWithCoversationModel:weakSelf.conversation];
+            [weakSelf.navigationController pushViewController:chatRrcordController animated:YES];
         };
         
     }
@@ -96,7 +111,23 @@
         _silentModeCell = [[ACDInfoSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDInfoSwitchCell reuseIdentifier]];
         [_silentModeCell.iconImageView setImage:ImageWithName(@"chat_setting_mute")];
         _silentModeCell.nameLabel.text = @"Mute Notification";
+        NSArray *ignoredUidList = [[AgoraChatClient sharedClient].pushManager noPushUIds];
+        if ([ignoredUidList containsObject:self.conversation.conversationId]) {
+            [_silentModeCell.aSwitch setOn:(YES) animated:YES];
+        } else {
+            [_silentModeCell.aSwitch setOn:(NO) animated:YES];
+        }
         
+        ACD_WS
+        _silentModeCell.switchActionBlock = ^(BOOL isOn) {
+//            [[EaseIMKitManager shared] updateUndisturbMapsKey:self.conversation.conversationId value:aSwitch.isOn];
+            [[AgoraChatClient sharedClient].pushManager updatePushServiceForUsers:@[weakSelf.conversation.conversationId] disablePush:isOn completion:^(AgoraChatError * _Nonnull aError) {
+                if (aError) {
+                    [weakSelf showHint:[NSString stringWithFormat:NSLocalizedString(@"setDistrbute", nil),aError.errorDescription]];
+//                    [weakSelf.silentModeCell.aSwitch setOn:NO];
+                }
+            }];
+        };
     }
     return _silentModeCell;
 }
@@ -106,9 +137,21 @@
         _pinTopCell = [[ACDInfoSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDInfoSwitchCell reuseIdentifier]];
         [_pinTopCell.iconImageView setImage:ImageWithName(@"chat_setting_top")];
         _pinTopCell.nameLabel.text = @"Sticky on Top";
+        [_pinTopCell.aSwitch setOn:([self.conversationModel isTop]) animated:YES];
+
+        ACD_WS
+        _pinTopCell.switchActionBlock = ^(BOOL isOn) {
+            //置顶
+            if (isOn) {
+                [weakSelf.conversationModel setIsTop:YES];
+            } else {
+                [weakSelf.conversationModel setIsTop:NO];
+            }
+
+        };
     }
     return _pinTopCell;
-
 }
+
 @end
 

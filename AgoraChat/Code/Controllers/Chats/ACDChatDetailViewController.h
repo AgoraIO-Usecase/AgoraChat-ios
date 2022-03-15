@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ACDChatDetailViewController : ACDBaseTableViewController
+- (instancetype)initWithCoversation:(AgoraChatConversation *)aConversation;
 
 @end
 

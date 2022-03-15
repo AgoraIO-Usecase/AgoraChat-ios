@@ -430,7 +430,7 @@
 }
 
 - (void)goChatDetailWithContactId:(NSString *)contactId {
-    ACDChatDetailViewController *vc = [[ACDChatDetailViewController alloc] init];
+    ACDChatDetailViewController *vc = [[ACDChatDetailViewController alloc] initWithCoversation:self.conversation];
     
     vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
