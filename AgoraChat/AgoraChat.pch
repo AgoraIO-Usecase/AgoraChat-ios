@@ -41,5 +41,6 @@
 #import <chat-uikit/EaseChatKit.h>
 #import "AgoraChatDemoHelper.h"
 #import "ACDConfig.h"
+#import "ACDDemoOptions.h"
 
 #endif

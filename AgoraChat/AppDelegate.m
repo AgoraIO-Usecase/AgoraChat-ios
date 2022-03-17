@@ -20,9 +20,6 @@
 #import <AgoraChat/AgoraChatOptions+PrivateDeploy.h>
 
 
-
-
-
 @interface AppDelegate () <AgoraChatClientDelegate,UNUserNotificationCenterDelegate>
 @property (nonatomic, strong) NSString *userName;
 @property (nonatomic, strong) NSString *nickName;
@@ -82,7 +79,7 @@
 - (void)initUIKit
 {
     AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:Appkey];
-    
+
     // Hyphenate cert keys
     NSString *apnsCertName = nil;
 #if ChatDemo_DEBUG
@@ -90,7 +87,7 @@
 #else
     apnsCertName = @"ChatDemoProPush";
 #endif
-    
+
     [options setApnsCertName:apnsCertName];
     [options setEnableDeliveryAck:YES];
     [options setEnableConsoleLog:YES];
@@ -101,7 +98,9 @@
 
 #warning 国内部署设置
 //    [self internalSpecOption:options];
-    
+//    ACDDemoOptions *demoOptions = [ACDDemoOptions sharedOptions];
+//    [EaseChatKitManager initWithAgoraChatOptions:[demoOptions toOptions]];
+
     [EaseChatKitManager initWithAgoraChatOptions:options];
 
 }
@@ -121,8 +120,6 @@
         [self loadLoginPage];
     }
   
-//    [self loadMainPage];
-
 }
 
 

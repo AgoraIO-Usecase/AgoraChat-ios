@@ -345,3 +345,11 @@
 
 
 "fromPrompt" = "%@ from %@ %.2lf MB";
+
+"translate" = "translate";
+"retranslate" = "Re-Tran";
+"retranslatePrompt" = "Each translation can be retranslated only once.The translation provided is to reference only";
+"hide" = "hide";
+"MultiLanguages" = "Languages";
+"languageSetting" = "Language Setting";
+"prompt" = "Prompt";

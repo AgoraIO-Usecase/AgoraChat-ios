@@ -187,6 +187,7 @@
 		C0894D5227DB349300C9F00B /* chat_setting_mute@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0894D4C27DB349300C9F00B /* chat_setting_mute@2x.png */; };
 		C0894D5327DB349300C9F00B /* chat_setting_mute@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0894D4D27DB349300C9F00B /* chat_setting_mute@3x.png */; };
 		C0894D5927DF4A8100C9F00B /* ACDChatRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0894D5827DF4A8100C9F00B /* ACDChatRecordViewController.m */; };
+		C0894D6827E080D700C9F00B /* ACDDemoOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C0894D6627E080D700C9F00B /* ACDDemoOptions.m */; };
 		C0AA8F6827D5B98C006672A7 /* groupSharedFile@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0AA8F6727D5B98C006672A7 /* groupSharedFile@3x.png */; };
 		D20E26D71DCA011C00B3FAC6 /* icon_info.png in Resources */ = {isa = PBXBuildFile; fileRef = D20E26D41DCA011C00B3FAC6 /* icon_info.png */; };
 		D20E26D81DCA011C00B3FAC6 /* icon_info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D20E26D51DCA011C00B3FAC6 /* icon_info@2x.png */; };
@@ -953,6 +954,8 @@
 		C0894D4D27DB349300C9F00B /* chat_setting_mute@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_setting_mute@3x.png"; sourceTree = "<group>"; };
 		C0894D5727DF4A8100C9F00B /* ACDChatRecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACDChatRecordViewController.h; sourceTree = "<group>"; };
 		C0894D5827DF4A8100C9F00B /* ACDChatRecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACDChatRecordViewController.m; sourceTree = "<group>"; };
+		C0894D6627E080D700C9F00B /* ACDDemoOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACDDemoOptions.m; sourceTree = "<group>"; };
+		C0894D6727E080D700C9F00B /* ACDDemoOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACDDemoOptions.h; sourceTree = "<group>"; };
 		C0AA8F6727D5B98C006672A7 /* groupSharedFile@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "groupSharedFile@3x.png"; sourceTree = "<group>"; };
 		D20E26D41DCA011C00B3FAC6 /* icon_info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_info.png; sourceTree = "<group>"; };
 		D20E26D51DCA011C00B3FAC6 /* icon_info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_info@2x.png"; sourceTree = "<group>"; };
@@ -2085,8 +2088,8 @@
 				EC54DCD027214FC500ABEE3E /* Vender */,
 				EC54DCC82721441600ABEE3E /* Custom */,
 				EC432EE1272037B3001B31DE /* Cell */,
-				71D4A1D71D9C9284006FACB7 /* View */,
 				71D4A1D21D9C923D006FACB7 /* Model */,
+				71D4A1D71D9C9284006FACB7 /* View */,
 				D2BF7CC01D9111DA0090AA66 /* Utilities */,
 				D28345261D90029600FD48A9 /* Controllers */,
 			);
@@ -2258,6 +2261,8 @@
 		D2BF7CC01D9111DA0090AA66 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				C0894D6727E080D700C9F00B /* ACDDemoOptions.h */,
+				C0894D6627E080D700C9F00B /* ACDDemoOptions.m */,
 				EC19F5402738C5B600F88012 /* ACDUtil.h */,
 				EC19F5412738C5B600F88012 /* ACDUtil.m */,
 				7F6CC90A26568D8E00BA60BB /* AgoraApplyManager.h */,
@@ -3648,6 +3653,7 @@
 				7F0516DE26A0137800B2C795 /* ACDCustomBaseCell.m in Sources */,
 				EC54DCF427215ABE00ABEE3E /* ACDRequestListViewController.m in Sources */,
 				ECCAF7E1273E558B001DA505 /* ACDNaviBackView.m in Sources */,
+				C0894D6827E080D700C9F00B /* ACDDemoOptions.m in Sources */,
 				9ECE66EF273B6F69007CF85F /* AgoraChatConvUserDataModel.m in Sources */,
 				7F0516E726A0184100B2C795 /* AgoraChatBaseCell.m in Sources */,
 				7F6CC8EF26568C8600BA60BB /* AgoraPushDisplaynameViewController.m in Sources */,

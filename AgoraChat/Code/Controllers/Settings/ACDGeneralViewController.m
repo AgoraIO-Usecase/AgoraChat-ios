@@ -50,14 +50,12 @@ static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 4;
+    return 3;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
    
-    ACDTitleDetailCell *noDisturbCell = [[ACDTitleDetailCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[ACDTitleDetailCell reuseIdentifier]];
-    noDisturbCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     AgoraGroupPermissionCell *cell = [tableView dequeueReusableCellWithIdentifier:agoraGroupPermissionCellIdentifier];
     if (!cell) {
@@ -66,32 +64,34 @@ static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell
         cell.permissionDescriptionLabel.hidden = YES;
     }
     
-    if (indexPath.row == 0) {
-        noDisturbCell.nameLabel.text = @"Do Not Disturb";
-        noDisturbCell.detailLabel.text = self.noDisturbState;
-        noDisturbCell.tapCellBlock = ^{
-            [self goNodisturbPage];
-        };
-        return noDisturbCell;
-    }else if(indexPath.row == 1) {
+    ACDDemoOptions *options = [ACDDemoOptions sharedOptions];
+
+    if(indexPath.row == 0) {
         cell.permissionTitleLabel.text = @"Show Typing";
-        [cell.permissionSwitch setOn:NO animated:NO];
+        [cell.permissionSwitch setOn:options.isChatTyping animated:NO];
+        
         cell.switchStateBlock = ^(BOOL isOn) {
-            
+            options.isChatTyping = isOn;
+            [[ACDDemoOptions sharedOptions] archive];
+            [self.table reloadData];
         };
-    }else if(indexPath.row == 2) {
+    }else if(indexPath.row == 1) {
         cell.permissionTitleLabel.text = @"Add Group Request";
         BOOL autoAcceptGroupRequest = AgoraChatClient.sharedClient.options.autoAcceptGroupInvitation;
         [cell.permissionSwitch setOn:autoAcceptGroupRequest animated:NO];
         cell.switchStateBlock = ^(BOOL isOn) {
             [AgoraChatClient.sharedClient.options setAutoAcceptGroupInvitation:isOn];
+            options.isAutoAcceptGroupInvitation = isOn;
+            [options archive];
+            [self.table reloadData];
         };
-    }else if(indexPath.row == 3) {
+    }else {
         cell.permissionTitleLabel.text = @"Delete the Chat after Leaving Group";
         BOOL deleteMessagesOnLeaveGroup = AgoraChatClient.sharedClient.options.deleteMessagesOnLeaveGroup;
         [cell.permissionSwitch setOn:deleteMessagesOnLeaveGroup animated:NO];
         cell.switchStateBlock = ^(BOOL isOn) {
             [AgoraChatClient.sharedClient.options setDeleteMessagesOnLeaveGroup:isOn];
+            [self.table reloadData];
         };
     }
     
