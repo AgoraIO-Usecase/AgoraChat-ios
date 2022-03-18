@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ACDTextViewController : UIViewController
 
 @property (nonatomic, copy) BOOL (^doneCompletion)(NSString *aString);
+@property (nonatomic, strong) NSString *navTitle;
 
 - (instancetype)initWithString:(NSString *)aString
                    placeholder:(NSString *)aPlaceholder

@@ -38,6 +38,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = self.navTitle;
+    
     [self _setupSubviews];
 }
 

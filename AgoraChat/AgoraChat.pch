@@ -42,5 +42,6 @@
 #import "AgoraChatDemoHelper.h"
 #import "ACDConfig.h"
 #import "ACDDemoOptions.h"
+#import "ACDNoDataPlaceHolderView.h"
 
 #endif

@@ -15,9 +15,11 @@
 #import "ACDGroupMembersViewController.h"
 #import "ACDChatViewController.h"
 #import "ACDGroupTransferOwnerViewController.h"
-#import "ACDGroupDescriptionViewController.h"
-#import "ACDGroupNoticeViewController.h"
+#import "ACDTextViewController.h"
+#import "ACDTextViewController.h"
 #import "ACDGroupSharedFilesViewController.h"
+#import "ACDGroupNoticeViewController.h"
+#import "ACDImageTitleContentCell.h"
 
 #define kGroupInfoHeaderViewHeight 360.0
 
@@ -25,7 +27,7 @@
 @property (nonatomic, strong) ACDInfoHeaderView *groupInfoHeaderView;
 @property (nonatomic, strong) ACDJoinGroupCell *joinGroupCell;
 @property (nonatomic, strong) ACDInfoDetailCell *membersCell;
-@property (nonatomic, strong) ACDInfoDetailCell *groupNoticesCell;
+@property (nonatomic, strong) ACDImageTitleContentCell *groupNoticesCell;
 @property (nonatomic, strong) ACDInfoDetailCell *groupFilesCell;
 @property (nonatomic, strong) ACDInfoSwitchCell *allowSearchCell;
 @property (nonatomic, strong) ACDInfoSwitchCell *allowInviteCell;
@@ -308,7 +310,8 @@
 }
 
 - (void)updateGroupDescription {
-    ACDGroupDescriptionViewController *vc = [[ACDGroupDescriptionViewController alloc] initWithString:self.group.description placeholder:@"" isEditable:[self isEditable]];
+    ACDTextViewController *vc = [[ACDTextViewController alloc] initWithString:self.group.description placeholder:@"" isEditable:[self isEditable]];
+    vc.navTitle = @"Group Description";
     vc.doneCompletion = ^BOOL(NSString * _Nonnull aString) {
         
         AgoraChatError *error = nil;
@@ -383,22 +386,12 @@
 }
 
 - (void)goGroupNotice {
-    ACDGroupNoticeViewController *vc = [[ACDGroupNoticeViewController alloc] initWithString:self.group.announcement placeholder:@"" isEditable:[self isEditable]];
-    vc.doneCompletion = ^BOOL(NSString * _Nonnull aString) {
-        AgoraChatError *error = nil;
-        AgoraChatGroup * group = [AgoraChatClient.sharedClient.groupManager updateGroupAnnouncementWithId:self.group.groupId announcement:aString error:&error];
-        if (error == nil) {
-            self.group = group;
-            [self updateUI];
-            return YES;
-        }else {
-            return NO;
-        }
+    ACDGroupNoticeViewController *vc = [[ACDGroupNoticeViewController alloc] initWithGroup:self.group];
+    vc.updateNoticeBlock = ^(AgoraChatGroup * _Nonnull aGroup) {
+        self.group = aGroup;
+        [self updateUI];
     };
-    
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-    nav.view.backgroundColor = [UIColor whiteColor];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)goGroupShareFilePage {
@@ -568,13 +561,13 @@
     return _membersCell;
 }
 
-- (ACDInfoDetailCell *)groupNoticesCell {
+- (ACDImageTitleContentCell *)groupNoticesCell {
     if (_groupNoticesCell == nil) {
-        _groupNoticesCell = [[ACDInfoDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDInfoDetailCell reuseIdentifier]];
+        _groupNoticesCell = [[ACDImageTitleContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDImageTitleContentCell reuseIdentifier]];
         _groupNoticesCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [_groupNoticesCell.iconImageView setImage:ImageWithName(@"groupInfo_notice")];
         _groupNoticesCell.nameLabel.text = @"Group Notice";
-        _groupNoticesCell.detailLabel.text = @"";
+        _groupNoticesCell.contentLabel.text = self.group.announcement;
         ACD_WS
         _groupNoticesCell.tapCellBlock = ^{
             [weakSelf goGroupNotice];

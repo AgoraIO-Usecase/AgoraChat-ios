@@ -2,15 +2,18 @@
 //  ACDGroupNoticeViewController.h
 //  AgoraChat
 //
-//  Created by liu001 on 2022/3/3.
+//  Created by liu001 on 2022/3/17.
 //  Copyright © 2022 easemob. All rights reserved.
 //
 
-#import "ACDTextViewController.h"
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ACDGroupNoticeViewController : ACDTextViewController
+@interface ACDGroupNoticeViewController : UIViewController
+@property (nonatomic, copy) void (^updateNoticeBlock)(AgoraChatGroup *aGroup);
+
+- (instancetype)initWithGroup:(AgoraChatGroup *)aGroup;
 
 @end
 

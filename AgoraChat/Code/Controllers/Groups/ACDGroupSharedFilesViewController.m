@@ -17,6 +17,7 @@
 
 #import "ACDGroupMemberNavView.h"
 
+
 @interface ACDGroupSharedFilesViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AgoraChatGroupManagerDelegate, UIDocumentPickerDelegate,UIDocumentInteractionControllerDelegate>
 
 @property (nonatomic, strong) AgoraChatGroup *group;
@@ -31,7 +32,7 @@
 
 @property (nonatomic,strong) ACDGroupMemberNavView *navView;
 
-
+@property (nonatomic, strong) ACDNoDataPlaceHolderView *noDataPromptView;
 
 @end
 
@@ -69,7 +70,8 @@
     [self.view addSubview:self.navView];
     [self.view addSubview:container];
     [container addSubview:self.table];
-    
+    [container addSubview:self.noDataPromptView];
+
     CGFloat bottom = 0;
     if (@available(iOS 11, *)) {
         bottom =  UIApplication.sharedApplication.windows.firstObject.safeAreaInsets.bottom;
@@ -90,7 +92,12 @@
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
         make.bottom.equalTo(self.view);
-    }];}
+    }];
+        
+    [self.noDataPromptView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.centerY.left.right.equalTo(container);
+    }];
+}
 
 
 - (void)viewWillAppear:(BOOL)animated
@@ -191,16 +198,16 @@
     if ([fm fileExistsAtPath:filePath]) {
         [self _openFileWithPath:filePath];
     } else {
-        __weak typeof(self) weakself = self;
+        __weak typeof(self) weakSelf = self;
         [self showHudInView:self.view hint:NSLocalizedString(@"downloadingShareFile...", nil)];
         [[AgoraChatClient sharedClient].groupManager downloadGroupSharedFileWithId:self.group.groupId filePath:filePath sharedFileId:file.fileId progress:^(int progress) {
             // NSLog(@"%d",progress);
         } completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
-            [weakself hideHud];
+            [weakSelf hideHud];
             if (aError) {
-                [weakself showHint:NSLocalizedString(@"downloadsharedFileFial", nil)];
+                [weakSelf showHint:NSLocalizedString(@"downloadsharedFileFial", nil)];
             } else {
-                [weakself _openFileWithPath:filePath];
+                [weakSelf _openFileWithPath:filePath];
             }
         }];
     }
@@ -314,34 +321,54 @@
 //开始上传
 - (void)uploadAction:(NSString *)filePath
 {
-    __weak typeof(self) weakself = self;
+    __weak typeof(self) weakSelf = self;
     [self showHudInView:self.view hint:NSLocalizedString(@"uploadingShareFile...", nil)];
     [[AgoraChatClient sharedClient].groupManager uploadGroupSharedFileWithId:self.group.groupId filePath:filePath progress:^(int progress){
         //code
     } completion:^(AgoraChatGroupSharedFile *aSharedFile, AgoraChatError *aError) {
-        [weakself hideHud];
+        [weakSelf hideHud];
         if (!aError) {
-            [weakself.dataArray insertObject:aSharedFile atIndex:0];
-            [weakself.table reloadData];
+            [weakSelf.dataArray insertObject:aSharedFile atIndex:0];
+            [weakSelf.table reloadData];
         } else {
-            [weakself showHint:NSLocalizedString(@"uploadsharedFileFail", nil)];
+            [weakSelf showHint:NSLocalizedString(@"uploadsharedFileFail", nil)];
         }
     }];
 }
 
-- (void)_deleteFileCellAction:(NSIndexPath *)aIndexPath
-{
-    AgoraChatGroupSharedFile *file = [self.dataArray objectAtIndex:aIndexPath.row];
+- (void)_deleteFileCellAction:(NSIndexPath *)aIndexPath {
     
-    __weak typeof(self) weakself = self;
+    AgoraChatGroupSharedFile *file = [self.dataArray objectAtIndex:aIndexPath.row];
+
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Are you sure to delete" message:file.fileName preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+
+    }];
+    [alertController addAction:cancelAction];
+    
+    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:@"Delete" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self _deleteFile:file];
+    }];
+    [deleteAction setValue:TextLabelPinkColor forKey:@"titleTextColor"];
+
+    [alertController addAction:deleteAction];
+    
+    alertController.modalPresentationStyle = 0;
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+
+- (void)_deleteFile:(AgoraChatGroupSharedFile *)file{
+    
+    ACD_WS
     [self showHudInView:self.view hint:NSLocalizedString(@"deleteShareFile...", nil)];
     [[AgoraChatClient sharedClient].groupManager removeGroupSharedFileWithId:self.group.groupId sharedFileId:file.fileId completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
-        [weakself hideHud];
+        [weakSelf hideHud];
         if (!aError) {
-            [weakself.dataArray removeObject:file];
-            [weakself.table reloadData];
+            [weakSelf.dataArray removeObject:file];
+            [weakSelf.table reloadData];
         } else {
-            [weakself showHint:NSLocalizedString(@"removesharedFileFail", nil)];
+            [weakSelf showHint:NSLocalizedString(@"removesharedFileFail", nil)];
         }
     }];
 }
@@ -414,7 +441,7 @@
 {
     [self.dataArray removeAllObjects];
     [self.dataArray addObjectsFromArray:self.group.sharedFileList];
-    [self.table reloadData];
+    [self updateUI];
 }
 
 - (void)_fetchFilesWithPage:(NSInteger)aPage
@@ -426,22 +453,22 @@
         [self showHudInView:self.view hint:NSLocalizedString(@"fetchShareFile...", nil)];
     }
     
-    __weak typeof(self) weakself = self;
+    __weak typeof(self) weakSelf = self;
     [[AgoraChatClient sharedClient].groupManager getGroupFileListWithId:self.group.groupId pageNumber:self.page pageSize:pageSize completion:^(NSArray *aList, AgoraChatError *aError) {
         [self endRefresh];
 
         if (aIsShowHUD) {
-            [weakself hideHud];
+            [weakSelf hideHud];
         }
         
         if (!aError) {
             if (aIsHeader) {
-                [weakself.dataArray removeAllObjects];
+                [weakSelf.dataArray removeAllObjects];
             }
-            [weakself.dataArray addObjectsFromArray:aList];
-            [weakself.table reloadData];
+            [weakSelf.dataArray addObjectsFromArray:aList];
+            [self updateUI];
         } else {
-            [weakself showHint:NSLocalizedString(@"fetchsharedFileFail", nil)];
+            [weakSelf showHint:NSLocalizedString(@"fetchsharedFileFail", nil)];
         }
         
         if (aList.count < pageSize) {
@@ -452,8 +479,14 @@
             [self useLoadMore];
         }
 
-        [self.table reloadData];
+        [self updateUI];
+
     }];
+}
+
+- (void)updateUI {
+    [self.table reloadData];
+    self.noDataPromptView.hidden = self.dataArray.count > 0 ? YES : NO;
 }
 
 #pragma mark refresh and load more
@@ -480,18 +513,35 @@
 
 #pragma mark - Action
 
-- (void)moreAction
-{
-    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(self.view.bounds.size.width-200, 44, 185, 156) selectData:@[NSLocalizedString(@"uploadImage", nil),NSLocalizedString(@"uploadVideo", nil),NSLocalizedString(@"uploadFile", nil)] images:@[@"icon-创建群组",@"icon-添加好友",@"icon-添加好友"] locationY:0 action:^(NSInteger index){
-        if(index == 0) {
-            [self uploadMediaAction:0];
-        } else if (index == 1) {
-            [self uploadMediaAction:1];
-        } else if (index == 2) {
-            [self uploadFileAction];
-        }
-    } animated:YES];
+- (void)moreAction {
+   
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    
+    UIAlertAction *changeAvatarAction = [UIAlertAction alertActionWithTitle:@"Upload Image" iconImage:ImageWithName(@"groupShareImage") textColor:TextLabelBlackColor alignment:NSTextAlignmentLeft completion:^{
+        [self uploadMediaAction:0];
+    }];
+    
+    
+    UIAlertAction *changeNicknameAction = [UIAlertAction alertActionWithTitle:@"Upload Video" iconImage:ImageWithName(@"groupShareVideo") textColor:TextLabelBlackColor alignment:NSTextAlignmentLeft completion:^{
+        [self uploadMediaAction:1];
+    }];
+
+    UIAlertAction *copyAction = [UIAlertAction alertActionWithTitle:@"Upload File" iconImage:ImageWithName(@"groupShareFile") textColor:TextLabelBlackColor alignment:NSTextAlignmentLeft completion:^{
+        [self uploadFileAction];
+    }];
+   
+    
+    [alertController addAction:changeAvatarAction];
+    [alertController addAction:changeNicknameAction];
+    [alertController addAction:copyAction];
+
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }]];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
+
 
 //上传图片/视频
 - (void)uploadMediaAction:(NSInteger)tag
@@ -593,4 +643,15 @@
     
     return _navView;
 }
+
+- (ACDNoDataPlaceHolderView *)noDataPromptView {
+    if (_noDataPromptView == nil) {
+        _noDataPromptView = ACDNoDataPlaceHolderView.new;
+        [_noDataPromptView.noDataImageView setImage:ImageWithName(@"no_search_result")];
+        _noDataPromptView.prompt.text = @"";
+        _noDataPromptView.hidden = YES;
+    }
+    return _noDataPromptView;
+}
+
 @end

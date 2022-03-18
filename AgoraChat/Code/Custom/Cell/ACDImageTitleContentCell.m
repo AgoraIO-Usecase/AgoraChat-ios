@@ -1,20 +1,20 @@
 //
-//  ACDGroupInfoMembersCell.m
-//  ChatDemo-UI3.0
+//  ACDImageTitleContentCell.m
+//  AgoraChat
 //
-//  Created by liang on 2021/10/28.
-//  Copyright © 2021 easemob. All rights reserved.
+//  Created by liu001 on 2022/3/17.
+//  Copyright © 2022 easemob. All rights reserved.
 //
 
-#import "ACDInfoDetailCell.h"
+#import "ACDImageTitleContentCell.h"
 
-@implementation ACDInfoDetailCell
+@implementation ACDImageTitleContentCell
 
 - (void)prepare {
     [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
     [self.contentView addSubview:self.iconImageView];
     [self.contentView addSubview:self.nameLabel];
-    [self.contentView addSubview:self.detailLabel];
+    [self.contentView addSubview:self.contentLabel];
 }
 
 - (void)placeSubViews {
@@ -29,12 +29,14 @@
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.mas_equalTo(self.iconImageView);
         make.left.equalTo(self.iconImageView.mas_right).offset(kAgroaPadding);
-        make.right.equalTo(self.detailLabel.mas_left);
+        make.right.equalTo(self.contentView).offset(-kAgroaPadding * 1.6);
     }];
     
-    [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.mas_equalTo(self.iconImageView);
+    [self.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.nameLabel.mas_bottom).offset(kAgroaPadding * 0.5);
+        make.left.equalTo(self.nameLabel);
         make.right.equalTo(self.contentView).offset(-kAgroaPadding * 1.6);
+        make.bottom.equalTo(self.contentView).offset(-kAgroaPadding * 0.5);
     }];
     
 }
@@ -47,15 +49,16 @@
 }
 
 #pragma mark getter and setter
-- (UILabel *)detailLabel {
-    if (_detailLabel == nil) {
-        _detailLabel = [[UILabel alloc] init];
-        _detailLabel.font = NFont(16.0f);
-        _detailLabel.textColor = TextLabelGrayColor;
-        _detailLabel.textAlignment = NSTextAlignmentRight;
-        _detailLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+- (UILabel *)contentLabel {
+    if (_contentLabel == nil) {
+        _contentLabel = [[UILabel alloc] init];
+        _contentLabel.font = NFont(16.0f);
+        _contentLabel.textColor = TextLabelGrayColor;
+        _contentLabel.textAlignment = NSTextAlignmentRight;
+        _contentLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+        _contentLabel.numberOfLines = 2;
     }
-    return _detailLabel;
+    return _contentLabel;
 }
 
 @end
