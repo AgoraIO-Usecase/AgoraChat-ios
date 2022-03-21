@@ -171,6 +171,7 @@
 		C019069D27E431C000FE3A2C /* groupShareVideo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C019069727E431C000FE3A2C /* groupShareVideo@2x.png */; };
 		C019069E27E431C000FE3A2C /* groupShareFile@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C019069827E431C000FE3A2C /* groupShareFile@3x.png */; };
 		C019069F27E431C000FE3A2C /* groupShareImage@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C019069927E431C000FE3A2C /* groupShareImage@3x.png */; };
+		C01906A727E8532300FE3A2C /* ACDGroupShareFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C01906A627E8532300FE3A2C /* ACDGroupShareFileModel.m */; };
 		C04341FC27D620D900EB058B /* SPDateTimePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C04341FA27D620D900EB058B /* SPDateTimePickerView.m */; };
 		C04341FF27D7007E00EB058B /* ACDGeneralViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C04341FE27D7007E00EB058B /* ACDGeneralViewController.m */; };
 		C043420227D7383300EB058B /* ACDPrivacyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C043420027D7383300EB058B /* ACDPrivacyViewController.m */; };
@@ -928,6 +929,8 @@
 		C019069727E431C000FE3A2C /* groupShareVideo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "groupShareVideo@2x.png"; sourceTree = "<group>"; };
 		C019069827E431C000FE3A2C /* groupShareFile@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "groupShareFile@3x.png"; sourceTree = "<group>"; };
 		C019069927E431C000FE3A2C /* groupShareImage@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "groupShareImage@3x.png"; sourceTree = "<group>"; };
+		C01906A527E8532300FE3A2C /* ACDGroupShareFileModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACDGroupShareFileModel.h; sourceTree = "<group>"; };
+		C01906A627E8532300FE3A2C /* ACDGroupShareFileModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACDGroupShareFileModel.m; sourceTree = "<group>"; };
 		C04341FA27D620D900EB058B /* SPDateTimePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPDateTimePickerView.m; sourceTree = "<group>"; };
 		C04341FB27D620D900EB058B /* SPDateTimePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPDateTimePickerView.h; sourceTree = "<group>"; };
 		C04341FD27D7007E00EB058B /* ACDGeneralViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACDGeneralViewController.h; sourceTree = "<group>"; };
@@ -1726,6 +1729,8 @@
 				7F6CC90026568D5000BA60BB /* AgoraUserModel.m */,
 				7166340A1DB0E17C00C92E27 /* AgoraGroupModel.h */,
 				7166340B1DB0E17C00C92E27 /* AgoraGroupModel.m */,
+				C01906A527E8532300FE3A2C /* ACDGroupShareFileModel.h */,
+				C01906A627E8532300FE3A2C /* ACDGroupShareFileModel.m */,
 				D2AD8EB21DB4CEF100A0DD3C /* AgoraConversationModel.h */,
 				D2AD8EB31DB4CEF100A0DD3C /* AgoraConversationModel.m */,
 				D29502721DBB2BF3001B9954 /* AgoraMessageModel.h */,
@@ -3650,6 +3655,7 @@
 				EC54DDC327269BA300ABEE3E /* AgoraGroupMemberCell.m in Sources */,
 				EC432EEE27210ABC001B31DE /* ACDImageTextButtonView.m in Sources */,
 				9ECE66E3273B6F41007CF85F /* AgoraChatHttpRequest.m in Sources */,
+				C01906A727E8532300FE3A2C /* ACDGroupShareFileModel.m in Sources */,
 				EC54DDFB272A455D00ABEE3E /* ACDInfoSwitchCell.m in Sources */,
 				3A4BB1B51ED422BA00B07FCA /* AgoraChatroomInfoViewController.m in Sources */,
 				7F6CC87C26568C0000BA60BB /* AgoraLocationViewController.m in Sources */,

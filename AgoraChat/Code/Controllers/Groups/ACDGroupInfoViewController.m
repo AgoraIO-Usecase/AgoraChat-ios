@@ -112,19 +112,6 @@
     }];
 }
 
-//
-//- (void)viewWillAppear:(BOOL)animated
-//{
-//    [super viewWillAppear:animated];
-//    self.navigationController.navigationBarHidden = YES;
-//}
-//
-//- (void)viewWillDisappear:(BOOL)animated
-//{
-//    [super viewWillDisappear:animated];
-//    self.navigationController.navigationBarHidden = NO;
-//}
-
 #pragma mark NSNotification
 - (void)updateUIWithNotification:(NSNotification *)notification
 {
@@ -161,6 +148,7 @@
     self.groupInfoHeaderView.userIdLabel.text = [NSString stringWithFormat:@"GroupID: %@",self.group.groupId];
     self.groupInfoHeaderView.describeLabel.text = self.group.description;
     self.membersCell.detailLabel.text = [@(self.group.occupantsCount) stringValue];
+    self.groupNoticesCell.contentLabel.text = self.group.announcement;
     [self.table reloadData];
 }
 
@@ -180,18 +168,23 @@
             weakSelf.group = aGroup;
             [weakSelf updateUI];
             [weakSelf.groupMembersVC updateWithGroup:weakSelf.group];
+            [weakSelf fetchGroupAnnouncement];
         }else {
             [weakSelf showHint:NSLocalizedString(@"group.fetchInfoFail", @"failed to get the group details, please try again later")];
         }
     }];
     
     
-//    [[AgoraChatClient sharedClient].groupManager getGroupAnnouncementWithId:self.groupId completion:^(NSString *aAnnouncement, AgoraChatError *aError) {
-//        if (!aError) {
-//            [weakSelf reloadUI];
-//        }
-//    }];
-    
+}
+
+- (void)fetchGroupAnnouncement {
+    [[AgoraChatClient sharedClient].groupManager getGroupAnnouncementWithId:self.groupId completion:^(NSString *aAnnouncement, AgoraChatError *aError) {
+        if (!aError) {
+            [self updateUI];
+        }else {
+            [self showHint:aError.description];
+        }
+    }];
 }
 
 
@@ -479,6 +472,9 @@
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == 1) {
+        return UITableViewAutomaticDimension;
+    }
     return 54.0f;
 }
 
@@ -515,7 +511,8 @@
         _table.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         _table.backgroundColor = COLOR_HEX(0xFFFFFF);
         _table.tableHeaderView = [self headerView];
-        
+        _table.rowHeight = UITableViewAutomaticDimension;
+        _table.estimatedRowHeight = 40.0f;
     }
     return _table;
 }
@@ -567,7 +564,6 @@
         _groupNoticesCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [_groupNoticesCell.iconImageView setImage:ImageWithName(@"groupInfo_notice")];
         _groupNoticesCell.nameLabel.text = @"Group Notice";
-        _groupNoticesCell.contentLabel.text = self.group.announcement;
         ACD_WS
         _groupNoticesCell.tapCellBlock = ^{
             [weakSelf goGroupNotice];

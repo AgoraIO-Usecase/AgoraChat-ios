@@ -12,7 +12,6 @@
 #import "AgoraRealtimeSearchUtils.h"
 #import "ACDSearchJoinCell.h"
 
-#define kSearchBarHeight 40.0f
 
 @interface ACDJoinGroupViewController ()
 @property (nonatomic, strong) ACDSearchResultView *resultView;
@@ -193,4 +192,3 @@
 
 @end
 
-#undef kSearchBarHeight

@@ -21,7 +21,7 @@
     [self generateRandomAvatar];
     
     [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.contentView);
+        make.top.equalTo(self.contentView).offset(kAgroaPadding);
         make.left.equalTo(self.contentView).offset(16.0f);
         make.size.mas_equalTo(kAvatarHeight);
     }];
@@ -54,7 +54,7 @@
         _contentLabel = [[UILabel alloc] init];
         _contentLabel.font = NFont(16.0f);
         _contentLabel.textColor = TextLabelGrayColor;
-        _contentLabel.textAlignment = NSTextAlignmentRight;
+        _contentLabel.textAlignment = NSTextAlignmentLeft;
         _contentLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         _contentLabel.numberOfLines = 2;
     }

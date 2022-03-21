@@ -95,10 +95,10 @@
     [options setIsDeleteMessagesWhenExitChatRoom:NO];
     [options setUsingHttpsOnly:YES];
     [options setIsAutoLogin:YES];
-
+    
 #warning 国内部署设置
 //    [self internalSpecOption:options];
-//    ACDDemoOptions *demoOptions = [ACDDemoOptions sharedOptions];
+    ACDDemoOptions *demoOptions = [ACDDemoOptions sharedOptions];
 //    [EaseChatKitManager initWithAgoraChatOptions:[demoOptions toOptions]];
 
     [EaseChatKitManager initWithAgoraChatOptions:options];

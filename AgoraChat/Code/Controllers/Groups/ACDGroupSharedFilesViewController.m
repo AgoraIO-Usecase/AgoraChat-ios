@@ -10,12 +10,10 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "ACDGroupSharedFilesViewController.h"
-
 #import "ACDAvatarNameCell.h"
 #import "ACDDateHelper.h"
-#import "PellTableViewSelect.h"
-
 #import "ACDGroupMemberNavView.h"
+#import "ACDGroupShareFileModel.h"
 
 
 @interface ACDGroupSharedFilesViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AgoraChatGroupManagerDelegate, UIDocumentPickerDelegate,UIDocumentInteractionControllerDelegate>
@@ -27,8 +25,6 @@
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 @property (nonatomic, assign) NSInteger page;
-
-@property (nonatomic, strong) NSMutableArray *dataArray;
 
 @property (nonatomic,strong) ACDGroupMemberNavView *navView;
 
@@ -69,6 +65,7 @@
     
     [self.view addSubview:self.navView];
     [self.view addSubview:container];
+    [self.view addSubview:self.searchBar];
     [container addSubview:self.table];
     [container addSubview:self.noDataPromptView];
 
@@ -82,8 +79,14 @@
         make.left.right.equalTo(self.view);
     }];
     
+    [self.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(container);
+        make.left.and.right.equalTo(container);
+        make.height.mas_equalTo(kSearchBarHeight);
+    }];
+    
     [self.table mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(container);
+        make.edges.equalTo(container).insets(UIEdgeInsetsMake(kSearchBarHeight, 0, 0,   0));
     }];
 
     
@@ -133,6 +136,9 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (self.isSearchState) {
+        return [self.searchResults count];
+    }
     return [self.dataArray count];
 }
 
@@ -150,7 +156,16 @@
         }];
     }
     
-    AgoraChatGroupSharedFile *file = [self.dataArray objectAtIndex:indexPath.row];
+    AgoraChatGroupSharedFile *file = nil;
+    ACDGroupShareFileModel *fileModel = nil;
+    if (self.isSearchState) {
+        fileModel = self.searchResults[indexPath.row];
+        file = fileModel.file;
+    }else {
+        fileModel = [self.dataArray objectAtIndex:indexPath.row];
+        file = fileModel.file;
+    }
+    
     cell.avatarView.image = [UIImage imageNamed:@"groupSharedFile"];
     if (file.fileName.length > 0) {
         cell.nameLabel.text = file.fileName;
@@ -191,7 +206,16 @@
         [fm createDirectoryAtPath:filePath withIntermediateDirectories:YES attributes:nil error:nil];
     }
     
-    AgoraChatGroupSharedFile *file = [self.dataArray objectAtIndex:indexPath.row];
+    AgoraChatGroupSharedFile *file = nil;
+    ACDGroupShareFileModel *fileModel = nil;
+    if (self.isSearchState) {
+        fileModel = self.searchResults[indexPath.row];
+        file = fileModel.file;
+    }else {
+        fileModel = [self.dataArray objectAtIndex:indexPath.row];
+        file = fileModel.file;
+    }
+    
     NSString *fileName = file.fileName.length > 0 ? file.fileName : file.fileId;
     filePath = [NSString stringWithFormat:@"%@/%@", filePath, fileName];
     
@@ -328,8 +352,9 @@
     } completion:^(AgoraChatGroupSharedFile *aSharedFile, AgoraChatError *aError) {
         [weakSelf hideHud];
         if (!aError) {
-            [weakSelf.dataArray insertObject:aSharedFile atIndex:0];
-            [weakSelf.table reloadData];
+            ACDGroupShareFileModel *fileModel = [[ACDGroupShareFileModel alloc] initWithObject:aSharedFile];
+            [weakSelf.dataArray insertObject:fileModel atIndex:0];
+            [weakSelf updateUI];
         } else {
             [weakSelf showHint:NSLocalizedString(@"uploadsharedFileFail", nil)];
         }
@@ -338,7 +363,8 @@
 
 - (void)_deleteFileCellAction:(NSIndexPath *)aIndexPath {
     
-    AgoraChatGroupSharedFile *file = [self.dataArray objectAtIndex:aIndexPath.row];
+    ACDGroupShareFileModel *fileModel = [self.dataArray objectAtIndex:aIndexPath.row];
+    AgoraChatGroupSharedFile *file = fileModel.file;
 
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Are you sure to delete" message:file.fileName preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
@@ -365,8 +391,9 @@
     [[AgoraChatClient sharedClient].groupManager removeGroupSharedFileWithId:self.group.groupId sharedFileId:file.fileId completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
         [weakSelf hideHud];
         if (!aError) {
-            [weakSelf.dataArray removeObject:file];
-            [weakSelf.table reloadData];
+            ACDGroupShareFileModel *fileModel = [[ACDGroupShareFileModel alloc] initWithObject:file];
+            [weakSelf.dataArray removeObject:fileModel];
+            [weakSelf updateUI];
         } else {
             [weakSelf showHint:NSLocalizedString(@"removesharedFileFail", nil)];
         }
@@ -440,7 +467,12 @@
 - (void)_reloadDataArrayAndView
 {
     [self.dataArray removeAllObjects];
-    [self.dataArray addObjectsFromArray:self.group.sharedFileList];
+    for (AgoraChatGroupSharedFile *file in self.group.sharedFileList) {
+        ACDGroupShareFileModel *model = [[ACDGroupShareFileModel alloc] initWithObject:file];
+        if (model) {
+            [self.dataArray addObject:model];
+        }
+    }
     [self updateUI];
 }
 
@@ -465,8 +497,14 @@
             if (aIsHeader) {
                 [weakSelf.dataArray removeAllObjects];
             }
-            [weakSelf.dataArray addObjectsFromArray:aList];
-            [self updateUI];
+            
+            for (AgoraChatGroupSharedFile *file in aList) {
+                ACDGroupShareFileModel *model = [[ACDGroupShareFileModel alloc] initWithObject:file];
+                if (model) {
+                    [weakSelf.dataArray addObject:model];
+                }
+            }
+
         } else {
             [weakSelf showHint:NSLocalizedString(@"fetchsharedFileFail", nil)];
         }
@@ -474,7 +512,6 @@
         if (aList.count < pageSize) {
             [self endLoadMore];
             [self loadMoreCompleted];
-            self.navView.leftSubLabel.text = [NSString stringWithFormat:@"(%@)",@(self.dataArray.count)];
         } else {
             [self useLoadMore];
         }
@@ -485,7 +522,9 @@
 }
 
 - (void)updateUI {
+    self.searchSource = [NSMutableArray arrayWithArray:self.dataArray];
     [self.table reloadData];
+    self.navView.leftSubLabel.text = [NSString stringWithFormat:@"(%@)",@(self.dataArray.count)];
     self.noDataPromptView.hidden = self.dataArray.count > 0 ? YES : NO;
 }
 
@@ -618,12 +657,12 @@
 }
 
 #pragma mark getter and setter
-- (NSMutableArray *)dataArray {
-    if (_dataArray == nil) {
-        _dataArray = NSMutableArray.new;
-    }
-    return _dataArray;
-}
+//- (NSMutableArray *)dataArray {
+//    if (_dataArray == nil) {
+//        _dataArray = NSMutableArray.new;
+//    }
+//    return _dataArray;
+//}
 
 - (ACDGroupMemberNavView *)navView {
     if (_navView == nil) {

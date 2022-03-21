@@ -7,8 +7,9 @@
 //
 
 #import "ACDBaseTableViewController.h"
+#import "ACDContainerSearchTableViewController.h"
 
-@interface ACDGroupSharedFilesViewController : ACDBaseTableViewController
+@interface ACDGroupSharedFilesViewController : ACDContainerSearchTableViewController
 
 - (instancetype)initWithGroup:(AgoraChatGroup *)aGroup;
 
