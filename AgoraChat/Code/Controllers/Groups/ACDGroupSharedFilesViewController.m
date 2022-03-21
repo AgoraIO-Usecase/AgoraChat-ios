@@ -166,7 +166,7 @@
         file = fileModel.file;
     }
     
-    cell.avatarView.image = [UIImage imageNamed:@"groupSharedFile"];
+    cell.avatarView.image = [self fileIconWithFileName:file.fileName];
     if (file.fileName.length > 0) {
         cell.nameLabel.text = file.fileName;
     } else {
@@ -320,6 +320,23 @@
 }
 
 #pragma mark - Private
+- (UIImage *)fileIconWithFileName:(NSString *)fileName {
+    NSString *fileIconName = @"";
+    NSString *fileTypeString = [fileName componentsSeparatedByString:@"."].lastObject;
+    if ([fileTypeString isEqualToString:@"jpg"]||
+        [fileTypeString isEqualToString:@"mp4"]||
+        [fileTypeString isEqualToString:@"docx"]||
+        [fileTypeString isEqualToString:@"xlsx"]||
+        [fileTypeString isEqualToString:@"pdf"]||
+        [fileTypeString isEqualToString:@"zip"]||
+        [fileTypeString isEqualToString:@"txt"]) {
+        fileIconName = [NSString stringWithFormat:@"file_%@",fileTypeString];
+    }else {
+        fileIconName = @"file_unknow";
+    }
+    return ImageWithName(fileIconName);
+}
+
 
 - (void)_uploadFileData:(NSData *)aData
                fileName:(NSString *)aFileName
@@ -391,8 +408,12 @@
     [[AgoraChatClient sharedClient].groupManager removeGroupSharedFileWithId:self.group.groupId sharedFileId:file.fileId completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
         [weakSelf hideHud];
         if (!aError) {
-            ACDGroupShareFileModel *fileModel = [[ACDGroupShareFileModel alloc] initWithObject:file];
-            [weakSelf.dataArray removeObject:fileModel];
+            for (ACDGroupShareFileModel *fileModel in weakSelf.dataArray) {
+                if ([fileModel.file.fileName isEqual:file.fileName]) {
+                    [weakSelf.dataArray removeObject:fileModel];
+                    break;
+                }
+            }
             [weakSelf updateUI];
         } else {
             [weakSelf showHint:NSLocalizedString(@"removesharedFileFail", nil)];
