@@ -55,7 +55,8 @@
         _chatController = [EaseChatViewController initWithConversationId:conversationId
                                                     conversationType:conType
                                                         chatViewModel:viewModel];
-        [_chatController setTypingIndicator:YES];
+
+        [_chatController setEditingStatusVisible:[ACDDemoOptions sharedOptions].isChatTyping];
         _chatController.delegate = self;
     }
     return self;
@@ -70,6 +71,7 @@
     if (_conversation.unreadMessagesCount > 0) {
         [[AgoraChatClient sharedClient].chatManager ackConversationRead:_conversation.conversationId completion:nil];
     }
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -108,43 +110,9 @@
     }];
  
     self.view.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
+    
 }
 
-- (void)_setupNavigationBarTitle
-{
-    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width * 06, 40)];
-    
-    self.titleLabel = [[UILabel alloc] init];
-    self.titleLabel.font = [UIFont systemFontOfSize:18];
-    self.titleLabel.textColor = [UIColor blackColor];
-    self.titleLabel.textAlignment = NSTextAlignmentCenter;
-    self.titleLabel.text = _conversationModel.showName;
-    if(self.conversation.type == AgoraChatConversationTypeChat) {
-        AgoraChatUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:self.conversation.conversationId];
-        if(userInfo && userInfo.nickName.length > 0)
-            self.titleLabel.text = userInfo.nickName;
-    }
-    [titleView addSubview:self.titleLabel];
-    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(titleView);
-        make.left.equalTo(titleView).offset(5);
-        make.right.equalTo(titleView).offset(-5);
-    }];
-    
-    self.titleDetailLabel = [[UILabel alloc] init];
-    self.titleDetailLabel.font = [UIFont systemFontOfSize:15];
-    self.titleDetailLabel.textColor = [UIColor grayColor];
-    self.titleDetailLabel.textAlignment = NSTextAlignmentCenter;
-    [titleView addSubview:self.titleDetailLabel];
-    [self.titleDetailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titleLabel.mas_bottom);
-        make.left.equalTo(self.titleLabel);
-        make.right.equalTo(self.titleLabel);
-        make.bottom.equalTo(titleView);
-    }];
-    
-    self.navigationItem.titleView = titleView;
-}
 
 #pragma mark - EaseChatViewControllerDelegate
 
@@ -177,13 +145,21 @@
 //typing 1v1 single chat only
 - (void)peerTyping
 {
-    self.titleDetailLabel.text = @"other party is typing";
+    NSAttributedString *titleString = [ACDUtil attributeContent:self.navTitle color:TextLabelBlackColor font:BFont(18.0f)];
+
+    NSAttributedString *preTypingString = [ACDUtil attributeContent:@" (other party is typing)" color:TextLabelGrayColor font:Font(@"PingFang SC",14.0)];
+    
+    NSMutableAttributedString *mutAttributeString = [[NSMutableAttributedString alloc] init];
+    [mutAttributeString appendAttributedString:titleString];
+    [mutAttributeString appendAttributedString:preTypingString];
+    self.navigationView.leftLabel.attributedText = mutAttributeString;
+
 }
 
 //1v1 single chat only
 - (void)peerEndTyping
 {
-    self.titleDetailLabel.text = nil;
+    self.navigationView.leftLabel.text = [NSString stringWithFormat:@"%@",self.navTitle];
 }
 
 //userProfile
@@ -374,17 +350,18 @@
         _navigationView.leftButtonBlock = ^{
             [weakSelf backAction];
         };
-        
+
         _navigationView.chatButtonBlock = ^{
             [weakSelf goInfoPage];
         };
-        
+
         _navigationView.rightButtonBlock = ^{
             [weakSelf goChatDetailPage];
         };
     }
     return _navigationView;
 }
+
 
 - (void)goInfoPage {
     if (self.conversationType == AgoraChatConversationTypeChat) {
