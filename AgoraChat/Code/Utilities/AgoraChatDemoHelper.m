@@ -186,9 +186,9 @@ static AgoraChatDemoHelper *helper = nil;
                reason:(AgoraChatGroupLeaveReason)aReason {
     NSString *msgstr = nil;
     if (aReason == AgoraChatGroupLeaveReasonBeRemoved) {
-        msgstr = [NSString stringWithFormat:@"Your are kicked out from group: %@ [%@]", aGroup.subject, aGroup.groupId];
+        msgstr = [NSString stringWithFormat:@"Your are kicked out from group: %@ [%@]", aGroup.groupName, aGroup.groupId];
     } else if (aReason == AgoraChatGroupLeaveReasonDestroyed) {
-        msgstr = [NSString stringWithFormat:@"Group: %@ [%@] is destroyed", aGroup.subject, aGroup.groupId];
+        msgstr = [NSString stringWithFormat:@"Group: %@ [%@] is destroyed", aGroup.groupName, aGroup.groupId];
     }
     
     if (msgstr.length > 0) {
@@ -279,6 +279,7 @@ static AgoraChatDemoHelper *helper = nil;
 {
     NSString *msgstr = [NSString stringWithFormat:NSLocalizedString(@"group.agreedAndJoined", @"agreed to join the group of \'%@\'"), aGroup.subject];
     [self showAlertWithMessage:msgstr];
+    
 }
 
 - (void)groupInvitationDidReceive:(NSString *)aGroupId
@@ -321,6 +322,8 @@ static AgoraChatDemoHelper *helper = nil;
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.declineInvitation", @"%@ decline to join the group [%@]"), aInvitee, aGroup.subject];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
     [alertView show];
+    
+    
 }
 
 - (void)groupInvitationDidAccept:(AgoraChatGroup *)aGroup
@@ -391,15 +394,15 @@ static AgoraChatDemoHelper *helper = nil;
     [alertView show];
 }
 
-//- (void)userDidJoinGroup:(AgoraChatGroup *)aGroup
-//                    user:(NSString *)aUsername
-//{
-//    [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
-//
-//    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"group.member.joined", @"%@ has joined to the group [%@]"), aUsername, aGroup.subject];
-//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-//    [alertView show];
-//}
+- (void)userDidJoinGroup:(AgoraChatGroup *)aGroup
+                    user:(NSString *)aUsername
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
+
+    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"group.member.joined", @"%@ has joined to the group [%@]"), aUsername, aGroup.subject];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
+    [alertView show];
+}
 
 - (void)userDidLeaveGroup:(AgoraChatGroup *)aGroup
                      user:(NSString *)aUsername

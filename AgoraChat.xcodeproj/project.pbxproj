@@ -63,8 +63,6 @@
 		7F663CF3265F7F86003F74B8 /* AgoraChatUserInfo+expireTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F663CF2265F7F86003F74B8 /* AgoraChatUserInfo+expireTime.m */; };
 		7F6CC84B26568B4600BA60BB /* AgoraMemberSelectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F6CC84126568B4600BA60BB /* AgoraMemberSelectViewController.xib */; };
 		7F6CC84C26568B4600BA60BB /* AgoraMemberSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6CC84226568B4600BA60BB /* AgoraMemberSelectViewController.m */; };
-		7F6CC85626568B5700BA60BB /* AgoraAddAdminViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6CC85326568B5700BA60BB /* AgoraAddAdminViewController.m */; };
-		7F6CC85726568B5700BA60BB /* AgoraAddAdminViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F6CC85426568B5700BA60BB /* AgoraAddAdminViewController.xib */; };
 		7F6CC86426568B8B00BA60BB /* AgoraGroupMember_Invite_Cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F6CC85A26568B8B00BA60BB /* AgoraGroupMember_Invite_Cell.xib */; };
 		7F6CC86526568B8B00BA60BB /* AgoraMemberCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F6CC85C26568B8B00BA60BB /* AgoraMemberCollectionCell.xib */; };
 		7F6CC86726568B8B00BA60BB /* AgoraMemberCollection_Edit_Cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F6CC85F26568B8B00BA60BB /* AgoraMemberCollection_Edit_Cell.xib */; };
@@ -746,9 +744,6 @@
 		7F6CC84126568B4600BA60BB /* AgoraMemberSelectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AgoraMemberSelectViewController.xib; sourceTree = "<group>"; };
 		7F6CC84226568B4600BA60BB /* AgoraMemberSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraMemberSelectViewController.m; sourceTree = "<group>"; };
 		7F6CC84926568B4600BA60BB /* AgoraMemberSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraMemberSelectViewController.h; sourceTree = "<group>"; };
-		7F6CC85326568B5700BA60BB /* AgoraAddAdminViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraAddAdminViewController.m; sourceTree = "<group>"; };
-		7F6CC85426568B5700BA60BB /* AgoraAddAdminViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AgoraAddAdminViewController.xib; sourceTree = "<group>"; };
-		7F6CC85526568B5700BA60BB /* AgoraAddAdminViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraAddAdminViewController.h; sourceTree = "<group>"; };
 		7F6CC85926568B8B00BA60BB /* AgoraMemberCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraMemberCell.h; sourceTree = "<group>"; };
 		7F6CC85A26568B8B00BA60BB /* AgoraGroupMember_Invite_Cell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AgoraGroupMember_Invite_Cell.xib; sourceTree = "<group>"; };
 		7F6CC85B26568B8B00BA60BB /* AgoraMemberCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraMemberCollectionCell.h; sourceTree = "<group>"; };
@@ -1605,9 +1600,6 @@
 				3A79D1201E77E4F80085AB6E /* AgoraUpdateGroupNameViewController.m */,
 				EC658DFC2733CB7400472939 /* ACDGroupTransferOwnerViewController.h */,
 				EC658DFD2733CB7400472939 /* ACDGroupTransferOwnerViewController.m */,
-				7F6CC85526568B5700BA60BB /* AgoraAddAdminViewController.h */,
-				7F6CC85326568B5700BA60BB /* AgoraAddAdminViewController.m */,
-				7F6CC85426568B5700BA60BB /* AgoraAddAdminViewController.xib */,
 			);
 			path = Info;
 			sourceTree = "<group>";
@@ -3375,7 +3367,6 @@
 				D28360061D95009C00EC7A4A /* Icon_File_disable@3x.png in Resources */,
 				9ECE6748274B9D60007CF85F /* deleteSearch@2x.png in Resources */,
 				D2BF7E6B1D914DB30090AA66 /* Button_Minimize.png in Resources */,
-				7F6CC85726568B5700BA60BB /* AgoraAddAdminViewController.xib in Resources */,
 				EC19F5542739598B00F88012 /* action_icon_edit@3x.png in Resources */,
 				EC54DE17272A7DEB00ABEE3E /* groupInfo_leave@3x.png in Resources */,
 				D2BF7F261D914DB30090AA66 /* logo7@2x.png in Resources */,
@@ -3593,7 +3584,6 @@
 				EC00E21C2743B41400EEB474 /* ACDMemberCollectionCell.m in Sources */,
 				7F6CC89326568C2400BA60BB /* AgoraChatEmojiView.m in Sources */,
 				D28538781DB1EBB50027D4E1 /* AgoraBaseSettingController.m in Sources */,
-				7F6CC85626568B5700BA60BB /* AgoraAddAdminViewController.m in Sources */,
 				EC54DCEE2721502200ABEE3E /* UIView+MISRedPoint.m in Sources */,
 				EC54DDF8272A44D200ABEE3E /* ACDInfoCell.m in Sources */,
 				7F6CC89426568C2400BA60BB /* AgoraChatRecordView.m in Sources */,

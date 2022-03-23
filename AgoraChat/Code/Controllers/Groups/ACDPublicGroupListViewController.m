@@ -168,6 +168,7 @@
     return cell;
 }
 
+
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -193,32 +194,28 @@
 #pragma mark - Data
 - (void)tableViewDidTriggerHeaderRefresh
 {
-    self.page = 1;
-    [self fetchPublicGroupWithPage:self.page isHeader:YES];
+    [self fetchPublicGroupWithIsHeader:YES];
 }
 
 - (void)tableViewDidTriggerFooterRefresh
 {
-    self.page += 1;
-    [self fetchPublicGroupWithPage:self.page isHeader:NO];
+    [self fetchPublicGroupWithIsHeader:NO];
 }
 
-- (void)fetchPublicGroupWithPage:(NSInteger)aPage
-                        isHeader:(BOOL)aIsHeader
+- (void)fetchPublicGroupWithIsHeader:(BOOL)aIsHeader
 {
     __weak typeof(self) weakSelf = self;
     if (!aIsHeader) {
         [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
     }
     
-    [[AgoraChatClient sharedClient].groupManager getPublicGroupsFromServerWithCursor:_cursor pageSize:KPUBLICGROUP_PAGE_COUNT completion:^(AgoraChatCursorResult *aResult, AgoraChatError *aError) {
+    [[AgoraChatClient sharedClient].groupManager getPublicGroupsFromServerWithCursor:self.cursor pageSize:KPUBLICGROUP_PAGE_COUNT completion:^(AgoraChatCursorResult *aResult, AgoraChatError *aError) {
         [MBProgressHUD hideHUDForView:[UIApplication sharedApplication].keyWindow animated:YES];
 //        [self tableViewDidFinishTriggerHeader:YES];
         
         if (!aError) {
             NSArray *groups = [self getGroupsWithResultList:aResult.list];
-            if ([_cursor isEqualToString:@""]) {
-//                self.showRefreshFooter = NO;
+            if ([self.cursor isEqualToString:@""]) {
                 self.dataArray = [groups mutableCopy];
             }else {
                 [self.dataArray addObjectsFromArray:groups];

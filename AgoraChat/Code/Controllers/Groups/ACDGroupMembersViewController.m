@@ -159,6 +159,9 @@ MISScrollPageControllerDelegate,AgoraGroupUIProtocol>
     self.group = agoraGroup;
     [self updateNavTitle];
     [self.allVC updateUI];
+    [self.adminListVC updateUI];
+    [self.blockListVC updateUI];
+    [self.mutedListVC updateUI];
 }
 
 #pragma mark action
