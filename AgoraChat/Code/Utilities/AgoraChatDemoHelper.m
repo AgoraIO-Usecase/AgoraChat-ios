@@ -197,6 +197,8 @@ static AgoraChatDemoHelper *helper = nil;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
 
+    [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
+
     NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:_mainVC.navigationController.viewControllers];
     ACDChatViewController *chatViewContrller = nil;
     for (id viewController in viewControllers) {
@@ -224,10 +226,10 @@ static AgoraChatDemoHelper *helper = nil;
     }
     
     if (!aReason || aReason.length == 0) {
-        aReason = [NSString stringWithFormat:NSLocalizedString(@"group.applyJoin", @"%@ apply to join groups\'%@\'"), aUsername, aGroup.subject];
+        aReason = [NSString stringWithFormat:NSLocalizedString(@"group.applyJoin", @"%@ apply to join groups\'%@\'"), aUsername, aGroup.groupName];
     }
     else{
-        aReason = [NSString stringWithFormat:NSLocalizedString(@"group.applyJoinWithName", @"%@ apply to join groups\'%@\'：%@"), aUsername, aGroup.subject, aReason];
+        aReason = [NSString stringWithFormat:NSLocalizedString(@"group.applyJoinWithName", @"%@ apply to join groups\'%@\'：%@"), aUsername, aGroup.groupName, aReason];
     }
     
     if (![[AgoraApplyManager defaultManager] isExistingRequest:aUsername
@@ -238,7 +240,7 @@ static AgoraChatDemoHelper *helper = nil;
         model.applyHyphenateId = aUsername;
         model.applyNickName = aUsername;
         model.groupId = aGroup.groupId;
-        model.groupSubject = aGroup.subject;
+        model.groupSubject = aGroup.groupName;
         model.groupMemberCount = aGroup.occupantsCount;
         model.reason = aReason;
         model.style = AgoraApplyStyle_joinGroup;
@@ -260,7 +262,7 @@ static AgoraChatDemoHelper *helper = nil;
              inviter:(NSString *)aInviter
              message:(NSString *)aMessage
 {
-    NSString *msgstr = [NSString stringWithFormat:NSLocalizedString(@"group.invite", @"%@ invite you to group: %@ [%@]"), aInviter, aGroup.subject, aGroup.groupId];
+    NSString *msgstr = [NSString stringWithFormat:NSLocalizedString(@"group.invite", @"%@ invite you to group: %@ [%@]"), aInviter, aGroup.groupName, aGroup.groupId];
     [self showAlertWithMessage:msgstr];
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
     
@@ -277,9 +279,11 @@ static AgoraChatDemoHelper *helper = nil;
 
 - (void)joinGroupRequestDidApprove:(AgoraChatGroup *)aGroup
 {
-    NSString *msgstr = [NSString stringWithFormat:NSLocalizedString(@"group.agreedAndJoined", @"agreed to join the group of \'%@\'"), aGroup.subject];
+    NSString *msgstr = [NSString stringWithFormat:NSLocalizedString(@"group.agreedAndJoined", @"agreed to join the group of \'%@\'"), aGroup.groupName];
     [self showAlertWithMessage:msgstr];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
+
 }
 
 - (void)groupInvitationDidReceive:(NSString *)aGroupId
@@ -290,6 +294,10 @@ static AgoraChatDemoHelper *helper = nil;
         return;
     }
 
+    if (!aMessage || aMessage.length == 0) {
+        aMessage = [NSString stringWithFormat:NSLocalizedString(@"group.invite", @"%@ invite you to group: %@ "), aInviter,aGroupId];
+    }
+    
     [[AgoraChatClient sharedClient].groupManager getGroupSpecificationFromServerWithId:aGroupId completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
         if (![[AgoraApplyManager defaultManager] isExistingRequest:aInviter
                                                         groupId:aGroupId
@@ -297,7 +305,7 @@ static AgoraChatDemoHelper *helper = nil;
         {
             AgoraApplyModel *model = [[AgoraApplyModel alloc] init];
             model.groupId = aGroupId;
-            model.groupSubject = aGroup.subject;
+            model.groupSubject = aGroup.groupName;
             model.applyHyphenateId = aInviter;
             model.applyNickName = aInviter;
             model.reason = aMessage;
@@ -319,20 +327,20 @@ static AgoraChatDemoHelper *helper = nil;
                           invitee:(NSString *)aInvitee
                            reason:(NSString *)aReason
 {
-    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.declineInvitation", @"%@ decline to join the group [%@]"), aInvitee, aGroup.subject];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-    [alertView show];
-    
-    
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.declineInvitation", @"%@ decline to join the group [%@]"), aInvitee, aGroup.groupName];
+  
+    [self showAlertWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message];
 }
 
 - (void)groupInvitationDidAccept:(AgoraChatGroup *)aGroup
                          invitee:(NSString *)aInvitee
 {
-    //[[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
-    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.acceptInvitation", @"%@ has agreed to join the group [%@]"), aInvitee, aGroup.subject];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-    [alertView show];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.acceptInvitation", @"%@ has agreed to join the group [%@]"), aInvitee, aGroup.groupName];
+    
+    [self showAlertWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
+
 }
 
 - (void)groupMuteListDidUpdate:(AgoraChatGroup *)aGroup
@@ -341,13 +349,12 @@ static AgoraChatDemoHelper *helper = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
     
-    NSMutableString *msg = [NSMutableString stringWithString:NSLocalizedString(@"group.mute.added", @"Added to mute list:")];
+    NSMutableString *message = [NSMutableString stringWithString:NSLocalizedString(@"group.mute.added", @"Added to mute list:")];
     for (NSString *username in aMutedMembers) {
-        [msg appendFormat:@" %@", username];
+        [message appendFormat:@" %@", username];
     }
     
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-    [alertView show];
+    [self showAlertWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message];
 }
 
 - (void)groupMuteListDidUpdate:(AgoraChatGroup *)aGroup
@@ -355,12 +362,11 @@ static AgoraChatDemoHelper *helper = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
     
-    NSMutableString *msg = [NSMutableString stringWithString:NSLocalizedString(@"group.mute.removed", @"Removed from mute list:")];
+    NSMutableString *message = [NSMutableString stringWithString:NSLocalizedString(@"group.mute.removed", @"Removed from mute list:")];
     for (NSString *username in aMutedMembers) {
-        [msg appendFormat:@" %@", username];
+        [message appendFormat:@" %@", username];
     }
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-    [alertView show];
+    [self showAlertWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message];
 }
 
 - (void)groupAdminListDidUpdate:(AgoraChatGroup *)aGroup
@@ -368,9 +374,9 @@ static AgoraChatDemoHelper *helper = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
     
-    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"group.memberToAdmin", @"%@ is upgraded to administrator"), aAdmin];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-    [alertView show];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.memberToAdmin", @"%@ is upgraded to administrator"), aAdmin];
+    [self showAlertWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message];
+
 }
 
 - (void)groupAdminListDidUpdate:(AgoraChatGroup *)aGroup
@@ -378,9 +384,9 @@ static AgoraChatDemoHelper *helper = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
     
-    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"group.AdminToMember", @"%@ is downgraded to members"), aAdmin];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-    [alertView show];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.AdminToMember", @"%@ is downgraded to members"), aAdmin];
+    [self showAlertWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message];
+
 }
 
 - (void)groupOwnerDidUpdate:(AgoraChatGroup *)aGroup
@@ -389,9 +395,8 @@ static AgoraChatDemoHelper *helper = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
     
-    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"group.owner.updated", @"The group owner changed from %@ to %@"), aOldOwner, aNewOwner];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-    [alertView show];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.owner.updated", @"The group owner changed from %@ to %@"), aOldOwner, aNewOwner];
+    [self showAlertWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message];
 }
 
 - (void)userDidJoinGroup:(AgoraChatGroup *)aGroup
@@ -399,9 +404,9 @@ static AgoraChatDemoHelper *helper = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
 
-    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"group.member.joined", @"%@ has joined to the group [%@]"), aUsername, aGroup.subject];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-    [alertView show];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.member.joined", @"%@ has joined to the group [%@]"), aUsername, aGroup.groupName];
+    [self showAlertWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message];
+
 }
 
 - (void)userDidLeaveGroup:(AgoraChatGroup *)aGroup
@@ -409,18 +414,18 @@ static AgoraChatDemoHelper *helper = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
     
-    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"group.member.leaved", @"%@ has leaved from the group [%@]"), aUsername, aGroup.subject];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-    [alertView show];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.member.leaved", @"%@ has leaved from the group [%@]"), aUsername, aGroup.groupName];
+    [self showAlertWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message];
 }
 
 - (void)groupAnnouncementDidUpdate:(AgoraChatGroup *)aGroup announcement:(NSString *)aAnnouncement
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
     
-    NSString *msg = aAnnouncement == nil ? [NSString stringWithFormat:NSLocalizedString(@"group.clearAnnouncement", @"Group:%@ Announcement is clear"), aGroup.subject] : [NSString stringWithFormat:NSLocalizedString(@"group.updateAnnouncement", @"Group:%@ Announcement: %@"), aGroup.subject, aAnnouncement];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"group.announcementUpdate", @"Group Announcement Update") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"Ok") otherButtonTitles:nil, nil];
-    [alertView show];
+    NSString *message = aAnnouncement == nil ? [NSString stringWithFormat:NSLocalizedString(@"group.clearAnnouncement", @"Group:%@ Announcement is clear"), aGroup.groupName] : [NSString stringWithFormat:NSLocalizedString(@"group.updateAnnouncement", @"Group:%@ Announcement: %@"), aGroup.groupName, aAnnouncement];
+    
+    [self showAlertWithTitle:NSLocalizedString(@"group.announcementUpdate", @"Group Announcement Update") message:message];
+
 }
 
 #pragma mark - AgoraChatroomManagerDelegate
@@ -441,13 +446,13 @@ static AgoraChatDemoHelper *helper = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_CHATROOM_INFO object:aChatroom];
     
-    NSMutableString *msg = [NSMutableString stringWithString:NSLocalizedString(@"chatroom.mute.added", @"Added to mute list:")];
+    NSMutableString *message = [NSMutableString stringWithString:NSLocalizedString(@"chatroom.mute.added", @"Added to mute list:")];
     for (NSString *username in aMutes) {
-        [msg appendFormat:@" %@", username];
+        [message appendFormat:@" %@", username];
     }
-    
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"chatroom.notifications", @"Chatroom Notification") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-    [alertView show];
+        
+    [self showAlertWithTitle:NSLocalizedString(@"chatroom.notifications", @"Chatroom Notification") message:message];
+
 }
 
 - (void)chatroomMuteListDidUpdate:(AgoraChatroom *)aChatroom
@@ -455,13 +460,13 @@ static AgoraChatDemoHelper *helper = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_CHATROOM_INFO object:aChatroom];
     
-    NSMutableString *msg = [NSMutableString stringWithString:NSLocalizedString(@"chatroom.mute.removed", @"Removed from mute list:")];
+    NSMutableString *message = [NSMutableString stringWithString:NSLocalizedString(@"chatroom.mute.removed", @"Removed from mute list:")];
     for (NSString *username in aMutes) {
-        [msg appendFormat:@" %@", username];
+        [message appendFormat:@" %@", username];
     }
     
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"chatroom.notifications", @"Chatroom Notification") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-    [alertView show];
+    [self showAlertWithTitle:NSLocalizedString(@"chatroom.notifications", @"Chatroom Notification") message:message];
+
 }
 
 - (void)chatroomAdminListDidUpdate:(AgoraChatroom *)aChatroom
@@ -469,9 +474,8 @@ static AgoraChatDemoHelper *helper = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_CHATROOM_INFO object:aChatroom];
     
-    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"chatroom.memberToAdmin", @"%@ is upgraded to administrator"), aAdmin];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"chatroom.notifications", @"Chatroom Notification") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-    [alertView show];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"chatroom.memberToAdmin", @"%@ is upgraded to administrator"), aAdmin];
+    [self showAlertWithTitle:NSLocalizedString(@"chatroom.notifications", @"Chatroom Notification") message:message];
 }
 
 - (void)chatroomAdminListDidUpdate:(AgoraChatroom *)aChatroom
@@ -479,9 +483,8 @@ static AgoraChatDemoHelper *helper = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_CHATROOM_INFO object:aChatroom];
     
-    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"chatroom.AdminToMember", @"%@ is downgraded to members"), aAdmin];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"chatroom.notifications", @"Chatroom Notification") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-    [alertView show];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"chatroom.AdminToMember", @"%@ is downgraded to members"), aAdmin];
+    [self showAlertWithTitle:NSLocalizedString(@"chatroom.notifications", @"Chatroom Notification") message:message];
 }
 
 - (void)chatroomOwnerDidUpdate:(AgoraChatroom *)aChatroom
@@ -490,18 +493,18 @@ static AgoraChatDemoHelper *helper = nil;
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_CHATROOM_INFO object:aChatroom];
     
-    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"chatroom.owner.updated", @"The chatroom owner changed from %@ to %@"), aOldOwner, aNewOwner];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"chatroom.notifications", @"Chatroom Notification") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"OK") otherButtonTitles:nil, nil];
-    [alertView show];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"chatroom.owner.updated", @"The chatroom owner changed from %@ to %@"), aOldOwner, aNewOwner];
+    [self showAlertWithTitle:NSLocalizedString(@"chatroom.notifications", @"Chatroom Notification") message:message];
 }
 
 - (void)chatroomAnnouncementDidUpdate:(AgoraChatroom *)aChatroom announcement:(NSString *)aAnnouncement
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_CHATROOM_INFO object:aChatroom];
     
-    NSString *msg = aAnnouncement == nil ? [NSString stringWithFormat:NSLocalizedString(@"chatroom.clearAnnouncement", @"Chatroom:%@ Announcement is clear"), aChatroom.subject] : [NSString stringWithFormat:NSLocalizedString(@"chatroom.updateAnnouncement", Chatroom:%@ Announcement: %@), aChatroom.subject, aAnnouncement];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"chatroom.announcementUpdate", @"Chatroom Announcement Update") message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"Ok") otherButtonTitles:nil, nil];
-    [alertView show];
+    NSString *message = aAnnouncement == nil ? [NSString stringWithFormat:NSLocalizedString(@"chatroom.clearAnnouncement", @"Chatroom:%@ Announcement is clear"), aChatroom.subject] : [NSString stringWithFormat:NSLocalizedString(@"chatroom.updateAnnouncement", Chatroom:%@ Announcement: %@), aChatroom.subject, aAnnouncement];
+    
+    [self showAlertWithTitle:NSLocalizedString(@"chatroom.announcementUpdate", @"Chatroom Announcement Update") message:message];
+
 }
 
 

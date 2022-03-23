@@ -11,7 +11,6 @@
 
 #import <AgoraChat/AgoraChatGroup.h>
 #import "UIViewController+HUD.h"
-#import "AgoraAlertView.h"
 #import "AgoraMemberCell.h"
 #import "AgoraNotificationNames.h"
 #import "AgoraChatroomAdminsViewController.h"

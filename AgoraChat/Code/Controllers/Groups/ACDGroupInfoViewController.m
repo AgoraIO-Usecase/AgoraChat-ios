@@ -160,15 +160,15 @@
 
 - (void)fetchGroupInfo
 {
-    [self showHudInView:self.view hint:NSLocalizedString(@"hud.load", @"Load data...")];
     ACD_WS
     [[AgoraChatClient sharedClient].groupManager getGroupSpecificationFromServerWithId:self.groupId completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
-        [weakSelf hideHud];
         if (aError == nil) {
             weakSelf.group = aGroup;
             [weakSelf updateUI];
-            [weakSelf.groupMembersVC updateWithGroup:weakSelf.group];
-            [weakSelf fetchGroupAnnouncement];
+            if (self.accessType != ACDGroupInfoAccessTypeSearch) {
+                [weakSelf.groupMembersVC updateWithGroup:weakSelf.group];
+                [weakSelf fetchGroupAnnouncement];
+            }
         }else {
             [weakSelf showHint:NSLocalizedString(@"group.fetchInfoFail", @"failed to get the group details, please try again later")];
         }
@@ -435,6 +435,7 @@
             }
             else {
                 [weakSelf showHint:aError.errorDescription];
+                
             }
         }];
 }

@@ -99,7 +99,6 @@
 		7F6CC8F126568C8600BA60BB /* AgoraSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F6CC8E726568C8600BA60BB /* AgoraSettingsViewController.xib */; };
 		7F6CC8F626568D2500BA60BB /* AgoraContactListSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6CC8F326568D2500BA60BB /* AgoraContactListSectionHeader.m */; };
 		7F6CC8F726568D2500BA60BB /* AgoraContactListSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F6CC8F426568D2500BA60BB /* AgoraContactListSectionHeader.xib */; };
-		7F6CC8FB26568D3300BA60BB /* AgoraAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6CC8FA26568D3300BA60BB /* AgoraAlertView.m */; };
 		7F6CC90126568D5000BA60BB /* AgoraApplyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6CC8FD26568D5000BA60BB /* AgoraApplyModel.m */; };
 		7F6CC90226568D5000BA60BB /* AgoraUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6CC90026568D5000BA60BB /* AgoraUserModel.m */; };
 		7F6CC90E26568D8E00BA60BB /* AgoraApplyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6CC90426568D8E00BA60BB /* AgoraApplyManager.m */; };
@@ -118,7 +117,6 @@
 		7F6CC93426568DC300BA60BB /* AgoraAudioRecorderUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6CC92C26568DC300BA60BB /* AgoraAudioRecorderUtil.m */; };
 		7F6CC93826568DDF00BA60BB /* AgoraVoiceConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7F6CC93726568DDF00BA60BB /* AgoraVoiceConverter.mm */; };
 		7F6CC93C26568E0F00BA60BB /* AgoraRealtimeSearchUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6CC93A26568E0F00BA60BB /* AgoraRealtimeSearchUtils.m */; };
-		7F6CC96026575DB200BA60BB /* NSObject+AgoraAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6CC95F26575DB200BA60BB /* NSObject+AgoraAlertView.m */; };
 		7F94E3BB266FA1BA0010D60F /* AgoraChatsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F94E3BA266FA1BA0010D60F /* AgoraChatsCell.m */; };
 		7FB1588326A18C4300B995F3 /* ACDBaseTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB1588226A18C4300B995F3 /* ACDBaseTextField.m */; };
 		7FB1589226A19AE300B995F3 /* UITextField+DarkMode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB1589126A19AE300B995F3 /* UITextField+DarkMode.m */; };
@@ -209,6 +207,7 @@
 		C0894D5327DB349300C9F00B /* chat_setting_mute@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0894D4D27DB349300C9F00B /* chat_setting_mute@3x.png */; };
 		C0894D5927DF4A8100C9F00B /* ACDChatRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0894D5827DF4A8100C9F00B /* ACDChatRecordViewController.m */; };
 		C0894D6827E080D700C9F00B /* ACDDemoOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C0894D6627E080D700C9F00B /* ACDDemoOptions.m */; };
+		C08E8F2427EB032000DE47C4 /* NSObject+AlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = C08E8F2327EB032000DE47C4 /* NSObject+AlertController.m */; };
 		D20E26D71DCA011C00B3FAC6 /* icon_info.png in Resources */ = {isa = PBXBuildFile; fileRef = D20E26D41DCA011C00B3FAC6 /* icon_info.png */; };
 		D20E26D81DCA011C00B3FAC6 /* icon_info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D20E26D51DCA011C00B3FAC6 /* icon_info@2x.png */; };
 		D20E26D91DCA011C00B3FAC6 /* icon_info@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D20E26D61DCA011C00B3FAC6 /* icon_info@3x.png */; };
@@ -804,8 +803,6 @@
 		7F6CC8F326568D2500BA60BB /* AgoraContactListSectionHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraContactListSectionHeader.m; sourceTree = "<group>"; };
 		7F6CC8F426568D2500BA60BB /* AgoraContactListSectionHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AgoraContactListSectionHeader.xib; sourceTree = "<group>"; };
 		7F6CC8F526568D2500BA60BB /* AgoraContactListSectionHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraContactListSectionHeader.h; sourceTree = "<group>"; };
-		7F6CC8F926568D3300BA60BB /* AgoraAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraAlertView.h; sourceTree = "<group>"; };
-		7F6CC8FA26568D3300BA60BB /* AgoraAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraAlertView.m; sourceTree = "<group>"; };
 		7F6CC8FD26568D5000BA60BB /* AgoraApplyModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraApplyModel.m; sourceTree = "<group>"; };
 		7F6CC8FE26568D5000BA60BB /* AgoraApplyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraApplyModel.h; sourceTree = "<group>"; };
 		7F6CC8FF26568D5000BA60BB /* AgoraUserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraUserModel.h; sourceTree = "<group>"; };
@@ -851,8 +848,6 @@
 		7F6CC959265756C800BA60BB /* IAgoraUserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAgoraUserModel.h; sourceTree = "<group>"; };
 		7F6CC95A265756C800BA60BB /* IAgoraConferenceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAgoraConferenceModel.h; sourceTree = "<group>"; };
 		7F6CC95B265756C800BA60BB /* IAgoraApplyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAgoraApplyModel.h; sourceTree = "<group>"; };
-		7F6CC95E26575DB200BA60BB /* NSObject+AgoraAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+AgoraAlertView.h"; sourceTree = "<group>"; };
-		7F6CC95F26575DB200BA60BB /* NSObject+AgoraAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+AgoraAlertView.m"; sourceTree = "<group>"; };
 		7F94E3B9266FA1BA0010D60F /* AgoraChatsCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AgoraChatsCell.h; sourceTree = "<group>"; };
 		7F94E3BA266FA1BA0010D60F /* AgoraChatsCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AgoraChatsCell.m; sourceTree = "<group>"; };
 		7FB1588126A18C4300B995F3 /* ACDBaseTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACDBaseTextField.h; sourceTree = "<group>"; };
@@ -997,6 +992,8 @@
 		C0894D5827DF4A8100C9F00B /* ACDChatRecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACDChatRecordViewController.m; sourceTree = "<group>"; };
 		C0894D6627E080D700C9F00B /* ACDDemoOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACDDemoOptions.m; sourceTree = "<group>"; };
 		C0894D6727E080D700C9F00B /* ACDDemoOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACDDemoOptions.h; sourceTree = "<group>"; };
+		C08E8F2227EB032000DE47C4 /* NSObject+AlertController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+AlertController.h"; sourceTree = "<group>"; };
+		C08E8F2327EB032000DE47C4 /* NSObject+AlertController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+AlertController.m"; sourceTree = "<group>"; };
 		D20E26D41DCA011C00B3FAC6 /* icon_info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_info.png; sourceTree = "<group>"; };
 		D20E26D51DCA011C00B3FAC6 /* icon_info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_info@2x.png"; sourceTree = "<group>"; };
 		D20E26D61DCA011C00B3FAC6 /* icon_info@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_info@3x.png"; sourceTree = "<group>"; };
@@ -1604,15 +1601,6 @@
 			path = Info;
 			sourceTree = "<group>";
 		};
-		3AEBE3E71E78F72C00B82986 /* AlertView */ = {
-			isa = PBXGroup;
-			children = (
-				7F6CC8F926568D3300BA60BB /* AgoraAlertView.h */,
-				7F6CC8FA26568D3300BA60BB /* AgoraAlertView.m */,
-			);
-			path = AlertView;
-			sourceTree = "<group>";
-		};
 		716634011DB0E03F00C92E27 /* EMRealtimeSearchUtils */ = {
 			isa = PBXGroup;
 			children = (
@@ -1783,7 +1771,6 @@
 		71D4A1DC1D9C9284006FACB7 /* CustomView */ = {
 			isa = PBXGroup;
 			children = (
-				3AEBE3E71E78F72C00B82986 /* AlertView */,
 				D295026F1DB9D13E001B9954 /* AgoraMessageTextView.h */,
 				D29502701DB9D13E001B9954 /* AgoraMessageTextView.m */,
 			);
@@ -2030,8 +2017,8 @@
 		D24327EB1DAA444C00EDCDAB /* Category */ = {
 			isa = PBXGroup;
 			children = (
-				7F6CC95E26575DB200BA60BB /* NSObject+AgoraAlertView.h */,
-				7F6CC95F26575DB200BA60BB /* NSObject+AgoraAlertView.m */,
+				C08E8F2227EB032000DE47C4 /* NSObject+AlertController.h */,
+				C08E8F2327EB032000DE47C4 /* NSObject+AlertController.m */,
 				C004B41F279D33D0009E5E3E /* NSObject+Hint.h */,
 				C004B420279D33D0009E5E3E /* NSObject+Hint.m */,
 				7F0516C0269FE0D200B2C795 /* AgoraCategory.h */,
@@ -3580,6 +3567,7 @@
 				EC54DDE72728158B00ABEE3E /* ACDGroupInfoViewController.m in Sources */,
 				9ECE66F1273B6F69007CF85F /* ACDChatsViewController.m in Sources */,
 				D29502741DBB2BF3001B9954 /* AgoraMessageModel.m in Sources */,
+				C08E8F2427EB032000DE47C4 /* NSObject+AlertController.m in Sources */,
 				7F6CC92F26568DC300BA60BB /* AgoraCDDeviceManager+Media.m in Sources */,
 				EC00E21C2743B41400EEB474 /* ACDMemberCollectionCell.m in Sources */,
 				7F6CC89326568C2400BA60BB /* AgoraChatEmojiView.m in Sources */,
@@ -3588,8 +3576,6 @@
 				EC54DDF8272A44D200ABEE3E /* ACDInfoCell.m in Sources */,
 				7F6CC89426568C2400BA60BB /* AgoraChatRecordView.m in Sources */,
 				D29502711DB9D13E001B9954 /* AgoraMessageTextView.m in Sources */,
-				7F6CC96026575DB200BA60BB /* NSObject+AgoraAlertView.m in Sources */,
-				7F6CC8FB26568D3300BA60BB /* AgoraAlertView.m in Sources */,
 				EC54DCE82721502200ABEE3E /* MISScrollPageStyle.m in Sources */,
 				3AEBE3F11E792FB000B82986 /* AppDelegate.m in Sources */,
 				EC7A3245272BD2E600AF0C19 /* ACDGroupMemberNavView.m in Sources */,

@@ -57,8 +57,7 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
-//    AgoraLaunchViewController *launch = [[AgoraLaunchViewController alloc] init];
-//    self.window.rootViewController = launch;
+
     [self loadViewController];
     
     [self.window makeKeyAndVisible];
@@ -210,7 +209,6 @@
         
         if (self.userName.length == 0 || self.nickName.length == 0) return;
         //unify token login
-        __weak typeof(self) weakself = self;
         [[AgoraChatHttpRequest sharedManager] loginToApperServer:self.userName nickName:self.nickName completion:^(NSInteger statusCode, NSString * _Nonnull response) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSString *alertStr = nil;
@@ -288,13 +286,8 @@
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"apns.failToRegisterApns", @"Fail to register apns")
-                                                    message:error.description
-                                                   delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"ok", @"OK")
-                                          otherButtonTitles:nil];
-    [alert show];
+{    
+    [self showAlertWithTitle:NSLocalizedString(@"apns.failToRegisterApns", @"Fail to register apns") message:error.description];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
