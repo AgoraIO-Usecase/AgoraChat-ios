@@ -15,6 +15,7 @@
 #import "ACDGroupMembersViewController.h"
 #import "ACDChatViewController.h"
 #import "ACDGroupTransferOwnerViewController.h"
+#import "AgoraNotificationSettingViewController.h"
 
 #define kGroupInfoHeaderViewHeight 360.0
 
@@ -27,6 +28,7 @@
 @property (nonatomic, strong) ACDInfoCell *leaveCell;
 @property (nonatomic, strong) ACDInfoCell *transferOwnerCell;
 @property (nonatomic, strong) ACDInfoCell *disbandCell;
+@property (nonatomic, strong) ACDInfoCell *notificationCell;
 @property (nonatomic, strong) NSArray *cells;
 @property (nonatomic, strong) AgoraChatGroup *group;
 @property (nonatomic, strong) NSString *groupId;
@@ -138,11 +140,11 @@
         self.groupInfoHeaderView.isHideChatButton = YES;
     }else {
         if (self.group.permissionType == AgoraChatGroupPermissionTypeOwner) {
-            self.cells = @[self.membersCell,self.transferOwnerCell,self.disbandCell];
+            self.cells = @[self.membersCell,self.transferOwnerCell,self.disbandCell,self.notificationCell];
         } else if(self.group.permissionType == AgoraChatGroupPermissionTypeAdmin){
-            self.cells = @[self.membersCell,self.leaveCell];
+            self.cells = @[self.membersCell,self.leaveCell,self.notificationCell];
         }else {
-            self.cells = @[self.membersCell,self.leaveCell];
+            self.cells = @[self.membersCell,self.leaveCell,self.notificationCell];
         }
     }
 
@@ -278,6 +280,14 @@
     [alertController addAction:disBandAction];
     [alertController addAction:leaveAction];
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)notificationAction
+{
+    AgoraNotificationSettingViewController *controller = [[AgoraNotificationSettingViewController alloc] init];
+    controller.notificationType = AgoraNotificationSettingTypeGroup;
+    controller.conversationID = self.groupId;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)changeGroupName {
@@ -572,7 +582,19 @@
     return _disbandCell;
 }
 
-
+- (ACDInfoCell *)notificationCell {
+    if (_notificationCell == nil) {
+        _notificationCell = [[ACDInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDInfoCell reuseIdentifier]];
+        [_notificationCell.iconImageView setImage:ImageWithName(@"notifications_yellow")];
+        _notificationCell.nameLabel.text = @"Notifications";
+        _notificationCell.nameLabel.textColor = TextLabelPinkColor;
+        ACD_WS
+        _notificationCell.tapCellBlock = ^{
+            [weakSelf notificationAction];
+        };
+    }
+    return _notificationCell;
+}
 - (NSArray *)cells {
     if (_cells == nil) {
         _cells = NSArray.new;

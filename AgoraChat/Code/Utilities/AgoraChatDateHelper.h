@@ -24,6 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSString *)formattedTime:(NSDate *)aDate;
 
++ (NSString *)stringMonthEnglishFromTimestamp:(NSTimeInterval)timestamp;
++ (NSString *)getCurrentDataWithHHmmFormatter;
+
 @end
 
 NS_ASSUME_NONNULL_END
