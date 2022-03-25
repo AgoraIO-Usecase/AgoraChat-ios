@@ -141,16 +141,20 @@ static AgoraChatDemoHelper *helper = nil;
         aMessage = [NSString stringWithFormat:NSLocalizedString(@"contact.somebodyAddWithName", @"%@ add you as a friend"), aUsername];
     }
     
+
+    AgoraApplyModel *model = [[AgoraApplyModel alloc] init];
+    model.applyHyphenateId = aUsername;
+    model.applyNickName = aUsername;
+    model.reason = aMessage;
+    model.style = AgoraApplyStyle_contact;
+    
     if (![[AgoraApplyManager defaultManager] isExistingRequest:aUsername
                                                     groupId:nil
                                                  applyStyle:AgoraApplyStyle_contact])
     {
-        AgoraApplyModel *model = [[AgoraApplyModel alloc] init];
-        model.applyHyphenateId = aUsername;
-        model.applyNickName = aUsername;
-        model.reason = aMessage;
-        model.style = AgoraApplyStyle_contact;
         [[AgoraApplyManager defaultManager] addApplyRequest:model];
+    }else {
+        [[AgoraApplyManager defaultManager] updateApplyWithModel:model];
     }
     
     if (self.mainVC && helper) {
@@ -192,13 +196,14 @@ static AgoraChatDemoHelper *helper = nil;
     }
     
     if (msgstr.length > 0) {
-        [self showAlertWithMessage:msgstr];
+        [self showHint:msgstr];
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
+    [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_GROUP_DESTORY_OR_KICKEDOFF object:aGroup];
 
+    
     NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:_mainVC.navigationController.viewControllers];
     ACDChatViewController *chatViewContrller = nil;
     for (id viewController in viewControllers) {
@@ -232,19 +237,22 @@ static AgoraChatDemoHelper *helper = nil;
         aReason = [NSString stringWithFormat:NSLocalizedString(@"group.applyJoinWithName", @"%@ apply to join groups\'%@\'：%@"), aUsername, aGroup.groupName, aReason];
     }
     
+    AgoraApplyModel *model = [[AgoraApplyModel alloc] init];
+    model.applyHyphenateId = aUsername;
+    model.applyNickName = aUsername;
+    model.groupId = aGroup.groupId;
+    model.groupSubject = aGroup.groupName;
+    model.groupMemberCount = aGroup.occupantsCount;
+    model.reason = aReason;
+    model.style = AgoraApplyStyle_joinGroup;
+
     if (![[AgoraApplyManager defaultManager] isExistingRequest:aUsername
                                                     groupId:aGroup.groupId
                                                  applyStyle:AgoraApplyStyle_joinGroup])
     {
-        AgoraApplyModel *model = [[AgoraApplyModel alloc] init];
-        model.applyHyphenateId = aUsername;
-        model.applyNickName = aUsername;
-        model.groupId = aGroup.groupId;
-        model.groupSubject = aGroup.groupName;
-        model.groupMemberCount = aGroup.occupantsCount;
-        model.reason = aReason;
-        model.style = AgoraApplyStyle_joinGroup;
         [[AgoraApplyManager defaultManager] addApplyRequest:model];
+    }else {
+        [[AgoraApplyManager defaultManager] updateApplyWithModel:model];
     }
     
     if (self.mainVC && helper) {
@@ -299,18 +307,24 @@ static AgoraChatDemoHelper *helper = nil;
     }
     
     [[AgoraChatClient sharedClient].groupManager getGroupSpecificationFromServerWithId:aGroupId completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
+        
+        AgoraApplyModel *model = [[AgoraApplyModel alloc] init];
+        model.groupId = aGroupId;
+        model.groupSubject = aGroup.groupName;
+        model.applyHyphenateId = aInviter;
+        model.applyNickName = aInviter;
+        model.reason = aMessage;
+        model.style = AgoraApplyStyle_groupInvitation;
+        
         if (![[AgoraApplyManager defaultManager] isExistingRequest:aInviter
                                                         groupId:aGroupId
                                                      applyStyle:AgoraApplyStyle_groupInvitation])
         {
-            AgoraApplyModel *model = [[AgoraApplyModel alloc] init];
-            model.groupId = aGroupId;
-            model.groupSubject = aGroup.groupName;
-            model.applyHyphenateId = aInviter;
-            model.applyNickName = aInviter;
-            model.reason = aMessage;
-            model.style = AgoraApplyStyle_groupInvitation;
+      
             [[AgoraApplyManager defaultManager] addApplyRequest:model];
+        }else {
+            [[AgoraApplyManager defaultManager] updateApplyWithModel:model];
+
         }
         
         if (self.mainVC && helper) {

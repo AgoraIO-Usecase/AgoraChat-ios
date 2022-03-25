@@ -20,6 +20,7 @@
 #import "ACDGroupSharedFilesViewController.h"
 #import "ACDGroupNoticeViewController.h"
 #import "ACDImageTitleContentCell.h"
+#import "ACDContainerSearchTableViewController+GroupMemberList.h"
 
 #define kGroupInfoHeaderViewHeight 360.0
 
@@ -56,6 +57,11 @@
         self.navigationController.navigationBarHidden = YES;
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIWithNotification:) name:KAgora_REFRESH_GROUP_INFO object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateGroupMemberWithNotification:) name:KACD_REFRESH_GROUP_MEMBER object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupDestoryOrKickedOffNotification:) name:KAgora_GROUP_DESTORY_OR_KICKEDOFF object:nil];
+        
     }
     return self;
 }
@@ -122,6 +128,26 @@
             self.group = group;
             [self fetchGroupInfo];
         }
+    }
+}
+
+- (void)updateGroupMemberWithNotification:(NSNotification *)aNotification {
+    NSDictionary *dic = (NSDictionary *)aNotification.object;
+    NSString* groupId = dic[kACDGroupId];
+    ACDGroupMemberListType type = [dic[kACDGroupMemberListType] integerValue];
+    
+    if (![self.group.groupId isEqualToString:groupId] || type != ACDGroupMemberListTypeBlock) {
+        return;
+    }
+    [self updateUI];
+    [self.groupMembersVC updateWithGroup:self.group];
+
+}
+
+- (void)groupDestoryOrKickedOffNotification:(NSNotification *)aNotification{
+    AgoraChatGroup *group = (AgoraChatGroup *)aNotification.object;
+    if ([self.group.groupId isEqualToString:group.groupId]) {
+        [self backAction];
     }
 }
 

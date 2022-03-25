@@ -344,7 +344,7 @@
 - (ACDChatNavigationView *)navigationView {
     if (_navigationView == nil) {
         _navigationView = [[ACDChatNavigationView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 80.0f)];
-        _navigationView.rightButton.hidden = NO;
+        _navigationView.rightButton.hidden = YES;
         _navigationView.leftLabel.text = self.navTitle;
         ACD_WS
         _navigationView.leftButtonBlock = ^{

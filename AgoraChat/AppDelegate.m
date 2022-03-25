@@ -77,30 +77,31 @@
 
 - (void)initUIKit
 {
-    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:Appkey];
-
-    // Hyphenate cert keys
-    NSString *apnsCertName = nil;
-#if ChatDemo_DEBUG
-    apnsCertName = @"ChatDemoDevPush";
-#else
-    apnsCertName = @"ChatDemoProPush";
-#endif
-
-    [options setApnsCertName:apnsCertName];
-    [options setEnableDeliveryAck:YES];
-    [options setEnableConsoleLog:YES];
-    [options setIsDeleteMessagesWhenExitGroup:NO];
-    [options setIsDeleteMessagesWhenExitChatRoom:NO];
-    [options setUsingHttpsOnly:YES];
-    [options setIsAutoLogin:YES];
+//    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:Appkey];
+//
+//    // Hyphenate cert keys
+//    NSString *apnsCertName = nil;
+//#if ChatDemo_DEBUG
+//    apnsCertName = @"ChatDemoDevPush";
+//#else
+//    apnsCertName = @"ChatDemoProPush";
+//#endif
+//
+//    [options setApnsCertName:apnsCertName];
+//    [options setEnableDeliveryAck:YES];
+//    [options setEnableConsoleLog:YES];
+//    [options setIsDeleteMessagesWhenExitGroup:NO];
+//    [options setIsDeleteMessagesWhenExitChatRoom:NO];
+//    [options setUsingHttpsOnly:YES];
+//    [options setIsAutoLogin:YES];
     
 #warning 国内部署设置
 //    [self internalSpecOption:options];
-    ACDDemoOptions *demoOptions = [ACDDemoOptions sharedOptions];
-//    [EaseChatKitManager initWithAgoraChatOptions:[demoOptions toOptions]];
+    //    [EaseChatKitManager initWithAgoraChatOptions:options];
 
-    [EaseChatKitManager initWithAgoraChatOptions:options];
+    ACDDemoOptions *demoOptions = [ACDDemoOptions sharedOptions];
+    [EaseChatKitManager initWithAgoraChatOptions:[demoOptions toOptions]];
+
 
 }
 

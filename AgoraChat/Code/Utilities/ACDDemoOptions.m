@@ -19,13 +19,14 @@ static ACDDemoOptions *sharedOptions = nil;
     if (self) {
         [self _initServerOptions];
         
-        self.isAutoAcceptGroupInvitation = NO;
+        self.isAutoAcceptGroupInvitation = YES;
+        self.deleteMessagesOnLeaveGroup = YES;
         self.isAutoTransferMessageAttachments = YES;
         self.isAutoDownloadThumbnail = YES;
         self.isSortMessageByServerTime = YES;
         self.isPriorityGetMsgFromServer = NO;
         
-        self.isAutoLogin = NO;
+        self.isAutoLogin = YES;
         self.loggedInUsername = @"";
         self.loggedInPassword = @"";
         
@@ -79,6 +80,7 @@ static ACDDemoOptions *sharedOptions = nil;
         self.restServer = [aDecoder decodeObjectForKey:kOptions_RestServer];
 
         self.isAutoAcceptGroupInvitation = [aDecoder decodeBoolForKey:kOptions_AutoAcceptGroupInvitation];
+        self.deleteMessagesOnLeaveGroup = [aDecoder decodeBoolForKey:kOptions_DeleteChatExitGroup];
         self.isAutoTransferMessageAttachments = [aDecoder decodeBoolForKey:kOptions_AutoTransMsgFile];
         self.isAutoDownloadThumbnail = [aDecoder decodeBoolForKey:kOptions_AutoDownloadThumb];
         self.isSortMessageByServerTime = [aDecoder decodeBoolForKey:kOptions_SortMessageByServerTime];
@@ -127,6 +129,7 @@ static ACDDemoOptions *sharedOptions = nil;
     [aCoder encodeObject:self.restServer forKey:kOptions_RestServer];
 
     [aCoder encodeBool:self.isAutoAcceptGroupInvitation forKey:kOptions_AutoAcceptGroupInvitation];
+    [aCoder encodeBool:self.deleteMessagesOnLeaveGroup forKey:kOptions_DeleteChatExitGroup];
     [aCoder encodeBool:self.isAutoTransferMessageAttachments forKey:kOptions_AutoTransMsgFile];
     [aCoder encodeBool:self.isAutoDownloadThumbnail forKey:kOptions_AutoDownloadThumb];
     [aCoder encodeBool:self.isSortMessageByServerTime forKey:kOptions_SortMessageByServerTime];
@@ -175,6 +178,8 @@ static ACDDemoOptions *sharedOptions = nil;
     retModel.chatServer = self.chatServer;
     retModel.restServer = self.restServer;
     retModel.isAutoAcceptGroupInvitation = self.isAutoAcceptGroupInvitation;
+    retModel.deleteMessagesOnLeaveGroup = self.deleteMessagesOnLeaveGroup;
+
     retModel.isAutoTransferMessageAttachments = self.isAutoTransferMessageAttachments;
     retModel.isAutoDownloadThumbnail = self.isAutoDownloadThumbnail;
     retModel.isSortMessageByServerTime = self.isSortMessageByServerTime;
@@ -216,17 +221,25 @@ static ACDDemoOptions *sharedOptions = nil;
 
 - (void)_initServerOptions
 {
+    
+    //#if ChatDemo_DEBUG
+    //    apnsCertName = @"ChatDemoDevPush";
+    //#else
+    //    apnsCertName = @"ChatDemoProPush";
+    //#endif
+    
     self.appkey = Appkey;
 #if DEBUG
-    self.apnsCertName = @"EaseIM_APNS_Developer";
+    self.apnsCertName = @"ChatDemoDevPush";
 #else
-    self.apnsCertName = @"EaseIM_APNS_Product";
+    self.apnsCertName = @"ChatDemoProPush";
 #endif
     self.usingHttpsOnly = YES;
     //self.specifyServer = YES;
     self.specifyServer = NO;
 
     self.isAutoLogin = YES;
+    
 }
 
 #pragma mark - Public
@@ -252,11 +265,13 @@ static ACDDemoOptions *sharedOptions = nil;
         retOpt.restServer = self.restServer;
     }
     
+    self.isAutoLogin = YES;
     retOpt.isAutoLogin = self.isAutoLogin;
     
     retOpt.isAutoAcceptGroupInvitation = self.isAutoAcceptGroupInvitation;
+    retOpt.isDeleteMessagesWhenExitGroup = self.deleteMessagesOnLeaveGroup;
     retOpt.isAutoTransferMessageAttachments = self.isAutoTransferMessageAttachments;
-    retOpt.isAutoDownloadThumbnail = self.isAutoDownloadThumbnail;
+    retOpt.autoDownloadThumbnail = self.isAutoDownloadThumbnail;
     retOpt.sortMessageByServerTime = self.isSortMessageByServerTime;
     
     retOpt.enableDeliveryAck = self.isAutoDeliveryAck;
@@ -308,16 +323,18 @@ static ACDDemoOptions *sharedOptions = nil;
     }
     if ([apns length] == 0) {
 #if DEBUG
-        apns = @"EaseIM_APNS_Developer";
+        apns = @"ChatDemoDevPush";
 #else
-        apns = @"EaseIM_APNS_Product";
+        apns = @"ChatDemoProPush";
 #endif
+
     }
     
     ACDDemoOptions *demoOptions = [ACDDemoOptions sharedOptions];
     demoOptions.appkey = appkey;
     demoOptions.apnsCertName = apns;
     demoOptions.usingHttpsOnly = httpsOnly;
+    demoOptions.isAutoLogin = YES;
     
     int specifyServer = [[aDic objectForKey:kOptions_SpecifyServer] intValue];
     demoOptions.specifyServer = NO;

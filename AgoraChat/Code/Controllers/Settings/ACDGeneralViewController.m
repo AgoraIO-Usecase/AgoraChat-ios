@@ -59,6 +59,7 @@
     ACDTitleSwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:[ACDTitleSwitchCell reuseIdentifier]];
     if (cell == nil) {
         cell =[[ACDTitleSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDTitleSwitchCell reuseIdentifier]];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     ACDDemoOptions *options = [ACDDemoOptions sharedOptions];
@@ -74,20 +75,22 @@
         };
     }else if(indexPath.row == 1) {
         cell.nameLabel.text = @"Add Group Request";
-        BOOL autoAcceptGroupRequest = AgoraChatClient.sharedClient.options.autoAcceptGroupInvitation;
-        [cell.aSwitch setOn:autoAcceptGroupRequest animated:NO];
+
+        [cell.aSwitch setOn:options.isAutoAcceptGroupInvitation animated:NO];
         cell.switchActionBlock = ^(BOOL isOn) {
-            [AgoraChatClient.sharedClient.options setAutoAcceptGroupInvitation:isOn];
+            [AgoraChatClient.sharedClient.options setIsAutoAcceptGroupInvitation:isOn];
             options.isAutoAcceptGroupInvitation = isOn;
             [options archive];
             [self.table reloadData];
         };
     }else {
         cell.nameLabel.text = @"Delete the Chat after Leaving Group";
-        BOOL deleteMessagesOnLeaveGroup = AgoraChatClient.sharedClient.options.deleteMessagesOnLeaveGroup;
-        [cell.aSwitch setOn:deleteMessagesOnLeaveGroup animated:NO];
+        [cell.aSwitch setOn:options.deleteMessagesOnLeaveGroup animated:NO];
         cell.switchActionBlock  = ^(BOOL isOn) {
-            [AgoraChatClient.sharedClient.options setDeleteMessagesOnLeaveGroup:isOn];
+            [AgoraChatClient.sharedClient.options setIsDeleteMessagesWhenExitGroup:isOn];
+            options.deleteMessagesOnLeaveGroup = isOn;
+            [options archive];
+
             [self.table reloadData];
         };
     }

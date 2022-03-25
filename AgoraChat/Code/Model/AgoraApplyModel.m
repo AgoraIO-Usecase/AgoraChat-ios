@@ -22,6 +22,8 @@
     [aCoder encodeObject:_groupId forKey:@"groupId"];
     [aCoder encodeObject:_groupSubject forKey:@"subject"];
     [aCoder encodeInteger:_groupMemberCount forKey:@"groupMemberCount"];
+    [aCoder encodeInteger:_applyStatus forKey:@"applyStatus"];
+
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder{
@@ -36,6 +38,8 @@
         _groupId = [aDecoder decodeObjectForKey:@"groupId"];
         _groupSubject = [aDecoder decodeObjectForKey:@"subject"];
         _groupMemberCount = [aDecoder decodeIntegerForKey:@"groupMemberCount"];
+        _applyStatus = [aDecoder decodeIntegerForKey:@"applyStatus"];
+
     }
     
     return self;

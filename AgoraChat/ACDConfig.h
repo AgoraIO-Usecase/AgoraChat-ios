@@ -9,7 +9,7 @@
 #ifndef ACDConfig_h
 #define ACDConfig_h
 
-#define ACDENV  3
+#define ACDENV  0
 
 #if ACDENV == 0
 //美东

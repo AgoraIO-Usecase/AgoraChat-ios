@@ -68,6 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *chatServer;
 @property (nonatomic, copy) NSString *restServer;
 @property (nonatomic) BOOL isAutoAcceptGroupInvitation;
+@property (nonatomic) BOOL deleteMessagesOnLeaveGroup;
 @property (nonatomic) BOOL isAutoTransferMessageAttachments;
 @property (nonatomic) BOOL isAutoDownloadThumbnail;
 @property (nonatomic) BOOL isSortMessageByServerTime;

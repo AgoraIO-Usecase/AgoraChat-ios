@@ -11,6 +11,7 @@
 #define KAgora_RAgoraOVEGROUP_NOTIFICATION           @"removeGroups_notification"
 #define KAgora_REFRESH_GROUP_INFO  @"UpdateGroupInfo_notification"
 #define KACD_REFRESH_GROUP_MEMBER  @"KACD_REFRESH_GROUP_MEMBER"
+#define KAgora_GROUP_DESTORY_OR_KICKEDOFF  @"KAgora_GROUP_DESTORY_OR_KICKEDOFF"
 
 
 #define KAgora_REFRESH_CHATROOMLIST_NOTIFICATION     @"refreshChatrooms_notification"
