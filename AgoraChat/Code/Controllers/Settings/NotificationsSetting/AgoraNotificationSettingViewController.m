@@ -10,6 +10,7 @@
 #import "AgoraSilentModeSetViewController.h"
 #import "ACDTitleDetailCell.h"
 #import "AgoraSubDetailCell.h"
+#import "ACDNameSwitchCell.h"
 #import "AgoraChatDateHelper.h"
 
 @interface AgoraNotificationSettingViewController ()
@@ -17,6 +18,9 @@
 @property (nonatomic , strong) NSArray *cells;
 @property (nonatomic , strong) ACDTitleDetailCell *remindTypeCell;
 @property (nonatomic , strong) AgoraSubDetailCell *muteCell;
+@property (nonatomic , strong) ACDNameSwitchCell *showPreTextCell;
+@property (nonatomic , strong) ACDNameSwitchCell *soundCell;
+@property (nonatomic , strong) ACDNameSwitchCell *vibrateCell;
 @property (nonatomic , copy) NSString *navTitle;
 @property (nonatomic , copy) NSString *muteCellNameTitle;
 @property (nonatomic , copy) NSString *remindCellNameTitle;
@@ -26,7 +30,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    if(@available(iOS 11.0,*) ){
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
     if(@available(iOS 15.0,*) ){
         self.table.sectionHeaderTopPadding = 0.0f;
     }
@@ -84,14 +90,16 @@
 
 #pragma mark - action
 - (void)remindTypeAction {
-    
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-   
-    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"Default" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self remindTypeChange:AgoraChatPushRemindTypeDefault];
-    }];
-    [alertController addAction:defaultAction];
     
+    if (self.notificationType != AgoraNotificationSettingTypeSelf) {
+        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"Default" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self remindTypeChange:AgoraChatPushRemindTypeDefault];
+        }];
+        [alertController addAction:defaultAction];
+        [defaultAction setValue:TextLabelBlackColor forKey:@"titleTextColor"];
+    }
+
     UIAlertAction *allAction = [UIAlertAction actionWithTitle:@"All Messages" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self remindTypeChange:AgoraChatPushRemindTypeAll];
     }];
@@ -107,7 +115,6 @@
     }];
     [alertController addAction:noneAction];
     
-    [defaultAction setValue:TextLabelBlackColor forKey:@"titleTextColor"];
     [allAction setValue:TextLabelBlackColor forKey:@"titleTextColor"];
     [metionAction setValue:TextLabelBlackColor forKey:@"titleTextColor"];
     [noneAction setValue:TextLabelBlackColor forKey:@"titleTextColor"];
@@ -132,8 +139,7 @@
 }
 
 
-- (void)remindTypeChange:(AgoraChatPushRemindType)remindType
-{
+- (void)remindTypeChange:(AgoraChatPushRemindType)remindType {
     [self hideHud];
     [self showHudInView:self.view hint:NSLocalizedString(@"hud.wait", @"Waiting..")];
     ACD_WS
@@ -167,6 +173,27 @@
     }
 }
 
+- (void)showPreTextAction {
+    AgoraChatPushDisplayStyle style = AgoraChatPushDisplayStyleSimpleBanner;
+    if (self.showPreTextCell.aSwitch.on) {
+        style = AgoraChatPushDisplayStyleMessageSummary;
+    }
+    ACD_WS
+    [[AgoraChatClient sharedClient].pushManager updatePushDisplayStyle:style completion:^(AgoraChatError * _Nonnull aError) {
+        if (aError) {
+            [weakSelf showHint:NSLocalizedString(@"hud.fail", @"fail")];
+            
+        }
+    }];
+}
+
+- (void)soundAction {
+    
+}
+
+- (void)vibrateAction {
+    
+}
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (self.notificationType == AgoraNotificationSettingTypeSelf) {
@@ -178,9 +205,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (self.notificationType == AgoraNotificationSettingTypeSelf) {
         if (section == 0) {
-            return 2;
+            return 3;
         }
-        return 0;
+        return 2;
         
     }else if (self.notificationType == AgoraNotificationSettingTypeSingleChat)
     {
@@ -227,26 +254,51 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell * cell = self.cells[indexPath.row];
-    if (cell == self.muteCell) {
+    UITableViewCell * cell;
+    if (indexPath.section == 0) {
+        cell = self.cells[indexPath.row];
+    }else{
+        cell =self.cells[indexPath.row + 3];
+    }
+   
+    if (cell == _muteCell) {
         [self changeMuteCell];
     }
-    if (cell == self.remindTypeCell) {
+    if (cell == _remindTypeCell) {
         [self changeRemindCell];
+    }
+    if (cell == _showPreTextCell) {
+        _showPreTextCell.aSwitch.on = [AgoraChatClient sharedClient].pushManager.pushOptions.displayStyle == AgoraChatPushDisplayStyleMessageSummary;
+    }
+    if (cell == _vibrateCell) {
+       
+    }
+    if (cell == _soundCell) {
+       
     }
     return cell;
 }
 
 
-#pragma mark other
+#pragma mark Change cell data
 - (void)changeMuteCell
 {
     if (self.silentModeItem.expireTimestamp == 0) {
-        self.muteCell.detailLabel.text = @"Mute";
+        if(self.notificationType == AgoraNotificationSettingTypeSelf)
+        {
+            self.muteCell.detailLabel.text = @"Turn On";
+        }else{
+            self.muteCell.detailLabel.text = @"Mute";
+        }
         self.muteCell.subDetailLabel.text =  @"";
         self.muteCell.showSubDetailLabel = NO;
     }else{
-        self.muteCell.detailLabel.text = @"Unmute";
+        if(self.notificationType == AgoraNotificationSettingTypeSelf)
+        {
+            self.muteCell.detailLabel.text = @"Turn Off";
+        }else{
+            self.muteCell.detailLabel.text = @"Unmute";
+        }
         self.muteCell.subDetailLabel.text = [AgoraChatDateHelper stringMonthEnglishFromTimestamp:self.silentModeItem.expireTimestamp];
         self.muteCell.showSubDetailLabel = YES;
     }
@@ -270,6 +322,9 @@
             break;
         default:
             break;
+    }
+    if (!self.silentModeItem && self.notificationType == AgoraNotificationSettingTypeSelf) {
+        typeStr = @"All Messages";
     }
     self.remindTypeCell.detailLabel.text = typeStr;
 }
@@ -315,13 +370,45 @@
     }
     return _muteCell;
 }
-
+-(ACDNameSwitchCell *)showPreTextCell{
+    if (_showPreTextCell == nil) {
+        _showPreTextCell = [[ACDNameSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDNameSwitchCell reuseIdentifier]];
+        _showPreTextCell.nameLabel.text = @"Show Preview Text";
+        ACD_WS
+        _showPreTextCell.switchActionBlock = ^(BOOL isOn) {
+            [weakSelf showPreTextAction];
+        };
+    }
+    return _showPreTextCell;
+}
+-(ACDNameSwitchCell *)soundCell{
+    if (_soundCell == nil) {
+        _soundCell = [[ACDNameSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDNameSwitchCell reuseIdentifier]];
+        _soundCell.nameLabel.text = @"Alert Sound";
+        ACD_WS
+        _soundCell.switchActionBlock = ^(BOOL isOn) {
+            [weakSelf soundAction];
+        };
+    }
+    return _soundCell;
+}
+-(ACDNameSwitchCell *)vibrateCell{
+    if (_vibrateCell == nil) {
+        _vibrateCell = [[ACDNameSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDNameSwitchCell reuseIdentifier]];
+        _vibrateCell.nameLabel.text = @"Vibrate";
+        ACD_WS
+        _vibrateCell.switchActionBlock = ^(BOOL isOn) {
+            [weakSelf vibrateAction];
+        };
+    }
+    return _vibrateCell;
+}
 -(NSArray *)cells
 {
     if (_cells == nil) {
         switch (self.notificationType) {
             case AgoraNotificationSettingTypeSelf:
-                _cells = @[self.muteCell,self.remindTypeCell];
+                _cells = @[self.muteCell,self.remindTypeCell,self.showPreTextCell,self.soundCell,self.vibrateCell];
                 break;
             case AgoraNotificationSettingTypeSingleChat:
                 _cells = @[self.muteCell];

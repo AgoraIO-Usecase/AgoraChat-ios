@@ -168,6 +168,7 @@
 		A51C873527EAC9AB0092EF57 /* mute_unselect@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A51C873127EAC9AA0092EF57 /* mute_unselect@3x.png */; };
 		A51C873627EAC9AB0092EF57 /* mute_select@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A51C873227EAC9AB0092EF57 /* mute_select@3x.png */; };
 		A51C873727EAC9AB0092EF57 /* mute_unselect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A51C873327EAC9AB0092EF57 /* mute_unselect@2x.png */; };
+		A5CEFDAA27EDBC6A00733E16 /* ACDNameSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A5CEFDA927EDBC6A00733E16 /* ACDNameSwitchCell.m */; };
 		A5D68F7F27E1A06500561570 /* notifications_yellow@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5D68F7D27E1A06500561570 /* notifications_yellow@3x.png */; };
 		A5D68F8027E1A06500561570 /* notifications_yellow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A5D68F7E27E1A06500561570 /* notifications_yellow@2x.png */; };
 		A5D68F8727E1C60E00561570 /* AgoraNotificationSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D68F8627E1C60E00561570 /* AgoraNotificationSettingViewController.m */; };
@@ -901,6 +902,8 @@
 		A51C873127EAC9AA0092EF57 /* mute_unselect@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mute_unselect@3x.png"; sourceTree = "<group>"; };
 		A51C873227EAC9AB0092EF57 /* mute_select@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mute_select@3x.png"; sourceTree = "<group>"; };
 		A51C873327EAC9AB0092EF57 /* mute_unselect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mute_unselect@2x.png"; sourceTree = "<group>"; };
+		A5CEFDA827EDBC6A00733E16 /* ACDNameSwitchCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACDNameSwitchCell.h; sourceTree = "<group>"; };
+		A5CEFDA927EDBC6A00733E16 /* ACDNameSwitchCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACDNameSwitchCell.m; sourceTree = "<group>"; };
 		A5D68F7D27E1A06500561570 /* notifications_yellow@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "notifications_yellow@3x.png"; sourceTree = "<group>"; };
 		A5D68F7E27E1A06500561570 /* notifications_yellow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "notifications_yellow@2x.png"; sourceTree = "<group>"; };
 		A5D68F8527E1C60E00561570 /* AgoraNotificationSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AgoraNotificationSettingViewController.h; sourceTree = "<group>"; };
@@ -1828,6 +1831,8 @@
 			children = (
 				A51C872927EAC3060092EF57 /* AgoraSubDetailCell.h */,
 				A51C872A27EAC3060092EF57 /* AgoraSubDetailCell.m */,
+				A5CEFDA827EDBC6A00733E16 /* ACDNameSwitchCell.h */,
+				A5CEFDA927EDBC6A00733E16 /* ACDNameSwitchCell.m */,
 				A51C872627EAC2E90092EF57 /* AgoraSilentModeSetCell.h */,
 				A51C872727EAC2E90092EF57 /* AgoraSilentModeSetCell.m */,
 			);
@@ -3432,6 +3437,7 @@
 				EC00E2252744DDC100EEB474 /* ACDWebViewController.m in Sources */,
 				EC54DD102722653B00ABEE3E /* ACDCustomCell.m in Sources */,
 				9ECE66E0273B6ECF007CF85F /* AgoraChatSearchResultController.m in Sources */,
+				A5CEFDAA27EDBC6A00733E16 /* ACDNameSwitchCell.m in Sources */,
 				7F6CC89126568C2400BA60BB /* AgoraFaceView.m in Sources */,
 				EC54DD502722A29200ABEE3E /* ACDTextViewCell.m in Sources */,
 				7F6CC86B26568B8B00BA60BB /* AgoraMemberCell.m in Sources */,
