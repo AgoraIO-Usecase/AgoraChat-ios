@@ -221,13 +221,7 @@ static ACDDemoOptions *sharedOptions = nil;
 
 - (void)_initServerOptions
 {
-    
-    //#if ChatDemo_DEBUG
-    //    apnsCertName = @"ChatDemoDevPush";
-    //#else
-    //    apnsCertName = @"ChatDemoProPush";
-    //#endif
-    
+
     self.appkey = Appkey;
 #if DEBUG
     self.apnsCertName = @"ChatDemoDevPush";
