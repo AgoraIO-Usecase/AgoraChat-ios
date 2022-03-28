@@ -7,9 +7,9 @@
  * the property of Hyphenate Inc.
  */
 
-#import "AgoraBaseRefreshTableController.h"
+#import "ACDBaseRefreshTableController.h"
 
-@interface AgoraChatroomBansViewController : AgoraBaseRefreshTableController
+@interface AgoraChatroomBansViewController : ACDBaseRefreshTableController
 
 - (instancetype)initWithChatroom:(AgoraChatroom *)aChatroom;
 

@@ -200,5 +200,5 @@
 
 
 @end
-#undef kSearchBarHeight
 
+#undef kSearchBarHeight

@@ -67,7 +67,13 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    NSString *name = self.dataArray[indexPath.row];
+    NSString *name = nil;
+    if (self.isSearchState) {
+        name = self.searchResults[indexPath.row];
+    }else {
+        name = self.dataArray[indexPath.row];
+    }
+
     cell.iconImageView.image = [UIImage imageNamed:@"default_avatar"];
     cell.nameLabel.text = name;
 
@@ -81,6 +87,9 @@
     
     ACD_WS
     cell.tapCellBlock = ^{
+        if ([weakSelf.group.owner isEqualToString:name]) {
+            return;
+        }
         weakSelf.aOwner = name;
         if (weakSelf.isLeaveGroup) {
             [weakSelf transferAndLeaveAlert];
@@ -97,28 +106,6 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-
-//- (void)doneAction
-//{
-//    if (self.selectedIndexPath) {
-//        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//        NSString *aOwner = [self.dataArray objectAtIndex:self.selectedIndexPath.row];
-//
-//        __weak typeof(self) weakSelf = self;
-//        [[AgoraChatClient sharedClient].groupManager updateGroupOwner:self.group.groupId aOwner:aOwner completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
-//            [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
-//            weakSelf.group = aGroup;
-//            if (aError) {
-//                [weakSelf showHint:NSLocalizedString(@"group.changeOwnerFail", @"Failed to change owner")];
-//            } else {
-//                if (self.transferOwnerBlock) {
-//                    self.transferOwnerBlock();
-//                }
-//                [weakSelf backAction];
-//            }
-//        }];
-//    }
-//}
 
 - (void)transferAlert {
     NSString *title = [NSString stringWithFormat:@"Transfer Ownership to %@ ",self.aOwner];
@@ -208,6 +195,8 @@
     }
     
     [self.dataArray addObjectsFromArray:sourceList];
+    self.searchSource = self.dataArray;
+    
 }
 
 
@@ -230,7 +219,6 @@
     [[AgoraChatClient sharedClient].groupManager getGroupMemberListFromServerWithId:self.group.groupId cursor:cursor pageSize:pageSize completion:^(AgoraChatCursorResult *aResult, AgoraChatError *aError) {
         weakSelf.cursor = aResult.cursor;
         [weakSelf hideHud];
-//        [weakSelf tableViewDidFinishTriggerHeader:aIsHeader];
         if (!aError) {
             [weakSelf updateUIWithResultList:aResult.list IsHeader:aIsHeader];
             [weakSelf.table reloadData];

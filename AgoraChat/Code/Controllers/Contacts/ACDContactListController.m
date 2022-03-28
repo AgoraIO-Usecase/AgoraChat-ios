@@ -31,7 +31,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingBlackListDidChange) name:@"AgoraSettingBlackListDidChange" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contactListDidChange) name:KACD_REFRESH_CONTACTS object:nil];
     }
     return  self;
 }
@@ -91,7 +91,6 @@
         [contacts removeObject:blockId];
     }
     [self sortContacts:contacts];
-    
 }
 
 - (void)sortContacts:(NSArray *)contacts {
@@ -118,7 +117,7 @@
 }
 
 #pragma mark NSNotification
-- (void)settingBlackListDidChange {
+- (void)contactListDidChange {
     [self reloadContacts];
 }
 
@@ -130,27 +129,10 @@
     return  self.sectionTitles.count;
 }
 
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-//    return [self.sectionTitles objectAtIndex:section];
-//}
-
 - (NSArray*)sectionIndexTitlesForTableView:(UITableView *)tableView{
      return self.sectionTitles;
 }
 
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-//    UIView *contentView = UIView.new;
-//    contentView.backgroundColor = UIColor.whiteColor;
-//    UILabel *label = UILabel.new;
-//    label.font = Font(@"PingFangSC-Regular", 15.0f);
-//    label.textColor = COLOR_HEX(0x242424);
-//    label.text = self.sectionTitles[section];
-//    [contentView addSubview:label];
-//    [label mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.edges.equalTo(contentView).insets(UIEdgeInsetsMake(0, 20.0f, 0, -20.0));
-//    }];
-//    return contentView;
-//}
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index{
     return index;
@@ -188,21 +170,6 @@
     
     return cell;
 }
-
-//#pragma mark - Table view delegate
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    AgoraUserModel *model = nil;
-//    if (self.isSearchState) {
-//        model = self.searchResults[indexPath.row];
-//    }else {
-//        model = self.dataArray[indexPath.section][indexPath.row];
-//    }
-//
-//    if (self.selectedBlock) {
-//        self.selectedBlock(model.hyphenateId);
-//    }
-//}
 
 #pragma mark getter and setter
 - (UITableView *)table {

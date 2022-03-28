@@ -21,7 +21,7 @@ PODS:
   - WHToast (0.1.0)
 
 DEPENDENCIES:
-  - Agora_Chat_iOS
+  - Agora_Chat_iOS (= 1.0.1)
   - chat-uikit (from `../AgoraChat-UIKit-ios`)
   - FMDB
   - Masonry
@@ -59,6 +59,6 @@ SPEC CHECKSUMS:
   SDWebImage: a72e880a8fe0f7fc31efe15aaed443c074d2a80c
   WHToast: 7d393091940215c2b8bcf78422d1855f9bfa3975
 
-PODFILE CHECKSUM: b68d2a2fd870a89ae8d34cd5d15c53c4c6d6eaae
+PODFILE CHECKSUM: bd008261d063753583416b826a6e5a10149faa09
 
 COCOAPODS: 1.11.2

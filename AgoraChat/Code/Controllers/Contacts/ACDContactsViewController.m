@@ -172,6 +172,7 @@ MISScrollPageControllerDelegate,ACDGroupInfoViewControllerDelegate>
     if (self.segView.titles.count == 0) {
         return;
     }
+    [self.requestListVC updateUI];
     [self.segView reloadTitleRedPointWithISShow:isShow withTitleIndex:2];
 }
 

@@ -11,12 +11,12 @@
 #import "AgoraGroupModel.h"
 #import "AgoraNotificationNames.h"
 #import "ACDGroupCell.h"
-#import "ACDNoDataPromptView.h"
+#import "ACDNoDataPlaceHolderView.h"
 #import "ACDGroupInfoViewController.h"
 
 
 @interface ACDGroupListViewController ()
-@property (nonatomic, strong) ACDNoDataPromptView *noDataPromptView;
+@property (nonatomic, strong) ACDNoDataPlaceHolderView *noDataPromptView;
 
 @end
 
@@ -216,9 +216,9 @@
     return _table;
 }
 
-- (ACDNoDataPromptView *)noDataPromptView {
+- (ACDNoDataPlaceHolderView *)noDataPromptView {
     if (_noDataPromptView == nil) {
-        _noDataPromptView = ACDNoDataPromptView.new;
+        _noDataPromptView = ACDNoDataPlaceHolderView.new;
         [_noDataPromptView.noDataImageView setImage:ImageWithName(@"no_search_result")];
         _noDataPromptView.prompt.text = @"The Group Does Not Exist";
         _noDataPromptView.hidden = YES;

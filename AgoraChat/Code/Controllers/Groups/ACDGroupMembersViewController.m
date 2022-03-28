@@ -159,6 +159,9 @@ MISScrollPageControllerDelegate,AgoraGroupUIProtocol>
     self.group = agoraGroup;
     [self updateNavTitle];
     [self.allVC updateUI];
+    [self.adminListVC updateUI];
+    [self.blockListVC updateUI];
+    [self.mutedListVC updateUI];
 }
 
 #pragma mark action
@@ -186,9 +189,11 @@ MISScrollPageControllerDelegate,AgoraGroupUIProtocol>
     for (AgoraUserModel *model in modelArray) {
         [self.inviteArray addObject:model.hyphenateId];
     }
-    
+        
+    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"group.invite", @"%@ invite you to group: %@ [%@]"), AgoraChatClient.sharedClient.currentUsername, self.group.groupName, self.group.groupId];
+
     ACD_WS
-    [[AgoraChatClient sharedClient].groupManager addMembers:self.inviteArray toGroup:weakSelf.group.groupId message:@"" completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
+    [[AgoraChatClient sharedClient].groupManager addMembers:self.inviteArray toGroup:weakSelf.group.groupId message:msg completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
         [weakSelf hideHud];
         if (aError) {
             [self showHint:aError.description];
