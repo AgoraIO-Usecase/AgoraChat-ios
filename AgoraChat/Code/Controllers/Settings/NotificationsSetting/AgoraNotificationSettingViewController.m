@@ -11,7 +11,7 @@
 #import "ACDTitleDetailCell.h"
 #import "AgoraSubDetailCell.h"
 #import "ACDNameSwitchCell.h"
-#import "AgoraChatDateHelper.h"
+#import "ACDDateHelper.h"
 
 @interface AgoraNotificationSettingViewController ()
 @property (nonatomic , strong) AgoraChatSilentModeItem *silentModeItem;
@@ -67,7 +67,7 @@
                 weakSelf.silentModeItem = aResult;
                 [weakSelf.table reloadData];
             }else{
-                [weakSelf showHint:NSLocalizedString(@"hud.fail", @"fail")];
+                [weakSelf showHint:aError.errorDescription];
             }
         }];
     }else{
@@ -153,7 +153,7 @@
                 weakSelf.silentModeItem.remindType = aResult.remindType;
                 [weakSelf.table reloadData];
             }else{
-                [weakSelf showHint:NSLocalizedString(@"hud.fail", @"fail")];
+                [weakSelf showHint:aError.errorDescription];
             }
         }];
     }else{
@@ -167,7 +167,7 @@
                 weakSelf.silentModeItem.remindType = aResult.remindType;
                 [weakSelf.table reloadData];
             }else{
-                [weakSelf showHint:NSLocalizedString(@"hud.fail", @"fail")];
+                [weakSelf showHint:aError.errorDescription];
             }
         }];
     }
@@ -181,19 +181,13 @@
     ACD_WS
     [[AgoraChatClient sharedClient].pushManager updatePushDisplayStyle:style completion:^(AgoraChatError * _Nonnull aError) {
         if (aError) {
-            [weakSelf showHint:NSLocalizedString(@"hud.fail", @"fail")];
+            [weakSelf showHint:aError.errorDescription];
             
         }
     }];
 }
 
-- (void)soundAction {
-    
-}
 
-- (void)vibrateAction {
-    
-}
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if (self.notificationType == AgoraNotificationSettingTypeSelf) {
@@ -268,13 +262,14 @@
         [self changeRemindCell];
     }
     if (cell == _showPreTextCell) {
-        _showPreTextCell.aSwitch.on = [AgoraChatClient sharedClient].pushManager.pushOptions.displayStyle == AgoraChatPushDisplayStyleMessageSummary;
+        
+        [_showPreTextCell.aSwitch setOn:[AgoraChatClient sharedClient].pushManager.pushOptions.displayStyle == AgoraChatPushDisplayStyleMessageSummary];
     }
     if (cell == _vibrateCell) {
-       
+        [_vibrateCell.aSwitch setOn:[ACDDemoOptions sharedOptions].playVibration];
     }
     if (cell == _soundCell) {
-       
+        [_vibrateCell.aSwitch setOn:[ACDDemoOptions sharedOptions].playNewMsgSound];
     }
     return cell;
 }
@@ -299,7 +294,7 @@
         }else{
             self.muteCell.detailLabel.text = @"Unmute";
         }
-        self.muteCell.subDetailLabel.text = [AgoraChatDateHelper stringMonthEnglishFromTimestamp:self.silentModeItem.expireTimestamp];
+        self.muteCell.subDetailLabel.text = [ACDDateHelper stringMonthEnglishFromTimestamp:self.silentModeItem.expireTimestamp];
         self.muteCell.showSubDetailLabel = YES;
     }
 }
@@ -385,9 +380,8 @@
     if (_soundCell == nil) {
         _soundCell = [[ACDNameSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDNameSwitchCell reuseIdentifier]];
         _soundCell.nameLabel.text = @"Alert Sound";
-        ACD_WS
         _soundCell.switchActionBlock = ^(BOOL isOn) {
-            [weakSelf soundAction];
+            [ACDDemoOptions sharedOptions].playNewMsgSound = isOn;
         };
     }
     return _soundCell;
@@ -396,9 +390,8 @@
     if (_vibrateCell == nil) {
         _vibrateCell = [[ACDNameSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDNameSwitchCell reuseIdentifier]];
         _vibrateCell.nameLabel.text = @"Vibrate";
-        ACD_WS
         _vibrateCell.switchActionBlock = ^(BOOL isOn) {
-            [weakSelf vibrateAction];
+            [ACDDemoOptions sharedOptions].playVibration = isOn;
         };
     }
     return _vibrateCell;

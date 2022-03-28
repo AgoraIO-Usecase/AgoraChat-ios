@@ -7,7 +7,7 @@
 //
 
 #import "AgoraSilentModeSetViewController.h"
-#import "AgoraChatDateHelper.h"
+#import "ACDDateHelper.h"
 #import "AgoraSilentModeSetCell.h"
 
 @interface AgoraSilentModeSetViewController ()
@@ -166,7 +166,7 @@
 {
     int distance = 0;
     //目前距离24:00点的时间分钟加上8小时
-    NSString *currentTime = [AgoraChatDateHelper  getCurrentDataWithHHmmFormatter];
+    NSString *currentTime = [ACDDateHelper  getCurrentDataWithHHmmFormatter];
     NSArray  *timeArray = [currentTime componentsSeparatedByString:@":"];
     if (timeArray.count == 2) {
         int hours = [[timeArray objectAtIndex:0] intValue];

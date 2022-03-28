@@ -2283,12 +2283,9 @@
 		D28345331D90048600FD48A9 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 				A5D68F8127E1A0C400561570 /* NotificationsSetting */,
-=======
 				C0894D4127DAF19000C9F00B /* Cell */,
 				C04341F927D6209500EB058B /* View */,
->>>>>>> ptr5
 				EC19F53D2737D0DB00F88012 /* ACDAvatarCollectionCell.h */,
 				EC19F53E2737D0DB00F88012 /* ACDAvatarCollectionCell.m */,
 				EC19F52B273558C500F88012 /* ACDModifyAvatarViewController.h */,
@@ -3653,23 +3650,17 @@
 				EC54DDF8272A44D200ABEE3E /* ACDInfoCell.m in Sources */,
 				7F6CC89426568C2400BA60BB /* AgoraChatRecordView.m in Sources */,
 				D29502711DB9D13E001B9954 /* AgoraMessageTextView.m in Sources */,
-<<<<<<< HEAD
 				7F6CC96026575DB200BA60BB /* NSObject+AgoraAlertView.m in Sources */,
 				7F6CC8FB26568D3300BA60BB /* AgoraAlertView.m in Sources */,
 				A51C872B27EAC3060092EF57 /* AgoraSubDetailCell.m in Sources */,
-=======
->>>>>>> ptr5
 				EC54DCE82721502200ABEE3E /* MISScrollPageStyle.m in Sources */,
 				3AEBE3F11E792FB000B82986 /* AppDelegate.m in Sources */,
 				EC7A3245272BD2E600AF0C19 /* ACDGroupMemberNavView.m in Sources */,
 				EC00E2252744DDC100EEB474 /* ACDWebViewController.m in Sources */,
 				EC54DD102722653B00ABEE3E /* ACDCustomCell.m in Sources */,
 				9ECE66E0273B6ECF007CF85F /* AgoraChatSearchResultController.m in Sources */,
-<<<<<<< HEAD
 				A5CEFDAA27EDBC6A00733E16 /* ACDNameSwitchCell.m in Sources */,
-=======
 				C0579DA527D1EB8F0028A0D3 /* PellTableViewSelect.m in Sources */,
->>>>>>> ptr5
 				7F6CC89126568C2400BA60BB /* AgoraFaceView.m in Sources */,
 				EC54DD502722A29200ABEE3E /* ACDTextViewCell.m in Sources */,
 				7F6CC86B26568B8B00BA60BB /* AgoraMemberCell.m in Sources */,
@@ -3770,11 +3761,8 @@
 				EC54DCED2721502200ABEE3E /* MISScrollPageControllerDelegate.m in Sources */,
 				EC54DDFE272A45B100ABEE3E /* ACDInfoDetailCell.m in Sources */,
 				EC19F52D273558C500F88012 /* ACDModifyAvatarViewController.m in Sources */,
-<<<<<<< HEAD
 				A51C872827EAC2E90092EF57 /* AgoraSilentModeSetCell.m in Sources */,
-=======
 				C0579D9C27D1C0770028A0D3 /* ACDAvatarNameCell.m in Sources */,
->>>>>>> ptr5
 				3A57BFAD1ED30EF600CF9C8C /* AgoraChatroomsViewController.m in Sources */,
 				EC54DCEB2721502200ABEE3E /* MISScrollPageContentView.m in Sources */,
 				9ECE66C2273B6E7C007CF85F /* SelectAvatarViewController.m in Sources */,

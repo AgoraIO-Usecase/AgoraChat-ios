@@ -210,14 +210,14 @@ static ACDDateHelper *shared = nil;
 //    NSTimeZone *timeZone = [NSTimeZone systemTimeZone];
 //    [formatter setTimeZone:timeZone];
       
-    NSDate *confromTimesp = [AgoraChatDateHelper dateWithTimeIntervalInMilliSecondSince1970:timestamp];
+    NSDate *confromTimesp = [ACDDateHelper dateWithTimeIntervalInMilliSecondSince1970:timestamp];
         
-    NSString *confromTimespStr = [[AgoraChatDateHelper shareHelper].dfYMDHM stringFromDate:confromTimesp];
+    NSString *confromTimespStr = [[ACDDateHelper shareHelper].dfYMDHM stringFromDate:confromTimesp];
     NSArray *array = [confromTimespStr componentsSeparatedByString:@"/"];
     if (array.count == 3) {// year/month/day hour:minute
         NSArray * dayTimeArray = [array[2] componentsSeparatedByString:@" "];
         if (dayTimeArray.count == 2) {
-            NSString *resultStr =  [NSString stringWithFormat:@"%@ %@,%@, %@",[AgoraChatDateHelper monthToEnglish:array[1]],dayTimeArray[0],array[0],dayTimeArray[1]];
+            NSString *resultStr =  [NSString stringWithFormat:@"%@ %@,%@, %@",[ACDDateHelper monthToEnglish:array[1]],dayTimeArray[0],array[0],dayTimeArray[1]];
             return resultStr;
         }
     }
@@ -271,7 +271,7 @@ static ACDDateHelper *shared = nil;
 }
 + (NSString *)getCurrentDataWithHHmmFormatter
 {
-    NSDateFormatter *formatter = [AgoraChatDateHelper shareHelper].dfHM;
+    NSDateFormatter *formatter = [ACDDateHelper shareHelper].dfHM;
     NSTimeZone *timeZone = [NSTimeZone systemTimeZone];
     [formatter setTimeZone:timeZone];
     NSDate *confromTimesp = [NSDate date];
