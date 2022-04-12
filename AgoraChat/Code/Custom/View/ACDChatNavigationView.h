@@ -7,6 +7,7 @@
 //
 
 #import "ACDCustomBaseView.h"
+#import "AgoraChatAvatarView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,7 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UILabel* leftLabel;
 @property (nonatomic, strong) UIButton* chatButton;
 @property (nonatomic, strong, readonly) UIButton* rightButton;
-@property (nonatomic, strong) UIImageView *chatImageView;
+@property (nonatomic, strong) AgoraChatAvatarView *chatImageView;
+@property (nonatomic, strong) UILabel* presenceLabel;
 
 @property (nonatomic, copy) void (^leftButtonBlock)(void);
 @property (nonatomic, copy) void (^rightButtonBlock)(void);

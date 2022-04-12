@@ -75,6 +75,7 @@
 #define CHAT_BACKOFF @"AgoraChatChatBackOff"
 #define USERINFO_UPDATE @"userinfo_update"
 #define USERINFO_LIST @"userinfo_list"
+#define PRESENCES_UPDATE @"PresenceUpdate"
 
 
 #define kACDGroupMemberListType @"kACDGroupMemberListType"

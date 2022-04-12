@@ -231,9 +231,9 @@
     return _backImageView;
 }
 
-- (UIImageView *)avatarImageView {
+- (AgoraChatAvatarView *)avatarImageView {
     if (_avatarImageView == nil) {
-        _avatarImageView = [[UIImageView alloc] init];
+        _avatarImageView = [[AgoraChatAvatarView alloc] init];
         _avatarImageView.contentMode = UIViewContentModeScaleAspectFit;
         _avatarImageView.clipsToBounds = YES;
     }

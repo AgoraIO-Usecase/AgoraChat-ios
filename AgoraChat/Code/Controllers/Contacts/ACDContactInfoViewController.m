@@ -15,6 +15,7 @@
 #import "ACDChatViewController.h"
 #import "ACDInfoHeaderView.h"
 #import "ACDInfoCell.h"
+#import "PresenceManager.h"
 
 #define kContactInfoHeaderViewHeight 360.0
 
@@ -248,6 +249,7 @@ typedef enum : NSUInteger {
     if (_headerView == nil) {
         _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, kContactInfoHeaderViewHeight)];
         [_headerView addSubview:self.contactInfoHeaderView];
+        [self _updatePresenceStatus];
         [self.contactInfoHeaderView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(_headerView);
         }];
@@ -294,6 +296,27 @@ typedef enum : NSUInteger {
     return _table;
 }
 
+- (void)_updatePresenceStatus
+{
+    [[[AgoraChatClient sharedClient] presenceManager] fetchPresenceStatus:@[self.model.hyphenateId] completion:^(NSArray<AgoraChatPresence *> *presences, AgoraChatError *error) {
+        if(!error && presences.count > 0) {
+            AgoraChatPresence* presence = [presences objectAtIndex:0];
+            if(presence) {
+                NSInteger status = [PresenceManager fetchStatus:presence];
+                NSString* imageName = [[PresenceManager whiteStrokePresenceImages] objectForKey:[NSNumber numberWithInteger:status]];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.contactInfoHeaderView.avatarImageView setPresenceImage:[UIImage imageNamed:imageName]];
+                });
+                
+            }else{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.contactInfoHeaderView.avatarImageView setPresenceImage:[UIImage imageNamed:kPresenceOfflineDescription]];
+                });
+                
+            }
+        }
+    }];
+}
 
 @end
 
