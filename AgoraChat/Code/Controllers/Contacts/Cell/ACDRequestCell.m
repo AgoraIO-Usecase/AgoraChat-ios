@@ -151,6 +151,7 @@
         _timeLabel.textAlignment = NSTextAlignmentRight;
         _timeLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         _timeLabel.text = @"Now";
+        _timeLabel.hidden = YES;
     }
     return _timeLabel;
 }

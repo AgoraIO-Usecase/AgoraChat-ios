@@ -344,3 +344,13 @@
 "chatroom.announcementUpdate" = "聊天室公告更新";
 "chatroom.clearAnnouncement" = "聊天室:%@ 公告被删除";
 "chatroom.updateAnnouncement" = "聊天室:%@ 公告内容: %@";
+
+"fromPrompt" = "%@ 来自 %@ %.2lf MB";
+
+"translate" = "翻译";
+"retranslate" = "重译";
+"retranslatePrompt" = "每条翻译都只能被重译一次.提供的译文仅供参考";
+"hide" = "隐藏";
+"MultiLanguages" = "多语言";
+"languageSetting" = "设置语言";
+"prompt" = "提示";

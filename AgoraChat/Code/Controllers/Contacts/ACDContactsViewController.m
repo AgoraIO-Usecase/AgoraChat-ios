@@ -53,14 +53,10 @@ MISScrollPageControllerDelegate,ACDGroupInfoViewControllerDelegate>
 
 
 - (void)placeAndLayoutSubviews {
-
+    
     UIView *container = UIView.new;
     container.backgroundColor = UIColor.whiteColor;
     container.clipsToBounds = YES;
-    
-//    [self.view addSubview:self.navView];
-//    [self.view addSubview:self.segView];
-//    [self.view addSubview:self.contentView];
   
     [self.view addSubview:container];
     [self.view addSubview:self.navView];
@@ -85,7 +81,18 @@ MISScrollPageControllerDelegate,ACDGroupInfoViewControllerDelegate>
         make.right.equalTo(self.view);
         make.bottom.equalTo(self.view).offset(-bottom);
     }];
-    
+        
+//    [self.segView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(container);
+//        make.left.right.equalTo(container);
+//        make.height.equalTo(@50.0);
+//    }];
+//
+//    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.segView.mas_bottom);
+//        make.left.right.equalTo(container);
+//        make.bottom.equalTo(container);
+//    }];
     
 }
 
@@ -172,6 +179,7 @@ MISScrollPageControllerDelegate,ACDGroupInfoViewControllerDelegate>
     if (self.segView.titles.count == 0) {
         return;
     }
+    [self.requestListVC updateUI];
     [self.segView reloadTitleRedPointWithISShow:isShow withTitleIndex:2];
 }
 
@@ -206,7 +214,6 @@ MISScrollPageControllerDelegate,ACDGroupInfoViewControllerDelegate>
 
 
 - (void)scrollPageController:(id)pageController childViewController:(id<MISScrollPageControllerContentSubViewControllerDelegate>)childViewController willDisappearForIndex:(NSUInteger)index {
-    NSLog(@"%s index:%@",__func__,@(index));
 }
 
 #pragma mark - setter or getter
@@ -240,7 +247,8 @@ MISScrollPageControllerDelegate,ACDGroupInfoViewControllerDelegate>
 
 - (MISScrollPageContentView*)contentView {
     if(!_contentView){
-        _contentView = [self.pageController contentViewWithFrame:CGRectMake(0, 50, KScreenWidth, KScreenHeight-64-50-5-44.0)];
+        CGFloat height = KScreenHeight-kNavAndTabHeight-50 -5;
+    _contentView = [self.pageController contentViewWithFrame:CGRectMake(0, 50, KScreenWidth, height)];
     }
     return _contentView;
 }
@@ -260,7 +268,6 @@ MISScrollPageControllerDelegate,ACDGroupInfoViewControllerDelegate>
 - (ACDGroupListViewController *)groupListVC {
     if (_groupListVC == nil) {
         _groupListVC = ACDGroupListViewController.new;
-        _groupListVC.hidesBottomBarWhenPushed = YES;
 
         ACD_WS
         _groupListVC.selectedBlock = ^(NSString * _Nonnull groupId) {

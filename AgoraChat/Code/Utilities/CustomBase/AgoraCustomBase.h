@@ -9,11 +9,11 @@
 #ifndef AgoraCustomBase_h
 #define AgoraCustomBase_h
 
-#import "AgoraChatBaseViewController.h"
-#import "AgoraChatBaseTableview.h"
-#import "AgoraChatCustomBaseCell.h"
-#import "AgoraChatCustomTableViewController.h"
-#import "AgoraChatBaseTextField.h"
+#import "ACDBaseViewController.h"
+#import "ACDBaseTableview.h"
+#import "ACDCustomBaseCell.h"
+#import "ACDCustomTableViewController.h"
+#import "ACDBaseTextField.h"
 
 
 #endif /* AgoraCustomBase_h */

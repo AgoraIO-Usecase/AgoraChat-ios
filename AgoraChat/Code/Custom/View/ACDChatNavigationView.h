@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ACDChatNavigationView : ACDCustomBaseView
 @property (nonatomic, strong) UILabel* leftLabel;
 @property (nonatomic, strong) UIButton* chatButton;
+@property (nonatomic, strong, readonly) UIView* redPointView;
+@property (nonatomic, strong, readonly) UIButton* leftButton;
 @property (nonatomic, strong, readonly) UIButton* rightButton;
 @property (nonatomic, strong) UIImageView *chatImageView;
 

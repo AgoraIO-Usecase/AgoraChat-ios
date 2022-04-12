@@ -8,7 +8,7 @@
  */
 
 #import "AgoraChatsSettingViewController.h"
-#import "AgoraBlockListViewController.h"
+#import "ACDBlockListViewController.h"
 
 @interface AgoraChatsSettingViewController ()
 @property (nonatomic, strong) UISwitch *autoAcceptSitch;
@@ -82,10 +82,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellIdentifier = @"ChatsCell";
-    AgoraChatCustomBaseCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    ACDCustomBaseCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (!cell) {
         
-        cell = [[AgoraChatCustomBaseCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
+        cell = [[ACDCustomBaseCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
     }
     
     if (self.hasBlockList) {
@@ -110,7 +110,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.hasBlockList && indexPath.row == 1) {
-        AgoraBlockListViewController *vc = [[AgoraBlockListViewController alloc] init];
+        ACDBlockListViewController *vc = [[ACDBlockListViewController alloc] init];
         vc.blockList = self.blockList;
         [self.navigationController pushViewController:vc animated:YES];
     }

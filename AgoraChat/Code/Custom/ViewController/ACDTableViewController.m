@@ -8,8 +8,6 @@
 
 #import "ACDTableViewController.h"
 
-#define kSearchBarHeight 40.0f
-
 @interface ACDTableViewController ()<UISearchBarDelegate>
 
 @end
@@ -41,5 +39,4 @@
 
 @end
 
-#undef kSearchBarHeight
 
