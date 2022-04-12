@@ -263,6 +263,7 @@ static NSString *kGroupName = @"GroupName";
 - (void)connectionStateDidChange:(AgoraChatConnectionState)aConnectionState
 {
     [_chatsVC networkChanged:aConnectionState];
+    
     [_settingsVC networkChanged:aConnectionState];
 }
 

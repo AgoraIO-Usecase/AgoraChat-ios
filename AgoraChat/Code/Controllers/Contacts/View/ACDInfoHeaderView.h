@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AgoraChatAvatarView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -24,7 +25,7 @@ typedef NS_ENUM(NSInteger, ACDHeaderInfoType) {
 - (instancetype)initWithType:(ACDHeaderInfoType)type;
 
 
-@property (nonatomic, strong) UIImageView *avatarImageView;
+@property (nonatomic, strong) AgoraChatAvatarView *avatarImageView;
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UILabel *userIdLabel;
 @property (nonatomic, strong) UILabel *describeLabel;

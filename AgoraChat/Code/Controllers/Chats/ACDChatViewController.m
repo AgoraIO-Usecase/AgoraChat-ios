@@ -18,6 +18,7 @@
 #import "AgoraUserModel.h"
 #import "ACDGroupInfoViewController.h"
 #import "ACDAddContactViewController.h"
+#import "PresenceManager.h"
 
 
 @interface ACDChatViewController ()<EaseChatViewControllerDelegate, AgoraChatroomManagerDelegate, AgoraChatGroupManagerDelegate, EaseMessageCellDelegate>
@@ -63,12 +64,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetUserInfo:) name:USERINFO_UPDATE object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presencesUpdated:) name:PRESENCES_UPDATE object:nil];
     [[AgoraChatClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
     [[AgoraChatClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [self _setupChatSubviews];
     if (_conversation.unreadMessagesCount > 0) {
         [[AgoraChatClient sharedClient].chatManager ackConversationRead:_conversation.conversationId completion:nil];
     }
+    [self _updatePresenceStatus];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -119,6 +122,7 @@
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
     self.titleLabel.text = _conversationModel.showName;
     if(self.conversation.type == AgoraChatConversationTypeChat) {
+        [[PresenceManager sharedInstance] subscribe:@[self.conversationId] completion:nil];
         AgoraChatUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:self.conversation.conversationId];
         if(userInfo && userInfo.nickName.length > 0)
             self.titleLabel.text = userInfo.nickName;
@@ -411,6 +415,43 @@
     
     vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)presencesUpdated:(NSNotification*)noti
+{
+    NSArray*array = noti.object;
+    if(self.conversation.type == AgoraChatConversationTypeChat) {
+        if([array containsObject:self.conversation.conversationId]) {
+            __weak typeof(self) weakself = self;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakself _updatePresenceStatus];
+            });
+        }
+    }
+    
+}
+
+- (void)_updatePresenceStatus
+{
+    if(self.conversation.type == AgoraChatConversationTypeChat && self.conversation.conversationId.length > 0) {
+        AgoraChatPresence*presence = [[PresenceManager sharedInstance].presences objectForKey:self.conversation.conversationId];
+        if(presence) {
+            NSInteger status = [PresenceManager fetchStatus:presence];
+            NSString* imageName = [[PresenceManager whiteStrokePresenceImages] objectForKey:[NSNumber numberWithInteger:status]];
+            NSString* showStatus = [[PresenceManager showStatus] objectForKey:[NSNumber numberWithInteger:status]];
+            if(status == 0) {
+                showStatus = [PresenceManager formatOfflineStatus:presence.lastTime];
+            }
+            [self.navigationView.chatImageView setPresenceImage:[UIImage imageNamed:imageName]];
+            if(status != PRESENCESTATUS_OFFLINE && presence.statusDescription.length > 0)
+                self.navigationView.presenceLabel.text = presence.statusDescription;
+            else
+                self.navigationView.presenceLabel.text = showStatus;
+        }else{
+            [self.navigationView.chatImageView setPresenceImage:[UIImage imageNamed:kPresenceOfflineDescription]];
+            self.navigationView.presenceLabel.text = kPresenceOfflineDescription;
+        }
+    }
 }
 
 @end

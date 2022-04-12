@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AgoraChatAvatarView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ACDCustomCell : UITableViewCell
-@property (nonatomic, strong) UIImageView *iconImageView;
+@property (nonatomic, strong) AgoraChatAvatarView *iconImageView;
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong, readonly) UIView* bottomLine;
 @property (nonatomic, strong, readonly)UITapGestureRecognizer *tapGestureRecognizer;

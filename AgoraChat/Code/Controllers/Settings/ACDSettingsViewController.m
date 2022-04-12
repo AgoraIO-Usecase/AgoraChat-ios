@@ -19,6 +19,8 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "ACDModifyAvatarViewController.h"
 #import "UserInfoStore.h"
+#import "PresenceManager.h"
+#import "ACDPresenceSettingViewController.h"
 
 #define kInfoHeaderViewHeight 320.0
 #define kHeaderInSection  30.0
@@ -47,13 +49,20 @@ typedef enum : NSUInteger {
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presencesUpdated:) name:PRESENCES_UPDATE object:nil];
     [self.view addSubview:self.table];
+    
     [self.table mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
     
     [self fetchUserInfo];
+    [self _updatePresenceStatus];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)fetchUserInfo {
@@ -74,6 +83,7 @@ typedef enum : NSUInteger {
     self.myNickName = AgoraChatClient.sharedClient.currentUsername;
     self.userInfo.userId = self.myNickName;
     [self updateHeaderView];
+    [self _updatePresenceStatus];
 }
 
 - (void)updateHeaderView {
@@ -198,11 +208,17 @@ typedef enum : NSUInteger {
     UIAlertAction *copyAction = [UIAlertAction alertActionWithTitle:@"Copy AgoraID" iconImage:ImageWithName(@"action_icon_copy") textColor:TextLabelBlackColor alignment:NSTextAlignmentLeft completion:^{
         [UIPasteboard generalPasteboard].string = self.userInfo.userId;
     }];
+    
+    UIAlertAction *setStatusAction = [UIAlertAction alertActionWithTitle:@"Set Status" iconImage:ImageWithName(@"set_status") textColor:TextLabelBlackColor alignment:NSTextAlignmentLeft completion:^{
+        ACDPresenceSettingViewController*presenceVC = [[ACDPresenceSettingViewController alloc] init];
+        [self.navigationController pushViewController:presenceVC animated:NO];
+    }];
    
     
     [alertController addAction:changeAvatarAction];
     [alertController addAction:changeNicknameAction];
     [alertController addAction:copyAction];
+    [alertController addAction:setStatusAction];
 
     [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
     }]];
@@ -386,6 +402,11 @@ typedef enum : NSUInteger {
 - (UIView *)headerView {
     if (_headerView == nil) {
         _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, kInfoHeaderViewHeight)];
+        self.userInfoHeaderView = [[ACDInfoHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kInfoHeaderViewHeight) withType:ACDHeaderInfoTypeMe];
+        ACD_WS
+        self.userInfoHeaderView.tapHeaderBlock = ^{
+            [weakSelf headerViewTapAction];
+        };
         [_headerView addSubview:self.userInfoHeaderView];
         [self.userInfoHeaderView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(_headerView);
@@ -393,20 +414,6 @@ typedef enum : NSUInteger {
     }
     return _headerView;
 }
-
-- (ACDInfoHeaderView *)userInfoHeaderView {
-    if (_userInfoHeaderView == nil) {
-        _userInfoHeaderView = [[ACDInfoHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kInfoHeaderViewHeight) withType:ACDHeaderInfoTypeMe];
-        
-        ACD_WS
-        _userInfoHeaderView.tapHeaderBlock = ^{
-            [weakSelf headerViewTapAction];
-        };
-        
-    }
-    return _userInfoHeaderView;
-}
-
 
 - (ACDInfoDetailCell *)aboutCell {
     if (_aboutCell == nil) {
@@ -448,6 +455,33 @@ typedef enum : NSUInteger {
     return _imagePicker;
 }
 
+- (void)presencesUpdated:(NSNotification*)noti
+{
+    NSArray*array = noti.object;
+    if([AgoraChatClient sharedClient].currentUsername.length > 0 && [array containsObject:[AgoraChatClient sharedClient].currentUsername]) {
+        __weak typeof(self) weakself = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakself _updatePresenceStatus];
+        });
+    }
+}
+
+- (void)_updatePresenceStatus
+{
+    if([AgoraChatClient sharedClient].currentUsername.length <= 0)
+        return;
+    AgoraChatPresence*presence = [[PresenceManager sharedInstance].presences objectForKey:[AgoraChatClient sharedClient].currentUsername];
+    if(presence) {
+        NSInteger status = [PresenceManager fetchStatus:presence];
+        NSString* imageName = [[PresenceManager whiteStrokePresenceImages] objectForKey:[NSNumber numberWithInteger:status]];
+        UIImage* image = [UIImage imageNamed:imageName];
+        WEAK_SELF
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.userInfoHeaderView.avatarImageView setPresenceImage:image];
+        });
+        
+    }
+}
 
 @end
 #undef kInfoHeaderViewHeight

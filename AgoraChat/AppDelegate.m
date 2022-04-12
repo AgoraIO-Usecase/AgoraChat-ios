@@ -18,6 +18,7 @@
 #import "AgoraChatHttpRequest.h"
 
 #import <AgoraChat/AgoraChatOptions+PrivateDeploy.h>
+#import "PresenceManager.h"
 
 
 
@@ -103,6 +104,7 @@
 //    [self internalSpecOption:options];
     
     [EaseChatKitManager initWithAgoraChatOptions:options];
+    [PresenceManager sharedInstance];
 
 }
 
