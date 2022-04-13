@@ -161,7 +161,6 @@
         controller.doneBlock = ^(AgoraChatSilentModeResult * _Nonnull item) {
             weakSelf.silentModeItem = item;
             [weakSelf.table reloadData];
-            [weakSelf saveSilentModeToLocal:item];
         };
         [self.navigationController pushViewController:controller animated:YES];
     }
@@ -192,7 +191,6 @@
             if (!aError) {
                 weakSelf.silentModeItem = aResult;
                 [weakSelf.table reloadData];
-                [weakSelf saveSilentModeToLocal:aResult];
             }else{
                 [weakSelf showHint:NSLocalizedString(@"hud.fail", @"Fail")];
             }
@@ -210,7 +208,6 @@
             if (!aError) {
                 weakSelf.silentModeItem = aResult;
                 [weakSelf.table reloadData];
-                [weakSelf saveSilentModeToLocal:aResult];
             }else{
                 [weakSelf showHint:NSLocalizedString(@"hud.fail", @"Fail")];
             }
@@ -230,7 +227,6 @@
         if (!aError) {
             weakSelf.silentModeItem = aResult;
             [weakSelf.table reloadData];
-            [weakSelf saveSilentModeToLocal:aResult];
             
         }else{
             [weakSelf showHint:aError.errorDescription];
@@ -238,19 +234,6 @@
     }];
 }
 
--(void)saveSilentModeToLocal:(AgoraChatSilentModeResult*)aResult
-{
-    if (self.notificationType == AgoraNotificationSettingTypeSelf) {
-        [EaseChatSilentModeHelper defaultManager].allSilentModeItem = aResult;
-    }else{
-        AgoraChatConversationType type = AgoraChatConversationTypeGroupChat;
-        if (self.notificationType == AgoraNotificationSettingTypeSingleChat) {
-            type = AgoraChatConversationTypeChat;
-        }
-        [[EaseChatSilentModeHelper defaultManager] addConversation:self.conversationID conversationType:type silentMode:aResult];
-    }
-    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_UPDATEUNREADCOUNT object:nil];
-}
 
 - (void)showPreTextAction {
     AgoraChatPushDisplayStyle style = AgoraChatPushDisplayStyleSimpleBanner;
