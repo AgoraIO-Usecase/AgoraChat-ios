@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ACDContainerSearchTableViewController.h"
-#import "AgoraBaseRefreshTableController.h"
+#import "ACDBaseRefreshTableController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

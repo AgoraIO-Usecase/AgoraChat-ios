@@ -72,9 +72,11 @@
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark reload data
 - (void)updateUI {
     [self tableViewDidTriggerHeaderRefresh];
 }
+
 
 #pragma mark updateUIWithNotification
 - (void)updateGroupMemberWithNotification:(NSNotification *)aNotification {

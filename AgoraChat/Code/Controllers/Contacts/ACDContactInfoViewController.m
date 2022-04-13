@@ -182,17 +182,7 @@ typedef enum : NSUInteger {
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.row == 0) {
-        
-        
-    }
-    
-    if (indexPath.row == 1) {
-       
-
-    }
-    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];    
 }
 
 

@@ -28,7 +28,7 @@
 
 @property (strong, nonatomic) IBOutlet UICollectionView *selectConllection;
 
-@property (strong, nonatomic) IBOutlet AgoraChatBaseTableview *tableView;
+@property (strong, nonatomic) IBOutlet ACDBaseTableview *tableView;
 
 
 @property (strong, nonatomic) NSMutableArray<AgoraUserModel *> *selectContacts;

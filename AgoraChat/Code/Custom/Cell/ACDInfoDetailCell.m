@@ -15,7 +15,6 @@
     [self.contentView addSubview:self.iconImageView];
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.detailLabel];
-
 }
 
 - (void)placeSubViews {
