@@ -1,14 +1,14 @@
 //
-//  AgoraSubDetailCell.m
+//  ACDSubDetailCell.m
 //  AgoraChat
 //
 //  Created by hxq on 2022/3/22.
 //  Copyright © 2022 easemob. All rights reserved.
 //
 
-#import "AgoraSubDetailCell.h"
+#import "ACDSubDetailCell.h"
 
-@implementation AgoraSubDetailCell
+@implementation ACDSubDetailCell
 
 - (CGFloat)height {
     if (self.showSubDetailLabel) {

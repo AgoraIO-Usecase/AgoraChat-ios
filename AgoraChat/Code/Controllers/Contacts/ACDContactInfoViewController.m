@@ -14,7 +14,7 @@
 #import "ACDInfoHeaderView.h"
 #import "ACDInfoCell.h"
 #import "AgoraContactsUIProtocol.h"
-#import "AgoraNotificationSettingViewController.h"
+#import "ACDNotificationSettingViewController.h"
 
 #define kContactInfoHeaderViewHeight 360.0
 
@@ -155,7 +155,7 @@ typedef enum : NSUInteger {
 }
 - (void)notificationAction
 {
-    AgoraNotificationSettingViewController *controller = [[AgoraNotificationSettingViewController alloc] init];
+    ACDNotificationSettingViewController *controller = [[ACDNotificationSettingViewController alloc] init];
     controller.notificationType = AgoraNotificationSettingTypeSingleChat;
     controller.conversationID = self.model.hyphenateId;
     [self.navigationController pushViewController:controller animated:YES];

@@ -1,23 +1,23 @@
 //
-//  AgoraSilentModeSetViewController.m
+//  ACDSilentModeSetViewController.m
 //  AgoraChat
 //
 //  Created by hxq on 2022/3/22.
 //  Copyright © 2022 easemob. All rights reserved.
 //
 
-#import "AgoraSilentModeSetViewController.h"
+#import "ACDSilentModeSetViewController.h"
 #import "ACDDateHelper.h"
-#import "AgoraSilentModeSetCell.h"
+#import "ACDSilentModeSetCell.h"
 
-@interface AgoraSilentModeSetViewController ()
+@interface ACDSilentModeSetViewController ()
 @property (nonatomic ,copy) NSString *navTitle;
 @property (nonatomic, strong) UIButton *doneBtn;
 @property (nonatomic, strong) NSArray *dataArray;
 @property (nonatomic, assign) NSInteger selecIndex;
 @end
 
-@implementation AgoraSilentModeSetViewController
+@implementation ACDSilentModeSetViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -27,7 +27,7 @@
 
 - (void)loadData {
     self.selecIndex = -1;
-    self.dataArray = @[@"For 15 Minutes",@"For 1 Hour",@"For 8 Hours",@"For 24 Hours",@"Until 8:00 AM Tomorow",@"Until I turn it Unmute"];
+    self.dataArray = @[@"For 15 Minutes",@"For 1 Hour",@"For 8 Hours",@"For 24 Hours",@"Until 8:00 AM Tomorow"];
     [self.table reloadData];
 }
 - (void)setupNavBar {
@@ -58,43 +58,9 @@
 - (void)selectDoneAction
 {
     if (self.selecIndex == -1) {
+        [self showHint:@"You haven't made a choice yet!"];
         return;
     }
-    NSString *titleStr = @"";
-    NSString *infoStr = @"";
-    
-    if (self.notificationType == AgoraNotificationSettingTypeSelf) {
-        titleStr = @"Turn off Do Not Disturb?";
-        infoStr = @"You have set Do Not Disturb";
-    }else{
-        titleStr = [NSString stringWithFormat:@"Unmute this %@?",self.notificationType == AgoraNotificationSettingTypeGroup?@"Group":@"Thread"];
-        infoStr = [NSString stringWithFormat:@"You have muted this %@",self.notificationType == AgoraNotificationSettingTypeGroup?@"Group":@"Thread"];;
-    }
-    
-    if (self.selecIndex != 5) {
-        infoStr = [NSString stringWithFormat:@"%@ %@",infoStr,self.dataArray[self.selecIndex]];
-    }
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:titleStr message:infoStr preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-
-    }];
-    [alertController addAction:cancelAction];
-    
-    UIAlertAction *sureAction = [UIAlertAction actionWithTitle:@"OK" style: UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self sureChangeMMuteAction];
-    }];
-   // [deleteAction setValue:TextLabelPinkColor forKey:@"titleTextColor"];
-
-    [alertController addAction:sureAction];
-    
-    alertController.modalPresentationStyle = 0;
-    [self presentViewController:alertController animated:YES completion:nil];
-   
-    
-}
-
-- (void)sureChangeMMuteAction {
     
     int durationMinutes = 0;
     switch (self.selecIndex) {
@@ -115,10 +81,6 @@
             durationMinutes = [self distanceToTomorowEightAM];
         }
             break;
-        case 5:
-            //关闭免打扰
-            durationMinutes = 0;
-            break;
             
         default:
             break;
@@ -127,14 +89,12 @@
     [self hideHud];
     [self showHudInView:self.view hint:NSLocalizedString(@"hud.load", @"Loading..")];
     ACD_WS
-    AgoraChatSilentModeParam *param = [[AgoraChatSilentModeParam alloc] init];
-    param.paramType = AgoraChatSilentModeParamTypeDuartion;
+    AgoraChatSilentModeParam *param = [[AgoraChatSilentModeParam alloc] initWithParamType:AgoraChatSilentModeParamTypeDuartion];
     param.silentModeDuration = durationMinutes;
     if (self.notificationType == AgoraNotificationSettingTypeSelf) {
-        [[AgoraChatClient sharedClient].pushManager setSilentModeForSelf:param completion:^(AgoraChatSilentModeItem * _Nonnull aResult, AgoraChatError * _Nonnull aError) {
+        [[AgoraChatClient sharedClient].pushManager setSilentModeForAll:param completion:^(AgoraChatSilentModeResult * _Nonnull aResult, AgoraChatError * _Nonnull aError) {
             [weakSelf hideHud];
             if (!aError) {
-                [weakSelf showHint:NSLocalizedString(@" hud.success", @"Success")];
                 if(weakSelf.doneBlock)
                     weakSelf.doneBlock(aResult);
                 [weakSelf backAction];
@@ -147,10 +107,9 @@
         if (self.notificationType == AgoraNotificationSettingTypeSingleChat) {
             type = AgoraChatConversationTypeChat;
         }
-        [[AgoraChatClient sharedClient].pushManager setSilentModeForConversation:self.conversationID conversationType:type parms:param completion:^(AgoraChatSilentModeItem * _Nonnull aResult, AgoraChatError * _Nonnull aError) {
+        [[AgoraChatClient sharedClient].pushManager setSilentModeForConversation:self.conversationID conversationType:type params:param completion:^(AgoraChatSilentModeResult * _Nonnull aResult, AgoraChatError * _Nonnull aError) {
             [weakSelf hideHud];
             if (!aError) {
-                [weakSelf showHint:NSLocalizedString(@" hud.success", @"Success")];
                 if(weakSelf.doneBlock)
                     weakSelf.doneBlock(aResult);
                 [weakSelf backAction];
@@ -189,9 +148,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    AgoraSilentModeSetCell *cell = [tableView dequeueReusableCellWithIdentifier:[AgoraSilentModeSetCell reuseIdentifier]];
+    ACDSilentModeSetCell *cell = [tableView dequeueReusableCellWithIdentifier:[ACDSilentModeSetCell reuseIdentifier]];
     if (cell == nil) {
-        cell = [[AgoraSilentModeSetCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[AgoraSilentModeSetCell reuseIdentifier]];
+        cell = [[ACDSilentModeSetCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDSilentModeSetCell reuseIdentifier]];
     }
     cell.tag = indexPath.row +100;
     cell.nameLabel.text = self.dataArray[indexPath.row];
@@ -201,6 +160,7 @@
     };
     return cell;
 }
+
 
 #pragma mark getter and setter
 

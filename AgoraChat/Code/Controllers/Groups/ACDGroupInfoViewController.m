@@ -15,7 +15,7 @@
 #import "ACDGroupMembersViewController.h"
 #import "ACDChatViewController.h"
 #import "ACDGroupTransferOwnerViewController.h"
-#import "AgoraNotificationSettingViewController.h"
+#import "ACDNotificationSettingViewController.h"
 #import "ACDTextViewController.h"
 #import "ACDTextViewController.h"
 #import "ACDGroupSharedFilesViewController.h"
@@ -405,7 +405,7 @@
 }
 
 - (void)goGroupNotice {
-    AgoraNotificationSettingViewController *controller = [[AgoraNotificationSettingViewController alloc] init];
+    ACDNotificationSettingViewController *controller = [[ACDNotificationSettingViewController alloc] init];
     controller.notificationType = AgoraNotificationSettingTypeGroup;
     controller.conversationID = self.groupId;
     [self.navigationController pushViewController:controller animated:YES];

@@ -1,5 +1,5 @@
 //
-//  AgoraNotificationSettingViewController.h
+//  ACDNotificationSettingViewController.h
 //  AgoraChat
 //
 //  Created by hxq on 2022/3/16.
@@ -17,7 +17,7 @@ typedef NS_ENUM(NSInteger, AgoraNotificationSettingType) {
     AgoraNotificationSettingTypeThread,
 };
 
-@interface AgoraNotificationSettingViewController : ACDBaseTableViewController
+@interface ACDNotificationSettingViewController : ACDBaseTableViewController
 @property (nonatomic , copy) NSString *conversationID;
 @property (nonatomic , assign)AgoraNotificationSettingType  notificationType;
 @end

@@ -1,5 +1,5 @@
 //
-//  AgoraSilentModeSetCell.h
+//  ACDSilentModeSetCell.h
 //  AgoraChat
 //
 //  Created by hxq on 2022/3/23.
@@ -10,8 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AgoraSilentModeSetCell : ACDCustomCell
-@property (nonatomic, strong) UIButton *selectButton;
+@interface ACDSilentModeSetCell : ACDCustomCell
+@property (nonatomic, strong) UIImageView *selectImageView;
 @property (nonatomic, copy) void (^selectBlock)(NSInteger tag);
 @end
 

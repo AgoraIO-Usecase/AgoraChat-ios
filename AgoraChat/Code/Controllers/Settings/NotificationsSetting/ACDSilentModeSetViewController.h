@@ -1,5 +1,5 @@
 //
-//  AgoraSilentModeSetViewController.h
+//  ACDSilentModeSetViewController.h
 //  AgoraChat
 //
 //  Created by hxq on 2022/3/22.
@@ -7,14 +7,14 @@
 //
 
 #import "ACDBaseTableViewController.h"
-#import "AgoraNotificationSettingViewController.h"
+#import "ACDNotificationSettingViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AgoraSilentModeSetViewController : ACDBaseTableViewController
+@interface ACDSilentModeSetViewController : ACDBaseTableViewController
 @property (nonatomic , copy) NSString *conversationID;
 @property (nonatomic , assign)AgoraNotificationSettingType  notificationType;
-@property (nonatomic, copy) void(^doneBlock)(AgoraChatSilentModeItem *item);
+@property (nonatomic, copy) void(^doneBlock)(AgoraChatSilentModeResult *item);
 @end
 
 NS_ASSUME_NONNULL_END

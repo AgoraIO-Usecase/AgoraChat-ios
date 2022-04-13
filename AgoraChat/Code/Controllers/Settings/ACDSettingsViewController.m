@@ -21,7 +21,7 @@
 #import "ACDGeneralViewController.h"
 #import "ACDPrivacyViewController.h"
 #import "AgoraPushNotificationViewController.h"
-#import "AgoraNotificationSettingViewController.h"
+#import "ACDNotificationSettingViewController.h"
 
 
 #define kInfoHeaderViewHeight 320.0
@@ -202,7 +202,7 @@ typedef enum : NSUInteger {
 
 - (void)goNotificationPage {
 //    AgoraPushNotificationViewController *about = [[AgoraPushNotificationViewController alloc] init];
-    AgoraNotificationSettingViewController *conntroller = [[AgoraNotificationSettingViewController alloc] init];
+    ACDNotificationSettingViewController *conntroller = [[ACDNotificationSettingViewController alloc] init];
 
     conntroller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:conntroller animated:YES];
