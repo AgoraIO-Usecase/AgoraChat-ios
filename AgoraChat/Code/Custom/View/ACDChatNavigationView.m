@@ -136,9 +136,8 @@
 
 - (UIButton *)rightButton {
     if (_rightButton == nil) {
-        _rightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 8, 15)];
+        _rightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
         _rightButton.contentMode = UIViewContentModeScaleAspectFill;
-        [_rightButton setImage:ImageWithName(@"nav_chat_right_bar") forState:UIControlStateNormal];
         [_rightButton addTarget:self action:@selector(rightButtonAction) forControlEvents:UIControlEventTouchUpInside];
         _rightButton.hidden = YES;
     }
@@ -155,6 +154,15 @@
         [_chatImageView setImage:image];
     }
     return _chatImageView;
+}
+
+- (void)rightItemImageWithType:(AgoraChatConversationType)type {
+    if (type == AgoraChatConversationTypeGroupChat) {
+        _rightButton.hidden = NO;
+        [_rightButton setImage:ImageWithName(@"groupThread") forState:UIControlStateNormal];
+    } else {
+        [_rightButton setImage:ImageWithName(@"nav_chat_right_bar") forState:UIControlStateNormal];
+    }
 }
 
 @end

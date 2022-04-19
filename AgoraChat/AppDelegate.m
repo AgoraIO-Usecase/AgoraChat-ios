@@ -100,7 +100,7 @@
     [options setIsAutoLogin:YES];
 
 #warning 国内部署设置
-//    [self internalSpecOption:options];
+    [self internalSpecOption:options];
     
     [EaseChatKitManager initWithAgoraChatOptions:options];
 
@@ -108,8 +108,8 @@
 
 - (void)internalSpecOption:(AgoraChatOptions *)option {
     option.enableDnsConfig = NO;
-    option.restServer = @"https://a1.chat.agora.io";
-    option.chatServer = @"https://msync-im-tls.chat.agora.io";
+    option.restServer = @"http://a1-hsb.easemob.com";
+    option.chatServer = @"106.75.35.59";
     option.chatPort = 6717;
 }
 

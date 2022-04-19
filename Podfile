@@ -9,6 +9,7 @@ inhibit_all_warnings!
 source 'https://github.com/CocoaPods/Specs.git'
 
 target 'AgoraChat' do
+  
 post_install do |installer|
   installer.pods_project.build_configurations.each do |config|
     config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
@@ -20,12 +21,16 @@ end
     pod 'Masonry'
     pod 'WHToast'
     pod 'FMDB'
-    pod 'Agora_Chat_iOS'
+
+#    pod 'HyphenateChat', :path => "../agora-ios/newSDK"
+#    pod 'Agora_Chat_iOS',path => "../AgoraChat-UIKit-ios"
     # pod 'chat-uikit'
     pod 'chat-uikit', :path => "../AgoraChat-UIKit-ios"
 end
 
 
-
+#    target 'AgoraChatSDK' do
+#    project '../agora-ios/newSDK/AgoraChatSDK.xcodeproj’
+#    end
 
 

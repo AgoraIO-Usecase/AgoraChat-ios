@@ -79,7 +79,7 @@
 
 #define kACDGroupMemberListType @"kACDGroupMemberListType"
 #define kACDGroupId @"kACDGroupId"
-
+#define kACDThreadId @"kACDThreadId"
 #define KACDGroupCreateMemberLimit @"Member quantity: 3 to 2000"
 
 #endif /* AgoraChatChatDemoUIDefine_h */

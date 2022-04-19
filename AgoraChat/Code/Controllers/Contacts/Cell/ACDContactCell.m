@@ -48,7 +48,7 @@
     if (_model != model) {
         _model = model;
     }
-    self.nameLabel.text = _model.nickname;
+    self.nameLabel.text = _model.nickname.length ? model.nickname:model.hyphenateId;
     self.iconImageView.image = _model.defaultAvatarImage;
     if (_model.avatarURLPath.length > 0) {
         [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:_model.avatarURLPath] placeholderImage:_model.defaultAvatarImage];

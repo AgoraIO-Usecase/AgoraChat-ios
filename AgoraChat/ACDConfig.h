@@ -9,7 +9,7 @@
 #ifndef ACDConfig_h
 #define ACDConfig_h
 
-#define ACDENV  3
+#define ACDENV  1
 
 #if ACDENV == 0
 //美东
@@ -18,8 +18,8 @@
 
 #elif ACDENV == 1
 //easeim
-#define Appkey @"easemob-demo#easeim"
-#define AppServerHost @"https://a41.easemob.com"
+#define Appkey @"easemob-demo#chatdemoui"
+#define AppServerHost @"http://a1-hsb.easemob.com"
 
 #elif ACDENV == 2
 //ebs
@@ -34,7 +34,7 @@
 #endif
 
 
-//#define EaseIMAppKey @"easemob-demo#easeim"
+#define EaseIMAppKey @"easemob-demo#easeim"
 //#define ChatDemoUIAppKey @"easemob-demo#chatdemoui"
 //#define HongKongAppkey @"52366312#441909"
 //#define MeidongAppkey @"41117440#383391"
