@@ -18,17 +18,18 @@
 #import "AgoraChatHttpRequest.h"
 
 #import <AgoraChat/AgoraChatOptions+PrivateDeploy.h>
-
+#import "AgoraChatCallKitManager.h"
 
 @interface AppDelegate () <AgoraChatClientDelegate,UNUserNotificationCenterDelegate>
+
 @property (nonatomic, strong) NSString *userName;
 @property (nonatomic, strong) NSString *nickName;
 
+@property (nonatomic, strong) AgoraChatCallKitManager *callKitManager;
+
 @end
 
-
 @implementation AppDelegate
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -45,7 +46,7 @@
         [[UINavigationBar appearance] setTintColor:AlmostBlackColor];
         [[UINavigationBar appearance] setTranslucent:NO];
     }
-            
+    
     [self initAccount];
     [self initUIKit];
         
@@ -65,6 +66,8 @@
     [self _registerAPNS];
     [self registerNotifications];
     
+    self.callKitManager = [AgoraChatCallKitManager shareManager];
+    
     return YES;
 }
 
@@ -77,9 +80,35 @@
 
 - (void)initUIKit
 {
-//    [self internalSpecOption:options];
-    ACDDemoOptions *demoOptions = [ACDDemoOptions sharedOptions];
-    [EaseChatKitManager initWithAgoraChatOptions:[demoOptions toOptions]];
+    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:@"5101220107132865#test"];
+    
+    // Hyphenate cert keys
+    NSString *apnsCertName = nil;
+#if ChatDemo_DEBUG
+    apnsCertName = @"ChatDemoDevPush";
+#else
+    apnsCertName = @"ChatDemoProPush";
+#endif
+    
+    [options setApnsCertName:apnsCertName];
+    [options setEnableDeliveryAck:YES];
+    [options setEnableConsoleLog:YES];
+    [options setIsDeleteMessagesWhenExitGroup:NO];
+    [options setIsDeleteMessagesWhenExitChatRoom:NO];
+    [options setUsingHttpsOnly:YES];
+    [options setIsAutoLogin:YES];
+    [options setChatServer:@"52.80.99.104"];
+    [options setChatPort:6717];
+    [options setRestServer:@"http://a1-test.easemob.com"];
+#warning 国内部署设置
+    [self internalSpecOption:options];
+    
+    [options setRestServer:@"http://a1-test.easemob.com"];
+    [options setChatServer:@"52.80.99.104"];
+    [options setChatPort:6717];
+    
+//    self.appkey = @"5101220107132865#test";
+    [EaseChatKitManager initWithAgoraChatOptions:options];
 }
 
 - (void)internalSpecOption:(AgoraChatOptions *)option {
@@ -87,6 +116,10 @@
     option.restServer = @"https://a1.chat.agora.io";
     option.chatServer = @"https://msync-im-tls.chat.agora.io";
     option.chatPort = 6717;
+    
+    [option setRestServer:@"http://a1-test.easemob.com"];
+    [option setChatServer:@"52.80.99.104"];
+    [option setChatPort:6717];
 }
 
 - (void)loadViewController {
@@ -119,6 +152,7 @@
     if (aErrorCode == AgoraChatErrorTokeWillExpire) {
         NSLog(@"%@", [NSString stringWithFormat:@"========= token expire rennew token ! code : %d",aErrorCode]);
         [[AgoraChatHttpRequest sharedManager] loginToApperServer:self.userName nickName:self.nickName completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+            return;
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSString *alertStr = nil;
                 if (response && response.length > 0) {

@@ -15,7 +15,6 @@
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        
         [self swizzleInstanceSelector:@selector(setPlaceholder:) withSelector:@selector(updatePlaceholder:)];
     });
 }
@@ -42,6 +41,7 @@
 - (void)updatePlaceholder:(NSString *)placeholder {
     NSLog(@"%s class:%@ placeholder:%@",__func__,NSStringFromClass([self class]),placeholder);
     if (placeholder == nil) {
+        [self updatePlaceholder:placeholder];
         return;
     }
     

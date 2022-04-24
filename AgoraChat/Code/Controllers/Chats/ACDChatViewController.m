@@ -20,6 +20,7 @@
 #import "ACDAddContactViewController.h"
 #import "ACDChatDetailViewController.h"
 
+#import "AgoraChatCallKitManager.h"
 
 @interface ACDChatViewController ()<EaseChatViewControllerDelegate, AgoraChatroomManagerDelegate, AgoraChatGroupManagerDelegate, EaseMessageCellDelegate>
 @property (nonatomic, strong) EaseConversationModel *conversationModel;
@@ -56,7 +57,6 @@
                                                     conversationType:conType
                                                         chatViewModel:viewModel];
 
-        [_chatController setEditingStatusVisible:[ACDDemoOptions sharedOptions].isChatTyping];
         _chatController.delegate = self;
     }
     return self;
@@ -355,8 +355,25 @@
             [weakSelf goInfoPage];
         };
 
+        [_navigationView.rightButton setImage:[UIImage imageNamed:@"nav_bar_call"] forState:UIControlStateNormal];
         _navigationView.rightButtonBlock = ^{
-            [weakSelf goChatDetailPage];
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"Audio Call" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                if (weakSelf.conversationType == AgoraChatConversationTypeChat) {
+                    [AgoraChatCallKitManager.shareManager audioCallToUser:weakSelf.conversationId];
+                } else {
+                    [AgoraChatCallKitManager.shareManager audioCallToGroup:weakSelf.conversationId viewController:weakSelf];
+                }
+            }]];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"Video Call" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                if (weakSelf.conversationType == AgoraChatConversationTypeChat) {
+                    [AgoraChatCallKitManager.shareManager videoCallToUser:weakSelf.conversationId];
+                } else {
+                    [AgoraChatCallKitManager.shareManager videoCallToGroup:weakSelf.conversationId viewController:weakSelf];
+                }
+            }]];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+            [weakSelf presentViewController:alertController animated:YES completion:nil];
         };
     }
     return _navigationView;
