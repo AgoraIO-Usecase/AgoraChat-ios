@@ -7,15 +7,14 @@
 //
 
 #import "ACDContactInfoViewController.h"
-#import "AgoraContactInfoViewController.h"
 #import "UIImage+ImageEffect.h"
 #import "AgoraUserModel.h"
-#import "AgoraContactInfoCell.h"
 #import "AgoraChatDemoHelper.h"
 #import "ACDChatViewController.h"
 #import "ACDInfoHeaderView.h"
 #import "ACDInfoCell.h"
 #import "PresenceManager.h"
+#import "AgoraContactsUIProtocol.h"
 
 #define kContactInfoHeaderViewHeight 360.0
 
@@ -184,17 +183,7 @@ typedef enum : NSUInteger {
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.row == 0) {
-        
-        
-    }
-    
-    if (indexPath.row == 1) {
-       
-
-    }
-    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];    
 }
 
 

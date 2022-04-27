@@ -6,7 +6,7 @@
 //  Copyright © 2021 easemob. All rights reserved.
 //
 
-#import "AgoraChatCustomBaseCell.h"
+#import "ACDCustomBaseCell.h"
 #import "AgoraGroupUIProtocol.h"
 #import "ACDCustomCell.h"
 

@@ -28,4 +28,7 @@
                   groupId:(NSString *)groupId
                applyStyle:(AgoraApplyStyle)applyStyle;
 
+- (void)updateApplyWithModel:(AgoraApplyModel *)model;
+
+
 @end

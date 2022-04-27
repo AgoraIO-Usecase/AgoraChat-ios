@@ -11,7 +11,6 @@
 
 @interface AgoraGroupPermissionCell()
 
-@property (strong, nonatomic) IBOutlet UILabel *permissionDescriptionLabel;
 
 @end
 
@@ -27,8 +26,8 @@
 }
 
 - (IBAction)permissionSelectAction:(UISwitch *)sender {
-    if (self.ReturnSwitchState) {
-        self.ReturnSwitchState(sender.isOn);
+    if (self.switchStateBlock) {
+        self.switchStateBlock(sender.isOn);
     }
 }
 

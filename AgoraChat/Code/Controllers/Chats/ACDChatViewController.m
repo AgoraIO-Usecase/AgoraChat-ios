@@ -10,7 +10,7 @@
 #import "ACDContactInfoViewController.h"
 #import "AgoraUserModel.h"
 #import "AgoraChatUserDataModel.h"
-#import "AgoraChatDateHelper.h"
+#import "ACDDateHelper.h"
 #import "UserInfoStore.h"
 
 #import "ACDChatNavigationView.h"
@@ -19,6 +19,7 @@
 #import "ACDGroupInfoViewController.h"
 #import "ACDAddContactViewController.h"
 #import "PresenceManager.h"
+#import "ACDChatDetailViewController.h"
 
 
 @interface ACDChatViewController ()<EaseChatViewControllerDelegate, AgoraChatroomManagerDelegate, AgoraChatGroupManagerDelegate, EaseMessageCellDelegate>
@@ -55,7 +56,8 @@
         _chatController = [EaseChatViewController initWithConversationId:conversationId
                                                     conversationType:conType
                                                         chatViewModel:viewModel];
-        [_chatController setTypingIndicator:YES];
+
+        [_chatController setTypingIndicator:[ACDDemoOptions sharedOptions].isChatTyping];
         _chatController.delegate = self;
     }
     return self;
@@ -110,6 +112,7 @@
     }];
  
     self.view.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
+
 }
 
 - (void)_setupNavigationBarTitle
@@ -145,9 +148,9 @@
         make.right.equalTo(self.titleLabel);
         make.bottom.equalTo(titleView);
     }];
-    
-    self.navigationItem.titleView = titleView;
+  
 }
+
 
 #pragma mark - EaseChatViewControllerDelegate
 
@@ -180,13 +183,21 @@
 //typing 1v1 single chat only
 - (void)peerTyping
 {
-    self.titleDetailLabel.text = @"other party is typing";
+    NSAttributedString *titleString = [ACDUtil attributeContent:self.navTitle color:TextLabelBlackColor font:BFont(18.0f)];
+
+    NSAttributedString *preTypingString = [ACDUtil attributeContent:@" (other party is typing)" color:TextLabelGrayColor font:Font(@"PingFang SC",14.0)];
+    
+    NSMutableAttributedString *mutAttributeString = [[NSMutableAttributedString alloc] init];
+    [mutAttributeString appendAttributedString:titleString];
+    [mutAttributeString appendAttributedString:preTypingString];
+    self.navigationView.leftLabel.attributedText = mutAttributeString;
+
 }
 
 //1v1 single chat only
 - (void)peerEndTyping
 {
-    self.titleDetailLabel.text = nil;
+    self.navigationView.leftLabel.text = [NSString stringWithFormat:@"%@",self.navTitle];
 }
 
 //userProfile
@@ -271,6 +282,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_UPDATEUNREADCOUNT object:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 
 #pragma mark - AgoraChatGroupManagerDelegate
 
@@ -370,19 +382,24 @@
 - (ACDChatNavigationView *)navigationView {
     if (_navigationView == nil) {
         _navigationView = [[ACDChatNavigationView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 80.0f)];
-    
+        _navigationView.rightButton.hidden = YES;
         _navigationView.leftLabel.text = self.navTitle;
         ACD_WS
         _navigationView.leftButtonBlock = ^{
             [weakSelf backAction];
         };
-        
+
         _navigationView.chatButtonBlock = ^{
             [weakSelf goInfoPage];
+        };
+
+        _navigationView.rightButtonBlock = ^{
+            [weakSelf goChatDetailPage];
         };
     }
     return _navigationView;
 }
+
 
 - (void)goInfoPage {
     if (self.conversationType == AgoraChatConversationTypeChat) {
@@ -452,6 +469,32 @@
             self.navigationView.presenceLabel.text = kPresenceOfflineDescription;
         }
     }
+}
+    
+- (void)goChatDetailPage {
+    if (self.conversationType == AgoraChatConversationTypeChat) {
+        [self goChatDetailWithContactId:self.conversationId];
+    }
+    
+    if (self.conversationType == AgoraChatConversationTypeGroupChat) {
+        [self goGroupDetailWithContactId:self.conversationId];
+    }
+}
+
+- (void)goChatDetailWithContactId:(NSString *)contactId {
+    ACDChatDetailViewController *vc = [[ACDChatDetailViewController alloc] initWithCoversation:self.conversation];
+    
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+
+- (void)goGroupDetailWithContactId:(NSString *)contactId {
+    ACDChatDetailViewController *vc = [[ACDChatDetailViewController alloc] initWithCoversation:self.conversation];
+
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+
 }
 
 @end

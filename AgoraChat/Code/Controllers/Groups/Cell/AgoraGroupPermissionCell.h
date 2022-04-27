@@ -19,13 +19,15 @@ typedef NS_ENUM(NSUInteger, AgoraGroupInfoType) {
 };
 @class AgoraGroupPermissionModel;
 
-@interface AgoraGroupPermissionCell : AgoraChatCustomBaseCell
+@interface AgoraGroupPermissionCell : ACDCustomBaseCell
 
 @property (strong, nonatomic) IBOutlet UILabel *permissionTitleLabel;
 
 @property (strong, nonatomic) IBOutlet UISwitch *permissionSwitch;
 
-@property (copy, nonatomic) void (^ReturnSwitchState)(BOOL isOn);
+@property (strong, nonatomic) IBOutlet UILabel *permissionDescriptionLabel;
+
+@property (copy, nonatomic) void (^switchStateBlock)(BOOL isOn);
 
 @property (strong, nonatomic) AgoraGroupPermissionModel *model;
 

@@ -28,7 +28,7 @@
 
 @property (strong, nonatomic) IBOutlet UICollectionView *selectConllection;
 
-@property (strong, nonatomic) IBOutlet AgoraChatBaseTableview *tableView;
+@property (strong, nonatomic) IBOutlet ACDBaseTableview *tableView;
 
 
 @property (strong, nonatomic) NSMutableArray<AgoraUserModel *> *selectContacts;
@@ -310,7 +310,9 @@
             indexPath = [weakSelf.tableView indexPathForCell:cell];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            if (indexPath) {
+                [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            }
         });
     };
     

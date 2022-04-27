@@ -21,6 +21,28 @@
 
 #define AgoraChatVIEWTOPMARGIN (kIsBangsScreen ? 34.f : 0.f)
 
+#define KScreenHeight [[UIScreen mainScreen] bounds].size.height
+#define KScreenWidth  [[UIScreen mainScreen] bounds].size.width
+
+#define kIs_iphone (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+#define kIs_iPhoneX KScreenWidth >=375.0f && KScreenHeight >=812.0f&& kIs_iphone
+ 
+#define kStatusBarHeight (CGFloat)(kIs_iPhoneX?(44.0):(20.0))
+#define kNavBarHeight (44)
+
+#define kNavBarAndStatusBarHeight (CGFloat)(kIs_iPhoneX?(88.0):(64.0))
+
+#define kTabBarHeight (CGFloat)(kIs_iPhoneX?(49.0 + 34.0):(49.0))
+
+#define kTopBarSafeHeight (CGFloat)(kIs_iPhoneX?(44.0):(0))
+
+#define kBottomSafeHeight (CGFloat)(kIs_iPhoneX?(34.0):(0))
+
+#define kTopBarDifHeight (CGFloat)(kIs_iPhoneX?(24.0):(0))
+
+#define kNavAndTabHeight (kNavBarAndStatusBarHeight + kTabBarHeight)
+
+
 #define ChatDemo_DEBUG 1
 
 #define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
@@ -39,9 +61,6 @@
 
 #define ACD_ONE_PX  (1.0f / [UIScreen mainScreen].scale)
 
-#define KScreenHeight [[UIScreen mainScreen] bounds].size.height
-#define KScreenWidth  [[UIScreen mainScreen] bounds].size.width
-
 #define KNOTIFICATION_LOGINCHANGE @"loginStateChange"
 #define KNOTIFICATION_UPDATEUNREADCOUNT @"setupUnreadMessageCount"
 #define KNOTIFICATIONNAME_DELETEALLMESSAGE @"RemoveAllMessages"
@@ -57,6 +76,8 @@
 #define kAgroaPadding 10.0f
 #define kAvatarHeight 32.0f
 #define kContactAvatarHeight 40.0f
+#define kSearchBarHeight 32.0
+
 
 //user
 #define USER_NAME @"user_name"
