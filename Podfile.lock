@@ -3,11 +3,24 @@ PODS:
   - chat-uikit (1.0.1):
     - Agora_Chat_iOS
     - EMVoiceConvert (= 0.1.0)
+    - Giphy
+    - Stipop
   - DACircularProgress (2.3.1)
   - EMVoiceConvert (0.1.0)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
+  - Giphy (2.1.21):
+    - libwebp
+  - libwebp (1.2.1):
+    - libwebp/demux (= 1.2.1)
+    - libwebp/mux (= 1.2.1)
+    - libwebp/webp (= 1.2.1)
+  - libwebp/demux (1.2.1):
+    - libwebp/webp
+  - libwebp/mux (1.2.1):
+    - libwebp/demux
+  - libwebp/webp (1.2.1)
   - Masonry (1.1.0)
   - MBProgressHUD (0.9.2)
   - MJRefresh (3.7.5)
@@ -18,6 +31,7 @@ PODS:
   - SDWebImage (3.8.3):
     - SDWebImage/Core (= 3.8.3)
   - SDWebImage/Core (3.8.3)
+  - Stipop (0.3.1)
   - WHToast (0.1.0)
 
 DEPENDENCIES:
@@ -35,11 +49,14 @@ SPEC REPOS:
     - DACircularProgress
     - EMVoiceConvert
     - FMDB
+    - Giphy
+    - libwebp
     - Masonry
     - MBProgressHUD
     - MJRefresh
     - MWPhotoBrowser
     - SDWebImage
+    - Stipop
     - WHToast
 
 EXTERNAL SOURCES:
@@ -48,15 +65,18 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Agora_Chat_iOS: cf79f6f677f0bb5b1a14494b7d26ea5122f74bab
-  chat-uikit: a839668b62704d62aca1c2acbed5f987534abfe1
+  chat-uikit: 5edcb60b68eab081a8430d72fa69131dea8cc85d
   DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
   EMVoiceConvert: 32a0eaada94d93c151a5abd53ee174cd4e63b01f
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  Giphy: 96e473c9ae2db3d543d09df587d89b1651dc3e3e
+  libwebp: 98a37e597e40bfdb4c911fc98f2c53d0b12d05fc
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
   MWPhotoBrowser: 5836d7aa041dc05a13de380c246826578adc5ea5
   SDWebImage: a72e880a8fe0f7fc31efe15aaed443c074d2a80c
+  Stipop: 8a03ecd47930c22cb82366d84b9c9146756e26c9
   WHToast: 7d393091940215c2b8bcf78422d1855f9bfa3975
 
 PODFILE CHECKSUM: bd008261d063753583416b826a6e5a10149faa09
