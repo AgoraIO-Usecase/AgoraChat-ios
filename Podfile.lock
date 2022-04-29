@@ -65,7 +65,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Agora_Chat_iOS: cf79f6f677f0bb5b1a14494b7d26ea5122f74bab
-  chat-uikit: 5edcb60b68eab081a8430d72fa69131dea8cc85d
+  chat-uikit: 39b596e4a9e857f1bd7d8daa461adae67546e785
   DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
   EMVoiceConvert: 32a0eaada94d93c151a5abd53ee174cd4e63b01f
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
