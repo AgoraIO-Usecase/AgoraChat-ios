@@ -14,6 +14,7 @@
 #import "ACDGroupEnterController.h"
 #import "ACDChatViewController.h"
 #import "ACDNaviCustomView.h"
+#import "PellTableViewSelect.h"
 
 @interface ACDChatsViewController() <EaseConversationsViewControllerDelegate, AgoraChatSearchControllerDelegate>
 
@@ -338,6 +339,57 @@
     [self.navigationController pushViewController:chatViewController animated:YES];
 }
 
+- (void)moreAction
+{
+    [PellTableViewSelect addPellTableViewSelectWithWindowFrame:CGRectMake(EaseKitScreenWidth-180, 0, 180, 50.0) selectData:@[@"Log Out"] images:@[@"logout_icon"] locationY:self.navView.addButton.frame.origin.y + self.navView.addButton.frame.size.height - 20.0 action:^(NSInteger index) {
+        if(index == 0) {
+            [self logoutAlert];
+        }
+    } animated:YES];
+}
+
+- (void)logoutAlert {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Sure to Quit?" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+       
+    }];
+    [cancelAction setValue:TextLabelBlueColor forKey:@"titleTextColor"];
+
+    
+    UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self logout];
+    }];
+        
+    [confirmAction setValue:TextLabelBlueColor forKey:@"titleTextColor"];
+
+    [alertController addAction:cancelAction];
+    [alertController addAction:confirmAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+
+- (void)logout
+{
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    WEAK_SELF
+    [[AgoraChatClient sharedClient] logout:YES completion:^(AgoraChatError *aError) {
+        
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        if (!aError) {
+            NSUserDefaults *shareDefault = [NSUserDefaults standardUserDefaults];
+            [shareDefault setObject:@"" forKey:USER_NAME];
+            [shareDefault setObject:@"" forKey:USER_NICKNAME];
+            [shareDefault synchronize];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO userInfo:@{@"userName":@"",@"nickName":@""}];
+        } else {
+            [weakSelf showHint:[NSString stringWithFormat:@"%@:%u",NSLocalizedString(@"logout.failed", @"Logout failed"), aError.code]];
+        }
+    }];
+}
+
+
 #pragma mark - AgoraChatSearchControllerDelegate
 
 - (void)searchBarWillBeginEditing:(UISearchBar *)searchBar
@@ -432,13 +484,15 @@
         _navView = [[ACDNaviCustomView alloc] init];
         ACD_WS
         _navView.addActionBlock = ^{
-            [weakSelf chatInfoAction];
+//            [weakSelf chatInfoAction];
+            [weakSelf moreAction];
         };
         
-        [_navView.titleImageView setImage:ImageWithName(@"nav_title_chats")];
+        [_navView.titleImageView setImage:ImageWithName(@"nav_title_apiExample")];
         
-        [_navView.addButton setImage:ImageWithName(@"chat_nav_add") forState:UIControlStateNormal];
+        [_navView.addButton setImage:ImageWithName(@"chat_nav_more") forState:UIControlStateNormal];
     }
     return _navView;
 }
+
 @end

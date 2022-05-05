@@ -92,7 +92,7 @@
 - (void)loadViewController {
     BOOL isAutoLogin = [AgoraChatClient sharedClient].isAutoLogin;
     if (isAutoLogin) {
-        [self loadMainPage];
+        [self loadChatsPage];
     } else {
         [self loadLoginPage];
     }
@@ -107,7 +107,7 @@
     
     BOOL loginSuccess = [notification.object boolValue];
     if (loginSuccess) {
-        [self loadMainPage];
+        [self loadChatsPage];
         
     } else {
         [self loadLoginPage];
@@ -210,6 +210,17 @@
         }];
     }
 }
+
+- (void)loadChatsPage {
+    ACDChatsViewController *chatsVC = [[ACDChatsViewController alloc] init];
+    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+    if (!navigationController || (navigationController && ![navigationController.viewControllers[0] isKindOfClass:[ACDChatsViewController class]])) {
+        navigationController = [[UINavigationController alloc] initWithRootViewController:chatsVC];
+    }
+    navigationController.navigationBarHidden = YES;
+    self.window.rootViewController = navigationController;
+}
+
 
 - (void)loadMainPage {
     AgoraMainViewController *main = [[AgoraMainViewController alloc] init];
