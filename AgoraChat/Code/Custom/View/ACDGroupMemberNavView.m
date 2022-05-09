@@ -11,7 +11,6 @@
 @interface ACDGroupMemberNavView ()
 @property (nonatomic, strong) UIImageView* leftImageView;
 @property (nonatomic, strong) UIButton* leftButton;
-@property (nonatomic, strong) UIButton* rightButton;
 
 @end
 

@@ -56,7 +56,6 @@
 }
 
 
-
 #pragma mark getter and setter
 - (void)setIsGroupOwner:(BOOL)isGroupOwner {
     _isGroupOwner = isGroupOwner;
@@ -97,13 +96,6 @@
     else {
         self.iconImageView.image = _model.defaultAvatarImage;
     }
-    
-//    if (_model.selected) {
-//        [self.selectImageView setImage:ImageWithName(@"member_selected")];
-//    }else {
-//        [self.selectImageView setImage:ImageWithName(@"member_normal")];
-//    }
-        
 }
 
 #pragma mark gettter and setter

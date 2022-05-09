@@ -52,6 +52,12 @@
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark reload data
+- (void)updateUI {
+    [self tableViewDidTriggerHeaderRefresh];
+}
+
+
 #pragma mark refresh and load more
 - (void)didStartRefresh {
     [self tableViewDidTriggerHeaderRefresh];
@@ -127,6 +133,11 @@
 #pragma mark - data
 - (void)tableViewDidTriggerHeaderRefresh
 {
+    BOOL isAdmin = (self.group.permissionType == AgoraChatGroupPermissionTypeOwner ||self.group.permissionType == AgoraChatGroupPermissionTypeAdmin);
+    if (!isAdmin) {
+        return;
+    }
+    
     self.page = 1;
     [self fetchMutesWithPage:self.page isHeader:YES];
 }

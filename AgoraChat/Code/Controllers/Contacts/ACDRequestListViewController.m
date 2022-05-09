@@ -36,6 +36,7 @@
     [self.table reloadData];
 }
 
+
 #pragma mark action
 - (void)declineAction:(AgoraApplyModel *)model {
     WEAK_SELF
@@ -99,7 +100,8 @@
                        model:(AgoraApplyModel*)model{
     [MBProgressHUD hideAllHUDsForView:[UIApplication sharedApplication].keyWindow animated:YES];
     if (!error) {
-        [[AgoraApplyManager defaultManager] removeApplyRequest:model];
+        model.applyStatus = ACDApplyStatusDeclined;
+        [[AgoraApplyManager defaultManager] updateApplyWithModel:model];
     }
     else {
         [self showAlertWithMessage:@"Refused to apply for failure"];
@@ -112,7 +114,11 @@
                       model:(AgoraApplyModel*)model {
     [MBProgressHUD hideAllHUDsForView:[UIApplication sharedApplication].keyWindow animated:YES];
     if (!error) {
+        model.applyStatus = ACDApplyStatusAgreed;
         [[AgoraApplyManager defaultManager] removeApplyRequest:model];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
+
     }
     else {
         [self showAlertWithMessage:@"Failed to agree to apply"];
@@ -136,7 +142,7 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *cellIdentifier = @"AgoraGroupCell";
+    static NSString *cellIdentifier = @"ACDRequestCell";
     ACDRequestCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (!cell) {
         cell = [[ACDRequestCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
@@ -152,12 +158,10 @@
     [cell updateWithObj:applyModel];
     ACD_WS
     cell.acceptBlock = ^(AgoraApplyModel * _Nonnull model) {
-        applyModel.applyStatus = ACDApplyStatusAgreed;
         [weakSelf acceptAction:model];
     };
     
     cell.rejectBlock = ^(AgoraApplyModel * _Nonnull model) {
-        applyModel.applyStatus = ACDApplyStatusDeclined;
         [weakSelf declineAction:model];
     };
     

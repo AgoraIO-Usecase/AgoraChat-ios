@@ -9,7 +9,6 @@
 #import "ACDGroupMemberAdminListViewController.h"
 #import "AgoraMemberCell.h"
 #import "UIViewController+HUD.h"
-#import "AgoraAddAdminViewController.h"
 #import "AgoraNotificationNames.h"
 #import "ACDContactCell.h"
 #import "ACDContainerSearchTableViewController+GroupMemberList.h"
@@ -57,6 +56,11 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+#pragma mark reload data
+- (void)updateUI {
+    [self tableViewDidTriggerHeaderRefresh];
 }
 
 #pragma mark - Table view data source
@@ -125,6 +129,7 @@
 
 - (void)tableViewDidTriggerHeaderRefresh
 {
+
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(){
         AgoraChatError *error = nil;

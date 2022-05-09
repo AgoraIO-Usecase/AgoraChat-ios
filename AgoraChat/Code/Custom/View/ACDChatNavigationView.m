@@ -29,6 +29,7 @@
     [self addSubview:self.chatButton];
     [self addSubview:self.leftLabel];
     [self addSubview:self.rightButton];
+    [self addSubview:self.presenceLabel];
 }
 
 
@@ -57,6 +58,12 @@
         make.centerY.equalTo(self.leftButton);
         make.left.equalTo(self.chatButton.mas_right).offset(kAgroaPadding);
         make.right.equalTo(self.rightButton.mas_left);
+    }];
+    
+    [self.presenceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.leftLabel.mas_bottom);
+        make.left.equalTo(self.leftLabel);
+        make.width.lessThanOrEqualTo(@85);
     }];
         
     [self.rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -112,11 +119,22 @@
         _leftLabel = UILabel.new;
         _leftLabel.textColor = TextLabelBlackColor;
         _leftLabel.textAlignment = NSTextAlignmentLeft;
-        _leftLabel.font = BFont(18.0f);
+        _leftLabel.font = BFont(14.0f);
         _leftLabel.text = @"leftLabel";
 
     }
     return _leftLabel;
+}
+
+- (UILabel *)presenceLabel {
+    if (_presenceLabel == nil) {
+        _presenceLabel = UILabel.new;
+        _presenceLabel.textColor = [UIColor grayColor];
+        _presenceLabel.textAlignment = NSTextAlignmentLeft;
+        _presenceLabel.font = BFont(10.0f);
+
+    }
+    return _presenceLabel;
 }
 
 - (UIButton *)chatButton {
@@ -145,9 +163,9 @@
     return _rightButton;
 }
 
-- (UIImageView *)chatImageView {
+- (AgoraChatAvatarView *)chatImageView {
     if (_chatImageView == nil) {
-        _chatImageView = UIImageView.new;
+        _chatImageView = AgoraChatAvatarView.new;
         _chatImageView.layer.cornerRadius = kChatImageViewHeight *0.5;
         _chatImageView.clipsToBounds = YES;
         

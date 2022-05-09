@@ -14,8 +14,10 @@
 #import "ACDGroupEnterController.h"
 #import "ACDChatViewController.h"
 #import "ACDNaviCustomView.h"
+#import "AgoraChatAvatarView.h"
+#import "PresenceManager.h"
 
-@interface ACDChatsViewController() <EaseConversationsViewControllerDelegate, AgoraChatSearchControllerDelegate>
+@interface ACDChatsViewController() <EaseConversationsViewControllerDelegate, AgoraChatSearchControllerDelegate,UITextFieldDelegate>
 
 @property (nonatomic, strong) UIButton *addImageBtn;
 //@property (nonatomic, strong) AgoraChatInviteGroupMemberViewController *inviteController;
@@ -24,7 +26,8 @@
 @property (nonatomic, strong) AgoraChatSearchResultController *resultController;
 @property (strong, nonatomic) UIView *networkStateView;
 @property (nonatomic,strong) ACDNaviCustomView *navView;
-
+@property (nonatomic,strong) AgoraChatAvatarView* avatarView;
+@property (nonatomic,strong) UIButton* presenceButton;
 
 @end
 
@@ -38,6 +41,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetUserInfo:) name:USERINFO_UPDATE object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createGroupNotification:) name:KAgora_CreateGroup object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presencesUpdated:) name:PRESENCES_UPDATE object:nil];
 
     
     [self _setupSubviews];
@@ -438,7 +443,187 @@
         [_navView.titleImageView setImage:ImageWithName(@"nav_title_chats")];
         
         [_navView.addButton setImage:ImageWithName(@"chat_nav_add") forState:UIControlStateNormal];
+        
+        self.avatarView = [[AgoraChatAvatarView alloc] init];
+        NSInteger avatarViewHeight = 34;
+        self.avatarView.layer.cornerRadius = avatarViewHeight/2;
+        self.avatarView.clipsToBounds = YES;
+        [_navView addSubview:self.avatarView];
+        [self.avatarView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(_navView).offset(10);
+            make.bottom.equalTo(_navView);
+            make.width.height.equalTo(@(avatarViewHeight));
+        }];
+        AgoraChatUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:[AgoraChatClient sharedClient].currentUsername];
+        if (userInfo.avatarUrl) {
+            [self.avatarView sd_setImageWithURL:[NSURL URLWithString:userInfo.avatarUrl] placeholderImage:ImageWithName(@"defatult_avatar_1")];
+        }else {
+            NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+            
+            NSString *imageName = [userDefault valueForKey:[NSString stringWithFormat:@"%@_avatar",[AgoraChatClient sharedClient].currentUsername]];
+                     
+            if (imageName == nil) {
+                imageName = @"defatult_avatar_1";
+            }
+            [self.avatarView sd_setImageWithURL:nil placeholderImage:ImageWithName(imageName)];
+        }
+        self.presenceButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        if([AgoraChatClient sharedClient].isConnected) {
+            [self.presenceButton setTitle:kPresenceOnlineDescription forState:UIControlStateNormal];
+            NSString* imageName = [[PresenceManager whiteStrokePresenceImages] objectForKey:[NSNumber numberWithInteger:1]];
+            UIImage* image = [UIImage imageNamed:imageName];
+            [self.avatarView setPresenceImage:image];
+        }else{
+            [self.presenceButton setTitle:kPresenceOfflineDescription forState:UIControlStateNormal];
+            NSString* imageName = [[PresenceManager whiteStrokePresenceImages] objectForKey:[NSNumber numberWithInteger:0]];
+            UIImage* image = [UIImage imageNamed:imageName];
+            [self.avatarView setPresenceImage:image];
+        }
+        NSString* presence = [AgoraChatClient sharedClient].isConnected ? kPresenceOnlineDescription :kPresenceOfflineDescription;
+        self.presenceButton.titleLabel.font = [UIFont systemFontOfSize:12];
+        self.presenceButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+        [self.presenceButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [self.presenceButton addTarget:self action:@selector(setPresence) forControlEvents:UIControlEventTouchUpInside];
+        self.presenceButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        [self.presenceButton setImage:[UIImage imageNamed:@"go_small_black_mobile"] forState:UIControlStateNormal];
+        
+        [_navView addSubview:self.presenceButton];
+        self.presenceButton.transform = CGAffineTransformMakeScale(-1.0, 1.0);
+        self.presenceButton.titleLabel.transform = CGAffineTransformMakeScale(-1.0, 1.0);
+        self.presenceButton.imageView.transform = CGAffineTransformMakeScale(-1.0, 1.0);
+        
+        [self.presenceButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.avatarView.mas_right).offset(3);
+            make.bottom.equalTo(self.avatarView.mas_bottom);
+            make.height.equalTo(@15);
+            make.width.equalTo(@100);
+        }];
+        [self _updatePresenceStatus];
     }
     return _navView;
 }
+
+- (void)presencesUpdated:(NSNotification*)noti
+{
+    NSArray*array = noti.object;
+    if([AgoraChatClient sharedClient].currentUsername.length > 0 && [array containsObject:[AgoraChatClient sharedClient].currentUsername]) {
+        __weak typeof(self) weakself = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakself _updatePresenceStatus];
+        });
+    }
+}
+
+- (void)_updatePresenceStatus
+{
+    AgoraChatPresence*presence = [[PresenceManager sharedInstance].presences objectForKey:[AgoraChatClient sharedClient].currentUsername];
+    if(presence) {
+        NSInteger status = [PresenceManager fetchStatus:presence];
+        NSString* imageName = [[PresenceManager whiteStrokePresenceImages] objectForKey:[NSNumber numberWithInteger:status]];
+        [self.avatarView setPresenceImage:[UIImage imageNamed:imageName]];
+        NSString* showStatus = [[PresenceManager showStatus] objectForKey:[NSNumber numberWithInteger:status]];
+        if(status == 0)
+            showStatus = [PresenceManager formatOfflineStatus:presence.lastTime];
+        if(status != PRESENCESTATUS_OFFLINE && presence.statusDescription.length > 0) {
+            [self.presenceButton setTitle:presence.statusDescription forState:UIControlStateNormal];
+        }else
+            [self.presenceButton setTitle:showStatus forState:UIControlStateNormal];
+    }
+}
+
+- (void)setPresence
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Status" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    AgoraChatPresence* presence = [[PresenceManager sharedInstance].presences objectForKey:[AgoraChatClient sharedClient].currentUsername];
+    
+    WEAK_SELF
+    void (^handleBlock) (NSInteger,NSString*) = ^(NSInteger status,NSString* presenceDescription) {
+        if(presence.statusDescription.length > 0 && ![presence.statusDescription isEqualToString:kPresenceBusyDescription] && ![presence.statusDescription isEqualToString:kPresenceDNDDescription] && ![presence.statusDescription isEqualToString:kPresenceLeaveDescription]) {
+            NSString* message = [NSString stringWithFormat:@"Clear your '%@',change to %@",presence.statusDescription,presenceDescription];
+            if(presenceDescription.length == 0) {
+                message = [message stringByAppendingString:kPresenceOnlineDescription];
+            }
+            UIAlertController* tipControler = [UIAlertController alertControllerWithTitle:@"Clear your Custom Status" message:message preferredStyle:UIAlertControllerStyleAlert];
+            [tipControler addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+            [tipControler addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
+                [[PresenceManager sharedInstance] publishPresenceWithDescription:presenceDescription completion:nil];
+            }]];
+            [weakSelf presentViewController:tipControler animated:YES completion:nil];
+        }else{
+            [[PresenceManager sharedInstance] publishPresenceWithDescription:presenceDescription completion:nil];
+        }
+    };
+    
+    [alertController addAction:[self _createStatusAlertActionTitle:kPresenceOnlineDescription image:[UIImage imageNamed:kPresenceOnlineDescription] handler:^(UIAlertAction * _Nonnull action) {
+        handleBlock(PRESENCESTATUS_ONLINE,@"");
+        
+    }]];
+    
+    [alertController addAction:[self _createStatusAlertActionTitle:kPresenceBusyDescription image:[UIImage imageNamed:kPresenceBusyDescription] handler:^(UIAlertAction * _Nonnull action) {
+        handleBlock(PRESENCESTATUS_BUSY,kPresenceBusyDescription);
+    }]];
+    
+    [alertController addAction:[self _createStatusAlertActionTitle:kPresenceDNDDescription image:[UIImage imageNamed:kPresenceDNDDescription] handler:^(UIAlertAction * _Nonnull action) {
+        handleBlock(PRESENCESTATUS_DONOTDISTURB,kPresenceDNDDescription);
+    }]];
+    
+    [alertController addAction:[self _createStatusAlertActionTitle:kPresenceLeaveDescription image:[UIImage imageNamed:kPresenceLeaveDescription] handler:^(UIAlertAction * _Nonnull action) {
+        handleBlock(PRESENCESTATUS_LEAVE,kPresenceLeaveDescription);
+    }]];
+    
+    NSString* customtitle = @"Custom Status";
+    if(presence.statusDescription.length > 0 && ![presence.statusDescription isEqualToString:kPresenceBusyDescription] && ![presence.statusDescription isEqualToString:kPresenceDNDDescription] && ![presence.statusDescription isEqualToString:kPresenceLeaveDescription])
+        customtitle = presence.statusDescription;
+    UIAlertAction* customAction = [self _createStatusAlertActionTitle:customtitle image:[UIImage imageNamed:@"custom"] handler:^(UIAlertAction * _Nonnull action) {
+        [self _updateCustomStatus];
+    }];
+    [alertController addAction:customAction];
+    
+    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }]];
+
+    [self presentViewController:alertController animated:YES completion:nil];
+    return;
+}
+
+- (UIAlertAction*)_createStatusAlertActionTitle:(NSString*)title image:(UIImage*)image handler:(void(^ _Nonnull)(UIAlertAction * _Nonnull action))handler
+{
+    UIAlertAction* action = [UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:handler];
+    if(image) {
+        [action setValue:[image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forKey:@"image"];
+    }
+    [action setValue:[NSNumber numberWithInt:0] forKey:@"titleTextAlignment"];
+    [action setValue:[UIColor blackColor] forKey:@"titleTextColor"];
+    return action;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSString * str = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    if(str.length > 64)
+        return NO;
+    return YES;
+}
+
+- (void)_updateCustomStatus
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Custom Status" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"Input custom status";
+        textField.delegate = self;
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", nil) style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:cancelAction];
+
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        UITextField *textField = alertController.textFields.firstObject;
+        [[PresenceManager sharedInstance] publishPresenceWithDescription:textField.text completion:nil];
+    }];
+    [alertController addAction:okAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
 @end

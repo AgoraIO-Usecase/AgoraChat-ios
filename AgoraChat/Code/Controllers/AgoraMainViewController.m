@@ -12,7 +12,7 @@
 #import "AgoraSettingsViewController.h"
 #import "AgoraChatDemoHelper.h"
 #import "AgoraCDDeviceManager.h"
-#import "AgoraChatViewController.h"
+#import "ACDChatViewController.h"
 #import <UserNotifications/UserNotifications.h>
 
 #import "ACDContactsViewController.h"
@@ -168,26 +168,26 @@ static NSString *kGroupName = @"GroupName";
         [viewControllers enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             
             if (obj != self) {
-                if (![obj isKindOfClass:[AgoraChatViewController class]]) {
+                if (![obj isKindOfClass:[ACDChatViewController class]]) {
                     [self.navigationController popViewControllerAnimated:NO];
                 }
                 else {
                     NSString *conversationChatter = userInfo[kConversationChatter];
-                    AgoraChatViewController *chatViewController = (AgoraChatViewController *)obj;
+                    ACDChatViewController *chatViewController = (ACDChatViewController *)obj;
                     if (![chatViewController.conversationId isEqualToString:conversationChatter]) {
                         [self.navigationController popViewControllerAnimated:NO];
                         AgoraChatType messageType = [userInfo[kMessageType] intValue];
-                        chatViewController = [[AgoraChatViewController alloc] initWithConversationId:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+                        chatViewController = [[ACDChatViewController alloc] initWithConversationId:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
                         [self.navigationController pushViewController:chatViewController animated:NO];
                     }
                     *stop= YES;
                 }
             }
             else {
-                AgoraChatViewController *chatViewController = nil;
+                ACDChatViewController *chatViewController = nil;
                 NSString *conversationChatter = userInfo[kConversationChatter];
                 AgoraChatType messageType = [userInfo[kMessageType] intValue];
-                chatViewController = [[AgoraChatViewController alloc] initWithConversationId:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
+                chatViewController = [[ACDChatViewController alloc] initWithConversationId:conversationChatter conversationType:[self conversationTypeFromMessageType:messageType]];
                 [self.navigationController pushViewController:chatViewController animated:NO];
             }
         }];
@@ -263,6 +263,7 @@ static NSString *kGroupName = @"GroupName";
 - (void)connectionStateDidChange:(AgoraChatConnectionState)aConnectionState
 {
     [_chatsVC networkChanged:aConnectionState];
+    
     [_settingsVC networkChanged:aConnectionState];
 }
 
@@ -314,9 +315,14 @@ static NSString *kGroupName = @"GroupName";
 
     self.lastPlaySoundDate = [NSDate date];
     
-    [[AgoraCDDeviceManager sharedInstance] playNewMessageSound];
+    if (ACDDemoOptions.sharedOptions.playNewMsgSound) {
+        [[AgoraCDDeviceManager sharedInstance] playNewMessageSound];
+    }
 
-    [[AgoraCDDeviceManager sharedInstance] playVibration];
+    if (ACDDemoOptions.sharedOptions.playVibration) {
+        [[AgoraCDDeviceManager sharedInstance] playVibration];
+    }
+
 }
 
 - (void)showBackgroundNotificationWithMessage:(AgoraChatMessage *)message

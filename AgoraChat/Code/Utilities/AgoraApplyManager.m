@@ -206,4 +206,46 @@ static AgoraApplyManager *manager = nil;
     }
 }
 
+- (void)updateApplyWithModel:(AgoraApplyModel *)model {
+    
+    NSString *key = @"";
+    NSMutableArray *array = [NSMutableArray array];
+    if (model.style == AgoraApplyStyle_contact) {
+        key = [manager localContactApplysKey];
+        array = _contactApplys;
+    }
+    else {
+        key = [manager localGroupApplysKey];
+        array = _groupApplys;
+    }
+    if (key.length == 0) {
+        return;
+    }
+    @synchronized (self) {
+        __block NSInteger index = -1;
+        [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([obj conformsToProtocol:@protocol(IAgoraApplyModel)]) {
+                id<IAgoraApplyModel> applyModel = (id<IAgoraApplyModel>)obj;
+                if ([applyModel.applyHyphenateId isEqualToString:model.applyHyphenateId]) {
+                    index = idx;
+                    *stop = YES;
+                }
+            }
+        }];
+        if (index >= 0) {
+            [array removeObjectAtIndex:index];
+            [array addObject:model];
+        }
+        
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:array];
+        [_userDefaults setObject:data forKey:key];
+        [_userDefaults synchronize];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [manager loadAllApplys];
+        });
+    }
+}
+
+
 @end

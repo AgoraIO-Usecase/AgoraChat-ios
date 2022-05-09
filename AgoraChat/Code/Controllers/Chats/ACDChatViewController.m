@@ -10,7 +10,7 @@
 #import "ACDContactInfoViewController.h"
 #import "AgoraUserModel.h"
 #import "AgoraChatUserDataModel.h"
-#import "AgoraChatDateHelper.h"
+#import "ACDDateHelper.h"
 #import "UserInfoStore.h"
 
 #import "ACDChatNavigationView.h"
@@ -18,6 +18,8 @@
 #import "AgoraUserModel.h"
 #import "ACDGroupInfoViewController.h"
 #import "ACDAddContactViewController.h"
+#import "PresenceManager.h"
+#import "ACDChatDetailViewController.h"
 
 
 @interface ACDChatViewController ()<EaseChatViewControllerDelegate, AgoraChatroomManagerDelegate, AgoraChatGroupManagerDelegate, EaseMessageCellDelegate>
@@ -54,7 +56,8 @@
         _chatController = [EaseChatViewController initWithConversationId:conversationId
                                                     conversationType:conType
                                                         chatViewModel:viewModel];
-        [_chatController setTypingIndicator:YES];
+
+        [_chatController setTypingIndicator:[ACDDemoOptions sharedOptions].isChatTyping];
         _chatController.delegate = self;
     }
     return self;
@@ -63,12 +66,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetUserInfo:) name:USERINFO_UPDATE object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presencesUpdated:) name:PRESENCES_UPDATE object:nil];
     [[AgoraChatClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
     [[AgoraChatClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [self _setupChatSubviews];
     if (_conversation.unreadMessagesCount > 0) {
         [[AgoraChatClient sharedClient].chatManager ackConversationRead:_conversation.conversationId completion:nil];
     }
+    [self _updatePresenceStatus];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -107,6 +112,7 @@
     }];
  
     self.view.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
+
 }
 
 - (void)_setupNavigationBarTitle
@@ -119,6 +125,7 @@
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
     self.titleLabel.text = _conversationModel.showName;
     if(self.conversation.type == AgoraChatConversationTypeChat) {
+        [[PresenceManager sharedInstance] subscribe:@[self.conversationId] completion:nil];
         AgoraChatUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:self.conversation.conversationId];
         if(userInfo && userInfo.nickName.length > 0)
             self.titleLabel.text = userInfo.nickName;
@@ -141,9 +148,9 @@
         make.right.equalTo(self.titleLabel);
         make.bottom.equalTo(titleView);
     }];
-    
-    self.navigationItem.titleView = titleView;
+  
 }
+
 
 #pragma mark - EaseChatViewControllerDelegate
 
@@ -176,13 +183,21 @@
 //typing 1v1 single chat only
 - (void)peerTyping
 {
-    self.titleDetailLabel.text = @"other party is typing";
+    NSAttributedString *titleString = [ACDUtil attributeContent:self.navTitle color:TextLabelBlackColor font:BFont(18.0f)];
+
+    NSAttributedString *preTypingString = [ACDUtil attributeContent:@" (other party is typing)" color:TextLabelGrayColor font:Font(@"PingFang SC",14.0)];
+    
+    NSMutableAttributedString *mutAttributeString = [[NSMutableAttributedString alloc] init];
+    [mutAttributeString appendAttributedString:titleString];
+    [mutAttributeString appendAttributedString:preTypingString];
+    self.navigationView.leftLabel.attributedText = mutAttributeString;
+
 }
 
 //1v1 single chat only
 - (void)peerEndTyping
 {
-    self.titleDetailLabel.text = nil;
+    self.navigationView.leftLabel.text = [NSString stringWithFormat:@"%@",self.navTitle];
 }
 
 //userProfile
@@ -267,6 +282,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_UPDATEUNREADCOUNT object:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 
 #pragma mark - AgoraChatGroupManagerDelegate
 
@@ -366,19 +382,24 @@
 - (ACDChatNavigationView *)navigationView {
     if (_navigationView == nil) {
         _navigationView = [[ACDChatNavigationView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 80.0f)];
-    
+        _navigationView.rightButton.hidden = YES;
         _navigationView.leftLabel.text = self.navTitle;
         ACD_WS
         _navigationView.leftButtonBlock = ^{
             [weakSelf backAction];
         };
-        
+
         _navigationView.chatButtonBlock = ^{
             [weakSelf goInfoPage];
+        };
+
+        _navigationView.rightButtonBlock = ^{
+            [weakSelf goChatDetailPage];
         };
     }
     return _navigationView;
 }
+
 
 - (void)goInfoPage {
     if (self.conversationType == AgoraChatConversationTypeChat) {
@@ -411,6 +432,69 @@
     
     vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)presencesUpdated:(NSNotification*)noti
+{
+    NSArray*array = noti.object;
+    if(self.conversation.type == AgoraChatConversationTypeChat) {
+        if([array containsObject:self.conversation.conversationId]) {
+            __weak typeof(self) weakself = self;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakself _updatePresenceStatus];
+            });
+        }
+    }
+    
+}
+
+- (void)_updatePresenceStatus
+{
+    if(self.conversation.type == AgoraChatConversationTypeChat && self.conversation.conversationId.length > 0) {
+        AgoraChatPresence*presence = [[PresenceManager sharedInstance].presences objectForKey:self.conversation.conversationId];
+        if(presence) {
+            NSInteger status = [PresenceManager fetchStatus:presence];
+            NSString* imageName = [[PresenceManager whiteStrokePresenceImages] objectForKey:[NSNumber numberWithInteger:status]];
+            NSString* showStatus = [[PresenceManager showStatus] objectForKey:[NSNumber numberWithInteger:status]];
+            if(status == 0) {
+                showStatus = [PresenceManager formatOfflineStatus:presence.lastTime];
+            }
+            [self.navigationView.chatImageView setPresenceImage:[UIImage imageNamed:imageName]];
+            if(status != PRESENCESTATUS_OFFLINE && presence.statusDescription.length > 0)
+                self.navigationView.presenceLabel.text = presence.statusDescription;
+            else
+                self.navigationView.presenceLabel.text = showStatus;
+        }else{
+            [self.navigationView.chatImageView setPresenceImage:[UIImage imageNamed:kPresenceOfflineDescription]];
+            self.navigationView.presenceLabel.text = kPresenceOfflineDescription;
+        }
+    }
+}
+    
+- (void)goChatDetailPage {
+    if (self.conversationType == AgoraChatConversationTypeChat) {
+        [self goChatDetailWithContactId:self.conversationId];
+    }
+    
+    if (self.conversationType == AgoraChatConversationTypeGroupChat) {
+        [self goGroupDetailWithContactId:self.conversationId];
+    }
+}
+
+- (void)goChatDetailWithContactId:(NSString *)contactId {
+    ACDChatDetailViewController *vc = [[ACDChatDetailViewController alloc] initWithCoversation:self.conversation];
+    
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+
+- (void)goGroupDetailWithContactId:(NSString *)contactId {
+    ACDChatDetailViewController *vc = [[ACDChatDetailViewController alloc] initWithCoversation:self.conversation];
+
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+
 }
 
 @end

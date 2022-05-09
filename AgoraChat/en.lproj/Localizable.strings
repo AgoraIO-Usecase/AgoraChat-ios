@@ -342,3 +342,14 @@
 "chatroom.announcementUpdate" = "Chatroom Announcement Update";
 "chatroom.clearAnnouncement" = "Chatroom:%@ Announcement is clear";
 "chatroom.updateAnnouncement" = "Chatroom:%@ Announcement: %@";
+
+
+"fromPrompt" = "%@ from %@ %.2lf MB";
+
+"translate" = "translate";
+"retranslate" = "Re-Tran";
+"retranslatePrompt" = "Each translation can be retranslated only once.The translation provided is to reference only";
+"hide" = "hide";
+"MultiLanguages" = "Languages";
+"languageSetting" = "Language Setting";
+"prompt" = "Prompt";

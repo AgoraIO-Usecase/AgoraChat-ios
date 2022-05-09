@@ -18,7 +18,7 @@
 //    AgoraContactSelectStyle_Invite
 //};
 
-@interface AgoraMemberSelectViewController : AgoraChatBaseViewController
+@interface AgoraMemberSelectViewController : ACDBaseViewController
 
 @property (nonatomic, assign) AgoraContactSelectStyle style;
 
