@@ -24,6 +24,8 @@
 @property (nonatomic, strong) NSDateFormatter *dfPPHM;
 @property (nonatomic, strong) NSDateFormatter *dfNightHM;
 
+@property (nonatomic, strong) NSArray<NSString*>* monthList;
+
 @end
 
 
@@ -131,6 +133,14 @@ static ACDDateHelper *shared = nil;
     return _dfNightHM;
 }
 
+- (NSArray <NSString*>*)monthList
+{
+    if (_monthList == nil) {
+        _monthList = @[@"Jan",@"Feb",@"March",@"Apr",@"May",@"Jun",@"Jul",@"Aug",@"Sept",@"Oct",@"Nov",@"Dec"];
+    }
+    return _monthList;
+}
+
 #pragma mark - Class Methods
 
 + (NSDate *)dateWithTimeIntervalInMilliSecondSince1970:(double)aMilliSecond
@@ -226,12 +236,11 @@ static ACDDateHelper *shared = nil;
 
 + (NSString *)monthToEnglish:(NSString*)numMonth
 {
-    NSArray<NSString*>* monthList = @[@"Jan",@"Feb",@"March",@"Apr",@"May",@"Jun",@"Jul",@"Aug",@"Sept",@"Oct",@"Nov",@"Dec"];
     NSInteger index = [numMonth integerValue] - 1;
     if (index > 11 || index < 0) {
         return @"";
     }
-    return monthList[index];
+    return [ACDDateHelper shareHelper].monthList[index];
 }
 + (NSString *)getCurrentDataWithHHmmFormatter
 {
