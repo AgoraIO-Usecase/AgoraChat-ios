@@ -226,48 +226,12 @@ static ACDDateHelper *shared = nil;
 
 + (NSString *)monthToEnglish:(NSString*)numMonth
 {
-    NSString *englishMonth = @"";
-    switch ([numMonth integerValue]) {
-        case 1:
-            englishMonth = @"Jan";//January
-            break;
-        case 2:
-            englishMonth = @"Feb";//February
-            break;
-        case 3:
-            englishMonth = @"March";//Mar
-            break;
-        case 4:
-            englishMonth = @"Apr";//April
-            break;
-        case 5:
-            englishMonth = @"May";//May
-            break;
-        case 6:
-            englishMonth = @"Jun";//June
-            break;
-        case 7:
-            englishMonth = @"Jul";//July
-            break;
-        case 8:
-            englishMonth = @"Aug";//August
-            break;
-        case 9:
-            englishMonth = @"Sept";//September
-            break;
-        case 10:
-            englishMonth = @"Oct";//October
-            break;
-        case 11:
-            englishMonth = @"Nov";//November
-            break;
-        case 12:
-            englishMonth = @"Dec";//December
-            break;
-        default:
-            break;
+    NSArray<NSString*>* monthList = @[@"Jan",@"Feb",@"March",@"Apr",@"May",@"Jun",@"Jul",@"Aug",@"Sept",@"Oct",@"Nov",@"Dec"];
+    NSInteger index = [numMonth integerValue] - 1;
+    if (index > 11 || index < 0) {
+        return @"";
     }
-    return englishMonth;
+    return monthList[index];
 }
 + (NSString *)getCurrentDataWithHHmmFormatter
 {
