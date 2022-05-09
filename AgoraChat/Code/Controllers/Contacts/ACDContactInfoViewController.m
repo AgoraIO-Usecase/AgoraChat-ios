@@ -14,6 +14,7 @@
 #import "ACDInfoHeaderView.h"
 #import "ACDInfoCell.h"
 #import "AgoraContactsUIProtocol.h"
+#import "ACDNotificationSettingViewController.h"
 
 #define kContactInfoHeaderViewHeight 360.0
 
@@ -109,7 +110,7 @@ typedef enum : NSUInteger {
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 2;
+    return 3;
 }
 
 
@@ -121,18 +122,28 @@ typedef enum : NSUInteger {
     
     ACD_WS
     if (indexPath.row == 0) {
+        [cell.iconImageView setImage:ImageWithName(@"notifications_yellow")];
+        cell.nameLabel.text = @"Notifications";
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.tapCellBlock = ^{
+            [weakSelf notificationAction];
+        };
+
+    }
+    if (indexPath.row == 1) {
         [cell.iconImageView setImage:ImageWithName(@"blocked")];
         cell.nameLabel.text = @"Block Contact";
-        
+        cell.accessoryType = UITableViewCellAccessoryNone;
         cell.tapCellBlock = ^{
             [weakSelf blockAction];
         };
 
     }
     
-    if (indexPath.row == 1) {
+    if (indexPath.row == 2) {
         [cell.iconImageView setImage:ImageWithName(@"delete")];
         cell.nameLabel.text = @"Delete Contact";
+        cell.accessoryType = UITableViewCellAccessoryNone;
         cell.tapCellBlock = ^{
             [weakSelf deleteAction];
         };
@@ -142,7 +153,13 @@ typedef enum : NSUInteger {
     
     return cell;
 }
-
+- (void)notificationAction
+{
+    ACDNotificationSettingViewController *controller = [[ACDNotificationSettingViewController alloc] init];
+    controller.notificationType = AgoraNotificationSettingTypeSingleChat;
+    controller.conversationID = self.model.hyphenateId;
+    [self.navigationController pushViewController:controller animated:YES];
+}
 - (void)blockAction {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Block this contact now?" message:@"When you block this contact, you will not receive any messages from them." preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
