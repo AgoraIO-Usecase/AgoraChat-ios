@@ -484,13 +484,16 @@
         _navView = [[ACDNaviCustomView alloc] init];
         ACD_WS
         _navView.addActionBlock = ^{
-//            [weakSelf chatInfoAction];
-            [weakSelf moreAction];
+            [weakSelf chatInfoAction];
+//            [weakSelf moreAction];
         };
         
-        [_navView.titleImageView setImage:ImageWithName(@"nav_title_apiExample")];
+//        [_navView.titleImageView setImage:ImageWithName(@"nav_title_apiExample")];
+//        [_navView.addButton setImage:ImageWithName(@"chat_nav_more") forState:UIControlStateNormal];
         
+        [_navView.titleImageView setImage:ImageWithName(@"nav_title_apiExample")];
         [_navView.addButton setImage:ImageWithName(@"chat_nav_more") forState:UIControlStateNormal];
+        
     }
     return _navView;
 }
