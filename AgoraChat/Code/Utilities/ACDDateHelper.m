@@ -24,6 +24,8 @@
 @property (nonatomic, strong) NSDateFormatter *dfPPHM;
 @property (nonatomic, strong) NSDateFormatter *dfNightHM;
 
+@property (nonatomic, strong) NSArray<NSString*>* monthList;
+
 @end
 
 
@@ -131,6 +133,14 @@ static ACDDateHelper *shared = nil;
     return _dfNightHM;
 }
 
+- (NSArray <NSString*>*)monthList
+{
+    if (_monthList == nil) {
+        _monthList = @[@"Jan",@"Feb",@"March",@"Apr",@"May",@"Jun",@"Jul",@"Aug",@"Sept",@"Oct",@"Nov",@"Dec"];
+    }
+    return _monthList;
+}
+
 #pragma mark - Class Methods
 
 + (NSDate *)dateWithTimeIntervalInMilliSecondSince1970:(double)aMilliSecond
@@ -200,6 +210,47 @@ static ACDDateHelper *shared = nil;
     return ret;
 }
 
+/*
+ *  生成日期字符串
+ */
++ (NSString *)stringMonthEnglishFromTimestamp:(NSTimeInterval)timestamp
+{
+//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//    [formatter setDateFormat:format];
+//    NSTimeZone *timeZone = [NSTimeZone systemTimeZone];
+//    [formatter setTimeZone:timeZone];
+      
+    NSDate *confromTimesp = [ACDDateHelper dateWithTimeIntervalInMilliSecondSince1970:timestamp];
+        
+    NSString *confromTimespStr = [[ACDDateHelper shareHelper].dfYMDHM stringFromDate:confromTimesp];
+    NSArray *array = [confromTimespStr componentsSeparatedByString:@"/"];
+    if (array.count == 3) {// year/month/day hour:minute
+        NSArray * dayTimeArray = [array[2] componentsSeparatedByString:@" "];
+        if (dayTimeArray.count == 2) {
+            NSString *resultStr =  [NSString stringWithFormat:@"%@ %@,%@, %@",[ACDDateHelper monthToEnglish:array[1]],dayTimeArray[0],array[0],dayTimeArray[1]];
+            return resultStr;
+        }
+    }
+    return confromTimespStr;
+}
+
++ (NSString *)monthToEnglish:(NSString*)numMonth
+{
+    NSInteger index = [numMonth integerValue] - 1;
+    if (index > 11 || index < 0) {
+        return @"";
+    }
+    return [ACDDateHelper shareHelper].monthList[index];
+}
++ (NSString *)getCurrentDataWithHHmmFormatter
+{
+    NSDateFormatter *formatter = [ACDDateHelper shareHelper].dfHM;
+    NSTimeZone *timeZone = [NSTimeZone systemTimeZone];
+    [formatter setTimeZone:timeZone];
+    NSDate *confromTimesp = [NSDate date];
+    NSString *confromTimespStr = [formatter stringFromDate:confromTimesp];
+    return confromTimespStr;
+}
 #pragma mark Retrieving Intervals
 
 + (NSInteger)hoursFromDate:(NSDate *)aFromDate
