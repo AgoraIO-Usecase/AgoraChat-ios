@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		32402905D5CD97212FD6B8D6 /* libPods-AgoraChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DEB31DFC0653BAFD2758091 /* libPods-AgoraChat.a */; };
 		3A4BB1B01ED3DD6F00B07FCA /* AgoraChatroomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4BB1AE1ED3DD6F00B07FCA /* AgoraChatroomCell.m */; };
 		3A4BB1B11ED3DD6F00B07FCA /* AgoraChatroomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A4BB1AF1ED3DD6F00B07FCA /* AgoraChatroomCell.xib */; };
 		3A4BB1B51ED422BA00B07FCA /* AgoraChatroomInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4BB1B41ED422BA00B07FCA /* AgoraChatroomInfoViewController.m */; };
@@ -687,7 +686,6 @@
 		3AEBE3EC1E792ED400B82986 /* AgoraGroupPermissionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraGroupPermissionCell.m; sourceTree = "<group>"; };
 		3AEBE3ED1E792ED400B82986 /* AgoraGroupPermissionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AgoraGroupPermissionCell.xib; sourceTree = "<group>"; };
 		3AEBE3F01E792FB000B82986 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		3DEB31DFC0653BAFD2758091 /* libPods-AgoraChat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AgoraChat.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		711158FF1DB7278B005158BB /* NSArray+AgoraSortContacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+AgoraSortContacts.h"; sourceTree = "<group>"; };
 		711159001DB7278B005158BB /* NSArray+AgoraSortContacts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+AgoraSortContacts.m"; sourceTree = "<group>"; };
 		714E9DC11DD32B0A009D1E2D /* default_avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_avatar.png; sourceTree = "<group>"; };
@@ -1548,7 +1546,6 @@
 				D24510AA1D961FB5006DB36F /* MapKit.framework in Frameworks */,
 				D24327EA1DAA395F00EDCDAB /* libopencore-amrwb.a in Frameworks */,
 				D24327E91DAA395F00EDCDAB /* libopencore-amrnb.a in Frameworks */,
-				32402905D5CD97212FD6B8D6 /* libPods-AgoraChat.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
