@@ -200,10 +200,6 @@
         if (self.notificationType == AgoraNotificationSettingTypeSingleChat) {
             type = AgoraChatConversationTypeChat;
         }
-        AgoraChatSilentModeParam *param = [[AgoraChatSilentModeParam alloc]initWithParamType:AgoraChatSilentModeParamTypeInterval];
-        param.silentModeStartTime = [[AgoraChatSilentModeTime alloc]initWithHours:17 minutes:27];
-        param.silentModeEndTime = [[AgoraChatSilentModeTime alloc]initWithHours:17 minutes:30];
-        
         [[AgoraChatClient sharedClient].pushManager setSilentModeForConversation:self.conversationID conversationType:type params:param completion:^(AgoraChatSilentModeResult * _Nonnull aResult, AgoraChatError * _Nonnull aError) {
             if (!aError) {
                 weakSelf.silentModeItem = aResult;
