@@ -60,6 +60,7 @@
     }];
         
     [self.rightButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.lessThanOrEqualTo(@50);
         make.centerY.equalTo(self.leftButton);
         make.right.equalTo(self).offset(-kAgroaPadding);
     }];

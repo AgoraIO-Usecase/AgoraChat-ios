@@ -70,7 +70,6 @@
 		71D4A1CD1D9C91B8006FACB7 /* default_avatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 71D4A1CC1D9C91B8006FACB7 /* default_avatar@2x.png */; };
 		71D4A1D11D9C9229006FACB7 /* UIImage+ImageEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 71D4A1D01D9C9229006FACB7 /* UIImage+ImageEffect.m */; };
 		7CBEB0D96D862E20219A6D4A /* libPods-AgoraChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBC8128BF634106D18F0F952 /* libPods-AgoraChat.a */; };
-		7F0516BA269F128600B2C795 /* UITableViewCell+DarkMode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0516B9269F128600B2C795 /* UITableViewCell+DarkMode.m */; };
 		7F0516BE269FDF4000B2C795 /* UIViewController+DarkMode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0516BD269FDF4000B2C795 /* UIViewController+DarkMode.m */; };
 		7F0516D526A0122B00B2C795 /* AgoraChatBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0516D426A0122B00B2C795 /* AgoraChatBaseViewController.m */; };
 		7F0516DA26A012DD00B2C795 /* AgoraChatBaseTableview.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0516D926A012DD00B2C795 /* AgoraChatBaseTableview.m */; };
@@ -710,8 +709,6 @@
 		71D4A1CC1D9C91B8006FACB7 /* default_avatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default_avatar@2x.png"; sourceTree = "<group>"; };
 		71D4A1CF1D9C9229006FACB7 /* UIImage+ImageEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffect.h"; sourceTree = "<group>"; };
 		71D4A1D01D9C9229006FACB7 /* UIImage+ImageEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffect.m"; sourceTree = "<group>"; };
-		7F0516B8269F128600B2C795 /* UITableViewCell+DarkMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+DarkMode.h"; sourceTree = "<group>"; };
-		7F0516B9269F128600B2C795 /* UITableViewCell+DarkMode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+DarkMode.m"; sourceTree = "<group>"; };
 		7F0516BC269FDF4000B2C795 /* UIViewController+DarkMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+DarkMode.h"; sourceTree = "<group>"; };
 		7F0516BD269FDF4000B2C795 /* UIViewController+DarkMode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+DarkMode.m"; sourceTree = "<group>"; };
 		7F0516C0269FE0D200B2C795 /* AgoraCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AgoraCategory.h; sourceTree = "<group>"; };
@@ -1985,8 +1982,6 @@
 				D2426AEA1DCCA70B009C1632 /* UIImageView+HeadImage.m */,
 				D2426AEC1DCCAD14009C1632 /* UIViewController+HUD.h */,
 				D2426AED1DCCAD14009C1632 /* UIViewController+HUD.m */,
-				7F0516B8269F128600B2C795 /* UITableViewCell+DarkMode.h */,
-				7F0516B9269F128600B2C795 /* UITableViewCell+DarkMode.m */,
 				7F0516BC269FDF4000B2C795 /* UIViewController+DarkMode.h */,
 				7F0516BD269FDF4000B2C795 /* UIViewController+DarkMode.m */,
 				7FB1589026A19AE300B995F3 /* UITextField+DarkMode.h */,
@@ -3441,6 +3436,9 @@
 				"${PODS_ROOT}/../../AgoraChat-UIKit-ios/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomMoreFunctionView.xib",
 				"${PODS_ROOT}/../../AgoraChat-UIKit-ios/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomMoreFunctionViewEmojiCell.xib",
 				"${PODS_ROOT}/../../AgoraChat-UIKit-ios/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomMoreFunctionViewMenuItemCell.xib",
+				"${PODS_ROOT}/../../AgoraChat-UIKit-ios/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomReactionDetailReactionCell.xib",
+				"${PODS_ROOT}/../../AgoraChat-UIKit-ios/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomReactionDetailUserCell.xib",
+				"${PODS_ROOT}/../../AgoraChat-UIKit-ios/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomReactionDetailView.xib",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -3450,6 +3448,9 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EMBottomMoreFunctionView.nib",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EMBottomMoreFunctionViewEmojiCell.nib",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EMBottomMoreFunctionViewMenuItemCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EMBottomReactionDetailReactionCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EMBottomReactionDetailUserCell.nib",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EMBottomReactionDetailView.nib",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3591,7 +3592,6 @@
 				3A57BFAD1ED30EF600CF9C8C /* AgoraChatroomsViewController.m in Sources */,
 				EC54DCEB2721502200ABEE3E /* MISScrollPageContentView.m in Sources */,
 				9ECE66C2273B6E7C007CF85F /* SelectAvatarViewController.m in Sources */,
-				7F0516BA269F128600B2C795 /* UITableViewCell+DarkMode.m in Sources */,
 				EC54DDC327269BA300ABEE3E /* AgoraGroupMemberCell.m in Sources */,
 				EC432EEE27210ABC001B31DE /* ACDImageTextButtonView.m in Sources */,
 				9ECE66E3273B6F41007CF85F /* AgoraChatHttpRequest.m in Sources */,
@@ -3808,7 +3808,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
 				ENABLE_BITCODE = NO;
@@ -3844,7 +3844,7 @@
 					"$(PROJECT_DIR)/AgoraChat/Code/Utilities/DeviceHelper/VoiceConvert/opencore-amrwb",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.3.3;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -3920,9 +3920,9 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = AgoraChat/AgoraChat.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: EaseMob Inc.";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: EaseMob Inc.";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 499WYUV8Q2;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -3956,7 +3956,7 @@
 					"$(PROJECT_DIR)/AgoraChat/Code/Utilities/DeviceHelper/VoiceConvert/opencore-amrwb",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.3.3;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -4016,7 +4016,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.demo.ui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = com.easemob.enterprise.demo.ui;
+				PROVISIONING_PROFILE_SPECIFIER = com.easemob.enterprise.demo.ui_inhouse;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TVOS_DEPLOYMENT_TARGET = "";
 				VALIDATE_WORKSPACE = NO;

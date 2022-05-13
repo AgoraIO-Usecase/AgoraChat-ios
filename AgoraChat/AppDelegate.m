@@ -68,7 +68,7 @@
     
     [self _registerAPNS];
     [self registerNotifications];
-    
+
     return YES;
 }
 
@@ -108,8 +108,8 @@
 
 - (void)internalSpecOption:(AgoraChatOptions *)option {
     option.enableDnsConfig = NO;
-    option.restServer = @"http://a1-hsb.easemob.com";
-    option.chatServer = @"106.75.35.59";
+    option.restServer = @"http://a1-test.easemob.com";
+    option.chatServer = @"52.80.99.104";
     option.chatPort = 6717;
 }
 

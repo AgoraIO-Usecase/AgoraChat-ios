@@ -18,8 +18,8 @@
 
 #elif ACDENV == 1
 //easeim
-#define Appkey @"easemob-demo#chatdemoui"
-#define AppServerHost @"http://a1-hsb.easemob.com"
+#define Appkey @"5101220107132865#test"
+#define AppServerHost @"http://a1-test.easemob.com"
 
 #elif ACDENV == 2
 //ebs

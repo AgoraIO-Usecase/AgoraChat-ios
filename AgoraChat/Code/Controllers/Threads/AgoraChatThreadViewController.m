@@ -17,7 +17,7 @@
 #import "AgoraChatThreadListNavgation.h"
 #import "AgoraChatThreadEditViewController.h"
 #import "AgoraChatThreadMembersViewController.h"
-@interface AgoraChatThreadViewController ()<EaseChatViewControllerDelegate,AgoraChatroomManagerDelegate>
+@interface AgoraChatThreadViewController ()<EaseChatViewControllerDelegate,AgoraChatroomManagerDelegate,EMBottomMoreFunctionViewDelegate>
 @property (nonatomic, strong) EaseConversationModel *conversationModel;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *titleDetailLabel;
@@ -47,9 +47,11 @@
         }
         _chatController = [[EaseThreadChatViewController alloc] initThreadChatViewControllerWithCoversationid:conversationId chatViewModel:viewModel parentMessageId:parentMessageId model:model];
         _chatController.delegate = self;
-        self.navBar.title = model.message.threadOverView.threadName;
-        self.navBar.detail = [NSString stringWithFormat:@"# %@",self.chatController.group.groupName];
-        self.group = self.chatController.group;
+        if (model.message.threadOverView.threadName.length) {
+            self.navBar.title = model.message.threadOverView.threadName;
+        }
+//        self.navBar.detail = [NSString stringWithFormat:@"# %@",self.chatController.group.groupName];
+//        self.group = self.chatController.group;
     }
     return self;
 }
@@ -118,7 +120,7 @@
 }
 
 - (void)lookMembers {
-    AgoraChatThreadMembersViewController *VC = [[AgoraChatThreadMembersViewController alloc] initWithThread:self.conversationId group:self.group];
+    AgoraChatThreadMembersViewController *VC = [[AgoraChatThreadMembersViewController alloc] initWithThread:self.conversationId group:self.chatController.group];
     [self.navigationController pushViewController:VC animated:YES];
 }
 
@@ -234,9 +236,8 @@
 }
 
 #pragma mark - AgoraChatGroupManagerDelegate
-
-- (void)onMemberLeaved:(NSString *)parentId threadId:(NSString *)threadId userName:(NSString *)userName {
-    
+- (void)popThreadChat {
+    [self popDestinationVC];
 }
 
 #pragma mark - AgoraChatroomManagerDelegate
@@ -338,7 +339,7 @@
     }];
     nofitfyModel.showMore = YES;
     [extMenuArray addObject:nofitfyModel];
-    if ([self.chatController.isAdmin isEqualToString:@"1"]) {
+    if ([self.chatController.isAdmin isEqualToString:@"1"] || [[self.chatController.owner lowercaseString] isEqualToString:[[AgoraChatClient.sharedClient currentUsername] lowercaseString]]) {
         EaseExtendMenuModel *editModel = [[EaseExtendMenuModel alloc]initWithData:ImageWithName(@"thread_edit_black") funcDesc:@"Edit Thread" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
             [self editThread];
         }];
@@ -356,12 +357,16 @@
         destoryModel.funcDescColor = COLOR_HEX(0xFF14CC);
         [extMenuArray addObject:destoryModel];
     }
-    [EMBottomMoreFunctionView showMenuItems:extMenuArray contentType:EMBottomMoreFunctionTypeChat animation:YES didSelectedMenuItem:^(EaseExtendMenuModel * _Nonnull menuItem) {
-        menuItem.itemDidSelectedHandle(menuItem.funcDesc, YES);
-        [EMBottomMoreFunctionView hideWithAnimation:YES needClear:NO];
-    } didSelectedEmoji:^(NSString * _Nonnull emoji) {
-        
-    }];
+    [EMBottomMoreFunctionView showMenuItems:extMenuArray showReaction:NO delegate:self ligheViews:nil animation:YES userInfo:nil];
+}
+
+#pragma mark - EMBottomMoreFunctionViewDelegate
+- (void)bottomMoreFunctionView:(EMBottomMoreFunctionView *)view didSelectedMenuItem:(EaseExtendMenuModel *)model {
+    if (model.itemDidSelectedHandle) {
+        model.itemDidSelectedHandle(model.funcDesc, YES);
+    }
+    
+    [EMBottomMoreFunctionView hideWithAnimation:YES needClear:NO];
 }
 
 
@@ -387,6 +392,7 @@
     return _navBar;
 }
 
+
 - (void)popDestinationVC {
     UIViewController *tmp;
     for (UIViewController *VC in self.navigationController.viewControllers) {
@@ -404,8 +410,8 @@
 
 - (void)threadNameChange:(NSString *)threadName {
     self.navBar.title = threadName;
-    if (self.group) {
-        self.navBar.detail = self.group.groupName;
+    if (self.chatController.group) {
+        self.navBar.detail = self.chatController.group.groupName;
     }
 }
 

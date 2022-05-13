@@ -226,11 +226,12 @@
         return;
     }
     [AgoraChatClient.sharedClient.threadManager joinChatThread:model.message.threadOverView.threadId completion:^(AgoraChatThread *thread,AgoraChatError *aError) {
-        if (!aError || aError.code == 40004) {
+        if (!aError || aError.code == AgoraChatErrorUserAlreadyExist) {
             if (thread) {
                 model.thread = thread;
             }
             AgoraChatThreadViewController *VC = [[AgoraChatThreadViewController alloc] initThreadChatViewControllerWithCoversationid:model.message.threadOverView.threadId conversationType:self.chatController.currentConversation.type chatViewModel:self.chatController.viewModel parentMessageId:model.message.messageId model:model];
+            VC.detail = self.navTitle;
             [self.navigationController pushViewController:VC animated:YES];
         }
     }];
@@ -241,8 +242,30 @@
     [self.navigationController pushViewController:VC animated:YES];
 }
 
-- (void)pushThreadList {
-    [self pushThreadListAction];
+- (void)joinChatThreadFromNotifyMessage:(NSString *)messageId {
+    AgoraChatMessage *message = [AgoraChatClient.sharedClient.chatManager getMessageWithMessageId:messageId];
+    EaseMessageModel *model = [[EaseMessageModel alloc] initWithAgoraChatMessage:message];
+    model.direction = message.direction;
+    model.isHeader = YES;
+    model.isPlaying = NO;
+    model.type = message.body.type;
+    if (!message.threadOverView.threadId.length) {
+        [self showHint:@"threadId is empty!"];
+        return;
+    }
+    [AgoraChatClient.sharedClient.threadManager joinChatThread:message.threadOverView.threadId completion:^(AgoraChatThread *thread,AgoraChatError *aError) {
+        if (!aError || aError.code == AgoraChatErrorUserAlreadyExist) {
+            AgoraChatThreadViewController *VC = [[AgoraChatThreadViewController alloc] initThreadChatViewControllerWithCoversationid:message.threadOverView.threadId conversationType:self.chatController.currentConversation.type chatViewModel:self.chatController.viewModel parentMessageId:message.messageId model:model];
+            VC.detail = [NSString stringWithFormat:@"# %@",self.navTitle];
+            if (thread.threadName.length) {
+                VC.navTitle = thread.threadName;
+            } else {
+                VC.navTitle = message.threadOverView.threadName;
+            }
+            [self.navigationController pushViewController:VC animated:YES];
+        }
+    }];
+//    [self pushThreadListAction];
 }
 
 #pragma mark - AgoraChatMessageCellDelegate
@@ -417,9 +440,13 @@
 }
 
 - (void)pushThreadListAction {
-    [AgoraChatClient.sharedClient.groupManager getGroupSpecificationFromServerWithId:self.conversationId completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
-        AgoraChatThreadListViewController *VC = [[AgoraChatThreadListViewController alloc] initWithGroup:aGroup chatViewModel:self.chatController.viewModel];
-        [self.navigationController pushViewController:VC animated:YES];
+    [AgoraChatClient.sharedClient.groupManager getGroupSpecificationFromServerWithId:self.conversationId fetchMembers:YES completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
+        if (!aError) {
+            AgoraChatThreadListViewController *VC = [[AgoraChatThreadListViewController alloc] initWithGroup:aGroup chatViewModel:self.chatController.viewModel];
+            [self.navigationController pushViewController:VC animated:YES];
+        } else {
+            [self showHint:@"fetch group detail error!"];
+        }
     }];
 }
 

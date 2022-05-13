@@ -20,12 +20,15 @@
 
 @property (nonatomic) AgoraChatGroup *group;
 
+@property (nonatomic) EaseMessageModel *message;
+
 @end
 
 @implementation AgoraChatCreateThreadViewController
 
 - (instancetype)initWithType:(EMThreadHeaderType)type viewModel:(EaseChatViewModel *)viewModel message:(EaseMessageModel *)message {
     if ([super init]) {
+        self.message = message;
         self.createViewController = [[EaseThreadCreateViewController alloc] initWithType:type viewModel:viewModel message:message];
         self.createViewController.delegate = self;
         [AgoraChatClient.sharedClient.groupManager getGroupSpecificationFromServerWithId:message.message.to completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
@@ -38,13 +41,12 @@
 }
 
 - (void)didSendMessage:(AgoraChatMessage *)message thread:(nonnull AgoraChatThread *)thread error:(nonnull AgoraChatError *)error {
-    EaseMessageModel *model = [[EaseMessageModel alloc]initWithAgoraChatMessage:message];
     if (!thread.threadId.length) {
         [self showHint:@"conversationId is empty!"];
         return;
     }
-    model.thread = thread;
-    AgoraChatThreadViewController *VC = [[AgoraChatThreadViewController alloc] initThreadChatViewControllerWithCoversationid:thread.threadId conversationType:AgoraChatConversationTypeGroupChat chatViewModel:self.createViewController.viewModel parentMessageId:thread.messageId model:model];
+    self.message.thread = thread;
+    AgoraChatThreadViewController *VC = [[AgoraChatThreadViewController alloc] initThreadChatViewControllerWithCoversationid:thread.threadId conversationType:AgoraChatConversationTypeGroupChat chatViewModel:self.createViewController.viewModel parentMessageId:thread.messageId model:self.message];
     VC.createPush = YES;
     VC.navTitle = thread.threadName;
     VC.detail = self.group.groupName;

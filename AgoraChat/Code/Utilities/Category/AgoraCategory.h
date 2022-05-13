@@ -9,7 +9,6 @@
 #ifndef AgoraCategory_h
 #define AgoraCategory_h
 
-#import "UITableViewCell+DarkMode.h"
 #import "UIViewController+DarkMode.h"
 #import "NSObject+AgoraAlertView.h"
 #import "UIViewController+DismissKeyboard.h"

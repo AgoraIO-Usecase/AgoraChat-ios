@@ -294,7 +294,7 @@
             [self updateLoginStateWithStart:NO];
             AgoraChatUserInfo *user = [AgoraChatUserInfo new];
             user.userId = aUsername;
-            user.nickname = @"落寞半城";
+            user.nickname = @"";
             [UserInfoStore.sharedInstance setUserInfo:user forId:aUsername];
             [[NSNotificationCenter defaultCenter] postNotificationName:USERINFO_UPDATE  object:nil userInfo:@{USERINFO_LIST:@[user]}];
             

@@ -30,15 +30,23 @@
     return self;
 }
 
-- (void)threadListCount:(int)count {
-    self.navBar.title = [NSString stringWithFormat:@"All threads (%d)",count];
-}
 
 - (void)agoraChatThreadList:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     EaseThreadConversation *conv = self.chatController.dataArray[indexPath.row];
+    EaseMessageModel *model;
+    AgoraChatMessage *message = [AgoraChatClient.sharedClient.chatManager getMessageWithMessageId:conv.threadInfo.messageId];
+    if (message.messageId.length) {
+        model = [[EaseMessageModel alloc]initWithAgoraChatMessage:message];
+        model.direction = message.direction;
+        model.type = message.body.type;
+        model.isHeader = YES;
+    }
     [AgoraChatClient.sharedClient.threadManager joinChatThread:conv.threadInfo.threadId completion:^(AgoraChatThread *thread, AgoraChatError *aError) {
-        if (!aError || aError.code == 40004) {
-            AgoraChatThreadViewController *VC = [[AgoraChatThreadViewController alloc]initThreadChatViewControllerWithCoversationid:conv.threadInfo.threadId conversationType:AgoraChatConversationTypeGroupChat chatViewModel:self.chatController.viewModel parentMessageId:@"" model:nil];
+        if (!aError || aError.code == AgoraChatErrorUserAlreadyExist) {
+            if (thread) {
+                model.thread = thread;
+            }
+            AgoraChatThreadViewController *VC = [[AgoraChatThreadViewController alloc]initThreadChatViewControllerWithCoversationid:conv.threadInfo.threadId conversationType:AgoraChatConversationTypeGroupChat chatViewModel:self.chatController.viewModel parentMessageId:message.messageId.length ? message.messageId:@"" model:message.messageId.length ? model:nil];
             VC.navTitle = thread ? thread.threadName:conv.threadInfo.threadName;
             VC.detail = self.chatController.group.groupName;
             [self.navigationController pushViewController:VC animated:YES];
@@ -46,6 +54,7 @@
     }];
 
 }
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
