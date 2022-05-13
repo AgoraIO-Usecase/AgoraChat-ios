@@ -201,11 +201,10 @@ typedef enum : NSUInteger {
 }
 
 - (void)goNotificationPage {
-//    AgoraPushNotificationViewController *about = [[AgoraPushNotificationViewController alloc] init];
-    ACDNotificationSettingViewController *conntroller = [[ACDNotificationSettingViewController alloc] init];
+    ACDNotificationSettingViewController *controller = [[ACDNotificationSettingViewController alloc] init];
 
-    conntroller.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:conntroller animated:YES];
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 
