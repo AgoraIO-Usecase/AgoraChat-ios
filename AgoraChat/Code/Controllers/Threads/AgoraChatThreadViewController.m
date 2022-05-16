@@ -9,7 +9,7 @@
 #import "AgoraChatThreadViewController.h"
 #import "AgoraUserModel.h"
 #import "AgoraChatUserDataModel.h"
-#import "AgoraChatDateHelper.h"
+#import "ACDDateHelper.h"
 #import "UserInfoStore.h"
 
 #import "ACDChatNavigationView.h"
@@ -17,6 +17,7 @@
 #import "AgoraChatThreadListNavgation.h"
 #import "AgoraChatThreadEditViewController.h"
 #import "AgoraChatThreadMembersViewController.h"
+#import "ACDNotificationSettingViewController.h"
 @interface AgoraChatThreadViewController ()<EaseChatViewControllerDelegate,AgoraChatroomManagerDelegate,EMBottomMoreFunctionViewDelegate>
 @property (nonatomic, strong) EaseConversationModel *conversationModel;
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -335,7 +336,7 @@
     memberModel.showMore = YES;
     [extMenuArray addObject:memberModel];
     EaseExtendMenuModel *nofitfyModel = [[EaseExtendMenuModel alloc]initWithData:ImageWithName(@"thread_notifications") funcDesc:@"Thead Notifications" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
-        
+        [self pushThreadNotifySetting];
     }];
     nofitfyModel.showMore = YES;
     [extMenuArray addObject:nofitfyModel];
@@ -358,6 +359,13 @@
         [extMenuArray addObject:destoryModel];
     }
     [EMBottomMoreFunctionView showMenuItems:extMenuArray showReaction:NO delegate:self ligheViews:nil animation:YES userInfo:nil];
+}
+
+- (void)pushThreadNotifySetting {
+    ACDNotificationSettingViewController *controller = [[ACDNotificationSettingViewController alloc] init];
+    controller.notificationType = AgoraNotificationSettingTypeThread;
+    controller.conversationID = self.conversationId;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - EMBottomMoreFunctionViewDelegate

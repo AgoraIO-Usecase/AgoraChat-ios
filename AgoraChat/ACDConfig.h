@@ -9,7 +9,9 @@
 #ifndef ACDConfig_h
 #define ACDConfig_h
 
+
 #define ACDENV  1
+
 
 #if ACDENV == 0
 //美东
@@ -28,8 +30,8 @@
 
 #elif ACDENV == 3
 //vip6
-#define Appkey @"86446724#514630" //vip6
-#define AppServerHost @"https://a1-vip6.easemob.com" //国内部署vip6
+#define Appkey @"5101220107132865#test" //vip6
+#define AppServerHost @"http://a1-test.easemob.com" //国内部署vip6
 
 #endif
 

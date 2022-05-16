@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, ACDGroupMemberListType) {
 /// @param group current group
 - (void)actionSheetWithUserId:(NSString *)userId
                memberListType:(ACDGroupMemberListType)memberListType
-                        group:(AgoraChatGroup *)group ;
+                        group:(AgoraChatGroup *)group;
 
 @end
 

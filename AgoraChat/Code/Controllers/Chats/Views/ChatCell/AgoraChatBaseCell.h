@@ -27,7 +27,7 @@
 
 - (void)didLocationCellPressed:(AgoraMessageModel*)model;
 
-- (void)didCellLongPressed:(AgoraChatCustomBaseCell*)cell;
+- (void)didCellLongPressed:(ACDCustomBaseCell*)cell;
 
 - (void)didResendButtonPressed:(AgoraMessageModel*)model;
 

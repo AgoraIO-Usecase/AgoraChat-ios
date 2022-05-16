@@ -8,8 +8,8 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "AgoraBaseRefreshTableController.h"
+#import "ACDBaseRefreshTableController.h"
 
-@interface AgoraChatroomsViewController : AgoraBaseRefreshTableController
+@interface AgoraChatroomsViewController : ACDBaseRefreshTableController
 
 @end

@@ -18,9 +18,7 @@
 #import "AgoraChatHttpRequest.h"
 
 #import <AgoraChat/AgoraChatOptions+PrivateDeploy.h>
-
-
-
+#import "PresenceManager.h"
 
 
 @interface AppDelegate () <AgoraChatClientDelegate,UNUserNotificationCenterDelegate>
@@ -60,8 +58,7 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
-//    AgoraLaunchViewController *launch = [[AgoraLaunchViewController alloc] init];
-//    self.window.rootViewController = launch;
+
     [self loadViewController];
     
     [self.window makeKeyAndVisible];
@@ -104,6 +101,8 @@
     
     [EaseChatKitManager initWithAgoraChatOptions:options];
 
+//    ACDDemoOptions *demoOptions = [ACDDemoOptions sharedOptions];
+//    [EaseChatKitManager initWithAgoraChatOptions:[demoOptions toOptions]];
 }
 
 - (void)internalSpecOption:(AgoraChatOptions *)option {
@@ -121,8 +120,6 @@
         [self loadLoginPage];
     }
   
-//    [self loadMainPage];
-
 }
 
 
@@ -167,8 +164,11 @@
                 } else {
                     alertStr = NSLocalizedString(@"login appserver failure", @"Sign in appserver failure");
                 }
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:alertStr delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"renewToken.ok", @"Ok"), nil];
-                [alert show];
+                
+//                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:alertStr delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"renewToken.ok", @"Ok"), nil];
+//                [alert show];
+                
+                [self.window.rootViewController showHint:alertStr];
             });
         }];
     }
@@ -210,7 +210,6 @@
         
         if (self.userName.length == 0 || self.nickName.length == 0) return;
         //unify token login
-        __weak typeof(self) weakself = self;
         [[AgoraChatHttpRequest sharedManager] loginToApperServer:self.userName nickName:self.nickName completion:^(NSInteger statusCode, NSString * _Nonnull response) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSString *alertStr = nil;
@@ -237,8 +236,6 @@
 
 - (void)loadMainPage {
     AgoraMainViewController *main = [[AgoraMainViewController alloc] init];
-//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:main];
-//    navigationController.interactivePopGestureRecognizer.delegate = (id)self;
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     if (!navigationController || (navigationController && ![navigationController.viewControllers[0] isKindOfClass:[AgoraMainViewController class]])) {
         navigationController = [[UINavigationController alloc] initWithRootViewController:main];
@@ -290,13 +287,8 @@
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"apns.failToRegisterApns", @"Fail to register apns")
-                                                    message:error.description
-                                                   delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"ok", @"OK")
-                                          otherButtonTitles:nil];
-    [alert show];
+{    
+    [self showAlertWithTitle:NSLocalizedString(@"apns.failToRegisterApns", @"Fail to register apns") message:error.description];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo

@@ -19,10 +19,11 @@
 #import "AgoraRealtimeSearchUtils.h"
 #import "NSArray+AgoraSortContacts.h"
 #import "ACDContactCell.h"
+#import "PresenceManager.h"
 
 
 @interface ACDContactListController()
-
+@property (nonatomic,strong) NSArray<NSString*>* contacts;
 @end
 
 @implementation ACDContactListController
@@ -32,6 +33,8 @@
     self = [super init];
     if (self) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingBlackListDidChange) name:@"AgoraSettingBlackListDidChange" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presencesUpdated:) name:PRESENCES_UPDATE object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contactListDidChange) name:KACD_REFRESH_CONTACTS object:nil];
     }
     return  self;
 }
@@ -85,13 +88,13 @@
 
 
 - (void)updateContacts:(NSArray *)bubbyList {
+    self.contacts = bubbyList;
     NSArray *blockList = [[AgoraChatClient sharedClient].contactManager getBlackList];
     NSMutableArray *contacts = [NSMutableArray arrayWithArray:bubbyList];
     for (NSString *blockId in blockList) {
         [contacts removeObject:blockId];
     }
     [self sortContacts:contacts];
-    
 }
 
 - (void)sortContacts:(NSArray *)contacts {
@@ -109,6 +112,7 @@
                                   searchSource:&searchSource];
     [self.dataArray removeAllObjects];
     [self.dataArray addObjectsFromArray:sortArray];
+    [[PresenceManager sharedInstance] subscribe:contacts completion:nil];
     self.sectionTitles = [NSMutableArray arrayWithArray:sectionTitles];
     self.searchSource = [NSMutableArray arrayWithArray:searchSource];
 }
@@ -118,7 +122,7 @@
 }
 
 #pragma mark NSNotification
-- (void)settingBlackListDidChange {
+- (void)contactListDidChange {
     [self reloadContacts];
 }
 
@@ -130,32 +134,14 @@
     return  self.sectionTitles.count;
 }
 
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-//    return [self.sectionTitles objectAtIndex:section];
-//}
-
 - (NSArray*)sectionIndexTitlesForTableView:(UITableView *)tableView{
      return self.sectionTitles;
 }
 
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-//    UIView *contentView = UIView.new;
-//    contentView.backgroundColor = UIColor.whiteColor;
-//    UILabel *label = UILabel.new;
-//    label.font = Font(@"PingFangSC-Regular", 15.0f);
-//    label.textColor = COLOR_HEX(0x242424);
-//    label.text = self.sectionTitles[section];
-//    [contentView addSubview:label];
-//    [label mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.edges.equalTo(contentView).insets(UIEdgeInsetsMake(0, 20.0f, 0, -20.0));
-//    }];
-//    return contentView;
-//}
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index{
     return index;
 }
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (self.isSearchState) {
@@ -179,6 +165,19 @@
         model = self.dataArray[indexPath.section][indexPath.row];
         cell.model = model;
     }
+    AgoraChatPresence*presence = [[PresenceManager sharedInstance].presences objectForKey:model.hyphenateId];
+    if(presence) {
+        NSInteger status = [PresenceManager fetchStatus:presence];
+        NSString* imageName = [[PresenceManager whiteStrokePresenceImages] objectForKey:[NSNumber numberWithInteger:status]];
+        [cell.iconImageView setPresenceImage:[UIImage imageNamed:imageName]];
+        NSString* showStatus = [[PresenceManager showStatus] objectForKey:[NSNumber numberWithInteger:status]];
+        if(status == 0)
+            showStatus = [PresenceManager formatOfflineStatus:presence.lastTime];
+        if(status != PRESENCESTATUS_OFFLINE && presence.statusDescription.length > 0)
+            cell.detailLabel.text = presence.statusDescription;
+        else
+            cell.detailLabel.text = showStatus;
+    }
     
     cell.tapCellBlock = ^{
         if (self.selectedBlock) {
@@ -188,21 +187,6 @@
     
     return cell;
 }
-
-//#pragma mark - Table view delegate
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    AgoraUserModel *model = nil;
-//    if (self.isSearchState) {
-//        model = self.searchResults[indexPath.row];
-//    }else {
-//        model = self.dataArray[indexPath.section][indexPath.row];
-//    }
-//
-//    if (self.selectedBlock) {
-//        self.selectedBlock(model.hyphenateId);
-//    }
-//}
 
 #pragma mark getter and setter
 - (UITableView *)table {
@@ -221,6 +205,21 @@
 
     }
     return _table;
+}
+
+- (void)presencesUpdated:(NSNotification*)noti
+{
+    NSArray*array = noti.object;
+    NSMutableSet *set1 = [NSMutableSet setWithArray:array];
+    NSMutableSet *set2 = [NSMutableSet setWithArray:self.contacts];
+    [set1 intersectSet:set2];
+    if(set1.count > 0) {
+        __weak typeof(self) weakself = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakself.table reloadData];
+        });
+        
+    }
 }
 
 @end

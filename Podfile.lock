@@ -3,6 +3,7 @@ PODS:
   - chat-uikit (1.0.1):
     - Agora_Chat_iOS
     - EMVoiceConvert (= 0.1.0)
+    - MJRefresh
   - DACircularProgress (2.3.1)
   - EMVoiceConvert (0.1.0)
   - FMDB (2.7.5):
@@ -47,7 +48,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Agora_Chat_iOS: e38bb74db1192a75008aed1d9bd293c480169694
-  chat-uikit: 42834a508de9fe7a5824bc1411c9a5cc91e43678
+  chat-uikit: 2010d2607ba61ba0d014c816664ef8c351cc640e
   DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
   EMVoiceConvert: 32a0eaada94d93c151a5abd53ee174cd4e63b01f
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a

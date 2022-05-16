@@ -13,7 +13,9 @@
 #import "ACDChatViewController.h"
 #import "ACDInfoHeaderView.h"
 #import "ACDInfoCell.h"
+#import "PresenceManager.h"
 #import "AgoraContactsUIProtocol.h"
+#import "ACDNotificationSettingViewController.h"
 
 #define kContactInfoHeaderViewHeight 360.0
 
@@ -109,7 +111,7 @@ typedef enum : NSUInteger {
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 2;
+    return 3;
 }
 
 
@@ -121,18 +123,28 @@ typedef enum : NSUInteger {
     
     ACD_WS
     if (indexPath.row == 0) {
+        [cell.iconImageView setImage:ImageWithName(@"notifications_yellow")];
+        cell.nameLabel.text = @"Notifications";
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.tapCellBlock = ^{
+            [weakSelf notificationAction];
+        };
+
+    }
+    if (indexPath.row == 1) {
         [cell.iconImageView setImage:ImageWithName(@"blocked")];
         cell.nameLabel.text = @"Block Contact";
-        
+        cell.accessoryType = UITableViewCellAccessoryNone;
         cell.tapCellBlock = ^{
             [weakSelf blockAction];
         };
 
     }
     
-    if (indexPath.row == 1) {
+    if (indexPath.row == 2) {
         [cell.iconImageView setImage:ImageWithName(@"delete")];
         cell.nameLabel.text = @"Delete Contact";
+        cell.accessoryType = UITableViewCellAccessoryNone;
         cell.tapCellBlock = ^{
             [weakSelf deleteAction];
         };
@@ -142,7 +154,13 @@ typedef enum : NSUInteger {
     
     return cell;
 }
-
+- (void)notificationAction
+{
+    ACDNotificationSettingViewController *controller = [[ACDNotificationSettingViewController alloc] init];
+    controller.notificationType = AgoraNotificationSettingTypeSingleChat;
+    controller.conversationID = self.model.hyphenateId;
+    [self.navigationController pushViewController:controller animated:YES];
+}
 - (void)blockAction {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Block this contact now?" message:@"When you block this contact, you will not receive any messages from them." preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
@@ -182,17 +200,7 @@ typedef enum : NSUInteger {
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.row == 0) {
-        
-        
-    }
-    
-    if (indexPath.row == 1) {
-       
-
-    }
-    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];    
 }
 
 
@@ -247,6 +255,7 @@ typedef enum : NSUInteger {
     if (_headerView == nil) {
         _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, kContactInfoHeaderViewHeight)];
         [_headerView addSubview:self.contactInfoHeaderView];
+        [self _updatePresenceStatus];
         [self.contactInfoHeaderView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(_headerView);
         }];
@@ -293,6 +302,27 @@ typedef enum : NSUInteger {
     return _table;
 }
 
+- (void)_updatePresenceStatus
+{
+    [[[AgoraChatClient sharedClient] presenceManager] fetchPresenceStatus:@[self.model.hyphenateId] completion:^(NSArray<AgoraChatPresence *> *presences, AgoraChatError *error) {
+        if(!error && presences.count > 0) {
+            AgoraChatPresence* presence = [presences objectAtIndex:0];
+            if(presence) {
+                NSInteger status = [PresenceManager fetchStatus:presence];
+                NSString* imageName = [[PresenceManager whiteStrokePresenceImages] objectForKey:[NSNumber numberWithInteger:status]];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.contactInfoHeaderView.avatarImageView setPresenceImage:[UIImage imageNamed:imageName]];
+                });
+                
+            }else{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.contactInfoHeaderView.avatarImageView setPresenceImage:[UIImage imageNamed:kPresenceOfflineDescription]];
+                });
+                
+            }
+        }
+    }];
+}
 
 @end
 

@@ -37,8 +37,8 @@
     }];
     
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.mas_equalTo(self.iconImageView);
-        make.right.equalTo(self.contentView).offset(-kAgroaPadding * 1.6);
+        make.top.mas_equalTo(self.nameLabel.mas_bottom);
+        make.left.equalTo(self.nameLabel);
     }];
 
 }
@@ -61,9 +61,9 @@
 - (UILabel *)detailLabel {
     if (_detailLabel == nil) {
         _detailLabel = [[UILabel alloc] init];
-        _detailLabel.font = NFont(16.0f);
+        _detailLabel.font = NFont(12.0f);
         _detailLabel.textColor = TextLabelGrayColor;
-        _detailLabel.textAlignment = NSTextAlignmentRight;
+        _detailLabel.textAlignment = NSTextAlignmentLeft;
         _detailLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     }
     return _detailLabel;

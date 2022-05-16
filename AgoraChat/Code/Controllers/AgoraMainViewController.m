@@ -267,6 +267,7 @@ static NSString *kGroupName = @"GroupName";
 - (void)connectionStateDidChange:(AgoraChatConnectionState)aConnectionState
 {
     [_chatsVC networkChanged:aConnectionState];
+    
     [_settingsVC networkChanged:aConnectionState];
 }
 
@@ -318,9 +319,14 @@ static NSString *kGroupName = @"GroupName";
 
     self.lastPlaySoundDate = [NSDate date];
     
-    [[AgoraCDDeviceManager sharedInstance] playNewMessageSound];
+    if (ACDDemoOptions.sharedOptions.playNewMsgSound) {
+        [[AgoraCDDeviceManager sharedInstance] playNewMessageSound];
+    }
 
-    [[AgoraCDDeviceManager sharedInstance] playVibration];
+    if (ACDDemoOptions.sharedOptions.playVibration) {
+        [[AgoraCDDeviceManager sharedInstance] playVibration];
+    }
+
 }
 
 - (void)showBackgroundNotificationWithMessage:(AgoraChatMessage *)message

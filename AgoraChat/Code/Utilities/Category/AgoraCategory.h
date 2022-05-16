@@ -10,7 +10,6 @@
 #define AgoraCategory_h
 
 #import "UIViewController+DarkMode.h"
-#import "NSObject+AgoraAlertView.h"
 #import "UIViewController+DismissKeyboard.h"
 #import "UIImageView+HeadImage.h"
 #import "UIViewController+HUD.h"
@@ -19,6 +18,7 @@
 #import "UIAlertAction+Custom.h"
 #import "UITabBar+RedPoint.h"
 #import "NSObject+Hint.h"
+#import "NSObject+AlertController.h"
 
 #endif /* AgoraCategory_h */
 

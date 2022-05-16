@@ -7,6 +7,7 @@
 //
 
 #import "ACDCustomBaseView.h"
+#import "AgoraChatAvatarView.h"
 
 //typedef enum : NSUInteger {
 //    <#MyEnumValueA#>,
@@ -19,8 +20,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ACDChatNavigationView : ACDCustomBaseView
 @property (nonatomic, strong) UILabel* leftLabel;
 @property (nonatomic, strong) UIButton* chatButton;
+@property (nonatomic, strong, readonly) UIView* redPointView;
+@property (nonatomic, strong, readonly) UIButton* leftButton;
 @property (nonatomic, strong, readonly) UIButton* rightButton;
-@property (nonatomic, strong) UIImageView *chatImageView;
+@property (nonatomic, strong) AgoraChatAvatarView *chatImageView;
+@property (nonatomic, strong) UILabel* presenceLabel;
 
 @property (nonatomic, copy) void (^leftButtonBlock)(void);
 @property (nonatomic, copy) void (^rightButtonBlock)(void);

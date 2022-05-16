@@ -8,6 +8,7 @@
 
 #import "ACDAddContactViewController.h"
 #import "ACDInfoHeaderView.h"
+#import "PresenceManager.h"
 
 
 @interface ACDAddContactViewController ()
@@ -64,11 +65,34 @@
         make.height.equalTo(@360);
     }];
     
+    [self _updatePresenceStatus];
     [bgView addSubview:self.headerView];
     [self.headerView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(bgView);
         make.bottom.equalTo(self.contactInfoHeaderView.mas_top);
         make.height.equalTo(@25);
+    }];
+}
+
+- (void)_updatePresenceStatus
+{
+    [[[AgoraChatClient sharedClient] presenceManager] fetchPresenceStatus:@[self.model.hyphenateId] completion:^(NSArray<AgoraChatPresence *> *presences, AgoraChatError *error) {
+        if(!error && presences.count > 0) {
+            AgoraChatPresence* presence = [presences objectAtIndex:0];
+            if(presence) {
+                NSInteger status = [PresenceManager fetchStatus:presence];
+                NSString* imageName = [[PresenceManager whiteStrokePresenceImages] objectForKey:[NSNumber numberWithInteger:status]];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.contactInfoHeaderView.avatarImageView setPresenceImage:[UIImage imageNamed:imageName]];
+                });
+                
+            }else{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.contactInfoHeaderView.avatarImageView setPresenceImage:[UIImage imageNamed:kPresenceOfflineDescription]];
+                });
+                
+            }
+        }
     }];
 }
 
