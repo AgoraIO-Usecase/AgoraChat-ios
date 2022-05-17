@@ -485,14 +485,10 @@
         ACD_WS
         _navView.addActionBlock = ^{
             [weakSelf chatInfoAction];
-//            [weakSelf moreAction];
         };
-        
-//        [_navView.titleImageView setImage:ImageWithName(@"nav_title_apiExample")];
-//        [_navView.addButton setImage:ImageWithName(@"chat_nav_more") forState:UIControlStateNormal];
-        
-        [_navView.titleImageView setImage:ImageWithName(@"nav_title_apiExample")];
-        [_navView.addButton setImage:ImageWithName(@"chat_nav_more") forState:UIControlStateNormal];
+                
+        [_navView.titleImageView setImage:ImageWithName(@"nav_title_chats")];
+        [_navView.addButton setImage:ImageWithName(@"chat_nav_add") forState:UIControlStateNormal];
         
     }
     return _navView;

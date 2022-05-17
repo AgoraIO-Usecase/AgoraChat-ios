@@ -20,7 +20,7 @@
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIImageView *logoImageView;
 @property (nonatomic, strong) UIImageView* titleImageView;
-@property (nonatomic, strong) UIImageView* subTitleImageView;
+//@property (nonatomic, strong) UIImageView* subTitleImageView;
 @property (nonatomic, strong) UIView *hintView;
 @property (nonatomic, strong) UILabel *hintTitleLabel;
 @property (nonatomic, strong) UITextField *usernameTextField;
@@ -69,7 +69,6 @@
     [self.view addSubview:self.contentView];
     [self.contentView addSubview:self.logoImageView];
     [self.contentView addSubview:self.titleImageView];
-    [self.contentView addSubview:self.subTitleImageView];
     [self.contentView addSubview:self.hintView];
     [self.contentView addSubview:self.usernameTextField];
     [self.contentView addSubview:self.passwordTextField];
@@ -90,21 +89,21 @@
         
     }];
     
-    [self.subTitleImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titleImageView.mas_bottom).offset(10.0);
-        make.centerX.equalTo(self.contentView);
-    }];
+//    [self.subTitleImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.titleImageView.mas_bottom).offset(10.0);
+//        make.centerX.equalTo(self.contentView);
+//    }];
 
         
     [self.hintView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.subTitleImageView.mas_bottom).offset(63);
+        make.top.equalTo(self.titleImageView.mas_bottom).offset(63);
         make.centerX.equalTo(self.contentView);
         make.height.equalTo(@20);
     }];
     self.hintView.hidden = YES;
     
     [self.usernameTextField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.subTitleImageView.mas_bottom).offset(95);
+        make.top.equalTo(self.titleImageView.mas_bottom).offset(95);
         make.left.equalTo(self.contentView).offset(24);
         make.right.equalTo(self.contentView).offset(-24);
         make.height.equalTo(@kLoginButtonHeight);
@@ -413,14 +412,14 @@
     return _titleImageView;
 }
 
-- (UIImageView *)subTitleImageView {
-    if (_subTitleImageView == nil) {
-        _subTitleImageView = [[UIImageView alloc] init];
-        _subTitleImageView.contentMode = UIViewContentModeScaleAspectFill;
-        _subTitleImageView.image = ImageWithName(@"login.bundle/login_api_example");
-    }
-    return _subTitleImageView;
-}
+//- (UIImageView *)subTitleImageView {
+//    if (_subTitleImageView == nil) {
+//        _subTitleImageView = [[UIImageView alloc] init];
+//        _subTitleImageView.contentMode = UIViewContentModeScaleAspectFill;
+//        _subTitleImageView.image = ImageWithName(@"login.bundle/login_api_example");
+//    }
+//    return _subTitleImageView;
+//}
 
 - (UIView *)hintView
 {
@@ -502,7 +501,7 @@
         _loginButton.titleLabel.textColor = COLOR_HEX(0x000000);
         [_loginButton setTitle:@"Log In" forState:UIControlStateNormal];
         [_loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        _loginButton.backgroundColor = COLOR_HEX(0x7F91A8);
+        _loginButton.backgroundColor = COLOR_HEX(0x114EFF);
         [_loginButton addTarget:self action:@selector(doLogin) forControlEvents:UIControlEventTouchUpInside];
         _loginButton.layer.cornerRadius = kLoginButtonHeight * 0.5;
         
