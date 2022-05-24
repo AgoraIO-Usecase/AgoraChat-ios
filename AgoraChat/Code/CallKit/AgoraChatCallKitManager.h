@@ -18,10 +18,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)new NS_UNAVAILABLE;
 
+- (void)updateAgoraUid:(NSInteger)agoraUid;
+
 - (void)audioCallToUser:(NSString *)userId;
 - (void)videoCallToUser:(NSString *)userId;
 - (void)audioCallToGroup:(NSString *)groupId viewController:(UIViewController *)viewController;
 - (void)videoCallToGroup:(NSString *)groupId viewController:(UIViewController *)viewController;
+
+- (void)joinToMutleCall:(AgoraChatMessage *)callMessage;
 
 @end
 

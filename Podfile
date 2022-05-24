@@ -24,6 +24,7 @@ end
   
     # pod 'chat-uikit'
     pod 'chat-uikit', :path => "../AgoraChat-UIKit-ios"
+    pod 'AgoraChatCallKit', :path=>"../AgoraChatCallKit/AgoraChatCallKit.podspec"
 end
 
 

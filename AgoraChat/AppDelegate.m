@@ -66,7 +66,11 @@
     [self _registerAPNS];
     [self registerNotifications];
     
-    self.callKitManager = [AgoraChatCallKitManager shareManager];
+    NSUserDefaults *shareDefault = [NSUserDefaults standardUserDefaults];
+    NSNumber *agoraUid = [shareDefault objectForKey:USER_AGORA_UID];
+    if (agoraUid) {
+        [AgoraChatCallKitManager.shareManager updateAgoraUid:agoraUid.integerValue];
+    }
     
     return YES;
 }
@@ -80,34 +84,47 @@
 
 - (void)initUIKit
 {
-    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:@"5101220107132865#test"];
+//    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:@"easemob-demo#easeim"];
+    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:@"41117440#383391"];
+
     
     // Hyphenate cert keys
     NSString *apnsCertName = nil;
-#if ChatDemo_DEBUG
+#if DEBUG
     apnsCertName = @"ChatDemoDevPush";
+    [options setPushKitCertName:@"com.easemob.enterprise.demo.ui.voip"];
 #else
     apnsCertName = @"ChatDemoProPush";
+    [options setPushKitCertName:@"com.easemob.enterprise.demo.ui.pro.voip"];
 #endif
     
     [options setApnsCertName:apnsCertName];
+    
     [options setEnableDeliveryAck:YES];
     [options setEnableConsoleLog:YES];
     [options setIsDeleteMessagesWhenExitGroup:NO];
     [options setIsDeleteMessagesWhenExitChatRoom:NO];
     [options setUsingHttpsOnly:YES];
     [options setIsAutoLogin:YES];
-    [options setChatServer:@"52.80.99.104"];
-    [options setChatPort:6717];
-    [options setRestServer:@"http://a1-test.easemob.com"];
+//    [options setChatServer:@"52.80.99.104"];
+//    [options setChatPort:6717];
+//    [options setRestServer:@"http://a1-test.easemob.com"];
 #warning 国内部署设置
-    [self internalSpecOption:options];
+//    [self internalSpecOption:options];
+//
+//    [options setRestServer:@"http://a1-hsb.easemob.com"];
+//    [options setChatServer:@"106.75.100.247"];
+//    [options setChatPort:6717];
     
-    [options setRestServer:@"http://a1-test.easemob.com"];
-    [options setChatServer:@"52.80.99.104"];
-    [options setChatPort:6717];
+    
+//    options.restServer = @"a1-hsb.easemob.com";
+//    options.chatServer = @"106.75.100.247";
     
 //    self.appkey = @"5101220107132865#test";
+//    [options setRestServer:@"http://a1-test.easemob.com"];
+//    [options setChatServer:@"52.80.99.104"];
+//    [options setChatPort:6717];
+
     [EaseChatKitManager initWithAgoraChatOptions:options];
 }
 

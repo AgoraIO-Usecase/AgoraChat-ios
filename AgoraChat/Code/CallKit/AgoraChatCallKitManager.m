@@ -8,18 +8,17 @@
 
 #import "AgoraChatCallKitManager.h"
 
-#import "EaseCallConfig.h"
-#import "EaseCallManager.h"
+#import "AgoraChatCallConfig.h"
+#import "AgoraChatCallManager.h"
 #import "UserInfoStore.h"
 #import "ConfInviteUsersViewController.h"
 #import "AgoraMemberSelectViewController.h"
 
-@import PushKit;
 @import CallKit;
 @import AVFAudio;
 @import AgoraChat;
 
-@interface AgoraChatCallKitManager() <EaseCallDelegate, PKPushRegistryDelegate, CXProviderDelegate>
+@interface AgoraChatCallKitManager() <AgoraChatCallDelegate, CXProviderDelegate>
 
 @end
 
@@ -38,17 +37,19 @@
 - (instancetype)init
 {
     if (self = [super init]) {
-        PKPushRegistry *voipRegistry = [[PKPushRegistry alloc] initWithQueue:dispatch_get_main_queue()];
-        voipRegistry.delegate = self;
-        voipRegistry.desiredPushTypes = [NSSet setWithObject:PKPushTypeVoIP];
-        
-        EaseCallConfig* config = [[EaseCallConfig alloc] init];
+        AgoraChatCallConfig *config = [[AgoraChatCallConfig alloc] init];
         config.agoraAppId = @"15cb0d28b87b425ea613fc46f7c9f974";
         config.enableRTCTokenValidate = YES;
+        config.enableIosCallKit = YES;
 
-        [EaseCallManager.sharedManager initWithConfig:config delegate:self];
+        [AgoraChatCallManager.sharedManager initWithConfig:config delegate:self];
     }
     return self;
+}
+
+- (void)updateAgoraUid:(NSInteger)agoraUid
+{
+    [AgoraChatCallManager.sharedManager getAgoraChatCallConfig].agoraUid = agoraUid;
 }
 
 - (void)audioCallToUser:(NSString *)userId
@@ -62,14 +63,14 @@
     NSString *msgId = conversation.latestMessage.messageId;
     AgoraChatUserInfo *info = [UserInfoStore.sharedInstance getUserInfoById:userId];
     if (info && (info.avatarUrl.length > 0 || info.nickname > 0)) {
-        EaseCallUser *user = [EaseCallUser userWithNickName:info.nickname image:[NSURL URLWithString:info.avatarUrl]];
-        [[EaseCallManager.sharedManager getEaseCallConfig] setUser:userId info:user];
+        AgoraChatCallUser *user = [AgoraChatCallUser userWithNickName:info.nickname image:[NSURL URLWithString:info.avatarUrl]];
+        [[AgoraChatCallManager.sharedManager getAgoraChatCallConfig] setUser:userId info:user];
     }
-    [EaseCallManager.sharedManager startSingleCallWithUId:userId type:EaseCallType1v1Audio ext:nil completion:^(NSString * callId, EaseCallError * aError) {
+    [AgoraChatCallManager.sharedManager startSingleCallWithUId:userId type:AgoraChatCallType1v1Audio ext:nil completion:^(NSString * callId, AgoraChatCallError * aError) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1000), dispatch_get_main_queue(), ^{
             [conversation loadMessagesStartFromId:msgId count:50 searchDirection:msgId ? AgoraChatMessageSearchDirectionDown : AgoraChatMessageSearchDirectionUp completion:^(NSArray *aMessages, AgoraChatError *aError) {
                 if (aMessages.count) {
-//                    [self insertLocationCallRecord:aMessages];
+                    [self insertLocationCallRecord:aMessages];
                 }
             }];
         });
@@ -93,14 +94,14 @@
     NSString *msgId = conversation.latestMessage.messageId;
     AgoraChatUserInfo *info = [UserInfoStore.sharedInstance getUserInfoById:userId];
     if (info && (info.avatarUrl.length > 0 || info.nickname > 0)) {
-        EaseCallUser* user = [EaseCallUser userWithNickName:info.nickname image:[NSURL URLWithString:info.avatarUrl]];
-        [[EaseCallManager.sharedManager getEaseCallConfig] setUser:userId info:user];
+        AgoraChatCallUser* user = [AgoraChatCallUser userWithNickName:info.nickname image:[NSURL URLWithString:info.avatarUrl]];
+        [[AgoraChatCallManager.sharedManager getAgoraChatCallConfig] setUser:userId info:user];
     }
-    [EaseCallManager.sharedManager startSingleCallWithUId:userId type:EaseCallType1v1Video ext:nil completion:^(NSString * callId, EaseCallError * aError) {
+    [AgoraChatCallManager.sharedManager startSingleCallWithUId:userId type:AgoraChatCallType1v1Video ext:nil completion:^(NSString * callId, AgoraChatCallError * aError) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1000), dispatch_get_main_queue(), ^{
             [conversation loadMessagesStartFromId:msgId count:50 searchDirection:msgId ? AgoraChatMessageSearchDirectionDown : AgoraChatMessageSearchDirectionUp completion:^(NSArray *aMessages, AgoraChatError *aError) {
                 if (aMessages.count) {
-//                    [self insertLocationCallRecord:aMessages];
+                    [self insertLocationCallRecord:aMessages];
                 }
             }];
         });
@@ -114,13 +115,13 @@
         for (NSString *strId in aInviteUsers) {
             AgoraChatUserInfo *info = [UserInfoStore.sharedInstance getUserInfoById:strId];
             if (info && (info.avatarUrl.length > 0 || info.nickname > 0)) {
-                EaseCallUser *user = [EaseCallUser userWithNickName:info.nickname image:[NSURL URLWithString:info.avatarUrl]];
-                [[EaseCallManager.sharedManager getEaseCallConfig] setUser:strId info:user];
+                AgoraChatCallUser *user = [AgoraChatCallUser userWithNickName:info.nickname image:[NSURL URLWithString:info.avatarUrl]];
+                [[AgoraChatCallManager.sharedManager getAgoraChatCallConfig] setUser:strId info:user];
             }
         }
-        [EaseCallManager.sharedManager startInviteUsers:aInviteUsers callType:EaseCallTypeMultiAudio ext:@{
+        [AgoraChatCallManager.sharedManager startInviteUsers:aInviteUsers groupId:groupId callType:AgoraChatCallTypeMultiAudio ext:@{
             @"groupId":groupId
-        } completion:^(NSString * callId, EaseCallError * aError) {
+        } completion:^(NSString * callId, AgoraChatCallError * aError) {
             
         }];
     };
@@ -136,13 +137,13 @@
         for (NSString* strId in aInviteUsers) {
             AgoraChatUserInfo *info = [UserInfoStore.sharedInstance getUserInfoById:strId];
             if (info && (info.avatarUrl.length > 0 || info.nickname > 0)) {
-                EaseCallUser *user = [EaseCallUser userWithNickName:info.nickname image:[NSURL URLWithString:info.avatarUrl]];
-                [[EaseCallManager.sharedManager getEaseCallConfig] setUser:strId info:user];
+                AgoraChatCallUser *user = [AgoraChatCallUser userWithNickName:info.nickname image:[NSURL URLWithString:info.avatarUrl]];
+                [[AgoraChatCallManager.sharedManager getAgoraChatCallConfig] setUser:strId info:user];
             }
         }
-        [EaseCallManager.sharedManager startInviteUsers:aInviteUsers callType:EaseCallTypeMulti ext:@{
-            @"groupId":groupId
-        } completion:^(NSString *callId, EaseCallError *aError) {
+        [AgoraChatCallManager.sharedManager startInviteUsers:aInviteUsers groupId:groupId callType:AgoraChatCallTypeMultiVideo ext:@{
+            @"groupId": groupId
+        } completion:^(NSString *callId, AgoraChatCallError *aError) {
             
         }];
     };
@@ -151,32 +152,35 @@
     [viewController presentViewController:controller animated:YES completion:nil];
 }
 
-- (void)callDidEnd:(NSString*_Nonnull)aChannelName reason:(EaseCallEndReason)aReason time:(int)aTm type:(EaseCallType)aType
+- (void)callDidEnd:(NSString*_Nonnull)aChannelName reason:(AgoarChatCallEndReason)aReason time:(int)aTm type:(AgoraChatCallType)aType
 {
     NSString *msg = @"";
     switch (aReason) {
-        case EaseCallEndReasonHandleOnOtherDevice:
+        case AgoarChatCallEndReasonHandleOnOtherDevice:
             msg = NSLocalizedString(@"otherDevice", nil);
             break;
-        case EaseCallEndReasonBusy:
+        case AgoarChatCallEndReasonBusy:
             msg = NSLocalizedString(@"remoteBusy", nil);
             break;
-        case EaseCallEndReasonRefuse:
+        case AgoarChatCallEndReasonRefuse:
             msg = NSLocalizedString(@"refuseCall", nil);
             break;
-        case EaseCallEndReasonCancel:
+        case AgoarChatCallEndReasonRemoteRefuse:
+            msg = NSLocalizedString(@"RemoreRefuseCall", nil);
+            break;
+        case AgoarChatCallEndReasonCancel:
             msg = NSLocalizedString(@"cancelCall", nil);
             break;
-        case EaseCallEndReasonRemoteCancel:
+        case AgoarChatCallEndReasonRemoteCancel:
             msg = NSLocalizedString(@"callCancel", nil);
             break;
-        case EaseCallEndReasonRemoteNoResponse:
+        case AgoarChatCallEndReasonRemoteNoResponse:
             msg = NSLocalizedString(@"remoteNoResponse", nil);
             break;
-        case EaseCallEndReasonNoResponse:
+        case AgoarChatCallEndReasonNoResponse:
             msg = NSLocalizedString(@"noResponse", nil);
             break;
-        case EaseCallEndReasonHangup:
+        case AgoarChatCallEndReasonHangup:
             msg = [NSString stringWithFormat:NSLocalizedString(@"callendPrompt", nil),aTm];
             break;
         default:
@@ -187,7 +191,7 @@
     }
 }
 
-- (void)multiCallDidInvitingWithCurVC:(UIViewController *)vc callType:(EaseCallType)callType excludeUsers:(NSArray<NSString *> *)users ext:(NSDictionary *)aExt
+- (void)multiCallDidInvitingWithCurVC:(UIViewController *)vc callType:(AgoraChatCallType)callType excludeUsers:(NSArray<NSString *> *)users ext:(NSDictionary *)aExt
 {
     NSString *groupId = nil;
     if (aExt) {
@@ -202,26 +206,26 @@
         for (NSString* strId in aInviteUsers) {
             AgoraChatUserInfo *info = [[UserInfoStore sharedInstance] getUserInfoById:strId];
             if (info && (info.avatarUrl.length > 0 || info.nickname.length > 0)) {
-                EaseCallUser* user = [EaseCallUser userWithNickName:info.nickname image:[NSURL URLWithString:info.avatarUrl]];
-                [[EaseCallManager.sharedManager getEaseCallConfig] setUser:strId info:user];
+                AgoraChatCallUser *user = [AgoraChatCallUser userWithNickName:info.nickname image:[NSURL URLWithString:info.avatarUrl]];
+                [[AgoraChatCallManager.sharedManager getAgoraChatCallConfig] setUser:strId info:user];
             }
         }
-        [EaseCallManager.sharedManager startInviteUsers:aInviteUsers callType:EaseCallTypeMultiAudio ext:aExt completion:nil];
+        [AgoraChatCallManager.sharedManager startInviteUsers:aInviteUsers groupId:groupId callType:AgoraChatCallTypeMultiAudio ext:aExt completion:nil];
     };
     confVC.modalPresentationStyle = UIModalPresentationPopover;
     [vc presentViewController:confVC animated:YES completion:nil];
 }
 
-- (void)callDidReceive:(EaseCallType)aType inviter:(NSString*_Nonnull)username ext:(NSDictionary*_Nullable)aExt
+- (void)callDidReceive:(AgoraChatCallType)aType inviter:(NSString*_Nonnull)username ext:(NSDictionary*_Nullable)aExt
 {
     AgoraChatUserInfo* info = [[UserInfoStore sharedInstance] getUserInfoById:username];
     if (info && (info.avatarUrl.length > 0 || info.nickname.length > 0)) {
-        EaseCallUser *user = [EaseCallUser userWithNickName:info.nickname image:[NSURL URLWithString:info.avatarUrl]];
-        [[EaseCallManager.sharedManager getEaseCallConfig] setUser:username info:user];
+        AgoraChatCallUser *user = [AgoraChatCallUser userWithNickName:info.nickname image:[NSURL URLWithString:info.avatarUrl]];
+        [[AgoraChatCallManager.sharedManager getAgoraChatCallConfig] setUser:username info:user];
     }
 }
 
-- (void)callDidOccurError:(EaseCallError*_Nonnull)aError
+- (void)callDidOccurError:(AgoraChatCallError*_Nonnull)aError
 {
     
 }
@@ -232,24 +236,25 @@
     NSURLSession *session = [NSURLSession sessionWithConfiguration:config
                                                           delegate:nil
                                                      delegateQueue:[NSOperationQueue mainQueue]];
-
-    NSString *strUrl = [NSString stringWithFormat:@"http://a1.easemob.com/token/rtcToken/v1?userAccount=%@&channelName=%@&appkey=%@",[AgoraChatClient sharedClient].currentUsername, aChannelName, AgoraChatClient.sharedClient.options.appkey];
+    
+    NSString *strUrl = [NSString stringWithFormat:@"http://a41.easemob.com/token/rtc/channel/%@/agorauid/%@?userAccount=%@", aChannelName, @(aAgoraUid), aUserAccount];
     NSString *utf8Url = [strUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
     NSURL *url = [NSURL URLWithString:utf8Url];
     NSMutableURLRequest *urlReq = [[NSMutableURLRequest alloc] initWithURL:url];
     [urlReq setValue:[NSString stringWithFormat:@"Bearer %@",[AgoraChatClient sharedClient].accessUserToken ] forHTTPHeaderField:@"Authorization"];
     NSURLSessionDataTask *task = [session dataTaskWithRequest:urlReq completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if(data) {
-            NSDictionary* body = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-            NSLog(@"%@",body);
-            if(body) {
-                NSString* resCode = [body objectForKey:@"code"];
-                if([resCode isEqualToString:@"RES_0K"]) {
-                    NSString* rtcToken = [body objectForKey:@"accessToken"];
-                    NSNumber* uid = [body objectForKey:@"agoraUserId"];
-                    [EaseCallManager.sharedManager setRTCToken:rtcToken channelName:aChannelName uid:[uid unsignedIntegerValue]];
-                }
-            }
+        if (!data) {
+            return;
+        }
+        NSDictionary *body = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+        NSLog(@"%@",body);
+        if (!body) {
+            return;
+        }
+        NSString *resCode = [body objectForKey:@"code"];
+        if ([resCode isEqualToString:@"RES_OK"]) {
+            NSString* rtcToken = [body objectForKey:@"accessToken"];
+            [AgoraChatCallManager.sharedManager setRTCToken:rtcToken channelName:aChannelName uid:aAgoraUid];
         }
     }];
 
@@ -261,8 +266,8 @@
     if (aUserName.length > 0) {
         AgoraChatUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:aUserName];
         if (userInfo && (userInfo.avatarUrl.length > 0 || userInfo.nickname.length > 0)) {
-            EaseCallUser* user = [EaseCallUser userWithNickName:userInfo.nickname image:[NSURL URLWithString:userInfo.avatarUrl]];
-            [[EaseCallManager.sharedManager getEaseCallConfig] setUser:aUserName info:user];
+            AgoraChatCallUser* user = [AgoraChatCallUser userWithNickName:userInfo.nickname image:[NSURL URLWithString:userInfo.avatarUrl]];
+            [[AgoraChatCallManager.sharedManager getAgoraChatCallConfig] setUser:aUserName info:user];
         }
     } else {
         [self _fetchUserMapsFromServer:aChannelName];
@@ -274,6 +279,16 @@
     [self _fetchUserMapsFromServer:aChannelName];
 }
 
+- (void)joinToMutleCall:(AgoraChatMessage *)callMessage
+{
+    [AgoraChatCallManager.sharedManager joinToMutleCall:callMessage];
+}
+
+- (void)insertLocationCallRecord:(NSArray *)messages
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:AGORA_CHAT_CALL_KIT_COMMMUNICATE_RECORD object:@{@"msg":messages}];//刷新页面
+}
+
 - (void)_fetchUserMapsFromServer:(NSString*)aChannelName
 {
     // 这里设置映射表，设置头像，昵称
@@ -281,45 +296,45 @@
     NSURLSession *session = [NSURLSession sessionWithConfiguration:config
                                                           delegate:nil
                                                      delegateQueue:[NSOperationQueue mainQueue]];
-
-    NSString* strUrl = [NSString stringWithFormat:@"http://a1.easemob.com/channel/mapper?userAccount=%@&channelName=%@&appkey=%@",[AgoraChatClient sharedClient].currentUsername,aChannelName,[AgoraChatClient sharedClient].options.appkey];
+    NSString *strUrl = [NSString stringWithFormat:@"http://a41.easemob.com/agora/channel/mapper?channelName=%@&userAccount=%@", aChannelName, [AgoraChatClient sharedClient].currentUsername];
     NSString*utf8Url = [strUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
     NSURL* url = [NSURL URLWithString:utf8Url];
     NSMutableURLRequest* urlReq = [[NSMutableURLRequest alloc] initWithURL:url];
     [urlReq setValue:[NSString stringWithFormat:@"Bearer %@",[AgoraChatClient sharedClient].accessUserToken ] forHTTPHeaderField:@"Authorization"];
     NSURLSessionDataTask *task = [session dataTaskWithRequest:urlReq completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        if (data) {
-            NSDictionary* body = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-            NSLog(@"mapperBody:%@",body);
-            if (body) {
-                NSString* resCode = [body objectForKey:@"code"];
-                if([resCode isEqualToString:@"RES_0K"]) {
-                    NSString* channelName = [body objectForKey:@"channelName"];
-                    NSDictionary* result = [body objectForKey:@"result"];
-                    NSMutableDictionary<NSNumber*,NSString*>* users = [NSMutableDictionary dictionary];
-                    for (NSString *strId in result) {
-                        NSString *username = [result objectForKey:strId];
-                        NSNumber *uId = @([strId integerValue]);
-                        [users setObject:username forKey:uId];
-                        AgoraChatUserInfo* info = [[UserInfoStore sharedInstance] getUserInfoById:username];
-                        if (info && (info.avatarUrl.length > 0 || info.nickname.length > 0)) {
-                            EaseCallUser *user = [EaseCallUser userWithNickName:info.nickname image:[NSURL URLWithString:info.avatarUrl]];
-                            [[EaseCallManager.sharedManager getEaseCallConfig] setUser:username info:user];
-                        }
-                    }
-                    [EaseCallManager.sharedManager setUsers:users channelName:channelName];
+        if (!data) {
+            return;
+        }
+        NSDictionary *body = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+        NSLog(@"mapperBody:%@",body);
+        if (!body) {
+            return;
+        }
+        NSString *resCode = [body objectForKey:@"code"];
+        if ([resCode isEqualToString:@"RES_OK"]) {
+            NSString* channelName = [body objectForKey:@"channelName"];
+            NSDictionary* result = [body objectForKey:@"result"];
+            NSMutableDictionary<NSNumber*,NSString*>* users = [NSMutableDictionary dictionary];
+            for (NSString *strId in result) {
+                NSString *username = [result objectForKey:strId];
+                NSNumber *uId = @([strId integerValue]);
+                [users setObject:username forKey:uId];
+                AgoraChatUserInfo* info = [[UserInfoStore sharedInstance] getUserInfoById:username];
+                if (info && (info.avatarUrl.length > 0 || info.nickname.length > 0)) {
+                    AgoraChatCallUser *user = [AgoraChatCallUser userWithNickName:info.nickname image:[NSURL URLWithString:info.avatarUrl]];
+                    [[AgoraChatCallManager.sharedManager getAgoraChatCallConfig] setUser:username info:user];
                 }
             }
+            [AgoraChatCallManager.sharedManager setUsers:users channelName:channelName];
         }
     }];
 
     [task resume];
 }
 
-
 - (void)showHint:(NSString *)hint
 {
-    UIWindow *win = [[[UIApplication sharedApplication] windows] firstObject];
+    UIWindow *win = [self getKeyWindow];
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:win animated:YES];
     hud.userInteractionEnabled = NO;
     // Configure for text only and offset down
@@ -331,26 +346,24 @@
     [hud hide:YES afterDelay:2];
 }
 
-#pragma mark - PKPushRegistryDelegate
-- (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)pushCredentials forType:(PKPushType)type {
-    NSString *str = [NSString stringWithFormat:@"%@", pushCredentials.token];
-    NSString * tokenStr = [[[str stringByReplacingOccurrencesOfString:@"<" withString:@""] stringByReplacingOccurrencesOfString:@">" withString:@""] stringByReplacingOccurrencesOfString:@" " withString:@""];
-    NSLog(@"TOKEN =     %@",tokenStr);
-}
-
-- (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type withCompletionHandler:(void (^)(void))completion {
-    NSDictionary *dic = [payload.dictionaryPayload objectForKey:@"aps"];
-    NSLog(@"%@", dic);
-    CXProviderConfiguration *configuration = [[CXProviderConfiguration alloc] initWithLocalizedName:@""];
-    CXProvider *provider = [[CXProvider alloc] initWithConfiguration:configuration];
-    [provider setDelegate:self queue:dispatch_get_main_queue()];
-    
-    CXCallUpdate *callUpdate = [[CXCallUpdate alloc] init];
-    callUpdate.hasVideo = NO;
-    
-    [provider reportNewIncomingCallWithUUID:NSUUID.UUID update:callUpdate completion:^(NSError * _Nullable error) {
-        NSLog(@"%@", error);
-    }];
+- (UIWindow *)getKeyWindow
+{
+    if (@available(iOS 13.0, *)) {
+        for (UIWindowScene* scene in UIApplication.sharedApplication.connectedScenes) {
+            if (@available(iOS 15.0, *)) {
+                return scene.keyWindow;
+            } else {
+                for (UIWindow *window in scene.windows) {
+                    if (window.isKeyWindow) {
+                        return window;
+                    }
+                }
+            }
+        }
+    } else {
+        return [UIApplication sharedApplication].keyWindow;
+    }
+    return nil;
 }
 
 #pragma mark - CXProviderDelegate

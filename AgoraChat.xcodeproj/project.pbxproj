@@ -35,6 +35,7 @@
 		5D3B8B36280D832700A471BF /* uncheck@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D3B8B33280D832700A471BF /* uncheck@2x.png */; };
 		5D3B8B37280D832700A471BF /* check@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D3B8B34280D832700A471BF /* check@3x.png */; };
 		5D4DFE9A2803D55300479F30 /* AgoraChatCallKitManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D4DFE992803D55300479F30 /* AgoraChatCallKitManager.m */; };
+		5DFED0CA28193D0900C82F90 /* AgoraChatCallCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFED0C728193D0900C82F90 /* AgoraChatCallCell.m */; };
 		711159011DB7278B005158BB /* NSArray+AgoraSortContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 711159001DB7278B005158BB /* NSArray+AgoraSortContacts.m */; };
 		714E9DC31DD32B0A009D1E2D /* default_avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 714E9DC11DD32B0A009D1E2D /* default_avatar.png */; };
 		714E9DC41DD32B0A009D1E2D /* default_avatar@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 714E9DC21DD32B0A009D1E2D /* default_avatar@3x.png */; };
@@ -706,6 +707,8 @@
 		5D4DFE8E28004D2000479F30 /* AgoraChatCallKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AgoraChatCallKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D4DFE982803D55300479F30 /* AgoraChatCallKitManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AgoraChatCallKitManager.h; sourceTree = "<group>"; };
 		5D4DFE992803D55300479F30 /* AgoraChatCallKitManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AgoraChatCallKitManager.m; sourceTree = "<group>"; };
+		5DFED0C728193D0900C82F90 /* AgoraChatCallCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraChatCallCell.m; sourceTree = "<group>"; };
+		5DFED0C828193D0900C82F90 /* AgoraChatCallCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraChatCallCell.h; sourceTree = "<group>"; };
 		67195896BC844D7A3699C3A4 /* libPods-AgoraChat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AgoraChat.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		711158FF1DB7278B005158BB /* NSArray+AgoraSortContacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+AgoraSortContacts.h"; sourceTree = "<group>"; };
 		711159001DB7278B005158BB /* NSArray+AgoraSortContacts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+AgoraSortContacts.m"; sourceTree = "<group>"; };
@@ -2921,6 +2924,8 @@
 		EC54DCF927216F2A00ABEE3E /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				5DFED0C828193D0900C82F90 /* AgoraChatCallCell.h */,
+				5DFED0C728193D0900C82F90 /* AgoraChatCallCell.m */,
 				EC54DDF6272A44D200ABEE3E /* ACDInfoCell.h */,
 				EC54DDF7272A44D200ABEE3E /* ACDInfoCell.m */,
 				EC54DDFC272A45B100ABEE3E /* ACDInfoDetailCell.h */,
@@ -3623,7 +3628,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AgoraChat/Pods-AgoraChat-resources.sh",
-				"${PODS_ROOT}/../../AgoraChatCallKit/Assets/EaseCall.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/AgoraChatCallKit/AgoraChatCallKit.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/MWPhotoBrowser/MWPhotoBrowser.bundle",
 				"${PODS_ROOT}/../../AgoraChat-UIKit-ios/chat-uikit/Resources/chat-uikit.bundle",
@@ -3636,7 +3641,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EaseCall.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AgoraChatCallKit.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MWPhotoBrowser.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/chat-uikit.bundle",
@@ -3763,6 +3768,7 @@
 				5D3B8B2B280D68E100A471BF /* ConfInviteUsersViewController.m in Sources */,
 				9ECE66C9273B6E7C007CF85F /* UIImageView+UserInfo.m in Sources */,
 				EC54DCEC2721502200ABEE3E /* MISScrollPageSegmentTitleView.m in Sources */,
+				5DFED0CA28193D0900C82F90 /* AgoraChatCallCell.m in Sources */,
 				C043420227D7383300EB058B /* ACDPrivacyViewController.m in Sources */,
 				3A4BB1B01ED3DD6F00B07FCA /* AgoraChatroomCell.m in Sources */,
 				EC19F5452738C60700F88012 /* UIImage+Util.m in Sources */,
@@ -4127,11 +4133,11 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = AgoraChat/AgoraChat.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 499WYUV8Q2;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
 				EXLUDED_ARCHS = "";
@@ -4224,7 +4230,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.demo.ui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = com.easemob.enterprise.demo.ui_inhouse;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TVOS_DEPLOYMENT_TARGET = "";
 				VALIDATE_WORKSPACE = NO;

@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ACDMemberCollectionCell : UICollectionViewCell
 @property (nonatomic, strong) AgoraUserModel *model;
-
+@property (nonatomic, strong) NSString *username;
+@property (nonatomic, assign) BOOL deleteEnable;
 + (NSString *)reuseIdentifier;
 
 @end

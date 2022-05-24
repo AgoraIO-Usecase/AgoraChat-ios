@@ -11,6 +11,7 @@
 #import "UserInfoStore.h"
 #import "Reachability.h"
 #import "UIViewController+ComponentSize.h"
+#import "AgoraChatCallKitManager.h"
 
 #define kLoginButtonHeight 48.0f
 #define kMaxLimitLength 64
@@ -234,7 +235,7 @@
     self.hintView.hidden = YES;
     self.hintTitleLabel.text = @"";
     
-    void (^finishBlock) (NSString *aName, NSString *nickName, AgoraChatError *aError) = ^(NSString *aName, NSString *nickName, AgoraChatError *aError) {
+    void (^finishBlock) (NSString *aName, NSString *nickName, NSInteger agoraUid, AgoraChatError *aError) = ^(NSString *aName, NSString *nickName, NSInteger agoraUid, AgoraChatError *aError) {
         if (!aError) {
             if (nickName) {
                 [AgoraChatClient.sharedClient.userInfoManager updateOwnUserInfo:nickName withType:AgoraChatUserInfoTypeNickName completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
@@ -250,11 +251,13 @@
             NSUserDefaults *shareDefault = [NSUserDefaults standardUserDefaults];
             [shareDefault setObject:aName forKey:USER_NAME];
             [shareDefault setObject:nickName forKey:USER_NICKNAME];
+            [shareDefault setObject:@(agoraUid) forKey:USER_AGORA_UID];
             [shareDefault synchronize];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.hintView.hidden = YES;
                 self.hintTitleLabel.text = @"";
+                [AgoraChatCallKitManager.shareManager updateAgoraUid:agoraUid];
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES userInfo:@{@"userName":aName,@"nickName":!nickName ? @"" : nickName}];
             });
@@ -296,13 +299,14 @@
                 NSString *token = [responsedict objectForKey:@"accessToken"];
                 NSString *loginName = [responsedict objectForKey:@"chatUserName"];
                 NSString *nickName = [responsedict objectForKey:@"chatUserNickname"];
+                NSInteger agoraUid = [responsedict[@"agoraUid"] integerValue];
                 if (token && token.length > 0) {
-//                    [[AgoraChatClient sharedClient] loginWithUsername:[loginName lowercaseString] agoraToken:token completion:^(NSString *aUsername, AgoraChatError *aError) {
+                    [[AgoraChatClient sharedClient] loginWithUsername:[loginName lowercaseString] agoraToken:token completion:^(NSString *aUsername, AgoraChatError *aError) {
+                        finishBlock(aUsername, nickName, agoraUid, aError);
+                    }];
+//                    [AgoraChatClient.sharedClient loginWithUsername:loginName password:_passwordTextField.text completion:^(NSString *aUsername, AgoraChatError *aError) {
 //                        finishBlock(aUsername, nickName, aError);
 //                    }];
-                    [AgoraChatClient.sharedClient loginWithUsername:loginName password:_passwordTextField.text completion:^(NSString *aUsername, AgoraChatError *aError) {
-                        finishBlock(aUsername, nickName, aError);
-                    }];
                     return;
                 } else {
                     alertStr = NSLocalizedString(@"login analysis token failure", @"analysis token failure");

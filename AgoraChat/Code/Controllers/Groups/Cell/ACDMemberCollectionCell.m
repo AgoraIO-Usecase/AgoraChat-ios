@@ -30,6 +30,7 @@
 }
 
 - (void)prepare {
+    self.contentView.backgroundColor = UIColor.whiteColor;
     [self.contentView addSubview:self.avatarImageView];
     [self.contentView addSubview:self.deleteImageView];
     [self.contentView addSubview:self.nickNameLabel];
@@ -51,12 +52,8 @@
         make.top.equalTo(self.avatarImageView.mas_bottom).offset(kAgroaPadding * 0.5);
         make.centerX.equalTo(self.avatarImageView);
         make.left.right.equalTo(self.avatarImageView);
-
     }];
-
 }
-
-
 
 - (void)setModel:(AgoraUserModel *)model {
 
@@ -74,6 +71,12 @@
     else {
         _avatarImageView.image = _model.defaultAvatarImage;
     }
+}
+
+- (void)setDeleteEnable:(BOOL)deleteEnable
+{
+    _deleteEnable = deleteEnable;
+    _deleteImageView.hidden = !deleteEnable;
 }
 
 + (NSString *)reuseIdentifier {
