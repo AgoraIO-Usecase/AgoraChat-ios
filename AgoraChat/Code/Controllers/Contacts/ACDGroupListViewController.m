@@ -8,18 +8,15 @@
 
 #import "ACDGroupListViewController.h"
 #import "MISScrollPage.h"
-#import "AgoraGroupCell.h"
 #import "AgoraGroupModel.h"
 #import "AgoraNotificationNames.h"
-#import "AgoraGroupInfoViewController.h"
-
-#import "ACDGroupNewCell.h"
-#import "ACDNoDataPromptView.h"
+#import "ACDGroupCell.h"
+#import "ACDNoDataPlaceHolderView.h"
 #import "ACDGroupInfoViewController.h"
 
 
 @interface ACDGroupListViewController ()
-@property (nonatomic, strong) ACDNoDataPromptView *noDataPromptView;
+@property (nonatomic, strong) ACDNoDataPlaceHolderView *noDataPromptView;
 
 @end
 
@@ -107,10 +104,10 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *cellIdentifier = @"AgoraGroupCell";
-    ACDGroupNewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    static NSString *cellIdentifier = @"ACDGroupCell";
+    ACDGroupCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (!cell) {
-        cell = [[ACDGroupNewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[ACDGroupCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
     if (self.isSearchState) {
@@ -219,9 +216,9 @@
     return _table;
 }
 
-- (ACDNoDataPromptView *)noDataPromptView {
+- (ACDNoDataPlaceHolderView *)noDataPromptView {
     if (_noDataPromptView == nil) {
-        _noDataPromptView = ACDNoDataPromptView.new;
+        _noDataPromptView = ACDNoDataPlaceHolderView.new;
         [_noDataPromptView.noDataImageView setImage:ImageWithName(@"no_search_result")];
         _noDataPromptView.prompt.text = @"The Group Does Not Exist";
         _noDataPromptView.hidden = YES;

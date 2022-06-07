@@ -11,17 +11,17 @@
 
 @interface AgoraPushDisplaynameViewController ()<UITextFieldDelegate>
 
-@property (nonatomic, strong) AgoraChatBaseTextField *displayTextField;
+@property (nonatomic, strong) ACDBaseTextField *displayTextField;
 @end
 
 @implementation AgoraPushDisplaynameViewController
 
 
 
-- (AgoraChatBaseTextField *)displayTextField
+- (ACDBaseTextField *)displayTextField
 {
     if (!_displayTextField) {
-        _displayTextField = [[AgoraChatBaseTextField alloc] init];
+        _displayTextField = [[ACDBaseTextField alloc] init];
         _displayTextField.textColor = AlmostBlackColor;
         _displayTextField.textAlignment = NSTextAlignmentLeft;
         _displayTextField.font = [UIFont systemFontOfSize:13];
@@ -81,9 +81,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellIndentifier = @"PushDisplayCell";
-    AgoraChatCustomBaseCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndentifier];
+    ACDCustomBaseCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndentifier];
     if (!cell) {
-        cell = [[AgoraChatCustomBaseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
+        cell = [[ACDCustomBaseCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndentifier];
     }
     
     self.displayTextField.frame = CGRectMake(15, 0, self.tableView.frame.size.width, cell.contentView.frame.size.height);

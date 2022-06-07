@@ -9,7 +9,6 @@
 #import "ACDSettingsViewController.h"
 #import "UIImage+ImageEffect.h"
 #import "AgoraUserModel.h"
-#import "AgoraContactInfoCell.h"
 #import "AgoraChatDemoHelper.h"
 #import "ACDInfoHeaderView.h"
 #import "ACDInfoCell.h"
@@ -21,6 +20,11 @@
 #import "UserInfoStore.h"
 #import "PresenceManager.h"
 #import "ACDPresenceSettingViewController.h"
+
+#import "ACDGeneralViewController.h"
+#import "ACDPrivacyViewController.h"
+#import "AgoraPushNotificationViewController.h"
+#import "ACDNotificationSettingViewController.h"
 
 #define kInfoHeaderViewHeight 320.0
 #define kHeaderInSection  30.0
@@ -37,6 +41,9 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) ACDInfoHeaderView *userInfoHeaderView;
 @property (nonatomic, strong) UITableView *table;
+@property (nonatomic, strong) ACDInfoDetailCell *generalCell;
+@property (nonatomic, strong) ACDInfoDetailCell *notificationsCell;
+@property (nonatomic, strong) ACDInfoDetailCell *privacyCell;
 @property (nonatomic, strong) ACDInfoDetailCell *aboutCell;
 @property (nonatomic, strong) ACDSettingLogoutCell *logoutCell;
 @property (nonatomic, strong) UIImagePickerController *imagePicker;
@@ -184,12 +191,33 @@ typedef enum : NSUInteger {
     }];
 }
 
+- (void)goGeneralPage {
+    ACDGeneralViewController *vc = [[ACDGeneralViewController alloc] init];
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)goPrivacyPage {
+    ACDPrivacyViewController *vc = [[ACDPrivacyViewController alloc] init];
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (void)goAboutPage {
     AgoraAboutViewController *about = [[AgoraAboutViewController alloc] init];
     about.title = NSLocalizedString(@"title.setting.about", @"About");
     about.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:about animated:YES];
 }
+
+- (void)goNotificationPage {
+
+    ACDNotificationSettingViewController *controller = [[ACDNotificationSettingViewController alloc] init];
+
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 
 - (void)headerViewTapAction {
    
@@ -297,7 +325,7 @@ typedef enum : NSUInteger {
 {
     [self hideHud];
     [self showHudInView:self.view hint:NSLocalizedString(@"setting.uploading", @"Uploading..")];
-    WEAK_SELF
+    
     UIImage *orgImage = info[UIImagePickerControllerOriginalImage];
     [picker dismissViewControllerAnimated:YES completion:nil];
     if (orgImage) {
@@ -364,13 +392,25 @@ typedef enum : NSUInteger {
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == 0) {
+        return 4;
+    }
     return 1;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0 && indexPath.row == 0) {
-        return self.aboutCell;
+    if (indexPath.section == 0 ) {
+        if (indexPath.row == 0) {
+            return self.generalCell;
+        }else if(indexPath.row == 1){
+            return self.notificationsCell;
+        }else if(indexPath.row == 2){
+            return self.privacyCell;
+        }else {
+            return self.aboutCell;
+        }
+    
     }
     
     if (indexPath.section == 1 && indexPath.row == 0) {
@@ -413,6 +453,63 @@ typedef enum : NSUInteger {
         }];
     }
     return _headerView;
+}
+
+- (ACDInfoHeaderView *)userInfoHeaderView {
+    if (_userInfoHeaderView == nil) {
+        _userInfoHeaderView = [[ACDInfoHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kInfoHeaderViewHeight) withType:ACDHeaderInfoTypeMe];
+        
+        ACD_WS
+        _userInfoHeaderView.tapHeaderBlock = ^{
+            [weakSelf headerViewTapAction];
+        };
+        
+    }
+    return _userInfoHeaderView;
+}
+
+
+- (ACDInfoDetailCell *)generalCell {
+    if (_generalCell == nil) {
+        _generalCell = [[ACDInfoDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDInfoDetailCell reuseIdentifier]];
+        _generalCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        [_generalCell.iconImageView setImage:ImageWithName(@"General")];
+        _generalCell.nameLabel.text= @"General";
+        ACD_WS
+        _generalCell.tapCellBlock = ^{
+            [weakSelf goGeneralPage];
+        };
+    }
+    return  _generalCell;
+}
+
+- (ACDInfoDetailCell *)notificationsCell {
+    if (_notificationsCell == nil) {
+        _notificationsCell = [[ACDInfoDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDInfoDetailCell reuseIdentifier]];
+        _notificationsCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        [_notificationsCell.iconImageView setImage:ImageWithName(@"Notifications")];
+        _notificationsCell.nameLabel.text= @"Notifications";
+        ACD_WS
+        _notificationsCell.tapCellBlock = ^{
+            [weakSelf goNotificationPage];
+        };
+    }
+    return  _notificationsCell;
+}
+
+
+- (ACDInfoDetailCell *)privacyCell {
+    if (_privacyCell == nil) {
+        _privacyCell = [[ACDInfoDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDInfoDetailCell reuseIdentifier]];
+        _privacyCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        [_privacyCell.iconImageView setImage:ImageWithName(@"Privacy")];
+        _privacyCell.nameLabel.text= @"Privacy";
+        ACD_WS
+        _privacyCell.tapCellBlock = ^{
+            [weakSelf goPrivacyPage];
+        };
+    }
+    return  _privacyCell;
 }
 
 - (ACDInfoDetailCell *)aboutCell {

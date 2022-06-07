@@ -159,6 +159,9 @@ MISScrollPageControllerDelegate,AgoraGroupUIProtocol>
     self.group = agoraGroup;
     [self updateNavTitle];
     [self.allVC updateUI];
+    [self.adminListVC updateUI];
+    [self.blockListVC updateUI];
+    [self.mutedListVC updateUI];
 }
 
 #pragma mark action
@@ -168,7 +171,11 @@ MISScrollPageControllerDelegate,AgoraGroupUIProtocol>
 }
 
 - (void)addGroupMember {
-    AgoraMemberSelectViewController *selectVC = [[AgoraMemberSelectViewController alloc] initWithInvitees:@[] maxInviteCount:0];
+    NSMutableArray *hasInvitees = NSMutableArray.new;
+    [hasInvitees addObject:self.group.owner];
+    [hasInvitees addObjectsFromArray:self.group.memberList];
+    
+    AgoraMemberSelectViewController *selectVC = [[AgoraMemberSelectViewController alloc] initWithInvitees:hasInvitees maxInviteCount:self.group.settings.maxUsers];
     selectVC.style = AgoraContactSelectStyle_Invite;
     selectVC.title = @"Add Members";
     selectVC.delegate = self;
@@ -182,9 +189,11 @@ MISScrollPageControllerDelegate,AgoraGroupUIProtocol>
     for (AgoraUserModel *model in modelArray) {
         [self.inviteArray addObject:model.hyphenateId];
     }
-    
+        
+    NSString *msg = [NSString stringWithFormat:NSLocalizedString(@"group.invite", @"%@ invite you to group: %@ [%@]"), AgoraChatClient.sharedClient.currentUsername, self.group.groupName, self.group.groupId];
+
     ACD_WS
-    [[AgoraChatClient sharedClient].groupManager addMembers:self.inviteArray toGroup:weakSelf.group.groupId message:@"" completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
+    [[AgoraChatClient sharedClient].groupManager addMembers:self.inviteArray toGroup:weakSelf.group.groupId message:msg completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
         [weakSelf hideHud];
         if (aError) {
             [self showHint:aError.description];
@@ -293,13 +302,18 @@ MISScrollPageControllerDelegate,AgoraGroupUIProtocol>
     if (_navView == nil) {
         _navView = [[ACDGroupMemberNavView alloc] init];
        
-        if (_group.permissionType == AgoraChatGroupPermissionTypeMember) {
+        if(_group.permissionType == AgoraChatGroupPermissionTypeNone){
+            _navView.rightButton.hidden = YES;
+        }else if (_group.permissionType == AgoraChatGroupPermissionTypeMember) {
             if (_group.setting.style == AgoraChatGroupStylePrivateMemberCanInvite) {
                 _navView.rightButton.hidden = NO;
             }else {
                 _navView.rightButton.hidden = YES;
             }
+        }else {
+            _navView.rightButton.hidden = NO;
         }
+        
         ACD_WS
         _navView.leftButtonBlock = ^{
             [weakSelf backAction];

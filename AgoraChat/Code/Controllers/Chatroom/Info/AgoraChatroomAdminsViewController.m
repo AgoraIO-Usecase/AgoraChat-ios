@@ -11,7 +11,6 @@
 
 #import "AgoraMemberCell.h"
 #import "UIViewController+HUD.h"
-#import "AgoraAddAdminViewController.h"
 #import "AgoraNotificationNames.h"
 
 @interface AgoraChatroomAdminsViewController ()
@@ -170,8 +169,7 @@
 
 - (void)addAdminAction
 {
-//    AgoraAddAdminViewController *addController = [[AgoraAddAdminViewController alloc] initWithGroupId:self.group.groupId];
-//    [self.navigationController pushViewController:addController animated:YES];
+
 }
 
 - (void)updateUI:(NSNotification *)aNotification

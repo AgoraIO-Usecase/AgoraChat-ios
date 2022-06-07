@@ -14,8 +14,6 @@
 #import "ACDCreateNewGroupViewController.h"
 
 #import "ACDPublicGroupListViewController.h"
-#import "AgoraAddContactViewController.h"
-
 #import "ACDGroupInfoViewController.h"
 #import "ACDJoinGroupViewController.h"
 #import "ACDContactInfoViewController.h"

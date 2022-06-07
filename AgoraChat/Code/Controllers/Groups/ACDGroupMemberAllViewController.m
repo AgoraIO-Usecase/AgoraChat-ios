@@ -7,7 +7,6 @@
 //
 
 #import "ACDGroupMemberAllViewController.h"
-#import "AgoraGroupOccupantsViewController.h"
 #import "UIViewController+HUD.h"
 #import "AgoraNotificationNames.h"
 #import "ACDContainerSearchTableViewController+GroupMemberList.h"
@@ -73,9 +72,11 @@
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark reload data
 - (void)updateUI {
     [self tableViewDidTriggerHeaderRefresh];
 }
+
 
 #pragma mark updateUIWithNotification
 - (void)updateGroupMemberWithNotification:(NSNotification *)aNotification {
