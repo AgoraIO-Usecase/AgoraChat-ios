@@ -1,8 +1,9 @@
 PODS:
-  - Agora_Chat_iOS (1.0.1)
+  - Agora_Chat_iOS (1.0.2)
   - chat-uikit (1.0.1):
     - Agora_Chat_iOS
     - EMVoiceConvert (= 0.1.0)
+    - MJRefresh
   - DACircularProgress (2.3.1)
   - EMVoiceConvert (0.1.0)
   - FMDB (2.7.5):
@@ -21,7 +22,6 @@ PODS:
   - WHToast (0.1.0)
 
 DEPENDENCIES:
-  - Agora_Chat_iOS (= 1.0.1)
   - chat-uikit (from `../AgoraChat-UIKit-ios`)
   - FMDB
   - Masonry
@@ -47,8 +47,8 @@ EXTERNAL SOURCES:
     :path: "../AgoraChat-UIKit-ios"
 
 SPEC CHECKSUMS:
-  Agora_Chat_iOS: cf79f6f677f0bb5b1a14494b7d26ea5122f74bab
-  chat-uikit: a839668b62704d62aca1c2acbed5f987534abfe1
+  Agora_Chat_iOS: e38bb74db1192a75008aed1d9bd293c480169694
+  chat-uikit: 2010d2607ba61ba0d014c816664ef8c351cc640e
   DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
   EMVoiceConvert: 32a0eaada94d93c151a5abd53ee174cd4e63b01f
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
@@ -59,6 +59,6 @@ SPEC CHECKSUMS:
   SDWebImage: a72e880a8fe0f7fc31efe15aaed443c074d2a80c
   WHToast: 7d393091940215c2b8bcf78422d1855f9bfa3975
 
-PODFILE CHECKSUM: bd008261d063753583416b826a6e5a10149faa09
+PODFILE CHECKSUM: 6e74d4023639ab32cc09e4d3ded4801c2ebc720a
 
 COCOAPODS: 1.11.2

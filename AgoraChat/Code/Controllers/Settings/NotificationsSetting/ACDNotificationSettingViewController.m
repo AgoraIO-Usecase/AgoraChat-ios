@@ -170,7 +170,7 @@
 
 - (void)closeMute
 {
-    AgoraChatSilentModeParam *param = [[AgoraChatSilentModeParam alloc] initWithParamType:AgoraChatSilentModeParamTypeDuartion];
+    AgoraChatSilentModeParam *param = [[AgoraChatSilentModeParam alloc] initWithParamType:AgoraChatSilentModeParamTypeDuration];
     param.silentModeDuration = 0;
     [self silentModeChange:param];
     
@@ -200,7 +200,6 @@
         if (self.notificationType == AgoraNotificationSettingTypeSingleChat) {
             type = AgoraChatConversationTypeChat;
         }
-        
         [[AgoraChatClient sharedClient].pushManager setSilentModeForConversation:self.conversationID conversationType:type params:param completion:^(AgoraChatSilentModeResult * _Nonnull aResult, AgoraChatError * _Nonnull aError) {
             if (!aError) {
                 weakSelf.silentModeItem = aResult;

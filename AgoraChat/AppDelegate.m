@@ -18,6 +18,7 @@
 #import "AgoraChatHttpRequest.h"
 
 #import <AgoraChat/AgoraChatOptions+PrivateDeploy.h>
+#import "PresenceManager.h"
 
 
 @interface AppDelegate () <AgoraChatClientDelegate,UNUserNotificationCenterDelegate>
@@ -64,7 +65,7 @@
     
     [self _registerAPNS];
     [self registerNotifications];
-    
+
     return YES;
 }
 
@@ -77,15 +78,37 @@
 
 - (void)initUIKit
 {
-//    [self internalSpecOption:options];
-    ACDDemoOptions *demoOptions = [ACDDemoOptions sharedOptions];
-    [EaseChatKitManager initWithAgoraChatOptions:[demoOptions toOptions]];
+    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:Appkey];
+    
+    // Hyphenate cert keys
+    NSString *apnsCertName = nil;
+#if ChatDemo_DEBUG
+    apnsCertName = @"ChatDemoDevPush";
+#else
+    apnsCertName = @"ChatDemoProPush";
+#endif
+    
+    [options setApnsCertName:apnsCertName];
+    [options setEnableDeliveryAck:YES];
+    [options setEnableConsoleLog:YES];
+    [options setIsDeleteMessagesWhenExitGroup:NO];
+    [options setIsDeleteMessagesWhenExitChatRoom:NO];
+    [options setUsingHttpsOnly:YES];
+    [options setIsAutoLogin:YES];
+
+#warning 国内部署设置
+    [self internalSpecOption:options];
+    
+    [EaseChatKitManager initWithAgoraChatOptions:options];
+
+//    ACDDemoOptions *demoOptions = [ACDDemoOptions sharedOptions];
+//    [EaseChatKitManager initWithAgoraChatOptions:[demoOptions toOptions]];
 }
 
 - (void)internalSpecOption:(AgoraChatOptions *)option {
     option.enableDnsConfig = NO;
-    option.restServer = @"https://a1.chat.agora.io";
-    option.chatServer = @"https://msync-im-tls.chat.agora.io";
+    option.restServer = @"http://a1-test.easemob.com";
+    option.chatServer = @"52.80.99.104";
     option.chatPort = 6717;
 }
 

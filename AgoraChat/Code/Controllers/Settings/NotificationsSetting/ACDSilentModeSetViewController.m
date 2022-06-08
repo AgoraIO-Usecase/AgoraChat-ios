@@ -89,7 +89,7 @@
     [self hideHud];
     [self showHudInView:self.view hint:NSLocalizedString(@"hud.load", @"Loading..")];
     ACD_WS
-    AgoraChatSilentModeParam *param = [[AgoraChatSilentModeParam alloc] initWithParamType:AgoraChatSilentModeParamTypeDuartion];
+    AgoraChatSilentModeParam *param = [[AgoraChatSilentModeParam alloc] initWithParamType:AgoraChatSilentModeParamTypeDuration];
     param.silentModeDuration = durationMinutes;
     if (self.notificationType == AgoraNotificationSettingTypeSelf) {
         [[AgoraChatClient sharedClient].pushManager setSilentModeForAll:param completion:^(AgoraChatSilentModeResult * _Nonnull aResult, AgoraChatError * _Nonnull aError) {
