@@ -281,6 +281,8 @@
 "common.open" = "Open";
 "common.searchFailure" = "Search failure.";
 "common.addblackList" = "Add BlockList";
+"common.search" = "search";
+"common.done" = "Done";
 
 //message
 "message.friendapply.agree" = "%@ agreed to add friends to apply";
@@ -354,3 +356,10 @@
 "MultiLanguages" = "Languages";
 "languageSetting" = "Language Setting";
 "prompt" = "Prompt";
+
+// call
+"call.busy" = "The line is busy";
+"call.refuse" = "Request declined";
+"call.noanswer" = "No response";
+"call.otherDeviceAnswer" = "Other devices connected";
+"call.otherDeviceRefuse" = "Other devices declined";

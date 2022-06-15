@@ -91,15 +91,18 @@
         }];
     }
     if ([action isEqualToString:@"invite"]) {
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        formatter.dateFormat = @"HH:mm MMM dd";
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:model.message.timestamp / 1000];
         if (callType == AgoraChatCallType1v1Audio || callType == AgoraChatCallTypeMultiAudio) {
             _statusImageView.image = [UIImage imageNamed:@"cell_audio_call_invite"];
             _statusLabel.text = @"Audio Call Invite";
-            _timeLabel.text = @"Touch To Join";
+            
         } else {
             _statusImageView.image = [UIImage imageNamed:@"cell_video_call_invite"];
             _statusLabel.text = @"Video Call Invite";
-            _timeLabel.text = @"Touch To Join";
         }
+        _timeLabel.text = [formatter stringFromDate:date];
     } else if ([action isEqualToString:@"cancelCall"]) {
         int timeLength = [self.model.message.ext[@"callDuration"] intValue];
         int m = timeLength / 60;

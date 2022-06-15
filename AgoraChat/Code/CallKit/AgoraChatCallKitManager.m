@@ -14,11 +14,10 @@
 #import "ConfInviteUsersViewController.h"
 #import "AgoraMemberSelectViewController.h"
 
-@import CallKit;
 @import AVFAudio;
 @import AgoraChat;
 
-@interface AgoraChatCallKitManager() <AgoraChatCallDelegate, CXProviderDelegate>
+@interface AgoraChatCallKitManager() <AgoraChatCallDelegate>
 
 @end
 
@@ -156,32 +155,22 @@
 {
     NSString *msg = @"";
     switch (aReason) {
-        case AgoarChatCallEndReasonHandleOnOtherDevice:
-            msg = NSLocalizedString(@"otherDevice", nil);
+        case AgoarChatCallEndReasonAnswerOtherDevice:
+            msg = NSLocalizedString(@"call.otherDeviceAnswer", nil);
+            break;
+        case AgoarChatCallEndReasonRefuseOtherDevice:
+            msg = NSLocalizedString(@"call.otherDeviceRefuse", nil);
             break;
         case AgoarChatCallEndReasonBusy:
-            msg = NSLocalizedString(@"remoteBusy", nil);
-            break;
-        case AgoarChatCallEndReasonRefuse:
-            msg = NSLocalizedString(@"refuseCall", nil);
+            msg = NSLocalizedString(@"call.busy", nil);
             break;
         case AgoarChatCallEndReasonRemoteRefuse:
-            msg = NSLocalizedString(@"RemoreRefuseCall", nil);
-            break;
-        case AgoarChatCallEndReasonCancel:
-            msg = NSLocalizedString(@"cancelCall", nil);
-            break;
-        case AgoarChatCallEndReasonRemoteCancel:
-            msg = NSLocalizedString(@"callCancel", nil);
-            break;
-        case AgoarChatCallEndReasonRemoteNoResponse:
-            msg = NSLocalizedString(@"remoteNoResponse", nil);
+            msg = NSLocalizedString(@"call.refuse", nil);
             break;
         case AgoarChatCallEndReasonNoResponse:
-            msg = NSLocalizedString(@"noResponse", nil);
+            msg = NSLocalizedString(@"call.noanswer", nil);
             break;
         case AgoarChatCallEndReasonHangup:
-            msg = [NSString stringWithFormat:NSLocalizedString(@"callendPrompt", nil),aTm];
             break;
         default:
             break;
@@ -225,7 +214,7 @@
     }
 }
 
-- (void)callDidOccurError:(AgoraChatCallError*_Nonnull)aError
+- (void)callDidOccurError:(AgoraChatCallError *_Nonnull)aError
 {
     
 }
@@ -277,11 +266,6 @@
 - (void)callDidJoinChannel:(NSString*_Nonnull)aChannelName uid:(NSUInteger)aUid
 {
     [self _fetchUserMapsFromServer:aChannelName];
-}
-
-- (void)joinToMutleCall:(AgoraChatMessage *)callMessage
-{
-    [AgoraChatCallManager.sharedManager joinToMutleCall:callMessage];
 }
 
 - (void)insertLocationCallRecord:(NSArray *)messages
@@ -364,27 +348,6 @@
         return [UIApplication sharedApplication].keyWindow;
     }
     return nil;
-}
-
-#pragma mark - CXProviderDelegate
-- (void)providerDidReset:(CXProvider *)provider {
-    
-}
-
-- (void)provider:(CXProvider *)provider performStartCallAction:(CXStartCallAction *)action {
-    
-}
-
-- (void)provider:(CXProvider *)provider performAnswerCallAction:(nonnull CXAnswerCallAction *)action {
-    
-}
-
-- (void)provider:(CXProvider *)provider performEndCallAction:(nonnull CXEndCallAction *)action {
-    
-}
-
-- (void)provider:(CXProvider *)provider performSetMutedCallAction:(nonnull CXSetMutedCallAction *)action {
-    
 }
 
 @end

@@ -283,6 +283,8 @@
 "common.open" = "打开";
 "common.searchFailure" = "搜索失败。";
 "common.addblackList" = "加入黑名单";
+"common.search" = "搜索";
+"common.done" = "完成";
 
 //message
 "message.friendapply.agree" = "%@同意了加好友申请";
@@ -355,3 +357,10 @@
 "MultiLanguages" = "多语言";
 "languageSetting" = "设置语言";
 "prompt" = "提示";
+
+// call
+"call.busy" = "对方忙";
+"call.refuse" = "对方拒绝";
+"call.noanswer" = "对方无应答";
+"call.otherDeviceAnswer" = "其他设备已接起";
+"call.otherDeviceRefuse" = "其他设备已拒绝";

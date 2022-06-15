@@ -238,14 +238,15 @@
         [[AgoraChatClient sharedClient].chatManager sendMessageReadAck:aCell.model.message.messageId toUser:aCell.model.message.conversationId completion:nil];
     }
     
-    if ([aCell.model.message.ext[@"msgType"] isEqualToString:@"rtcCallWithAgora"]) {
-        NSString *action = aCell.model.message.ext[@"action"];
-        if ([action isEqualToString:@"invite"]) {
-            if (aCell.model.message.chatType == AgoraChatTypeGroupChat) {
-                [AgoraChatCallKitManager.shareManager joinToMutleCall:aCell.model.message];
-            }
-        }
-    }
+    // TODO: fz 点击加入房间放到下次迭代了
+//    if ([aCell.model.message.ext[@"msgType"] isEqualToString:@"rtcCallWithAgora"]) {
+//        NSString *action = aCell.model.message.ext[@"action"];
+//        if ([action isEqualToString:@"invite"]) {
+//            if (aCell.model.message.chatType == AgoraChatTypeGroupChat) {
+//                [AgoraChatCallKitManager.shareManager joinToMutleCall:aCell.model.message];
+//            }
+//        }
+//    }
     
 }
 

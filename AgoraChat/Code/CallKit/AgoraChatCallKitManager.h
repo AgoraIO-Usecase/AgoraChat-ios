@@ -25,8 +25,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)audioCallToGroup:(NSString *)groupId viewController:(UIViewController *)viewController;
 - (void)videoCallToGroup:(NSString *)groupId viewController:(UIViewController *)viewController;
 
-- (void)joinToMutleCall:(AgoraChatMessage *)callMessage;
-
 @end
 
 NS_ASSUME_NONNULL_END

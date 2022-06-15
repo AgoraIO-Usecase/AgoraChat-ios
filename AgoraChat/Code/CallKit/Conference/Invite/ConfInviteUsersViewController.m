@@ -92,7 +92,7 @@
     
     UIButton *confirmButton = [[UIButton alloc] init];
     confirmButton.titleLabel.font = [UIFont systemFontOfSize:15];
-    [confirmButton setTitle:NSLocalizedString(@"confirm", nil) forState:UIControlStateNormal];
+    [confirmButton setTitle:NSLocalizedString(@"common.done", nil) forState:UIControlStateNormal];
     [confirmButton setTitleColor:[UIColor colorWithRed:8 / 255.0 green:115 / 255.0 blue:222 / 255.0 alpha:1.0] forState:UIControlStateNormal];
     [confirmButton setTitleColor:UIColor.grayColor forState:UIControlStateHighlighted];
     [confirmButton addTarget:self action:@selector(confirmAction) forControlEvents:UIControlEventTouchUpInside];
@@ -111,7 +111,7 @@
     UITextField *searchField = [self.searchBar valueForKey:@"searchField"];
     CGFloat color = 245 / 255.0;
     searchField.backgroundColor = [UIColor colorWithRed:color green:color blue:color alpha:1.0];
-    self.searchBar.placeholder = NSLocalizedString(@"serchContact", nil);
+    self.searchBar.placeholder = NSLocalizedString(@"common.search", nil);
     [self.view addSubview:self.searchBar];
     [self.view sendSubviewToBack:self.searchBar];
     [self.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -196,6 +196,10 @@
     
     NSString *username = self.isSearching ? [self.searchDataArray objectAtIndex:indexPath.row] : [self.dataArray objectAtIndex:indexPath.row];
     ConfInviteUserCell *cell = (ConfInviteUserCell *)[tableView cellForRowAtIndexPath:indexPath];
+    if (self.inviteUsers.count + self.excludeUsers.count >= 3 && !cell.isChecked) {
+        [self showHint:@"There can only be 3 people in the channel"];
+        return;
+    }
     BOOL isChecked = [self.inviteUsers containsObject:username];
     if (isChecked) {
         [self.inviteUsers removeObject:username];

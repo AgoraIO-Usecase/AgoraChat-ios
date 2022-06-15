@@ -454,7 +454,6 @@
         _usernameTextField.delegate = self;
         _usernameTextField.borderStyle = UITextBorderStyleNone;
         _usernameTextField.attributedPlaceholder = [self textFieldAttributeString:@"AgoraID"];
-        _usernameTextField.text = @"fztest1";
         
         _usernameTextField.returnKeyType = UIReturnKeyDone;
         _usernameTextField.font = [UIFont fontWithName:@"PingFang SC" size:14.0];
@@ -477,7 +476,6 @@
         _passwordTextField.font = [UIFont fontWithName:@"PingFang SC" size:14.0];
         _passwordTextField.textColor = COLOR_HEX(0x000000);
         _passwordTextField.attributedPlaceholder = [self textFieldAttributeString:@"NickName"];
-        _passwordTextField.text = @"123";
 
         _passwordTextField.returnKeyType = UIReturnKeyDone;
         _passwordTextField.clearsOnBeginEditing = NO;
