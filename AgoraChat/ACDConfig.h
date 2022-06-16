@@ -16,12 +16,12 @@
 #if ACDENV == 0
 //美东
 #define Appkey @"41117440#383391"
-#define AppServerHost @"https://a41.easemob.com"
+#define AppServerHost @"http://a41.easemob.com"
 
 #endif
 
 
-#define EaseIMAppKey @"easemob-demo#easeim"
+//#define EaseIMAppKey @"easemob-demo#easeim"
 //#define ChatDemoUIAppKey @"easemob-demo#chatdemoui"
 //#define HongKongAppkey @"52366312#441909"
 //#define MeidongAppkey @"41117440#383391"
