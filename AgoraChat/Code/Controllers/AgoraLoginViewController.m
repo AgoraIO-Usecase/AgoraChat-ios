@@ -161,8 +161,7 @@
 - (void)startAnimation {
     CGAffineTransform endAngle = CGAffineTransformMakeRotation(self.loadingAngle * (M_PI /180.0f));
 
-    [UIView animateWithDuration:0.05 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
-        self.loadingImageView.transform = endAngle;
+    [UIView animateWithDuration:0.05 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{        self.loadingImageView.transform = endAngle;
     } completion:^(BOOL finished) {
         self.loadingAngle += 15;
         [self startAnimation];
@@ -238,14 +237,19 @@
     void (^finishBlock) (NSString *aName, NSString *nickName, NSInteger agoraUid, AgoraChatError *aError) = ^(NSString *aName, NSString *nickName, NSInteger agoraUid, AgoraChatError *aError) {
         if (!aError) {
             if (nickName) {
-                [AgoraChatClient.sharedClient.userInfoManager updateOwnUserInfo:nickName withType:AgoraChatUserInfoTypeNickName completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
-                    if (!aError) {
-                        [self updateLoginStateWithStart:NO];
-
-                        [UserInfoStore.sharedInstance setUserInfo:aUserInfo forId:aName];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:USERINFO_UPDATE  object:nil userInfo:@{USERINFO_LIST:@[aUserInfo]}];
-                    }
-                }];
+//                [AgoraChatClient.sharedClient.userInfoManager updateOwnUserInfo:nickName withType:AgoraChatUserInfoTypeNickName completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
+//                    if (!aError) {
+//                        [self updateLoginStateWithStart:NO];
+//
+//                        [UserInfoStore.sharedInstance setUserInfo:aUserInfo forId:aName];
+//                        [[NSNotificationCenter defaultCenter] postNotificationName:USERINFO_UPDATE  object:nil userInfo:@{USERINFO_LIST:@[aUserInfo]}];
+//                    }
+//                }];
+//                if (aError.code == 204) {
+//                    [AgoraChatClient.sharedClient registerWithUsername:self.usernameTextField.text password:self.passwordTextField.text];
+//                } else {
+                
+//                }
             }
             
             NSUserDefaults *shareDefault = [NSUserDefaults standardUserDefaults];
@@ -314,16 +318,48 @@
             } else {
                 alertStr = NSLocalizedString(@"login appserver failure", @"Sign in appserver failure");
             }
-            
             [self updateLoginStateWithStart:NO];
+            AgoraChatUserInfo *user = [AgoraChatUserInfo new];
+            user.userId = aUsername;
+            user.nickname = @"";
+            [UserInfoStore.sharedInstance setUserInfo:user forId:aUsername];
+            [[NSNotificationCenter defaultCenter] postNotificationName:USERINFO_UPDATE  object:nil userInfo:@{USERINFO_LIST:@[user]}];
             
-            self.hintView.hidden = NO;
-            self.hintTitleLabel.text = alertStr;
-
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:alertStr delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"loginAppServer.ok", @"Ok"), nil];
-            [alert show];
-        });
+            finishBlock([_usernameTextField.text lowercaseString], [_passwordTextField.text lowercaseString], nil);
+        }
     }];
+//    finishBlock([_usernameTextField text],[_passwordTextField text],nil);
+    //unify token login
+//    [[AgoraChatHttpRequest sharedManager] loginToApperServer:[_usernameTextField.text lowercaseString] nickName:_passwordTextField.text completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            NSString *alertStr = nil;
+//            if (response && response.length > 0 && statusCode) {
+//                NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+//                NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+//                NSString *token = [responsedict objectForKey:@"accessToken"];
+//                NSString *loginName = [responsedict objectForKey:@"chatUserName"];
+//                NSString *nickName = [responsedict objectForKey:@"chatUserNickname"];
+//                if (token && token.length > 0) {
+//                    [[AgoraChatClient sharedClient] loginWithUsername:[loginName lowercaseString] agoraToken:token completion:^(NSString *aUsername, AgoraChatError *aError) {
+//                        finishBlock(aUsername, nickName, aError);
+//                    }];
+//                    return;
+//                } else {
+//                    alertStr = NSLocalizedString(@"login analysis token failure", @"analysis token failure");
+//                }
+//            } else {
+//                alertStr = NSLocalizedString(@"login appserver failure", @"Sign in appserver failure");
+//            }
+//
+//            [self updateLoginStateWithStart:NO];
+//
+//            self.hintView.hidden = NO;
+//            self.hintTitleLabel.text = alertStr;
+//
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:alertStr delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"loginAppServer.ok", @"Ok"), nil];
+//            [alert show];
+//        });
+//    }];
     
 }
 

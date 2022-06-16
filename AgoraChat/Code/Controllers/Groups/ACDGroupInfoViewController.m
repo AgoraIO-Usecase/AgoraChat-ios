@@ -15,10 +15,10 @@
 #import "ACDGroupMembersViewController.h"
 #import "ACDChatViewController.h"
 #import "ACDGroupTransferOwnerViewController.h"
+#import "ACDNotificationSettingViewController.h"
 #import "ACDTextViewController.h"
 #import "ACDTextViewController.h"
 #import "ACDGroupSharedFilesViewController.h"
-#import "ACDGroupNoticeViewController.h"
 #import "ACDImageTitleContentCell.h"
 #import "ACDContainerSearchTableViewController+GroupMemberList.h"
 
@@ -405,12 +405,10 @@
 }
 
 - (void)goGroupNotice {
-    ACDGroupNoticeViewController *vc = [[ACDGroupNoticeViewController alloc] initWithGroup:self.group];
-    vc.updateNoticeBlock = ^(AgoraChatGroup * _Nonnull aGroup) {
-        self.group = aGroup;
-        [self updateUI];
-    };
-    [self.navigationController pushViewController:vc animated:YES];
+    ACDNotificationSettingViewController *controller = [[ACDNotificationSettingViewController alloc] init];
+    controller.notificationType = AgoraNotificationSettingTypeGroup;
+    controller.conversationID = self.groupId;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)goGroupShareFilePage {
@@ -676,7 +674,6 @@
     }
     return _disbandCell;
 }
-
 
 - (NSArray *)cells {
     if (_cells == nil) {

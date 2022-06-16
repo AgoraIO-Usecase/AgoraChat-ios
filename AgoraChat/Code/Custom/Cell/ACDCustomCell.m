@@ -54,9 +54,9 @@
 
 
 #pragma mark getter and setter
-- (UIImageView *)iconImageView {
+- (AgoraChatAvatarView *)iconImageView {
     if (_iconImageView == nil) {
-        _iconImageView = [[UIImageView alloc] init];
+        _iconImageView = [[AgoraChatAvatarView alloc] init];
         _iconImageView.contentMode = UIViewContentModeScaleAspectFit;
         _iconImageView.layer.cornerRadius = kAvatarHeight * 0.5;
         _iconImageView.clipsToBounds = YES;

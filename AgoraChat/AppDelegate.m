@@ -19,6 +19,7 @@
 
 #import <AgoraChat/AgoraChatOptions+PrivateDeploy.h>
 #import "AgoraChatCallKitManager.h"
+#import "PresenceManager.h"
 
 @interface AppDelegate () <AgoraChatClientDelegate,UNUserNotificationCenterDelegate>
 
@@ -71,7 +72,6 @@
     if (agoraUid) {
         [AgoraChatCallKitManager.shareManager updateAgoraUid:agoraUid.integerValue];
     }
-    
     return YES;
 }
 
@@ -84,9 +84,7 @@
 
 - (void)initUIKit
 {
-//    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:@"easemob-demo#easeim"];
-    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:@"41117440#383391"];
-
+    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:@"easemob-demo#easeim"];
     
     // Hyphenate cert keys
     NSString *apnsCertName = nil;
@@ -106,32 +104,20 @@
     [options setIsDeleteMessagesWhenExitChatRoom:NO];
     [options setUsingHttpsOnly:YES];
     [options setIsAutoLogin:YES];
-//    [options setChatServer:@"52.80.99.104"];
-//    [options setChatPort:6717];
-//    [options setRestServer:@"http://a1-test.easemob.com"];
-#warning 国内部署设置
-//    [self internalSpecOption:options];
-//
-//    [options setRestServer:@"http://a1-hsb.easemob.com"];
-//    [options setChatServer:@"106.75.100.247"];
-//    [options setChatPort:6717];
-    
-    
-//    options.restServer = @"a1-hsb.easemob.com";
-//    options.chatServer = @"106.75.100.247";
-    
-//    self.appkey = @"5101220107132865#test";
-//    [options setRestServer:@"http://a1-test.easemob.com"];
-//    [options setChatServer:@"52.80.99.104"];
-//    [options setChatPort:6717];
 
-    [EaseChatKitManager initWithAgoraChatOptions:options];
+#warning 国内部署设置
+    [self internalSpecOption:options];
+    
+//    [EaseChatKitManager initWithAgoraChatOptions:options];
+
+    ACDDemoOptions *demoOptions = [ACDDemoOptions sharedOptions];
+    [EaseChatKitManager initWithAgoraChatOptions:[demoOptions toOptions]];
 }
 
 - (void)internalSpecOption:(AgoraChatOptions *)option {
     option.enableDnsConfig = NO;
-    option.restServer = @"https://a1.chat.agora.io";
-    option.chatServer = @"https://msync-im-tls.chat.agora.io";
+    option.restServer = @"https://a1-test.easemob.com";
+    option.chatServer = @"52.80.99.104";
     option.chatPort = 6717;
     
     [option setRestServer:@"http://a1-test.easemob.com"];

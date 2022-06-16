@@ -7,6 +7,13 @@
 //
 
 #import "ACDCustomBaseView.h"
+#import "AgoraChatAvatarView.h"
+
+//typedef enum : NSUInteger {
+//    <#MyEnumValueA#>,
+//    <#MyEnumValueB#>,
+//    <#MyEnumValueC#>,
+//} <#MyEnum#>;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,12 +23,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) UIView* redPointView;
 @property (nonatomic, strong, readonly) UIButton* leftButton;
 @property (nonatomic, strong, readonly) UIButton* rightButton;
-@property (nonatomic, strong) UIImageView *chatImageView;
+@property (nonatomic, strong) AgoraChatAvatarView *chatImageView;
+@property (nonatomic, strong) UILabel* presenceLabel;
 
 @property (nonatomic, copy) void (^leftButtonBlock)(void);
 @property (nonatomic, copy) void (^rightButtonBlock)(void);
 @property (nonatomic, copy) void (^chatButtonBlock)(void);
 
+- (void)rightItemImageWithType:(AgoraChatConversationType)type;
 
 @end
 
