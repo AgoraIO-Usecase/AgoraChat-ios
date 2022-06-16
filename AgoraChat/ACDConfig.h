@@ -10,10 +10,10 @@
 #define ACDConfig_h
 
 
-#define ACDENV  0
+#define ACDENV  8
 
 
-#if ACDENV == 0
+#if ACDENV == 4
 //美东
 #define Appkey @"5101220107132865#test"
 //@"41117440#383391"
@@ -48,6 +48,16 @@
 //法兰克福
 #define Appkey @"71117440#417715"
 #define AppServerHost @"http://a71.easemob.com"
+
+#elif ACDENV == 8
+//hsb
+#define Appkey @"52117440#955012" //hsb
+#define AppServerHost @"http://a1-test.easemob.com" //hsb
+
+#elif ACDENV == 8
+//hsb
+#define Appkey @"52117440#955012" //hsb
+#define AppServerHost @"http://a1-test.easemob.com" //hsb
 
 #endif
 

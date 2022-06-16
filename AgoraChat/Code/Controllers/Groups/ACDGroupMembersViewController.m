@@ -343,7 +343,7 @@ MISScrollPageControllerDelegate,AgoraGroupUIProtocol>
 - (void)setGroup:(AgoraChatGroup *)group {
     _group = group;
 
-    self.navTitleArray = [@[@"All",@"Admin",@"Mute",@"Block"] mutableCopy];
+    self.navTitleArray = [@[@"All",@"Admin",@"Muted",@"Blocked"] mutableCopy];
 
     self.contentVCArray = [@[self.allVC,self.adminListVC,self.mutedListVC,self.blockListVC] mutableCopy];
 

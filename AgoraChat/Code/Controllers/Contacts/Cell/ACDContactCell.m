@@ -48,6 +48,7 @@
     if (_model != model) {
         _model = model;
     }
+
     self.nameLabel.text = _model.nickname.length ? model.nickname:model.hyphenateId;
     self.iconImageView.image = _model.defaultAvatarImage;
     if (_model.avatarURLPath.length > 0) {

@@ -14,15 +14,34 @@
 {
     if (self = [super init]) {
         _easeId = userInfo.userId;
-        _showName = userInfo.nickName;
+        _showName = userInfo.nickname;
         _avatarURL = userInfo.avatarUrl;
-
+        _defaultAvatar = nil;
+        
         if(type == AgoraChatConversationTypeGroupChat) {
             AgoraChatGroup* group = [AgoraChatGroup groupWithId:userInfo.userId];
             _showName = [group groupName];
+            
+            _defaultAvatar = ImageWithName(@"group_default_avatar");
         }
-        //_defaultAvatar = [self _getDefaultAvatarImage:userInfo.userId conversationType:type];
-        _defaultAvatar = nil;
+        
+        if (type == AgoraChatConversationTypeChat) {
+            UIImage *originImage = nil;
+            
+            NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+            NSString *imageName = [userDefault objectForKey:userInfo.userId];
+            if (imageName && imageName.length > 0) {
+                originImage = ImageWithName(imageName);
+            } else {
+                int random = arc4random() % 7 + 1;
+                NSString *imgName = [NSString stringWithFormat:@"defatult_avatar_%@",@(random)];
+                [userDefault setObject:imgName forKey:userInfo.userId];
+                originImage = ImageWithName(imgName);
+                [userDefault synchronize];
+            }
+            
+            _defaultAvatar = [originImage acd_scaleToAssignSize:CGSizeMake(kAvatarHeight, kAvatarHeight)];
+        }
     }
     return self;
 }

@@ -80,6 +80,7 @@
 //register
 "register.userName.outOfLimit" = "用户名长度不能超过64字节";
 "register.password.outOfLimit" = "密码长度不能超过64字节";
+"register.confirm.differentPswd" = "确认密码不一致";
 
 //chat
 "chat.not.delivered" = "未送达";

@@ -80,6 +80,7 @@
 //register
 "register.userName.outOfLimit" = "Username length out of limit, maximum 64 bytes";
 "register.password.outOfLimit" = "Password length out of limit, maximum 64 bytes";
+"register.confirm.differentPswd" = "Please enter the same password";
 
 
 //chat

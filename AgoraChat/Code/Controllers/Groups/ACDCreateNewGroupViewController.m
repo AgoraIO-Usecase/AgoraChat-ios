@@ -306,9 +306,9 @@ static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell
                                                       completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
       if (!aError) {
         dispatch_async(dispatch_get_main_queue(), ^(){
-        [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
 
-        [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_CreateGroup object:aGroup];
+            [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_CreateGroup object:nil userInfo:@{@"group":aGroup, @"invitees":self.invitees}];
 
         });
         

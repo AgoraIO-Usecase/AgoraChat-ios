@@ -62,7 +62,7 @@
 }
 
 - (void)loginToApperServer:(NSString *)uName
-                  nickName:(NSString *)nickName
+                       pwd:(NSString *)pwd
                 completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock
 {
     
@@ -79,7 +79,7 @@
     
     NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
     [dict setObject:uName forKey:@"userAccount"];
-    [dict setObject:nickName forKey:@"userNickname"];
+    [dict setObject:pwd forKey:@"userPassword"];
     request.HTTPBody = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSString *responseData = data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : nil;
