@@ -82,6 +82,7 @@
     if (_conversation.unreadMessagesCount > 0) {
         [[AgoraChatClient sharedClient].chatManager ackConversationRead:_conversation.conversationId completion:nil];
     }
+    __weak typeof(self)weakSelf = self;
     [NSNotificationCenter.defaultCenter addObserverForName:AGORA_CHAT_CALL_KIT_COMMMUNICATE_RECORD object:nil queue:NSOperationQueue.mainQueue usingBlock:^(NSNotification * _Nonnull note) {
         NSArray<AgoraChatMessage *> *messages = (NSArray *)[note.object objectForKey:@"msg"];
         if (messages && messages.count > 0) {
@@ -90,11 +91,11 @@
                 EaseMessageModel *model = [[EaseMessageModel alloc] initWithAgoraChatMessage:message];
                 [messageModels addObject:model];
             }
-            [self.chatController.dataArray addObjectsFromArray:messageModels];
-            if (!self.chatController.moreMsgId) {
-                self.chatController.moreMsgId = messages.firstObject.messageId;
+            [weakSelf.chatController.dataArray addObjectsFromArray:messageModels];
+            if (!weakSelf.chatController.moreMsgId) {
+                weakSelf.chatController.moreMsgId = messages.firstObject.messageId;
             }
-            [self.chatController.tableView reloadData];
+            [weakSelf.chatController.tableView reloadData];
         }
     }];
 
