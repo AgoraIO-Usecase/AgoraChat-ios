@@ -16,7 +16,8 @@
 @property (nonatomic, strong) UIView* redPointView;
 @property (nonatomic, strong) UIButton* leftButton;
 @property (nonatomic, strong) UIButton* rightButton;
-
+@property (nonatomic, strong) UIButton* rightButton2;
+@property (nonatomic, strong) UIButton* rightButton3;
 @end
 
 @implementation ACDChatNavigationView
@@ -29,6 +30,8 @@
     [self addSubview:self.chatButton];
     [self addSubview:self.leftLabel];
     [self addSubview:self.rightButton];
+    [self addSubview:self.rightButton2];
+    [self addSubview:self.rightButton3];
     [self addSubview:self.presenceLabel];
 }
 
@@ -72,12 +75,35 @@
         make.right.equalTo(self).offset(-kAgroaPadding);
     }];
     
+    [self.rightButton2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.lessThanOrEqualTo(@50);
+        make.centerY.equalTo(self.leftButton);
+        make.right.equalTo(self.rightButton.mas_left).offset(-5);
+    }];
+    
+    [self.rightButton3 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.lessThanOrEqualTo(@50);
+        make.centerY.equalTo(self.leftButton);
+        make.right.equalTo(self.rightButton2.mas_left).offset(-5);
+    }];
 }
 
 #pragma mark action
 - (void)rightButtonAction {
     if (self.rightButtonBlock) {
         self.rightButtonBlock();
+    }
+}
+
+- (void)rightButtonAction2 {
+    if (self.rightButtonBlock2) {
+        self.rightButtonBlock2();
+    }
+}
+
+- (void)rightButtonAction3 {
+    if (self.rightButtonBlock3) {
+        self.rightButtonBlock3();
     }
 }
 
@@ -161,6 +187,26 @@
         _rightButton.hidden = YES;
     }
     return _rightButton;
+}
+
+- (UIButton *)rightButton2 {
+    if (_rightButton2 == nil) {
+        _rightButton2 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
+        _rightButton2.contentMode = UIViewContentModeScaleAspectFill;
+        [_rightButton2 addTarget:self action:@selector(rightButtonAction2) forControlEvents:UIControlEventTouchUpInside];
+        _rightButton2.hidden = YES;
+    }
+    return _rightButton2;
+}
+
+- (UIButton *)rightButton3 {
+    if (_rightButton3 == nil) {
+        _rightButton3 = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
+        _rightButton3.contentMode = UIViewContentModeScaleAspectFill;
+        [_rightButton3 addTarget:self action:@selector(rightButtonAction3) forControlEvents:UIControlEventTouchUpInside];
+        _rightButton3.hidden = YES;
+    }
+    return _rightButton3;
 }
 
 - (AgoraChatAvatarView *)chatImageView {

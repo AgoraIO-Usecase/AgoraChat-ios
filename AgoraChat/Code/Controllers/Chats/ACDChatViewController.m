@@ -82,6 +82,24 @@
     if (_conversation.unreadMessagesCount > 0) {
         [[AgoraChatClient sharedClient].chatManager ackConversationRead:_conversation.conversationId completion:nil];
     }
+    __weak typeof(self)weakSelf = self;
+    [NSNotificationCenter.defaultCenter addObserverForName:AGORA_CHAT_CALL_KIT_COMMMUNICATE_RECORD object:nil queue:NSOperationQueue.mainQueue usingBlock:^(NSNotification * _Nonnull note) {
+        NSArray<AgoraChatMessage *> *messages = (NSArray *)[note.object objectForKey:@"msg"];
+        if (messages && messages.count > 0) {
+            NSMutableArray *messageModels = [NSMutableArray array];
+            for (AgoraChatMessage *message in messages) {
+                EaseMessageModel *model = [[EaseMessageModel alloc] initWithAgoraChatMessage:message];
+                [messageModels addObject:model];
+            }
+            [weakSelf.chatController.dataArray addObjectsFromArray:messageModels];
+            if (!weakSelf.chatController.moreMsgId) {
+                weakSelf.chatController.moreMsgId = messages.firstObject.messageId;
+            }
+            [weakSelf.chatController.tableView reloadData];
+        }
+    }];
+
+    
     [self _updatePresenceStatus];
 }
 
@@ -165,7 +183,21 @@
 
 #pragma mark - EaseChatViewControllerDelegate
 - (UITableViewCell *)cellForItem:(UITableView *)tableView messageModel:(EaseMessageModel *)messageModel {
-    
+    if (messageModel.message.body.type == AgoraChatMessageTypeText) {
+        if ([messageModel.message.ext[@"msgType"] isEqualToString:@"rtcCallWithAgora"]) {
+            NSString *action = messageModel.message.ext[@"action"];
+            if ([action isEqualToString:@"invite"]) {
+                if (messageModel.message.chatType == AgoraChatTypeChat) {
+                    return nil;
+                }
+            }
+            AgoraChatCallCell *cell = [[AgoraChatCallCell alloc] initWithDirection:messageModel.direction chatType:messageModel.message.chatType messageType:messageModel.type viewModel:_viewModel];
+            cell.delegate = self;
+            cell.model = messageModel;
+            return cell;
+        }
+    }
+
 ////    if (messageModel.type == AgoraChatMessageTypePictMixText) {
 ////        AgoraChatMsgPicMixTextBubbleView* picMixBV = [[AgoraChatMsgPicMixTextBubbleView alloc] init];
 ////        [picMixBV setModel:messageModel];
@@ -469,7 +501,6 @@
 - (ACDChatNavigationView *)navigationView {
     if (_navigationView == nil) {
         _navigationView = [[ACDChatNavigationView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 80.0f)];
-        _navigationView.rightButton.hidden = self.conversationType != AgoraChatTypeGroupChat;
         _navigationView.leftLabel.text = self.navTitle;
         if (self.conversationType == AgoraChatConversationTypeGroupChat) {
             _navigationView.chatImageView.layer.cornerRadius = 0;
@@ -495,10 +526,32 @@
         _navigationView.leftButtonBlock = ^{
             [weakSelf backAction];
         };
-        [_navigationView rightItemImageWithType:self.conversationType];
-        [_navigationView setRightButtonBlock:^{
-            [weakSelf pushThreadListAction];
-        }];
+        
+//        _navigationView.rightButton.hidden = NO;
+//        [_navigationView.rightButton setImage:ImageWithName(@"nav_chat_right_bar") forState:UIControlStateNormal];
+//        _navigationView.rightButtonBlock = ^{
+//            [weakSelf goChatDetailPage];
+//        };
+        
+        if (self.conversationType == AgoraChatConversationTypeChat) {
+            _navigationView.rightButton.hidden = NO;
+            [_navigationView.rightButton setImage:[UIImage imageNamed:@"nav_bar_call"] forState:UIControlStateNormal];
+            _navigationView.rightButtonBlock = ^{
+                [weakSelf callAction];
+            };
+        } else {
+            _navigationView.rightButton.hidden = NO;
+            [_navigationView.rightButton setImage:ImageWithName(@"groupThread") forState:UIControlStateNormal];
+            _navigationView.rightButtonBlock = ^{
+                [weakSelf pushThreadListAction];
+            };
+            
+            _navigationView.rightButton2.hidden = NO;
+            [_navigationView.rightButton2 setImage:[UIImage imageNamed:@"nav_bar_call"] forState:UIControlStateNormal];
+            _navigationView.rightButtonBlock2 = ^{
+                [weakSelf callAction];
+            };
+        }
         _navigationView.chatButtonBlock = ^{
             [weakSelf goInfoPage];
         };
@@ -518,6 +571,26 @@
     }];
 }
 
+- (void)callAction {
+    __weak typeof(self)weakSelf = self;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Audio Call" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (weakSelf.conversationType == AgoraChatConversationTypeChat) {
+            [AgoraChatCallKitManager.shareManager audioCallToUser:weakSelf.conversationId];
+        } else {
+            [AgoraChatCallKitManager.shareManager audioCallToGroup:weakSelf.conversationId viewController:weakSelf];
+        }
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Video Call" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (weakSelf.conversationType == AgoraChatConversationTypeChat) {
+            [AgoraChatCallKitManager.shareManager videoCallToUser:weakSelf.conversationId];
+        } else {
+            [AgoraChatCallKitManager.shareManager videoCallToGroup:weakSelf.conversationId viewController:weakSelf];
+        }
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    [weakSelf presentViewController:alertController animated:YES completion:nil];
+}
 
 - (void)goInfoPage {
     if (self.conversationType == AgoraChatConversationTypeChat) {
