@@ -99,15 +99,15 @@
 #warning 国内部署设置
     [self internalSpecOption:options];
     
-    [EaseChatKitManager initWithAgoraChatOptions:options];
+//    [EaseChatKitManager initWithAgoraChatOptions:options];
 
-//    ACDDemoOptions *demoOptions = [ACDDemoOptions sharedOptions];
-//    [EaseChatKitManager initWithAgoraChatOptions:[demoOptions toOptions]];
+    ACDDemoOptions *demoOptions = [ACDDemoOptions sharedOptions];
+    [EaseChatKitManager initWithAgoraChatOptions:[demoOptions toOptions]];
 }
 
 - (void)internalSpecOption:(AgoraChatOptions *)option {
     option.enableDnsConfig = NO;
-    option.restServer = @"http://a1-test.easemob.com";
+    option.restServer = @"https://a1-test.easemob.com";
     option.chatServer = @"52.80.99.104";
     option.chatPort = 6717;
 }

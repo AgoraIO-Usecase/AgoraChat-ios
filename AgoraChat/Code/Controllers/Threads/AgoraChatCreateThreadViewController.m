@@ -45,6 +45,10 @@
         [self showHint:@"conversationId is empty!"];
         return;
     }
+    if (error) {
+        [self showHint:error.errorDescription];
+        return;
+    }
     self.message.thread = thread;
     AgoraChatThreadViewController *VC = [[AgoraChatThreadViewController alloc] initThreadChatViewControllerWithCoversationid:thread.threadId conversationType:AgoraChatConversationTypeGroupChat chatViewModel:self.createViewController.viewModel parentMessageId:thread.messageId model:self.message];
     VC.createPush = YES;

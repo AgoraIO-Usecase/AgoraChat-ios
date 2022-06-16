@@ -237,16 +237,16 @@
 }
 
 - (void)didSelectThreadBubble:(EaseMessageModel *)model {
-    if (!model.message.threadOverView.threadId.length) {
+    if (!model.message.chatThread.threadId.length) {
         [self showHint:@"conversationId is empty!"];
         return;
     }
-    [AgoraChatClient.sharedClient.threadManager joinChatThread:model.message.threadOverView.threadId completion:^(AgoraChatThread *thread,AgoraChatError *aError) {
+    [AgoraChatClient.sharedClient.threadManager joinChatThread:model.message.chatThread.threadId completion:^(AgoraChatThread *thread,AgoraChatError *aError) {
         if (!aError || aError.code == AgoraChatErrorUserAlreadyExist) {
             if (thread) {
                 model.thread = thread;
             }
-            AgoraChatThreadViewController *VC = [[AgoraChatThreadViewController alloc] initThreadChatViewControllerWithCoversationid:model.message.threadOverView.threadId conversationType:self.chatController.currentConversation.type chatViewModel:self.chatController.viewModel parentMessageId:model.message.messageId model:model];
+            AgoraChatThreadViewController *VC = [[AgoraChatThreadViewController alloc] initThreadChatViewControllerWithCoversationid:model.message.chatThread.threadId conversationType:self.chatController.currentConversation.type chatViewModel:self.chatController.viewModel parentMessageId:model.message.messageId model:model];
             VC.detail = self.navTitle;
             [self.navigationController pushViewController:VC animated:YES];
         }
@@ -265,18 +265,18 @@
     model.isHeader = YES;
     model.isPlaying = NO;
     model.type = message.body.type;
-    if (!message.threadOverView.threadId.length) {
+    if (!message.chatThread.threadId.length) {
         [self showHint:@"threadId is empty!"];
         return;
     }
-    [AgoraChatClient.sharedClient.threadManager joinChatThread:message.threadOverView.threadId completion:^(AgoraChatThread *thread,AgoraChatError *aError) {
+    [AgoraChatClient.sharedClient.threadManager joinChatThread:message.chatThread.threadId completion:^(AgoraChatThread *thread,AgoraChatError *aError) {
         if (!aError || aError.code == AgoraChatErrorUserAlreadyExist) {
-            AgoraChatThreadViewController *VC = [[AgoraChatThreadViewController alloc] initThreadChatViewControllerWithCoversationid:message.threadOverView.threadId conversationType:self.chatController.currentConversation.type chatViewModel:self.chatController.viewModel parentMessageId:message.messageId model:model];
+            AgoraChatThreadViewController *VC = [[AgoraChatThreadViewController alloc] initThreadChatViewControllerWithCoversationid:message.chatThread.threadId conversationType:self.chatController.currentConversation.type chatViewModel:self.chatController.viewModel parentMessageId:message.messageId model:model];
             VC.detail = [NSString stringWithFormat:@"# %@",self.navTitle];
             if (thread.threadName.length) {
                 VC.navTitle = thread.threadName;
             } else {
-                VC.navTitle = message.threadOverView.threadName;
+                VC.navTitle = message.chatThread.threadName;
             }
             [self.navigationController pushViewController:VC animated:YES];
         }

@@ -48,8 +48,8 @@
         }
         _chatController = [[EaseThreadChatViewController alloc] initThreadChatViewControllerWithCoversationid:conversationId chatViewModel:viewModel parentMessageId:parentMessageId model:model];
         _chatController.delegate = self;
-        if (model.message.threadOverView.threadName.length) {
-            self.navBar.title = model.message.threadOverView.threadName;
+        if (model.message.chatThread.threadName.length) {
+            self.navBar.title = model.message.chatThread.threadName;
         }
 //        self.navBar.detail = [NSString stringWithFormat:@"# %@",self.chatController.group.groupName];
 //        self.group = self.chatController.group;
@@ -461,7 +461,7 @@
 }
 
 - (void)destoryThread {
-    [AgoraChatClient.sharedClient.threadManager destoryChatThread:self.conversationId completion:^(AgoraChatError *aError) {
+    [AgoraChatClient.sharedClient.threadManager destroyChatThread:self.conversationId completion:^(AgoraChatError *aError) {
         if (!aError) {
             [self.navigationController popViewControllerAnimated:YES];
         } else {

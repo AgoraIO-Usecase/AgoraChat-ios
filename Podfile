@@ -22,10 +22,7 @@ end
     pod 'WHToast'
     pod 'FMDB'
 
-#    pod 'HyphenateChat', :path => "../agora-ios/newSDK"
-#    pod 'Agora_Chat_iOS',path => "../AgoraChat-UIKit-ios"
-    # pod 'chat-uikit'
-    pod 'chat-uikit', :path => "../AgoraChat-UIKit-ios"
+    pod 'chat-uikit'
 end
 
 
