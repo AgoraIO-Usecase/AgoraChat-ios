@@ -141,7 +141,8 @@
 {
     if (aErrorCode == AgoraChatErrorTokeWillExpire) {
         NSLog(@"%@", [NSString stringWithFormat:@"========= token expire rennew token ! code : %d",aErrorCode]);
-        [[AgoraChatHttpRequest sharedManager] loginToApperServer:self.userName nickName:self.nickName completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+        NSUserDefaults *shareDefault = [NSUserDefaults standardUserDefaults];
+        [[AgoraChatHttpRequest sharedManager] loginToApperServer:self.userName pwd:[shareDefault objectForKey:USER_PWD] completion:^(NSInteger statusCode, NSString * _Nonnull response) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSString *alertStr = nil;
                 if (response && response.length > 0) {
@@ -208,9 +209,11 @@
             [alertError show];
         };
         
-        if (self.userName.length == 0 || self.nickName.length == 0) return;
+        NSUserDefaults *shareDefault = [NSUserDefaults standardUserDefaults];
+        NSString *pwd = [shareDefault objectForKey:USER_PWD];
+        if (self.userName.length == 0 || pwd.length == 0) return;
         //unify token login
-        [[AgoraChatHttpRequest sharedManager] loginToApperServer:self.userName nickName:self.nickName completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+        [[AgoraChatHttpRequest sharedManager] loginToApperServer:self.userName pwd:pwd completion:^(NSInteger statusCode, NSString * _Nonnull response) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSString *alertStr = nil;
                 if (response && response.length > 0) {

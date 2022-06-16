@@ -30,6 +30,7 @@
         _threadNameField.leftViewMode = UITextFieldViewModeAlways;
         _threadNameField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _threadNameField.delegate = self;
+        _threadNameField.returnKeyType = UIReturnKeyDone;
     }
     return _threadNameField;
 }

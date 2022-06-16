@@ -117,6 +117,14 @@
         model.applyStatus = ACDApplyStatusAgreed;
         [[AgoraApplyManager defaultManager] removeApplyRequest:model];
         
+        AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:@"You agreed the friend request"];
+        AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:model.applyHyphenateId from:model.applyHyphenateId to:AgoraChatClient.sharedClient.currentUsername body:body ext:@{kMSG_EXT_NEWNOTI : kNOTI_EXT_ADDFRIEND}];
+        message.chatType = AgoraChatTypeGroupChat;
+        message.isRead = YES;
+        AgoraChatConversation *conversation = [[AgoraChatClient sharedClient].chatManager getConversation:model.applyHyphenateId type:AgoraChatConversationTypeChat createIfNotExist:YES];
+        [conversation insertMessage:message error:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_UPDATE_CONVERSATIONS object:nil];
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
 
     }

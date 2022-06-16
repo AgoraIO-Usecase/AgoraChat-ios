@@ -23,6 +23,7 @@
 #import "AgoraChatThreadListViewController.h"
 #import "PresenceManager.h"
 #import "ACDChatDetailViewController.h"
+#import "AgoraChatMessageWeakHint.h"
 
 
 @interface ACDChatViewController ()<EaseChatViewControllerDelegate, AgoraChatroomManagerDelegate, AgoraChatGroupManagerDelegate, EaseMessageCellDelegate>
@@ -60,7 +61,7 @@
                                                     conversationType:conType
                                                         chatViewModel:viewModel];
 
-        [_chatController setTypingIndicator:[ACDDemoOptions sharedOptions].isChatTyping];
+        [_chatController setEditingStatusVisible:[ACDDemoOptions sharedOptions].isChatTyping];
         _chatController.delegate = self;
     }
     return self;
@@ -130,8 +131,8 @@
     if(self.conversation.type == AgoraChatConversationTypeChat) {
         [[PresenceManager sharedInstance] subscribe:@[self.conversationId] completion:nil];
         AgoraChatUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:self.conversation.conversationId];
-        if(userInfo && userInfo.nickName.length > 0)
-            self.titleLabel.text = userInfo.nickName;
+        if(userInfo && userInfo.nickname.length > 0)
+            self.titleLabel.text = userInfo.nickname;
     }
     [titleView addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -159,8 +160,8 @@
 
 #pragma mark - EaseChatViewControllerDelegate
 
-//- (UITableViewCell *)cellForItem:(UITableView *)tableView messageModel:(EaseMessageModel *)messageModel
-//{
+- (UITableViewCell *)cellForItem:(UITableView *)tableView messageModel:(EaseMessageModel *)messageModel {
+    
 ////    if (messageModel.type == AgoraChatMessageTypePictMixText) {
 ////        AgoraChatMsgPicMixTextBubbleView* picMixBV = [[AgoraChatMsgPicMixTextBubbleView alloc] init];
 ////        [picMixBV setModel:messageModel];
@@ -169,21 +170,33 @@
 ////        cell.delegate = self;
 ////        return cell;
 ////    }
-//
+
 //    if(messageModel.message.body.type == AgoraChatMessageBodyTypeCustom) {
 //        AgoraChatCustomMessageBody* body = (AgoraChatCustomMessageBody*)messageModel.message.body;
 //        if([body.event isEqualToString:@"userCard"]){
-////            AgoraChatUserCardMsgView* userCardMsgView = [[AgoraChatUserCardMsgView alloc] init];
-////            userCardMsgView.backgroundColor = [UIColor whiteColor];
-////            [userCardMsgView setModel:messageModel];
-////            AgoraChatMessageCell* userCardCell = [[AgoraChatMessageCell alloc] initWithDirection:messageModel.direction type:messageModel.type msgView:userCardMsgView];
-////            userCardCell.model = messageModel;
-////            userCardCell.delegate = self;
-////            return userCardCell;
+//            AgoraChatUserCardMsgView* userCardMsgView = [[AgoraChatUserCardMsgView alloc] init];
+//            userCardMsgView.backgroundColor = [UIColor whiteColor];
+//            [userCardMsgView setModel:messageModel];
+//            AgoraChatMessageCell* userCardCell = [[AgoraChatMessageCell alloc] initWithDirection:messageModel.direction type:messageModel.type msgView:userCardMsgView];
+//            userCardCell.model = messageModel;
+//            userCardCell.delegate = self;
+//            return userCardCell;
 //        }
 //    }
-//    return nil;
-//}
+
+    //@{kMSG_EXT_NEWNOTI : kNOTI_EXT_ADDGROUP, kNOTI_EXT_USERID : mutableStr}
+    if (messageModel.message.body.type == AgoraChatMessageBodyTypeText) {
+        if ([[messageModel.message.ext objectForKey:kMSG_EXT_NEWNOTI] isEqualToString:kNOTI_EXT_ADDFRIEND]) {
+            AgoraChatMessageWeakHint *weakHintCell = [[AgoraChatMessageWeakHint alloc]initWithMessageModel:messageModel];
+            return weakHintCell;
+        }
+        if ([[messageModel.message.ext objectForKey:kMSG_EXT_NEWNOTI] isEqualToString:kNOTI_EXT_ADDGROUP]) {
+            AgoraChatMessageWeakHint *weakHintCell = [[AgoraChatMessageWeakHint alloc]initWithMessageModel:messageModel];
+            return weakHintCell;
+        }
+    }
+    return nil;
+}
 
 //typing 1v1 single chat only
 - (void)peerTyping
@@ -440,6 +453,26 @@
         _navigationView = [[ACDChatNavigationView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 80.0f)];
         _navigationView.rightButton.hidden = self.conversationType != AgoraChatTypeGroupChat;
         _navigationView.leftLabel.text = self.navTitle;
+        if (self.conversationType == AgoraChatConversationTypeGroupChat) {
+            _navigationView.chatImageView.layer.cornerRadius = 0;
+            [_navigationView.chatImageView setImage:ImageWithName(@"group_default_avatar")];
+        }
+        if (self.conversationType == AgoraChatConversationTypeChat) {
+            UIImage *originImage = nil;
+            NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+            NSString *imageName = [userDefault objectForKey:self.conversationId];
+            if (imageName && imageName.length > 0) {
+                originImage = ImageWithName(imageName);
+            } else {
+                int random = arc4random() % 7 + 1;
+                NSString *imgName = [NSString stringWithFormat:@"defatult_avatar_%@",@(random)];
+                [userDefault setObject:imgName forKey:self.conversationId];
+                originImage = ImageWithName(imgName);
+                [userDefault synchronize];
+            }
+            
+            [_navigationView.chatImageView setImage:originImage];
+        }
         ACD_WS
         _navigationView.leftButtonBlock = ^{
             [weakSelf backAction];

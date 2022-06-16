@@ -84,7 +84,7 @@
 
 
 - (void)goAgoraOffical {
-    NSString *urlString = @"https://www.agora.io/cn";
+    NSString *urlString = @"https://www.agora.io/en";
     ACDWebViewController *webVC = [[ACDWebViewController alloc] initWithURLString:urlString];
     [self.navigationController pushViewController:webVC animated:YES];
 }
