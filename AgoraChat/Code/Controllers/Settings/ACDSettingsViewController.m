@@ -211,9 +211,7 @@ typedef enum : NSUInteger {
 }
 
 - (void)goNotificationPage {
-
     ACDNotificationSettingViewController *controller = [[ACDNotificationSettingViewController alloc] init];
-
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }

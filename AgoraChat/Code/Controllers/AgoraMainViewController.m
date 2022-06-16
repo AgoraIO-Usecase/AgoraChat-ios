@@ -139,7 +139,9 @@ static NSString *kGroupName = @"GroupName";
     NSArray *conversations = [[AgoraChatClient sharedClient].chatManager getAllConversations];
     NSInteger unreadCount = 0;
     for (AgoraChatConversation *conversation in conversations) {
-        unreadCount += conversation.unreadMessagesCount;
+        if (conversation.isChatThread == NO) {
+            unreadCount += conversation.unreadMessagesCount;
+        }
     }
     if (_chatsVC) {
         if (unreadCount > 0) {
@@ -226,19 +228,21 @@ static NSString *kGroupName = @"GroupName";
 #if !TARGET_IPHONE_SIMULATOR
     for (AgoraChatMessage *message in aMessages) {
         
-        UIApplicationState state = [[UIApplication sharedApplication] applicationState];
-        switch (state) {
-            case UIApplicationStateActive:
-                [self playSoundAndVibration];
-                break;
-            case UIApplicationStateInactive:
-                [self playSoundAndVibration];
-                break;
-            case UIApplicationStateBackground:
-                [self showBackgroundNotificationWithMessage:message];
-                break;
-            default:
-                break;
+        if (message.isChatThreadMessage == NO) {
+            UIApplicationState state = [[UIApplication sharedApplication] applicationState];
+            switch (state) {
+                case UIApplicationStateActive:
+                    [self playSoundAndVibration];
+                    break;
+                case UIApplicationStateInactive:
+                    [self playSoundAndVibration];
+                    break;
+                case UIApplicationStateBackground:
+                    [self showBackgroundNotificationWithMessage:message];
+                    break;
+                default:
+                    break;
+            }
         }
     }
 #endif
