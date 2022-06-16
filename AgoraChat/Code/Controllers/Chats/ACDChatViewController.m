@@ -25,6 +25,9 @@
 #import "ACDChatDetailViewController.h"
 #import "AgoraChatMessageWeakHint.h"
 
+#import "AgoraChatCallKitManager.h"
+#import "AgoraChatCallCell.h"
+#import "AgoraChatCallKit/AgoraChatCallKit.h"
 
 @interface ACDChatViewController ()<EaseChatViewControllerDelegate, AgoraChatroomManagerDelegate, AgoraChatGroupManagerDelegate, EaseMessageCellDelegate>
 @property (nonatomic, strong) EaseConversationModel *conversationModel;
@@ -38,6 +41,9 @@
 @property (nonatomic, strong) NSString *conversationId;
 @property (nonatomic, strong) NSArray *contacts;
 
+@property (nonatomic, strong) EaseChatViewModel *viewModel;
+
+
 @end
 
 @implementation ACDChatViewController
@@ -49,18 +55,17 @@
         self.conversationType = conType;
         self.conversationId = conversationId;
         
-        EaseChatViewModel *viewModel = [[EaseChatViewModel alloc]init];
-        viewModel.displaySentAvatar = NO;
-        viewModel.displaySentName = NO;
+        _viewModel = [[EaseChatViewModel alloc]init];
+        _viewModel.displaySentAvatar = NO;
+        _viewModel.displaySentName = NO;
         if (conType != AgoraChatTypeGroupChat) {
-            viewModel.displayReceiverName= NO;
+            _viewModel.displayReceiverName= NO;
         }
       
         _contacts = [[AgoraChatClient sharedClient].contactManager getContacts];
         _chatController = [EaseChatViewController initWithConversationId:conversationId
                                                     conversationType:conType
-                                                        chatViewModel:viewModel];
-
+                                                        chatViewModel:_viewModel];
         [_chatController setEditingStatusVisible:[ACDDemoOptions sharedOptions].isChatTyping];
         _chatController.delegate = self;
     }
@@ -159,7 +164,6 @@
 
 
 #pragma mark - EaseChatViewControllerDelegate
-
 - (UITableViewCell *)cellForItem:(UITableView *)tableView messageModel:(EaseMessageModel *)messageModel {
     
 ////    if (messageModel.type == AgoraChatMessageTypePictMixText) {
@@ -305,6 +309,17 @@
     if (!aCell.model.message.isReadAcked) {
         [[AgoraChatClient sharedClient].chatManager sendMessageReadAck:aCell.model.message.messageId toUser:aCell.model.message.conversationId completion:nil];
     }
+    
+    // TODO: fz 点击加入房间放到下次迭代了
+//    if ([aCell.model.message.ext[@"msgType"] isEqualToString:@"rtcCallWithAgora"]) {
+//        NSString *action = aCell.model.message.ext[@"action"];
+//        if ([action isEqualToString:@"invite"]) {
+//            if (aCell.model.message.chatType == AgoraChatTypeGroupChat) {
+//                [AgoraChatCallKitManager.shareManager joinToMutleCall:aCell.model.message];
+//            }
+//        }
+//    }
+    
 }
 
 - (void)messageAvatarDidSelected:(EaseMessageModel *)model
@@ -485,7 +500,6 @@
             [weakSelf goInfoPage];
         };
         _navigationView.tag = -1999;
-
     }
     return _navigationView;
 }

@@ -43,8 +43,6 @@
 #define kNavAndTabHeight (kNavBarAndStatusBarHeight + kTabBarHeight)
 
 
-#define ChatDemo_DEBUG 1
-
 #define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
 
 // rgb颜色转换（16进制->10进制）
@@ -82,6 +80,7 @@
 //user
 #define USER_NAME @"user_name"
 #define USER_NICKNAME @"nick_name"
+#define USER_AGORA_UID @"user_agora_uid"
 #define USER_PWD @"user_pwd"
 
 //fonts

@@ -18,18 +18,19 @@
 #import "AgoraChatHttpRequest.h"
 
 #import <AgoraChat/AgoraChatOptions+PrivateDeploy.h>
+#import "AgoraChatCallKitManager.h"
 #import "PresenceManager.h"
 
-
 @interface AppDelegate () <AgoraChatClientDelegate,UNUserNotificationCenterDelegate>
+
 @property (nonatomic, strong) NSString *userName;
 @property (nonatomic, strong) NSString *nickName;
 
+@property (nonatomic, strong) AgoraChatCallKitManager *callKitManager;
+
 @end
 
-
 @implementation AppDelegate
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -46,7 +47,7 @@
         [[UINavigationBar appearance] setTintColor:AlmostBlackColor];
         [[UINavigationBar appearance] setTranslucent:NO];
     }
-            
+    
     [self initAccount];
     [self initUIKit];
         
@@ -65,7 +66,12 @@
     
     [self _registerAPNS];
     [self registerNotifications];
-
+    
+    NSUserDefaults *shareDefault = [NSUserDefaults standardUserDefaults];
+    NSNumber *agoraUid = [shareDefault objectForKey:USER_AGORA_UID];
+    if (agoraUid) {
+        [AgoraChatCallKitManager.shareManager updateAgoraUid:agoraUid.integerValue];
+    }
     return YES;
 }
 
@@ -82,13 +88,16 @@
     
     // Hyphenate cert keys
     NSString *apnsCertName = nil;
-#if ChatDemo_DEBUG
+#if DEBUG
     apnsCertName = @"ChatDemoDevPush";
+    [options setPushKitCertName:@"com.easemob.enterprise.demo.ui.voip"];
 #else
     apnsCertName = @"ChatDemoProPush";
+    [options setPushKitCertName:@"com.easemob.enterprise.demo.ui.pro.voip"];
 #endif
     
     [options setApnsCertName:apnsCertName];
+    
     [options setEnableDeliveryAck:YES];
     [options setEnableConsoleLog:YES];
     [options setIsDeleteMessagesWhenExitGroup:NO];
@@ -110,6 +119,10 @@
     option.restServer = @"https://a1-test.easemob.com";
     option.chatServer = @"52.80.99.104";
     option.chatPort = 6717;
+    
+    [option setRestServer:@"http://a1-test.easemob.com"];
+    [option setChatServer:@"52.80.99.104"];
+    [option setChatPort:6717];
 }
 
 - (void)loadViewController {
