@@ -125,10 +125,11 @@
     
     _doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     _doneBtn.frame = CGRectMake(0, 0, 44, 44);
-    [self updateDoneUserInteractionEnabled:NO];
+    [self updateDoneUserInteractionEnabled:YES];
     NSString *title = @"Create";
     if (_style == AgoraContactSelectStyle_Invite) {
         title = DONE_TITLE;
+        [self updateDoneUserInteractionEnabled:NO];
     }
 
     [_doneBtn setTitle:title forState:UIControlStateNormal];

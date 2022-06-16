@@ -21,8 +21,7 @@ end
     pod 'Masonry'
     pod 'WHToast'
     pod 'FMDB'
-    pod 'Agora_Chat_iOS','1.0.4'
-  
+    pod 'Agora_Chat_iOS'
     pod 'chat-uikit'
     pod 'AgoraChatCallKit', :path=>"../AgoraChatCallKit/AgoraChatCallKit.podspec"
 end

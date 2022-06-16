@@ -1,13 +1,13 @@
 PODS:
-  - Agora_Chat_iOS (1.0.1)
-  - AgoraChatCallKit (1.0.0):
+  - Agora_Chat_iOS (1.0.6)
+  - AgoraChatCallKit (1.0.6):
     - Agora_Chat_iOS
-    - AgoraRtcEngine_iOS (= 3.6.1.2)
+    - AgoraRtcEngine_iOS/RtcBasic (= 3.6.3)
     - Masonry
     - SDWebImage
-  - AgoraRtcEngine_iOS (3.6.1.2)
-  - chat-uikit (1.0.1):
-    - Agora_Chat_iOS
+  - AgoraRtcEngine_iOS/RtcBasic (3.6.3)
+  - chat-uikit (1.0.6):
+    - Agora_Chat_iOS (= 1.0.6)
     - EMVoiceConvert (= 0.1.0)
     - MJRefresh
   - DACircularProgress (2.3.1)
@@ -28,9 +28,9 @@ PODS:
   - WHToast (0.1.0)
 
 DEPENDENCIES:
-  - Agora_Chat_iOS (= 1.0.1)
+  - Agora_Chat_iOS
   - AgoraChatCallKit (from `../AgoraChatCallKit/AgoraChatCallKit.podspec`)
-  - chat-uikit (from `../AgoraChat-UIKit-ios`)
+  - chat-uikit
   - FMDB
   - Masonry
   - MJRefresh
@@ -41,6 +41,7 @@ SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - Agora_Chat_iOS
     - AgoraRtcEngine_iOS
+    - chat-uikit
     - DACircularProgress
     - EMVoiceConvert
     - FMDB
@@ -54,14 +55,12 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   AgoraChatCallKit:
     :path: "../AgoraChatCallKit/AgoraChatCallKit.podspec"
-  chat-uikit:
-    :path: "../AgoraChat-UIKit-ios"
 
 SPEC CHECKSUMS:
-  Agora_Chat_iOS: cf79f6f677f0bb5b1a14494b7d26ea5122f74bab
-  AgoraChatCallKit: 89e06757a9bd5bab466cefe6d7292ac40bfad07c
-  AgoraRtcEngine_iOS: 510e5e3c4d4d92a0d49ab02a8e08b5217e974677
-  chat-uikit: 369d34f6ef2fa80ea7263b7b345cf8ed29ffd908
+  Agora_Chat_iOS: bb8729aa457fad51d7c8a4494a748c219a61b334
+  AgoraChatCallKit: b02929bdd934ce6328fcbe70c693eb833d2f90d0
+  AgoraRtcEngine_iOS: c62828bfdf95b0a505d796122d7a1e6bb17fdf21
+  chat-uikit: 69b03ed4faa486f093c2993f856609247cc71e5d
   DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
   EMVoiceConvert: 32a0eaada94d93c151a5abd53ee174cd4e63b01f
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
@@ -72,6 +71,6 @@ SPEC CHECKSUMS:
   SDWebImage: a72e880a8fe0f7fc31efe15aaed443c074d2a80c
   WHToast: 7d393091940215c2b8bcf78422d1855f9bfa3975
 
-PODFILE CHECKSUM: b79be768f084434f6b762b470d5d44f68e7bafea
+PODFILE CHECKSUM: 4be25d8f655b5a0792bbcc3bf32edb8c7dde796c
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.11.3

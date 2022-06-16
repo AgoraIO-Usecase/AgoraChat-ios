@@ -58,7 +58,7 @@ static NSString *groupIdKey = @"groupId";
     
     if (group.permissionType == AgoraChatGroupPermissionTypeOwner) {
         BOOL isAdmin = [group.adminList containsObject:userId];
-        NSArray *actions = [self ownerWithMemberListType:memberListType selectedIsAdmin:isAdmin alertController:alertController];
+        NSArray *actions = [self ownerWithMemberListType:memberListType selectedIsAdmin:isAdmin isMuted:[group.muteList containsObject:userId] alertController:alertController];
         for (UIAlertAction *action in actions) {
             [alertController addAction:action];
         }
@@ -66,7 +66,7 @@ static NSString *groupIdKey = @"groupId";
     }
     
     if (group.permissionType == AgoraChatGroupPermissionTypeAdmin) {
-        NSArray *actions = [self adminWithMemberListType:memberListType alertController:alertController];
+        NSArray *actions = [self adminWithMemberListType:memberListType isMuted:[group.muteList containsObject:userId] alertController:alertController];
         
         for (UIAlertAction *action in actions) {
             [alertController addAction:action];
@@ -85,6 +85,7 @@ static NSString *groupIdKey = @"groupId";
 
 -(NSArray *)ownerWithMemberListType:(ACDGroupMemberListType)memberListType
                     selectedIsAdmin:(BOOL)selectedIsAdmin
+                            isMuted:(BOOL)aIsMuted
                     alertController:(UIAlertController *)alertController {
     
     NSMutableArray *actionArray = NSMutableArray.new;
@@ -92,16 +93,18 @@ static NSString *groupIdKey = @"groupId";
     if (memberListType == ACDGroupMemberListTypeALL) {
         if (selectedIsAdmin) {
             [actionArray addObject:actionDic[kActionUnAdminKey]];
-            [actionArray addObject:actionDic[kActionMuteKey]];
             [actionArray addObject:actionDic[kActionBlockKey]];
-            [actionArray addObject:actionDic[kActionRemoveFromGroupKey]];
-    
         }else {
             [actionArray addObject:actionDic[kActionAdminKey]];
-            [actionArray addObject:actionDic[kActionMuteKey]];
             [actionArray addObject:actionDic[kActionBlockKey]];
-            [actionArray addObject:actionDic[kActionRemoveFromGroupKey]];
+            
         }
+        if (aIsMuted) {
+            [actionArray addObject:actionDic[kActionUnMuteKey]];
+        } else {
+            [actionArray addObject:actionDic[kActionMuteKey]];
+        }
+        [actionArray addObject:actionDic[kActionRemoveFromGroupKey]];
     }
     
     if (memberListType == ACDGroupMemberListTypeBlock) {
@@ -120,12 +123,17 @@ static NSString *groupIdKey = @"groupId";
 
 
 -(NSArray *)adminWithMemberListType:(ACDGroupMemberListType)memberListType
+                            isMuted:(BOOL)aIsMuted
                alertController:(UIAlertController *)alertController {
     
     NSMutableArray *actionArray = NSMutableArray.new;
     NSDictionary *actionDic = [self alertActionDics];
     if (memberListType == ACDGroupMemberListTypeALL) {
-        [actionArray addObject:actionDic[kActionMuteKey]];
+        if (aIsMuted) {
+            [actionArray addObject:actionDic[kActionUnMuteKey]];
+        } else {
+            [actionArray addObject:actionDic[kActionMuteKey]];
+        }
         [actionArray addObject:actionDic[kActionBlockKey]];
         [actionArray addObject:actionDic[kActionRemoveFromGroupKey]];
     }

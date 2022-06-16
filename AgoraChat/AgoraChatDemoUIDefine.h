@@ -81,6 +81,7 @@
 #define USER_NAME @"user_name"
 #define USER_NICKNAME @"nick_name"
 #define USER_AGORA_UID @"user_agora_uid"
+#define USER_PWD @"user_pwd"
 
 //fonts
 #define NFont(__SIZE) [UIFont systemFontOfSize:__SIZE] //system font with size
@@ -102,5 +103,15 @@
 #define kACDGroupId @"kACDGroupId"
 #define kACDThreadId @"kACDThreadId"
 #define KACDGroupCreateMemberLimit @"Member quantity: 3 to 2000"
+
+//noti
+#define kMSG_EXT_NEWNOTI @"agora_noti"
+
+//add group / add feiend
+#define kNOTI_EXT_ADDFRIEND @"agora_addFriend"
+#define kNOTI_EXT_ADDGROUP @"agora_addGroup"
+
+//add group / add friend ID
+#define kNOTI_EXT_USERID @"agora_notiUserID"
 
 #endif /* AgoraChatChatDemoUIDefine_h */

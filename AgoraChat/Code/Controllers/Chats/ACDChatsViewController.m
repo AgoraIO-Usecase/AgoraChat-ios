@@ -43,10 +43,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createGroupNotification:) name:KAgora_CreateGroup object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presencesUpdated:) name:PRESENCES_UPDATE object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshConversationList)
+        name:KAgora_UPDATE_CONVERSATIONS object:nil];
 
     
     [self _setupSubviews];
-    
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"isFirstLaunch"]) {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isFirstLaunch"];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -76,8 +78,7 @@
     self.viewModel = [[EaseConversationViewModel alloc] init];
     self.viewModel.canRefresh = YES;                                //是否可刷新
     self.viewModel.badgeLabelCenterVector = CGVectorMake(-16, 0);   //未读数角标中心偏移量
-    
-//    self.viewModel.avatarType = Rectangular;                        //头像类型
+  
 //    self.viewModel.nameLabelColor = [UIColor blueColor];            //会话名称颜色
 //    self.viewModel.detailLabelColor = [UIColor redColor];           //会话详情颜色
 //    self.viewModel.timeLabelColor = [UIColor systemPinkColor];      //会话时间颜色
@@ -240,6 +241,14 @@
     });
 }
 
+- (void)refreshConversationList
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        //if(self.view.window)
+        [self.easeConvsVC refreshTabView];
+    });
+}
+
 #pragma mark NSNotification
 - (void)resetUserInfo:(NSNotification *)notification
 {
@@ -256,8 +265,32 @@
     [self.easeConvsVC resetUserProfiles:userInfoAry];
 }
 
-- (void)createGroupNotification:(NSNotification *)notify {
-    AgoraChatGroup *group = (AgoraChatGroup *)notify.object;
+- (void)createGroupNotification:(NSNotification *)notification {
+    AgoraChatGroup *group = (AgoraChatGroup *)notification.userInfo[@"group"];
+    NSMutableArray<NSString *> *invitees = (NSMutableArray<NSString *> *)notification.userInfo[@"invitees"];
+    
+    NSMutableString *mutableStr = [[NSMutableString alloc]initWithString:@""];
+    if (invitees.count > 0) {
+        for (NSString *str in invitees) {
+            [mutableStr appendString:str];
+            [mutableStr appendString:@", "];
+        }
+        [mutableStr deleteCharactersInRange:NSMakeRange(mutableStr.length - 2, 1)];
+    }
+    
+    NSString *hintMsg = @"";
+    if (mutableStr.length > 0) {
+        hintMsg = [NSString stringWithFormat:@"You invited %@ to join the group", mutableStr];
+    } else {
+        hintMsg = [NSString stringWithFormat:@"You have created a group %@", group.groupName];
+    }
+    AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:hintMsg];
+    AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:group.groupId from:AgoraChatClient.sharedClient.currentUsername to:AgoraChatClient.sharedClient.currentUsername body:body ext:@{kMSG_EXT_NEWNOTI : kNOTI_EXT_ADDGROUP, kNOTI_EXT_USERID : mutableStr}];
+    message.chatType = AgoraChatTypeGroupChat;
+    message.isRead = YES;
+    AgoraChatConversation *conversation = [[AgoraChatClient sharedClient].chatManager getConversation:group.groupId type:AgoraChatConversationTypeGroupChat createIfNotExist:YES];
+    [conversation insertMessage:message error:nil];
+    
     [self goGroupChatPageWithGroup:group];
 }
 
@@ -394,6 +427,12 @@
         }else{
             [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[conversationId]];
         }
+    }
+    
+    if (type == AgoraChatConversationTypeGroupChat) {
+        AgoraChatUserInfo* userInfo = [[AgoraChatUserInfo alloc]init];
+        userInfo.userId = conversationId;
+        userData = [[AgoraChatConvUserDataModel alloc]initWithUserInfo:userInfo conversationType:type];
     }
     return userData;
 }
