@@ -233,6 +233,9 @@
     if(userInfo) {
         model = [[AgoraChatUserDataModel alloc]initWithUserInfo:userInfo];
     }else{
+        AgoraChatUserInfo* userInfo = [[AgoraChatUserInfo alloc]init];
+        userInfo.userId = huanxinID;
+        model = [[AgoraChatUserDataModel alloc]initWithUserInfo:userInfo];
         [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[huanxinID]];
     }
     return model;
