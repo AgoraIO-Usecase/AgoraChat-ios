@@ -84,7 +84,7 @@
 
 - (void)initUIKit
 {
-    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:@"easemob-demo#easeim"];
+    AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:Appkey];
     
     // Hyphenate cert keys
     NSString *apnsCertName = nil;
@@ -106,12 +106,12 @@
     [options setIsAutoLogin:YES];
 
 #warning 国内部署设置
-    [self internalSpecOption:options];
+    //[self internalSpecOption:options];
     
 //    [EaseChatKitManager initWithAgoraChatOptions:options];
 
-    ACDDemoOptions *demoOptions = [ACDDemoOptions sharedOptions];
-    [EaseChatKitManager initWithAgoraChatOptions:[demoOptions toOptions]];
+    //ACDDemoOptions *demoOptions = [ACDDemoOptions sharedOptions];
+    [EaseChatKitManager initWithAgoraChatOptions:options];
 }
 
 - (void)internalSpecOption:(AgoraChatOptions *)option {

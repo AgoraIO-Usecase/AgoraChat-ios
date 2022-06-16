@@ -23,7 +23,7 @@ end
     pod 'FMDB'
     pod 'Agora_Chat_iOS'
     pod 'chat-uikit'
-    pod 'AgoraChatCallKit', :path=>"../AgoraChatCallKit/AgoraChatCallKit.podspec"
+    pod 'AgoraChatCallKit'
 end
 
 
