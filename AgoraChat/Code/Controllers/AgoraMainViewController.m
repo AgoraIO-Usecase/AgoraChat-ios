@@ -228,7 +228,7 @@ static NSString *kGroupName = @"GroupName";
 #if !TARGET_IPHONE_SIMULATOR
     for (AgoraChatMessage *message in aMessages) {
         
-        if (message.isChatThread == NO) {
+        if (message.isChatThreadMessage == NO) {
             UIApplicationState state = [[UIApplication sharedApplication] applicationState];
             switch (state) {
                 case UIApplicationStateActive:

@@ -106,7 +106,7 @@
         return;
     }
     [self.view endEditing:YES];
-    [AgoraChatClient.sharedClient.threadManager updateChatThreadSubject:self.threadNameField.text threadId:self.threadId completion:^(AgoraChatError *aError) {
+    [AgoraChatClient.sharedClient.threadManager updateChatThreadName:self.threadNameField.text threadId:self.threadId completion:^(AgoraChatError *aError) {
         if (!aError) {
             [self.navigationController popViewControllerAnimated:YES];
         } else {

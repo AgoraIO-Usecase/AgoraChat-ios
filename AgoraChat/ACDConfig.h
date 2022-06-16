@@ -10,18 +10,19 @@
 #define ACDConfig_h
 
 
-#define ACDENV  1
+#define ACDENV  0
 
 
 #if ACDENV == 0
 //美东
-#define Appkey @"41117440#383391"
+#define Appkey @"5101220107132865#test"
+//@"41117440#383391"
 #define AppServerHost @"https://a41.easemob.com"
 
 #elif ACDENV == 1
 //easeim
-#define Appkey @"5101220107132865#test"
-#define AppServerHost @"http://a1-test.easemob.com"
+#define Appkey @"easemob-demo#easeim"
+#define AppServerHost @"https://a41.easemob.com"
 
 #elif ACDENV == 2
 //ebs
@@ -30,8 +31,23 @@
 
 #elif ACDENV == 3
 //vip6
-#define Appkey @"5101220107132865#test" //vip6
-#define AppServerHost @"http://a1-test.easemob.com" //国内部署vip6
+#define Appkey @"86446724#514630" //vip6
+#define AppServerHost @"http://a1-vip6.easemob.com" //国内部署vip6
+
+#elif ACDENV == 4
+//新加坡
+#define Appkey @"61117440#460199"
+#define AppServerHost @"https://a61.easemob.com"
+
+#elif ACDENV == 5
+//新加坡阿里
+#define Appkey @"1112191015107352#sgp1"
+#define AppServerHost @"http://a1-sgp.easemob.com"
+
+#elif ACDENV == 7
+//法兰克福
+#define Appkey @"71117440#417715"
+#define AppServerHost @"http://a71.easemob.com"
 
 #endif
 
