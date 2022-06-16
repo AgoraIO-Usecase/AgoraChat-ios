@@ -183,7 +183,21 @@
 
 #pragma mark - EaseChatViewControllerDelegate
 - (UITableViewCell *)cellForItem:(UITableView *)tableView messageModel:(EaseMessageModel *)messageModel {
-    
+    if (messageModel.message.body.type == AgoraChatMessageTypeText) {
+        if ([messageModel.message.ext[@"msgType"] isEqualToString:@"rtcCallWithAgora"]) {
+            NSString *action = messageModel.message.ext[@"action"];
+            if ([action isEqualToString:@"invite"]) {
+                if (messageModel.message.chatType == AgoraChatTypeChat) {
+                    return nil;
+                }
+            }
+            AgoraChatCallCell *cell = [[AgoraChatCallCell alloc] initWithDirection:messageModel.direction chatType:messageModel.message.chatType messageType:messageModel.type viewModel:_viewModel];
+            cell.delegate = self;
+            cell.model = messageModel;
+            return cell;
+        }
+    }
+
 ////    if (messageModel.type == AgoraChatMessageTypePictMixText) {
 ////        AgoraChatMsgPicMixTextBubbleView* picMixBV = [[AgoraChatMsgPicMixTextBubbleView alloc] init];
 ////        [picMixBV setModel:messageModel];
