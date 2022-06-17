@@ -21,7 +21,6 @@
 
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIImageView *logoImageView;
-@property (nonatomic, strong) UIView *titleView;
 @property (nonatomic, strong) UIImageView* titleImageView;
 @property (nonatomic, strong) UILabel *titleRegisterMarkLabel;
 @property (nonatomic, strong) UIView *hintView;
@@ -78,9 +77,7 @@
     self.contentView.backgroundColor = UIColor.whiteColor;
     [self.view addSubview:self.contentView];
     [self.contentView addSubview:self.logoImageView];
-    [self.contentView addSubview:self.titleView];
-    [self.titleView addSubview:self.titleImageView];
-    [self.titleView addSubview:self.titleRegisterMarkLabel];
+    [self.contentView addSubview:self.titleImageView];
     [self.contentView addSubview:self.hintView];
     [self.contentView addSubview:self.usernameTextField];
     [self.contentView addSubview:self.passwordTextField];
@@ -97,32 +94,26 @@
         make.centerX.equalTo(self.contentView);
     }];
     
-    [self.titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.titleImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.logoImageView.mas_bottom).offset(20);
         make.centerX.equalTo(self.contentView);
-        make.left.right.equalTo(self.contentView);
-        make.height.equalTo(@35);
     }];
     
-    [self.titleImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.titleView);
-    }];
-    
-    [self.titleRegisterMarkLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.titleImageView);
-        make.left.equalTo(self.titleImageView.mas_right).offset(4);
-        make.width.equalTo(@90);
-    }];
+//    [self.titleRegisterMarkLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerY.equalTo(self.titleImageView);
+//        make.left.equalTo(self.titleImageView.mas_right).offset(4);
+//        make.width.equalTo(@90);
+//    }];
     
     [self.usernameTextField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titleView.mas_bottom).offset(95);
+        make.top.equalTo(self.titleImageView.mas_bottom).offset(95);
         make.left.equalTo(self.contentView).offset(24);
         make.right.equalTo(self.contentView).offset(-24);
         make.height.equalTo(@kLoginButtonHeight);
     }];
     
     [self.hintView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.usernameTextField.mas_top).offset(-5);
+        make.bottom.equalTo(self.usernameTextField.mas_top).offset(-10);
         make.centerX.equalTo(self.contentView);
         make.height.equalTo(@20);
     }];
@@ -233,7 +224,7 @@
     if (username.length == 0 || password.length == 0) {
         ret = YES;
         self.hintView.hidden = NO;
-        self.hintTitleLabel.text = NSLocalizedString(@"inputNameAndPswd", @"Please enter username and nickname");
+        self.hintTitleLabel.text = NSLocalizedString(@"login.inputNameAndPswd", @"Please enter username and nickname");
     } else {
         NSString *regex = @"^[A-Za-z0-9]+$";
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex];
@@ -241,7 +232,7 @@
         if (!result) {
             ret = YES;
             self.hintView.hidden = NO;
-            self.hintTitleLabel.text = NSLocalizedString(@"inputNameNotCompliance", @"Latin letters and numbers only.");
+            self.hintTitleLabel.text = NSLocalizedString(@"login.inputNameNotCompliance", @"Latin letters and numbers only.");
         }
     }
     
@@ -260,14 +251,18 @@
 
 - (void)changeOperate:(UIButton *)aButton
 {
+    self.hintView.hidden = YES;
+    self.hintTitleLabel.text = @"";
     if (aButton.tag == 0) {
-        self.titleRegisterMarkLabel.hidden = NO;
-        [self.titleImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(self.titleView).offset(- 47);
-        }];
+        //self.titleRegisterMarkLabel.hidden = NO;
+//        [self.titleImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.centerX.equalTo(self.titleView).offset(- 47);
+//        }];
+        
+        self.titleImageView.image = ImageWithName(@"login.bundle/register_agoraChat");
         
         [self.usernameTextField mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.titleView.mas_bottom).offset(65);
+            make.top.equalTo(self.titleImageView.mas_bottom).offset(65);
             make.left.equalTo(self.contentView).offset(24);
             make.right.equalTo(self.contentView).offset(-24);
             make.height.equalTo(@kLoginButtonHeight);
@@ -285,13 +280,14 @@
         [self.loginButton setTitle:@"Set Up" forState:UIControlStateNormal];
         [self.operateTypeButton setAttributedTitle:[self attributeText:@"Back to Login" key:@"Back to Login"] forState:UIControlStateNormal];
     } else {
-        self.titleRegisterMarkLabel.hidden = YES;
-        [self.titleImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(self.titleView);
-        }];
+//        self.titleRegisterMarkLabel.hidden = YES;
+//        [self.titleImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.centerX.equalTo(self.titleView);
+//        }];
+        self.titleImageView.image = ImageWithName(@"login.bundle/login_agoraChat");
         
         [self.usernameTextField mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.titleView.mas_bottom).offset(95);
+            make.top.equalTo(self.titleImageView.mas_bottom).offset(95);
             make.left.equalTo(self.contentView).offset(24);
             make.right.equalTo(self.contentView).offset(-24);
             make.height.equalTo(@kLoginButtonHeight);
@@ -613,14 +609,6 @@
         _logoImageView.image = ImageWithName(@"login.bundle/login_logo");
     }
     return _logoImageView;
-}
-
-- (UIView *)titleView
-{
-    if (_titleView == nil) {
-        _titleView = [[UIView alloc]init];
-    }
-    return _titleView;
 }
 
 - (UIImageView *)titleImageView {

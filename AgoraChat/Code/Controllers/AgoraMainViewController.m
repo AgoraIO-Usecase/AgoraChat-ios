@@ -268,7 +268,7 @@ static NSString *kGroupName = @"GroupName";
 {
     [_chatsVC networkChanged:aConnectionState];
     
-    [_settingsVC networkChanged:aConnectionState];
+    //[_settingsVC networkChanged:aConnectionState];
 }
 
 - (void)userAccountDidLoginFromOtherDevice
