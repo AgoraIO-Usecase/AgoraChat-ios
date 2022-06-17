@@ -63,6 +63,11 @@ typedef enum : NSUInteger {
         make.edges.equalTo(self.view);
     }];
     
+    [self.headerView addSubview:self.userInfoHeaderView];
+    [self.userInfoHeaderView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(_headerView);
+    }];
+    
     [self fetchUserInfo];
     [self _updatePresenceStatus];
 }
@@ -78,7 +83,7 @@ typedef enum : NSUInteger {
 
     [AgoraChatUserInfoManagerHelper fetchOwnUserInfoCompletion:^(AgoraChatUserInfo * _Nonnull ownUserInfo) {
             self.userInfo = ownUserInfo;
-            self.myNickName = self.userInfo.nickName ?:self.userInfo.userId;
+            self.myNickName = self.userInfo.nickname ?:self.userInfo.userId;
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self updateHeaderView];
@@ -103,12 +108,13 @@ typedef enum : NSUInteger {
     }else {
         NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
         
-        NSString *imageName = [userDefault valueForKey:[NSString stringWithFormat:@"%@_avatar",self.userInfo.userId]];
+        NSString *imageName = [userDefault objectForKey:[NSString stringWithFormat:@"%@_avatar",self.userInfo.userId]];
                  
         if (imageName == nil) {
             imageName = @"defatult_avatar_1";
         }
-        [self.userInfoHeaderView.avatarImageView sd_setImageWithURL:nil placeholderImage:ImageWithName(imageName)];
+        [self.userInfoHeaderView.avatarImageView setImage:ImageWithName(imageName)];
+        //[self.userInfoHeaderView.avatarImageView sd_setImageWithURL:nil placeholderImage:ImageWithName(imageName)];
     }
     [self.table reloadData];
 }
@@ -254,12 +260,13 @@ typedef enum : NSUInteger {
 - (void)changeAvatar {
     ACDModifyAvatarViewController *vc = ACDModifyAvatarViewController.new;
     vc.selectedBlock = ^(NSString * _Nonnull imageName) {
+        [self.userInfoHeaderView.avatarImageView setImage:ImageWithName(imageName)];
+        
         NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-        [userDefault setValue:imageName forKey:[NSString stringWithFormat:@"%@_avatar",self.userInfo.userId]];
+        [userDefault setObject:imageName forKey:[NSString stringWithFormat:@"%@_avatar",self.userInfo.userId]];
         [userDefault synchronize];
         
         UIImage *selectedImage = [UIImage imageWithColor:[UIColor blueColor] size:CGSizeMake(140.0, 140.0)];
-        [self.userInfoHeaderView.avatarImageView setImage:ImageWithName(imageName)];
     };
     
     vc.hidesBottomBarWhenPushed = YES;
@@ -439,15 +446,6 @@ typedef enum : NSUInteger {
 - (UIView *)headerView {
     if (_headerView == nil) {
         _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, kInfoHeaderViewHeight)];
-        self.userInfoHeaderView = [[ACDInfoHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kInfoHeaderViewHeight) withType:ACDHeaderInfoTypeMe];
-        ACD_WS
-        self.userInfoHeaderView.tapHeaderBlock = ^{
-            [weakSelf headerViewTapAction];
-        };
-        [_headerView addSubview:self.userInfoHeaderView];
-        [self.userInfoHeaderView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(_headerView);
-        }];
     }
     return _headerView;
 }
