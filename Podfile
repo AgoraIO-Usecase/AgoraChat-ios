@@ -24,6 +24,7 @@ end
     pod 'Agora_Chat_iOS'
     pod 'chat-uikit'
     pod 'AgoraChatCallKit'
+    pod 'DoraemonKit'
 end
 
 

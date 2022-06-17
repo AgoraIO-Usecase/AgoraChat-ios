@@ -20,7 +20,7 @@
 #import <AgoraChat/AgoraChatOptions+PrivateDeploy.h>
 #import "AgoraChatCallKitManager.h"
 #import "PresenceManager.h"
-
+#import <DoraemonKit/DoraemonKit.h>
 @interface AppDelegate () <AgoraChatClientDelegate,UNUserNotificationCenterDelegate>
 
 @property (nonatomic, strong) NSString *userName;
@@ -72,6 +72,9 @@
     if (agoraUid) {
         [AgoraChatCallKitManager.shareManager updateAgoraUid:agoraUid.integerValue];
     }
+    [[DoraemonManager shareInstance] install];
+    [[DoraemonManager shareInstance] addPluginWithTitle:@"切换环境" icon:@"doraemon_app_info" desc:@"" pluginName:@"DoraemonPluginEnvironment" atModule:@"业务专区"];
+    [[DoraemonManager shareInstance] hiddenDoraemon];
     return YES;
 }
 
@@ -85,33 +88,33 @@
 - (void)initUIKit
 {
     AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:Appkey];
-    
+
     // Hyphenate cert keys
-    NSString *apnsCertName = nil;
-#if DEBUG
-    apnsCertName = @"ChatDemoDevPush";
-    [options setPushKitCertName:@"com.easemob.enterprise.demo.ui.voip"];
-#else
-    apnsCertName = @"ChatDemoProPush";
-    [options setPushKitCertName:@"com.easemob.enterprise.demo.ui.pro.voip"];
-#endif
-    
-    [options setApnsCertName:apnsCertName];
-    
-    [options setEnableDeliveryAck:YES];
-    [options setEnableConsoleLog:YES];
-    [options setIsDeleteMessagesWhenExitGroup:NO];
-    [options setIsDeleteMessagesWhenExitChatRoom:NO];
-    [options setUsingHttpsOnly:YES];
-    [options setIsAutoLogin:YES];
+//    NSString *apnsCertName = nil;
+//#if DEBUG
+//    apnsCertName = @"ChatDemoDevPush";
+//    [options setPushKitCertName:@"com.easemob.enterprise.demo.ui.voip"];
+//#else
+//    apnsCertName = @"ChatDemoProPush";
+//    [options setPushKitCertName:@"com.easemob.enterprise.demo.ui.pro.voip"];
+//#endif
+//
+//    [options setApnsCertName:apnsCertName];
+//
+//    [options setEnableDeliveryAck:YES];
+//    [options setEnableConsoleLog:YES];
+//    [options setIsDeleteMessagesWhenExitGroup:NO];
+//    [options setIsDeleteMessagesWhenExitChatRoom:NO];
+//    [options setUsingHttpsOnly:YES];
+//    [options setIsAutoLogin:YES];
 
 #warning 国内部署设置
     //[self internalSpecOption:options];
     
 //    [EaseChatKitManager initWithAgoraChatOptions:options];
 
-    //ACDDemoOptions *demoOptions = [ACDDemoOptions sharedOptions];
-    [EaseChatKitManager initWithAgoraChatOptions:options];
+    ACDDemoOptions *demoOptions = [ACDDemoOptions sharedOptions];
+    [EaseChatKitManager initWithAgoraChatOptions:[demoOptions toOptions]];
 }
 
 - (void)internalSpecOption:(AgoraChatOptions *)option {

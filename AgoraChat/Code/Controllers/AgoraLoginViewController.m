@@ -13,7 +13,7 @@
 #import "UIViewController+ComponentSize.h"
 #import "AgoraChatCallKitManager.h"
 #import "EMRightViewToolView.h"
-
+#import <DoraemonKit/DoraemonKit.h>
 #define kLoginButtonHeight 48.0f
 #define kMaxLimitLength 64
 
@@ -343,19 +343,19 @@
     void (^finishBlock) (NSString *aName, NSString *nickName, NSInteger agoraUid, AgoraChatError *aError) = ^(NSString *aName, NSString *nickName, NSInteger agoraUid, AgoraChatError *aError) {
         if (!aError) {
             if (nickName) {
-//                [AgoraChatClient.sharedClient.userInfoManager updateOwnUserInfo:nickName withType:AgoraChatUserInfoTypeNickName completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
-//                    if (!aError) {
-//                        [self updateLoginStateWithStart:NO];
-//
-//                        [UserInfoStore.sharedInstance setUserInfo:aUserInfo forId:aName];
-//                        [[NSNotificationCenter defaultCenter] postNotificationName:USERINFO_UPDATE  object:nil userInfo:@{USERINFO_LIST:@[aUserInfo]}];
-//                    }
-//                }];
-//                if (aError.code == 204) {
-//                    [AgoraChatClient.sharedClient registerWithUsername:self.usernameTextField.text password:self.passwordTextField.text];
-//                } else {
+                [AgoraChatClient.sharedClient.userInfoManager updateOwnUserInfo:nickName withType:AgoraChatUserInfoTypeNickName completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
+                    if (!aError) {
+                        [self updateLoginStateWithStart:NO];
+
+                        [UserInfoStore.sharedInstance setUserInfo:aUserInfo forId:aName];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:USERINFO_UPDATE  object:nil userInfo:@{USERINFO_LIST:@[aUserInfo]}];
+                    }
+                }];
+                if (aError.code == 204) {
+                    [AgoraChatClient.sharedClient registerWithUsername:self.usernameTextField.text password:self.passwordTextField.text];
+                } else {
                 
-//                }
+                }
             }
             
             NSUserDefaults *shareDefault = [NSUserDefaults standardUserDefaults];
@@ -611,8 +611,17 @@
         _logoImageView = [[UIImageView alloc] init];
         _logoImageView.contentMode = UIViewContentModeScaleAspectFill;
         _logoImageView.image = ImageWithName(@"login.bundle/login_logo");
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showUtils)];
+        tap.numberOfTapsRequired = 3;
+        tap.numberOfTouchesRequired = 1;
+        _logoImageView.userInteractionEnabled = YES;
+        [_logoImageView addGestureRecognizer:tap];
     }
     return _logoImageView;
+}
+
+- (void)showUtils {
+    [[DoraemonManager shareInstance] showDoraemon];
 }
 
 - (UIView *)titleView
