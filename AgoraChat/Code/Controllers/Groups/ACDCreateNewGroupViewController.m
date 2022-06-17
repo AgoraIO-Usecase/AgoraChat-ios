@@ -139,7 +139,7 @@ static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell
     
     model = _groupPermissions.lastObject;
     if (_isPublic) {
-        model.title = @"Authorizated to join";
+        model.title = @"Authorized to join";
         model.type = AgoraGroupInfoType_openJoin;
     }
     else {
@@ -357,7 +357,7 @@ static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell
 - (ACDMAXGroupNumberCell *)maxGroupNumberCell {
     if (_maxGroupNumberCell == nil) {
         _maxGroupNumberCell = ACDMAXGroupNumberCell.new;
-        _maxGroupNumberCell.nameLabel.text = @"Maximum Mumber";
+        _maxGroupNumberCell.nameLabel.text = @"Maximum Member";
         _maxGroupNumberCell.maxGroupMemberField.delegate = self;
     }
     return _maxGroupNumberCell;

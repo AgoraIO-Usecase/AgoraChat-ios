@@ -68,7 +68,8 @@ typedef enum : NSUInteger {
         make.edges.equalTo(_headerView);
     }];
     
-    [self fetchUserInfo];
+    [self preloadHeaderView];
+    //[self fetchUserInfo];
     [self _updatePresenceStatus];
 }
 
@@ -78,8 +79,6 @@ typedef enum : NSUInteger {
 }
 
 - (void)fetchUserInfo {
-    
-    [self preloadHeaderView];
 
     [AgoraChatUserInfoManagerHelper fetchOwnUserInfoCompletion:^(AgoraChatUserInfo * _Nonnull ownUserInfo) {
             self.userInfo = ownUserInfo;
@@ -103,7 +102,7 @@ typedef enum : NSUInteger {
     NSString *userId = self.userInfo.userId ?:self.myNickName;
     self.userInfoHeaderView.userIdLabel.text = [NSString stringWithFormat:@"AgoraID: %@",userId];
 
-    if (self.userInfo.avatarUrl) {
+    if (self.userInfo.avatarUrl && self.userInfo.avatarUrl.length > 0) {
         [self.userInfoHeaderView.avatarImageView sd_setImageWithURL:[NSURL URLWithString:self.userInfo.avatarUrl] placeholderImage:ImageWithName(@"defatult_avatar_1")];
     }else {
         NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
@@ -137,6 +136,7 @@ typedef enum : NSUInteger {
 
 }
 
+/*
 #pragma mark public method
 - (void)networkChanged:(AgoraChatConnectionState)connectionState {
     if (connectionState == AgoraChatConnectionConnected) {
@@ -144,7 +144,7 @@ typedef enum : NSUInteger {
     }else {
         [self preloadHeaderView];
     }
-}
+}*/
 
 
 #pragma mark - Action
@@ -260,11 +260,12 @@ typedef enum : NSUInteger {
 - (void)changeAvatar {
     ACDModifyAvatarViewController *vc = ACDModifyAvatarViewController.new;
     vc.selectedBlock = ^(NSString * _Nonnull imageName) {
-        [self.userInfoHeaderView.avatarImageView setImage:ImageWithName(imageName)];
         
         NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
         [userDefault setObject:imageName forKey:[NSString stringWithFormat:@"%@_avatar",self.userInfo.userId]];
         [userDefault synchronize];
+        
+        [self.userInfoHeaderView.avatarImageView setImage:ImageWithName(imageName)];
         
         UIImage *selectedImage = [UIImage imageWithColor:[UIColor blueColor] size:CGSizeMake(140.0, 140.0)];
     };
