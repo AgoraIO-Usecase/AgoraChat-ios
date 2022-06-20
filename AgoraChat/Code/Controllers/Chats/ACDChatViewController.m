@@ -219,6 +219,21 @@
 //            return userCardCell;
 //        }
 //    }
+    
+    if (messageModel.message.body.type == AgoraChatMessageTypeText) {
+            if ([messageModel.message.ext[@"msgType"] isEqualToString:@"rtcCallWithAgora"]) {
+                NSString *action = messageModel.message.ext[@"action"];
+                if ([action isEqualToString:@"invite"]) {
+                    if (messageModel.message.chatType == AgoraChatTypeChat) {
+                        return nil;
+                    }
+                }
+                AgoraChatCallCell *cell = [[AgoraChatCallCell alloc] initWithDirection:messageModel.direction chatType:messageModel.message.chatType messageType:messageModel.type viewModel:_viewModel];
+                cell.delegate = self;
+                cell.model = messageModel;
+                return cell;
+            }
+        }
 
     //@{kMSG_EXT_NEWNOTI : kNOTI_EXT_ADDGROUP, kNOTI_EXT_USERID : mutableStr}
     if (messageModel.message.body.type == AgoraChatMessageBodyTypeText) {
