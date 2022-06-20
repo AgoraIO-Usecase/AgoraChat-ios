@@ -72,10 +72,14 @@
     if (agoraUid) {
         [AgoraChatCallKitManager.shareManager updateAgoraUid:agoraUid.integerValue];
     }
+    [self initDoraemonKit];
+    return YES;
+}
+
+- (void)initDoraemonKit {
     [[DoraemonManager shareInstance] install];
     [[DoraemonManager shareInstance] addPluginWithTitle:@"切换环境" icon:@"doraemon_app_info" desc:@"" pluginName:@"DoraemonPluginEnvironment" atModule:@"业务专区"];
     [[DoraemonManager shareInstance] hiddenDoraemon];
-    return YES;
 }
 
 - (void)initAccount
