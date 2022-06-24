@@ -63,7 +63,13 @@ typedef enum : NSUInteger {
         make.edges.equalTo(self.view);
     }];
     
-    [self fetchUserInfo];
+    [self.headerView addSubview:self.userInfoHeaderView];
+    [self.userInfoHeaderView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(_headerView);
+    }];
+    
+    [self preloadHeaderView];
+    //[self fetchUserInfo];
     [self _updatePresenceStatus];
 }
 
@@ -73,12 +79,10 @@ typedef enum : NSUInteger {
 }
 
 - (void)fetchUserInfo {
-    
-    [self preloadHeaderView];
 
     [AgoraChatUserInfoManagerHelper fetchOwnUserInfoCompletion:^(AgoraChatUserInfo * _Nonnull ownUserInfo) {
             self.userInfo = ownUserInfo;
-            self.myNickName = self.userInfo.nickName ?:self.userInfo.userId;
+            self.myNickName = self.userInfo.nickname ?:self.userInfo.userId;
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self updateHeaderView];
@@ -98,17 +102,18 @@ typedef enum : NSUInteger {
     NSString *userId = self.userInfo.userId ?:self.myNickName;
     self.userInfoHeaderView.userIdLabel.text = [NSString stringWithFormat:@"AgoraID: %@",userId];
 
-    if (self.userInfo.avatarUrl) {
+    if (self.userInfo.avatarUrl && self.userInfo.avatarUrl.length > 0) {
         [self.userInfoHeaderView.avatarImageView sd_setImageWithURL:[NSURL URLWithString:self.userInfo.avatarUrl] placeholderImage:ImageWithName(@"defatult_avatar_1")];
     }else {
         NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
         
-        NSString *imageName = [userDefault valueForKey:[NSString stringWithFormat:@"%@_avatar",self.userInfo.userId]];
+        NSString *imageName = [userDefault objectForKey:[NSString stringWithFormat:@"%@_avatar",self.userInfo.userId]];
                  
         if (imageName == nil) {
             imageName = @"defatult_avatar_1";
         }
-        [self.userInfoHeaderView.avatarImageView sd_setImageWithURL:nil placeholderImage:ImageWithName(imageName)];
+        [self.userInfoHeaderView.avatarImageView setImage:ImageWithName(imageName)];
+        //[self.userInfoHeaderView.avatarImageView sd_setImageWithURL:nil placeholderImage:ImageWithName(imageName)];
     }
     [self.table reloadData];
 }
@@ -131,6 +136,7 @@ typedef enum : NSUInteger {
 
 }
 
+/*
 #pragma mark public method
 - (void)networkChanged:(AgoraChatConnectionState)connectionState {
     if (connectionState == AgoraChatConnectionConnected) {
@@ -138,7 +144,7 @@ typedef enum : NSUInteger {
     }else {
         [self preloadHeaderView];
     }
-}
+}*/
 
 
 #pragma mark - Action
@@ -176,7 +182,7 @@ typedef enum : NSUInteger {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     WEAK_SELF
     [[AgoraChatClient sharedClient] logout:YES completion:^(AgoraChatError *aError) {
-        
+        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO userInfo:@{@"userName":@"",@"nickName":@""}];
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (!aError) {
             NSUserDefaults *shareDefault = [NSUserDefaults standardUserDefaults];
@@ -184,7 +190,6 @@ typedef enum : NSUInteger {
             [shareDefault setObject:@"" forKey:USER_NICKNAME];
             [shareDefault synchronize];
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO userInfo:@{@"userName":@"",@"nickName":@""}];
         } else {
             [weakSelf showHint:[NSString stringWithFormat:@"%@:%u",NSLocalizedString(@"logout.failed", @"Logout failed"), aError.code]];
         }
@@ -211,9 +216,7 @@ typedef enum : NSUInteger {
 }
 
 - (void)goNotificationPage {
-
     ACDNotificationSettingViewController *controller = [[ACDNotificationSettingViewController alloc] init];
-
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -257,12 +260,14 @@ typedef enum : NSUInteger {
 - (void)changeAvatar {
     ACDModifyAvatarViewController *vc = ACDModifyAvatarViewController.new;
     vc.selectedBlock = ^(NSString * _Nonnull imageName) {
+        
         NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-        [userDefault setValue:imageName forKey:[NSString stringWithFormat:@"%@_avatar",self.userInfo.userId]];
+        [userDefault setObject:imageName forKey:[NSString stringWithFormat:@"%@_avatar",self.userInfo.userId]];
         [userDefault synchronize];
         
-        UIImage *selectedImage = [UIImage imageWithColor:[UIColor blueColor] size:CGSizeMake(140.0, 140.0)];
         [self.userInfoHeaderView.avatarImageView setImage:ImageWithName(imageName)];
+        
+        UIImage *selectedImage = [UIImage imageWithColor:[UIColor blueColor] size:CGSizeMake(140.0, 140.0)];
     };
     
     vc.hidesBottomBarWhenPushed = YES;
@@ -442,15 +447,6 @@ typedef enum : NSUInteger {
 - (UIView *)headerView {
     if (_headerView == nil) {
         _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, kInfoHeaderViewHeight)];
-        self.userInfoHeaderView = [[ACDInfoHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, kInfoHeaderViewHeight) withType:ACDHeaderInfoTypeMe];
-        ACD_WS
-        self.userInfoHeaderView.tapHeaderBlock = ^{
-            [weakSelf headerViewTapAction];
-        };
-        [_headerView addSubview:self.userInfoHeaderView];
-        [self.userInfoHeaderView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(_headerView);
-        }];
     }
     return _headerView;
 }

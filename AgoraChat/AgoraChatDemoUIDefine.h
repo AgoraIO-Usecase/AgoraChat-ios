@@ -43,8 +43,6 @@
 #define kNavAndTabHeight (kNavBarAndStatusBarHeight + kTabBarHeight)
 
 
-#define ChatDemo_DEBUG 1
-
 #define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
 
 // rgb颜色转换（16进制->10进制）
@@ -82,6 +80,8 @@
 //user
 #define USER_NAME @"user_name"
 #define USER_NICKNAME @"nick_name"
+#define USER_AGORA_UID @"user_agora_uid"
+#define USER_PWD @"user_pwd"
 
 //fonts
 #define NFont(__SIZE) [UIFont systemFontOfSize:__SIZE] //system font with size
@@ -101,7 +101,17 @@
 
 #define kACDGroupMemberListType @"kACDGroupMemberListType"
 #define kACDGroupId @"kACDGroupId"
-
+#define kACDThreadId @"kACDThreadId"
 #define KACDGroupCreateMemberLimit @"Member quantity: 3 to 2000"
+
+//noti
+#define kMSG_EXT_NEWNOTI @"agora_noti"
+
+//add group / add feiend
+#define kNOTI_EXT_ADDFRIEND @"agora_addFriend"
+#define kNOTI_EXT_ADDGROUP @"agora_addGroup"
+
+//add group / add friend ID
+#define kNOTI_EXT_USERID @"agora_notiUserID"
 
 #endif /* AgoraChatChatDemoUIDefine_h */

@@ -87,7 +87,7 @@
         cell.nameLabel.text = @"Delete the Chat after Leaving Group";
         [cell.aSwitch setOn:options.deleteMessagesOnLeaveGroup animated:NO];
         cell.switchActionBlock  = ^(BOOL isOn) {
-            [AgoraChatClient.sharedClient.options setIsDeleteMessagesWhenExitGroup:isOn];
+            [AgoraChatClient.sharedClient.options setDeleteMessagesOnLeaveGroup:isOn];
             options.deleteMessagesOnLeaveGroup = isOn;
             [options archive];
 

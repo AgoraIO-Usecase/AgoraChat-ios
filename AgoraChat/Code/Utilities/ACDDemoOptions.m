@@ -261,7 +261,6 @@ static ACDDemoOptions *sharedOptions = nil;
     
     self.isAutoLogin = YES;
     retOpt.isAutoLogin = self.isAutoLogin;
-    
     retOpt.isAutoAcceptGroupInvitation = self.isAutoAcceptGroupInvitation;
     retOpt.isDeleteMessagesWhenExitGroup = self.deleteMessagesOnLeaveGroup;
     retOpt.isAutoTransferMessageAttachments = self.isAutoTransferMessageAttachments;
@@ -270,6 +269,7 @@ static ACDDemoOptions *sharedOptions = nil;
     
     retOpt.enableDeliveryAck = self.isAutoDeliveryAck;
     retOpt.enableConsoleLog = YES;
+    retOpt.enableFpa = YES;
     return retOpt;
 }
 

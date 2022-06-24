@@ -45,6 +45,7 @@
 "title.muteList" = "Mute List";
 "title.inviteContacts" = "Invite Contacts";
 "title.addAdmin" = "Add Admin";
+"title.selectMembers" = "Select Members";
 
 //setting title
 "title.setting.about" = "About";
@@ -80,6 +81,7 @@
 //register
 "register.userName.outOfLimit" = "Username length out of limit, maximum 64 bytes";
 "register.password.outOfLimit" = "Password length out of limit, maximum 64 bytes";
+"register.confirm.differentPswd" = "Please enter the same password";
 
 
 //chat
@@ -193,7 +195,7 @@
 "group.groupSubject" = "Group Subject";
 "group.isPublic" = "Appear in group search";
 "group.allowedOccupantInvite" = "Allow members to invite";
-"group.openJoin" = "Authorizated to join";
+"group.openJoin" = "Authorized to join";
 "group.groupType" = "Group Type";
 "group.isOpenJoin" = "need to agree to apply for owner";
 "group.pushNotification" = "Push Notification";
@@ -280,6 +282,8 @@
 "common.open" = "Open";
 "common.searchFailure" = "Search failure.";
 "common.addblackList" = "Add BlockList";
+"common.search" = "search";
+"common.done" = "Done";
 
 //message
 "message.friendapply.agree" = "%@ agreed to add friends to apply";
@@ -353,3 +357,10 @@
 "MultiLanguages" = "Languages";
 "languageSetting" = "Language Setting";
 "prompt" = "Prompt";
+
+// call
+"call.busy" = "The line is busy";
+"call.refuse" = "Request declined";
+"call.noanswer" = "No response";
+"call.otherDeviceAnswer" = "Other devices connected";
+"call.otherDeviceRefuse" = "Other devices declined";
