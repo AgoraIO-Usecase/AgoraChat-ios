@@ -422,7 +422,7 @@
                 alertStr = NSLocalizedString(@"login appserver failure", @"Sign in appserver failure");
             }
             [self updateLoginStateWithStart:NO];
-            finishBlock([_usernameTextField.text lowercaseString], @"", 0, nil);
+            finishBlock([_usernameTextField.text lowercaseString], @"", 0, [AgoraChatError errorWithDescription:alertStr code:AgoraChatErrorGeneral]);
         });
     }];
 }
@@ -808,6 +808,8 @@
     }
     
     return attribute;
+    
+
 }
 
 @end
