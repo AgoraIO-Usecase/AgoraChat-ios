@@ -25,6 +25,8 @@
 #import "ACDChatDetailViewController.h"
 #import "AgoraChatMessageWeakHint.h"
 
+#import "ACDReportMessageViewController.h"
+
 #import "AgoraChatCallKitManager.h"
 #import "AgoraChatCallCell.h"
 #import "AgoraChatCallKit/AgoraChatCallKit.h"
@@ -336,9 +338,21 @@
 //    [self pushThreadListAction];
 }
 
+- (NSMutableArray<EaseExtendMenuModel *> *)messageLongPressExtMenuItemArray:(NSMutableArray<EaseExtendMenuModel*>*)defaultLongPressItems messageModel:(nonnull EaseMessageModel *)messageModel{
+    __weak typeof(self) weakSelf = self;
+    __block EaseMessageModel *msgModel = messageModel;
+    if(msgModel.direction == AgoraChatMessageDirectionReceive) {
+        if (msgModel.message.body.type == AgoraChatMessageBodyTypeText || msgModel.message.body.type == AgoraChatMessageBodyTypeImage || msgModel.message.body.type == AgoraChatMessageBodyTypeFile || msgModel.message.body.type == AgoraChatMessageBodyTypeVideo || msgModel.message.body.type == AgoraChatMessageBodyTypeVoice) {
+            EaseExtendMenuModel *reportItem = [[EaseExtendMenuModel alloc]initWithData:[UIImage imageNamed:@"report"] funcDesc:@"Report" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+                [weakSelf pushToReportMessageViewController:messageModel];
+            }];
+            [defaultLongPressItems addObject:reportItem];
+        }
+    }
+    return defaultLongPressItems;
+}
+
 #pragma mark - AgoraChatMessageCellDelegate
-
-
 - (void)messageCellDidSelected:(EaseMessageCell *)aCell
 {
     if (!aCell.model.message.isReadAcked) {
@@ -360,6 +374,11 @@
 - (void)messageAvatarDidSelected:(EaseMessageModel *)model
 {
     [self personData:model.message.from];
+}
+
+- (void)pushToReportMessageViewController:(EaseMessageModel *)messageModel {
+    ACDReportMessageViewController *vc = [[ACDReportMessageViewController alloc] initWithReportMessage:messageModel];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - data
