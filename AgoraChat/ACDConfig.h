@@ -15,8 +15,8 @@
 
 #if ACDENV == 0
 //美东
-#define Appkey @"86446724#514630"
-#define AppServerHost @"http://a1-vip6.easemob.com"
+#define Appkey @"41117440#383391"
+#define AppServerHost @"http://a41.easemob.com"
 
 #endif
 
