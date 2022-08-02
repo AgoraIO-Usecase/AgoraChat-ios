@@ -258,6 +258,12 @@
 }
 
 - (void)loadMainPage {
+    // update local db group list
+    [[AgoraChatClient sharedClient].groupManager getJoinedGroupsFromServerWithCompletion:^(NSArray *aList, AgoraChatError *aError) {
+        NSArray *ary = [[AgoraChatClient sharedClient].groupManager getJoinedGroups];
+        [AgoraChatClient.sharedClient.chatManager getAllConversations];
+    }];
+    
     AgoraMainViewController *main = [[AgoraMainViewController alloc] init];
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     if (!navigationController || (navigationController && ![navigationController.viewControllers[0] isKindOfClass:[AgoraMainViewController class]])) {

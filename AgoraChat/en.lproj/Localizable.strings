@@ -195,7 +195,7 @@
 "group.groupSubject" = "Group Subject";
 "group.isPublic" = "Appear in group search";
 "group.allowedOccupantInvite" = "Allow members to invite";
-"group.openJoin" = "Authorizated to join";
+"group.openJoin" = "Authorized to join";
 "group.groupType" = "Group Type";
 "group.isOpenJoin" = "need to agree to apply for owner";
 "group.pushNotification" = "Push Notification";
