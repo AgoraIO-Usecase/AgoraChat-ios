@@ -364,3 +364,7 @@
 "call.noanswer" = "No response";
 "call.otherDeviceAnswer" = "Other devices connected";
 "call.otherDeviceRefuse" = "Other devices declined";
+
+//Doraemon
+"Change Env" = "Change Env"
+"Business" = "Business"

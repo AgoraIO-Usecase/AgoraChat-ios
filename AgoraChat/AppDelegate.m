@@ -78,7 +78,7 @@
 
 - (void)initDoraemonKit {
     [[DoraemonManager shareInstance] install];
-    [[DoraemonManager shareInstance] addPluginWithTitle:@"切换环境" icon:@"doraemon_app_info" desc:@"" pluginName:@"DoraemonPluginEnvironment" atModule:@"业务专区"];
+    [[DoraemonManager shareInstance] addPluginWithTitle:NSLocalizedString(@"Change Env", nil) icon:@"doraemon_app_info" desc:@"" pluginName:@"DoraemonPluginEnvironment" atModule:NSLocalizedString(@"Business", nil)];
     [[DoraemonManager shareInstance] hiddenDoraemon];
 }
 
