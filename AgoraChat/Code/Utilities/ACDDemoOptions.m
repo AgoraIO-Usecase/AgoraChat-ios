@@ -266,7 +266,15 @@ static ACDDemoOptions *sharedOptions = nil;
     retOpt.isAutoTransferMessageAttachments = self.isAutoTransferMessageAttachments;
     retOpt.autoDownloadThumbnail = self.isAutoDownloadThumbnail;
     retOpt.sortMessageByServerTime = self.isSortMessageByServerTime;
-    
+    NSString *apnsCertName = nil;
+    #if DEBUG
+        apnsCertName = @"ChatDemoDevPush";
+        [retOpt setPushKitCertName:@"com.easemob.enterprise.demo.ui.voip"];
+    #else
+        apnsCertName = @"ChatDemoProPush";
+        [retOpt setPushKitCertName:@"com.easemob.enterprise.demo.ui.pro.voip"];
+    #endif
+    [retOpt setApnsCertName:apnsCertName];
     retOpt.enableDeliveryAck = self.isAutoDeliveryAck;
     retOpt.enableConsoleLog = YES;
     retOpt.enableFpa = YES;
