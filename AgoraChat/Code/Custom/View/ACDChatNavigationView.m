@@ -11,7 +11,9 @@
 #define kRedPointViewHeight 8.0f
 #define kChatImageViewHeight  34.0f
 
-@interface ACDChatNavigationView ()
+@interface ACDChatNavigationView () {
+    BOOL _isNormal;
+}
 @property (nonatomic, strong) UIImageView* backImageView;
 @property (nonatomic, strong) UIView* redPointView;
 @property (nonatomic, strong) UIButton* leftButton;
@@ -22,9 +24,7 @@
 
 @implementation ACDChatNavigationView
 
-
 - (void)prepare {
-    
     [self addSubview:self.leftButton];
     [self addSubview:self.redPointView];
     [self addSubview:self.chatButton];
