@@ -620,15 +620,6 @@
     [[DoraemonManager shareInstance] showDoraemon];
 }
 
-- (UIView *)titleView
-{
-    if (_titleView == nil) {
-        _titleView = [[UIView alloc]init];
-    }
-    return _titleView;
-}
-
-
 - (UIImageView *)titleImageView {
     if (_titleImageView == nil) {
         _titleImageView = [[UIImageView alloc] init];
