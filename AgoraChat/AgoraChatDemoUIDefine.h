@@ -75,6 +75,7 @@
 #define kAvatarHeight 32.0f
 #define kContactAvatarHeight 40.0f
 #define kSearchBarHeight 32.0
+#define kNavigationRightPadding 16.0f
 
 
 //user
