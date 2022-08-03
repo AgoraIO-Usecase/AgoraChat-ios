@@ -6,11 +6,11 @@
 //  Copyright © 2018 XieYajie. All rights reserved.
 //
 
-#import "EMSDKOptionsViewController.h"
+#import "AgoraSDKOptionsViewController.h"
 
 #import "ACDDemoOptions.h"
 
-@interface EMSDKOptionsViewController ()<UITextFieldDelegate>
+@interface AgoraSDKOptionsViewController ()<UITextFieldDelegate>
 
 @property (nonatomic, copy) void (^finishCompletion)(ACDDemoOptions *aOptions);
 @property (nonatomic) BOOL enableEdit;
@@ -30,7 +30,7 @@
 
 @end
 
-@implementation EMSDKOptionsViewController
+@implementation AgoraSDKOptionsViewController
 
 - (instancetype)initWithEnableEdit:(BOOL)aEnableEdit
                   finishCompletion:(void (^)(ACDDemoOptions *aOptions))aFinishBlock
@@ -87,28 +87,28 @@
     [self.view insertSubview:imageView atIndex:0];
     
     self.backButton = [[UIButton alloc]init];
-    [self.backButton setTitle:@"dismiss" forState:UIControlStateNormal];
-    [self.backButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [self.backButton setTitle:@"Back" forState:UIControlStateNormal];
+    [self.backButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.backButton addTarget:self action:@selector(backBackion) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.backButton];
     [self.backButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(44 + EaseVIEWBOTTOMMARGIN);
-        make.left.equalTo(self.view).offset(24);
+        make.left.equalTo(self.view).offset(10);
         make.height.equalTo(@24);
-        make.width.equalTo(@70);
+        make.width.equalTo(@40);
     }];
     
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.numberOfLines = 0;
     titleLabel.text = NSLocalizedString(@"customServerPrompt", nil);
     titleLabel.font = [UIFont systemFontOfSize:16];
-    titleLabel.textColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
+    titleLabel.textColor = [UIColor blackColor];
     //titleLabel.textColor = [UIColor blueColor];
     titleLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.backButton.mas_bottom).offset(20);
-        make.left.equalTo(self.view).offset(24);
+        make.left.equalTo(self.view).offset(4);
         make.width.equalTo(@170);
         make.height.equalTo(@25);
     }];

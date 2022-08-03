@@ -7,14 +7,14 @@
 //
 
 #import "DoraemonPluginEnvironment.h"
-#import "EMSDKOptionsViewController.h"
+#import "AgoraSDKOptionsViewController.h"
 
 @implementation DoraemonPluginEnvironment
 
 
 
 - (void)pluginDidLoad {
-    EMSDKOptionsViewController *controller = [[EMSDKOptionsViewController alloc] initWithEnableEdit:YES finishCompletion:^(ACDDemoOptions * _Nonnull aOptions) {
+    AgoraSDKOptionsViewController *controller = [[AgoraSDKOptionsViewController alloc] initWithEnableEdit:YES finishCompletion:^(ACDDemoOptions * _Nonnull aOptions) {
         //weakself.appkeyField.text = aOptions.appkey;
     }];
     controller.modalPresentationStyle = 0;

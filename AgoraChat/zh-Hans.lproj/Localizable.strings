@@ -369,3 +369,4 @@
 //Doraemon
 "Change Env" = "切换环境";
 "Business" = "业务专区";
+"customServerPrompt" = "使用自定义服务器？";
