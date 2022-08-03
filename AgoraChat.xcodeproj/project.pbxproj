@@ -58,11 +58,9 @@
 		666BB8A227FC2FD300584D9E /* AgoraChatThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 666BB8A127FC2FD300584D9E /* AgoraChatThreadViewController.m */; };
 		666BB8A627FC305100584D9E /* AgoraChatThreadListNavgation.m in Sources */ = {isa = PBXBuildFile; fileRef = 666BB8A527FC305100584D9E /* AgoraChatThreadListNavgation.m */; };
 		666BB8A927FC7EC300584D9E /* AgoraChatCreateThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 666BB8A827FC7EC300584D9E /* AgoraChatCreateThreadViewController.m */; };
-
-		66855CC6285C502E006B67A9 /* EMSDKOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66855CC3285C502E006B67A9 /* EMSDKOptionsViewController.m */; };
+		66855CC6285C502E006B67A9 /* AgoraSDKOptionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66855CC3285C502E006B67A9 /* AgoraSDKOptionsViewController.m */; };
 		66855CC7285C502E006B67A9 /* EMSDKOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = 66855CC5285C502E006B67A9 /* EMSDKOptions.plist */; };
 		66855CC9285C5259006B67A9 /* huanjingxinxi.png in Resources */ = {isa = PBXBuildFile; fileRef = 66855CC8285C5258006B67A9 /* huanjingxinxi.png */; };
-
 		66D2483E27DDDC7E0060981C /* AgoraChatThreadMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66D2483D27DDDC7E0060981C /* AgoraChatThreadMembersViewController.m */; };
 		66D2484127DDDCF80060981C /* AgoraChatThreadMemberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 66D2484027DDDCF80060981C /* AgoraChatThreadMemberCell.m */; };
 		66D52D9327D7412D006351C5 /* groupThread@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D52D9127D7412D006351C5 /* groupThread@3x.png */; };
@@ -278,6 +276,7 @@
 		C00A004B27C61F4900C7E1BE /* Do not Disturb_whitestroke@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C00A003827C61F4800C7E1BE /* Do not Disturb_whitestroke@2x.png */; };
 		C00A004C27C61F4900C7E1BE /* custom_graystroke@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C00A003927C61F4800C7E1BE /* custom_graystroke@2x.png */; };
 		C00A004E27C62BA500C7E1BE /* go_small_black_mobile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C00A004D27C62BA500C7E1BE /* go_small_black_mobile@2x.png */; };
+		C08474A2289A1447004B52BF /* DoraemonPluginEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = 66855CCB285C5422006B67A9 /* DoraemonPluginEnvironment.m */; };
 		C08C5F9827BFE93300D18CF1 /* PresenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C08C5F9727BFE93200D18CF1 /* PresenceManager.m */; };
 		C08C62C027BFF69D00D18CF1 /* AgoraChatAvatarView.m in Sources */ = {isa = PBXBuildFile; fileRef = C08C62BE27BFF69D00D18CF1 /* AgoraChatAvatarView.m */; };
 		C0CCE49627CB58B3008131B2 /* ACDPresenceSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0CCE49527CB58B3008131B2 /* ACDPresenceSettingViewController.m */; };
@@ -788,8 +787,8 @@
 		666BB8A527FC305100584D9E /* AgoraChatThreadListNavgation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AgoraChatThreadListNavgation.m; sourceTree = "<group>"; };
 		666BB8A727FC7EC300584D9E /* AgoraChatCreateThreadViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AgoraChatCreateThreadViewController.h; sourceTree = "<group>"; };
 		666BB8A827FC7EC300584D9E /* AgoraChatCreateThreadViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AgoraChatCreateThreadViewController.m; sourceTree = "<group>"; };
-		66855CC3285C502E006B67A9 /* EMSDKOptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSDKOptionsViewController.m; sourceTree = "<group>"; };
-		66855CC4285C502E006B67A9 /* EMSDKOptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMSDKOptionsViewController.h; sourceTree = "<group>"; };
+		66855CC3285C502E006B67A9 /* AgoraSDKOptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraSDKOptionsViewController.m; sourceTree = "<group>"; };
+		66855CC4285C502E006B67A9 /* AgoraSDKOptionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraSDKOptionsViewController.h; sourceTree = "<group>"; };
 		66855CC5285C502E006B67A9 /* EMSDKOptions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = EMSDKOptions.plist; sourceTree = "<group>"; };
 		66855CC8285C5258006B67A9 /* huanjingxinxi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = huanjingxinxi.png; sourceTree = "<group>"; };
 		66855CCA285C5422006B67A9 /* DoraemonPluginEnvironment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DoraemonPluginEnvironment.h; sourceTree = "<group>"; };
@@ -1707,8 +1706,6 @@
 			isa = PBXGroup;
 			children = (
 				66250598285C1E1D00B5FC2C /* AgoraChat.framework */,
-				5D4DFE8E28004D2000479F30 /* AgoraChatCallKit.framework */,
-
 				5D25059227F5908400B8113F /* CallKit.framework */,
 				5D25059027F5907F00B8113F /* PushKit.framework */,
 				66926FC12845ABF1006A3FB5 /* CryptoKit.framework */,
@@ -2559,8 +2556,8 @@
 				EC432EB2271D852C001B31DE /* AgoraLoginViewController.h */,
 				EC432EB3271D852C001B31DE /* AgoraLoginViewController.m */,
 				66855CC5285C502E006B67A9 /* EMSDKOptions.plist */,
-				66855CC4285C502E006B67A9 /* EMSDKOptionsViewController.h */,
-				66855CC3285C502E006B67A9 /* EMSDKOptionsViewController.m */,
+				66855CC4285C502E006B67A9 /* AgoraSDKOptionsViewController.h */,
+				66855CC3285C502E006B67A9 /* AgoraSDKOptionsViewController.m */,
 				9E59B208285AD99000DD12BB /* EMRightViewToolView.h */,
 				9E59B209285AD99000DD12BB /* EMRightViewToolView.m */,
 				9ECE6703274271DB007CF85F /* Reachability.m */,
@@ -3984,13 +3981,13 @@
 				"${PODS_ROOT}/GCDWebServer/GCDWebUploader/GCDWebUploader.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/MWPhotoBrowser/MWPhotoBrowser.bundle",
-				"${PODS_ROOT}/../../AgoraChatKit/chat-uikit/Resources/chat-uikit.bundle",
-				"${PODS_ROOT}/../../AgoraChatKit/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomMoreFunctionView.xib",
-				"${PODS_ROOT}/../../AgoraChatKit/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomMoreFunctionViewEmojiCell.xib",
-				"${PODS_ROOT}/../../AgoraChatKit/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomMoreFunctionViewMenuItemCell.xib",
-				"${PODS_ROOT}/../../AgoraChatKit/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomReactionDetailReactionCell.xib",
-				"${PODS_ROOT}/../../AgoraChatKit/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomReactionDetailUserCell.xib",
-				"${PODS_ROOT}/../../AgoraChatKit/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomReactionDetailView.xib",
+				"${PODS_ROOT}/chat-uikit/chat-uikit/Resources/chat-uikit.bundle",
+				"${PODS_ROOT}/chat-uikit/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomMoreFunctionView.xib",
+				"${PODS_ROOT}/chat-uikit/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomMoreFunctionViewEmojiCell.xib",
+				"${PODS_ROOT}/chat-uikit/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomMoreFunctionViewMenuItemCell.xib",
+				"${PODS_ROOT}/chat-uikit/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomReactionDetailReactionCell.xib",
+				"${PODS_ROOT}/chat-uikit/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomReactionDetailUserCell.xib",
+				"${PODS_ROOT}/chat-uikit/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomReactionDetailView.xib",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -4022,7 +4019,7 @@
 				EC54DCE62721502200ABEE3E /* MISScrollPageCollectionView.m in Sources */,
 				9E8B5AD72818ECA2003530C0 /* ACDAvatarNameCell.m in Sources */,
 				9ECE66C3273B6E7C007CF85F /* UserInfoStore.m in Sources */,
-				66855CC6285C502E006B67A9 /* EMSDKOptionsViewController.m in Sources */,
+				66855CC6285C502E006B67A9 /* AgoraSDKOptionsViewController.m in Sources */,
 				7F6CC8E826568C8600BA60BB /* AgoraPushNotificationViewController.m in Sources */,
 				90375D0C287FD21400058AF0 /* ACDReportMessageReasonCell.m in Sources */,
 				EC432EB4271D852C001B31DE /* AgoraLoginViewController.m in Sources */,
@@ -4092,6 +4089,7 @@
 				EC19F5422738C5B600F88012 /* ACDUtil.m in Sources */,
 				3A4BB1CB1ED43D7700B07FCA /* AgoraChatroomBansViewController.m in Sources */,
 				9EED2FDE2818ED3B00D6B11C /* ACDGeneralViewController.m in Sources */,
+				C08474A2289A1447004B52BF /* DoraemonPluginEnvironment.m in Sources */,
 				EC7A3296272E597100AF0C19 /* ACDContainerSearchTableViewController+GroupMemberList.m in Sources */,
 				90155A802876C15900509241 /* ACDReportMessageViewController.m in Sources */,
 				9ECE66CC273B6E7C007CF85F /* AgoraChatRealtimeSearch.m in Sources */,
@@ -4202,7 +4200,6 @@
 				EC7A3236272BADE000AF0C19 /* ACDGroupMemberAllViewController.m in Sources */,
 				7F0516BE269FDF4000B2C795 /* UIViewController+DarkMode.m in Sources */,
 				6639B19427FDA9640066145D /* AgoraChatThreadEditViewController.m in Sources */,
-				66855CCC285C5422006B67A9 /* DoraemonPluginEnvironment.m in Sources */,
 				9E8B5ACC2818EC58003530C0 /* ACDBaseViewController.m in Sources */,
 				9E8B5AA82818EA8A003530C0 /* ACDDemoOptions.m in Sources */,
 				EC7A323C272BAE2500AF0C19 /* ACDGroupMemberBlockListViewController.m in Sources */,

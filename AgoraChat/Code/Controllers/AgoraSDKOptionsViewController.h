@@ -1,5 +1,5 @@
 //
-//  EMSDKOptionsViewController.h
+//  AgoraSDKOptionsViewController.h
 //  ChatDemo-UI3.0
 //
 //  Created by XieYajie on 2018/12/17.
@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class ACDDemoOptions;
-@interface EMSDKOptionsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
+@interface AgoraSDKOptionsViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) UITableView *tableView;
 
