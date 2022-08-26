@@ -39,10 +39,6 @@
                     cmdParams:(NSArray *)params
 {
     AgoraChatCmdMessageBody *body = [[AgoraChatCmdMessageBody alloc] initWithAction:action];
-    
-    if (params) {
-        body.params = params;
-    }
 
     NSString *sender = [[AgoraChatClient sharedClient] currentUsername];
     AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:receiver
