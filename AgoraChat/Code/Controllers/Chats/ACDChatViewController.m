@@ -23,7 +23,13 @@
 #import "AgoraChatThreadListViewController.h"
 #import "PresenceManager.h"
 #import "ACDChatDetailViewController.h"
+#import "AgoraChatMessageWeakHint.h"
 
+#import "ACDReportMessageViewController.h"
+
+#import "AgoraChatCallKitManager.h"
+#import "AgoraChatCallCell.h"
+#import "AgoraChatCallKit/AgoraChatCallKit.h"
 
 @interface ACDChatViewController ()<EaseChatViewControllerDelegate, AgoraChatroomManagerDelegate, AgoraChatGroupManagerDelegate, EaseMessageCellDelegate>
 @property (nonatomic, strong) EaseConversationModel *conversationModel;
@@ -37,6 +43,9 @@
 @property (nonatomic, strong) NSString *conversationId;
 @property (nonatomic, strong) NSArray *contacts;
 
+@property (nonatomic, strong) EaseChatViewModel *viewModel;
+
+
 @end
 
 @implementation ACDChatViewController
@@ -48,19 +57,18 @@
         self.conversationType = conType;
         self.conversationId = conversationId;
         
-        EaseChatViewModel *viewModel = [[EaseChatViewModel alloc]init];
-        viewModel.displaySentAvatar = NO;
-        viewModel.displaySentName = NO;
+        _viewModel = [[EaseChatViewModel alloc]init];
+        _viewModel.displaySentAvatar = NO;
+        _viewModel.displaySentName = NO;
         if (conType != AgoraChatTypeGroupChat) {
-            viewModel.displayReceiverName= NO;
+            _viewModel.displayReceiverName= NO;
         }
       
         _contacts = [[AgoraChatClient sharedClient].contactManager getContacts];
         _chatController = [EaseChatViewController initWithConversationId:conversationId
                                                     conversationType:conType
-                                                        chatViewModel:viewModel];
-
-        [_chatController setTypingIndicator:[ACDDemoOptions sharedOptions].isChatTyping];
+                                                        chatViewModel:_viewModel];
+        [_chatController setEditingStatusVisible:[ACDDemoOptions sharedOptions].isChatTyping];
         _chatController.delegate = self;
     }
     return self;
@@ -76,6 +84,24 @@
     if (_conversation.unreadMessagesCount > 0) {
         [[AgoraChatClient sharedClient].chatManager ackConversationRead:_conversation.conversationId completion:nil];
     }
+    __weak typeof(self)weakSelf = self;
+    [NSNotificationCenter.defaultCenter addObserverForName:AGORA_CHAT_CALL_KIT_COMMMUNICATE_RECORD object:nil queue:NSOperationQueue.mainQueue usingBlock:^(NSNotification * _Nonnull note) {
+        NSArray<AgoraChatMessage *> *messages = (NSArray *)[note.object objectForKey:@"msg"];
+        if (messages && messages.count > 0) {
+            NSMutableArray *messageModels = [NSMutableArray array];
+            for (AgoraChatMessage *message in messages) {
+                EaseMessageModel *model = [[EaseMessageModel alloc] initWithAgoraChatMessage:message];
+                [messageModels addObject:model];
+            }
+            [weakSelf.chatController.dataArray addObjectsFromArray:messageModels];
+            if (!weakSelf.chatController.moreMsgId) {
+                weakSelf.chatController.moreMsgId = messages.firstObject.messageId;
+            }
+            [weakSelf.chatController.tableView reloadData];
+        }
+    }];
+
+    
     [self _updatePresenceStatus];
 }
 
@@ -130,8 +156,8 @@
     if(self.conversation.type == AgoraChatConversationTypeChat) {
         [[PresenceManager sharedInstance] subscribe:@[self.conversationId] completion:nil];
         AgoraChatUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:self.conversation.conversationId];
-        if(userInfo && userInfo.nickName.length > 0)
-            self.titleLabel.text = userInfo.nickName;
+        if(userInfo && userInfo.nickname.length > 0)
+            self.titleLabel.text = userInfo.nickname;
     }
     [titleView addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -158,9 +184,22 @@
 
 
 #pragma mark - EaseChatViewControllerDelegate
+- (UITableViewCell *)cellForItem:(UITableView *)tableView messageModel:(EaseMessageModel *)messageModel {
+    if (messageModel.message.body.type == AgoraChatMessageTypeText) {
+        if ([messageModel.message.ext[@"msgType"] isEqualToString:@"rtcCallWithAgora"]) {
+            NSString *action = messageModel.message.ext[@"action"];
+            if ([action isEqualToString:@"invite"]) {
+                if (messageModel.message.chatType == AgoraChatTypeChat) {
+                    return nil;
+                }
+            }
+            AgoraChatCallCell *cell = [[AgoraChatCallCell alloc] initWithDirection:messageModel.direction chatType:messageModel.message.chatType messageType:messageModel.type viewModel:_viewModel];
+            cell.delegate = self;
+            cell.model = messageModel;
+            return cell;
+        }
+    }
 
-//- (UITableViewCell *)cellForItem:(UITableView *)tableView messageModel:(EaseMessageModel *)messageModel
-//{
 ////    if (messageModel.type == AgoraChatMessageTypePictMixText) {
 ////        AgoraChatMsgPicMixTextBubbleView* picMixBV = [[AgoraChatMsgPicMixTextBubbleView alloc] init];
 ////        [picMixBV setModel:messageModel];
@@ -169,21 +208,48 @@
 ////        cell.delegate = self;
 ////        return cell;
 ////    }
-//
+
 //    if(messageModel.message.body.type == AgoraChatMessageBodyTypeCustom) {
 //        AgoraChatCustomMessageBody* body = (AgoraChatCustomMessageBody*)messageModel.message.body;
 //        if([body.event isEqualToString:@"userCard"]){
-////            AgoraChatUserCardMsgView* userCardMsgView = [[AgoraChatUserCardMsgView alloc] init];
-////            userCardMsgView.backgroundColor = [UIColor whiteColor];
-////            [userCardMsgView setModel:messageModel];
-////            AgoraChatMessageCell* userCardCell = [[AgoraChatMessageCell alloc] initWithDirection:messageModel.direction type:messageModel.type msgView:userCardMsgView];
-////            userCardCell.model = messageModel;
-////            userCardCell.delegate = self;
-////            return userCardCell;
+//            AgoraChatUserCardMsgView* userCardMsgView = [[AgoraChatUserCardMsgView alloc] init];
+//            userCardMsgView.backgroundColor = [UIColor whiteColor];
+//            [userCardMsgView setModel:messageModel];
+//            AgoraChatMessageCell* userCardCell = [[AgoraChatMessageCell alloc] initWithDirection:messageModel.direction type:messageModel.type msgView:userCardMsgView];
+//            userCardCell.model = messageModel;
+//            userCardCell.delegate = self;
+//            return userCardCell;
 //        }
 //    }
-//    return nil;
-//}
+    
+    if (messageModel.message.body.type == AgoraChatMessageTypeText) {
+            if ([messageModel.message.ext[@"msgType"] isEqualToString:@"rtcCallWithAgora"]) {
+                NSString *action = messageModel.message.ext[@"action"];
+                if ([action isEqualToString:@"invite"]) {
+                    if (messageModel.message.chatType == AgoraChatTypeChat) {
+                        return nil;
+                    }
+                }
+                AgoraChatCallCell *cell = [[AgoraChatCallCell alloc] initWithDirection:messageModel.direction chatType:messageModel.message.chatType messageType:messageModel.type viewModel:_viewModel];
+                cell.delegate = self;
+                cell.model = messageModel;
+                return cell;
+            }
+        }
+
+    //@{kMSG_EXT_NEWNOTI : kNOTI_EXT_ADDGROUP, kNOTI_EXT_USERID : mutableStr}
+    if (messageModel.message.body.type == AgoraChatMessageBodyTypeText) {
+        if ([[messageModel.message.ext objectForKey:kMSG_EXT_NEWNOTI] isEqualToString:kNOTI_EXT_ADDFRIEND]) {
+            AgoraChatMessageWeakHint *weakHintCell = [[AgoraChatMessageWeakHint alloc]initWithMessageModel:messageModel];
+            return weakHintCell;
+        }
+        if ([[messageModel.message.ext objectForKey:kMSG_EXT_NEWNOTI] isEqualToString:kNOTI_EXT_ADDGROUP]) {
+            AgoraChatMessageWeakHint *weakHintCell = [[AgoraChatMessageWeakHint alloc]initWithMessageModel:messageModel];
+            return weakHintCell;
+        }
+    }
+    return nil;
+}
 
 //typing 1v1 single chat only
 - (void)peerTyping
@@ -216,6 +282,9 @@
     if(userInfo) {
         model = [[AgoraChatUserDataModel alloc]initWithUserInfo:userInfo];
     }else{
+        AgoraChatUserInfo* userInfo = [[AgoraChatUserInfo alloc]init];
+        userInfo.userId = huanxinID;
+        model = [[AgoraChatUserDataModel alloc]initWithUserInfo:userInfo];
         [[UserInfoStore sharedInstance] fetchUserInfosFromServer:@[huanxinID]];
     }
     return model;
@@ -284,19 +353,47 @@
 //    [self pushThreadListAction];
 }
 
+- (NSMutableArray<EaseExtendMenuModel *> *)messageLongPressExtMenuItemArray:(NSMutableArray<EaseExtendMenuModel*>*)defaultLongPressItems messageModel:(nonnull EaseMessageModel *)messageModel{
+    __weak typeof(self) weakSelf = self;
+    __block EaseMessageModel *msgModel = messageModel;
+    if(msgModel.direction == AgoraChatMessageDirectionReceive) {
+        if (msgModel.message.body.type == AgoraChatMessageBodyTypeText || msgModel.message.body.type == AgoraChatMessageBodyTypeImage || msgModel.message.body.type == AgoraChatMessageBodyTypeFile || msgModel.message.body.type == AgoraChatMessageBodyTypeVideo || msgModel.message.body.type == AgoraChatMessageBodyTypeVoice) {
+            EaseExtendMenuModel *reportItem = [[EaseExtendMenuModel alloc]initWithData:[UIImage imageNamed:@"report"] funcDesc:@"Report" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+                [weakSelf pushToReportMessageViewController:messageModel];
+            }];
+            [defaultLongPressItems addObject:reportItem];
+        }
+    }
+    return defaultLongPressItems;
+}
+
 #pragma mark - AgoraChatMessageCellDelegate
-
-
 - (void)messageCellDidSelected:(EaseMessageCell *)aCell
 {
     if (!aCell.model.message.isReadAcked) {
         [[AgoraChatClient sharedClient].chatManager sendMessageReadAck:aCell.model.message.messageId toUser:aCell.model.message.conversationId completion:nil];
     }
+    
+    // TODO: fz 点击加入房间放到下次迭代了
+//    if ([aCell.model.message.ext[@"msgType"] isEqualToString:@"rtcCallWithAgora"]) {
+//        NSString *action = aCell.model.message.ext[@"action"];
+//        if ([action isEqualToString:@"invite"]) {
+//            if (aCell.model.message.chatType == AgoraChatTypeGroupChat) {
+//                [AgoraChatCallKitManager.shareManager joinToMutleCall:aCell.model.message];
+//            }
+//        }
+//    }
+    
 }
 
 - (void)messageAvatarDidSelected:(EaseMessageModel *)model
 {
     [self personData:model.message.from];
+}
+
+- (void)pushToReportMessageViewController:(EaseMessageModel *)messageModel {
+    ACDReportMessageViewController *vc = [[ACDReportMessageViewController alloc] initWithReportMessage:messageModel];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - data
@@ -438,21 +535,61 @@
 - (ACDChatNavigationView *)navigationView {
     if (_navigationView == nil) {
         _navigationView = [[ACDChatNavigationView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 80.0f)];
-        _navigationView.rightButton.hidden = self.conversationType != AgoraChatTypeGroupChat;
         _navigationView.leftLabel.text = self.navTitle;
+        if (self.conversationType == AgoraChatConversationTypeGroupChat) {
+            _navigationView.chatImageView.layer.cornerRadius = 0;
+            [_navigationView.chatImageView setImage:ImageWithName(@"group_default_avatar")];
+        }
+        if (self.conversationType == AgoraChatConversationTypeChat) {
+            UIImage *originImage = nil;
+            NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+            NSString *imageName = [userDefault objectForKey:self.conversationId];
+            if (imageName && imageName.length > 0) {
+                originImage = ImageWithName(imageName);
+            } else {
+                int random = arc4random() % 7 + 1;
+                NSString *imgName = [NSString stringWithFormat:@"defatult_avatar_%@",@(random)];
+                [userDefault setObject:imgName forKey:self.conversationId];
+                originImage = ImageWithName(imgName);
+                [userDefault synchronize];
+            }
+            
+            [_navigationView.chatImageView setImage:originImage];
+        }
         ACD_WS
         _navigationView.leftButtonBlock = ^{
             [weakSelf backAction];
         };
-        [_navigationView rightItemImageWithType:self.conversationType];
-        [_navigationView setRightButtonBlock:^{
-            [weakSelf pushThreadListAction];
-        }];
+        
+//        _navigationView.rightButton.hidden = NO;
+//        [_navigationView.rightButton setImage:ImageWithName(@"nav_chat_right_bar") forState:UIControlStateNormal];
+//        _navigationView.rightButtonBlock = ^{
+//            [weakSelf goChatDetailPage];
+//        };
+        
+        if (self.conversationType == AgoraChatConversationTypeChat) {
+            _navigationView.rightButton.hidden = NO;
+            [_navigationView.rightButton setImage:[UIImage imageNamed:@"nav_bar_call"] forState:UIControlStateNormal];
+            _navigationView.rightButtonBlock = ^{
+                [weakSelf callAction];
+            };
+        } else {
+            _navigationView.rightButton.hidden = NO;
+            [_navigationView.rightButton setImage:ImageWithName(@"groupThread") forState:UIControlStateNormal];
+            _navigationView.rightButtonBlock = ^{
+                [weakSelf pushThreadListAction];
+            };
+            
+            _navigationView.rightButton2.hidden = NO;
+            [_navigationView.rightButton2 setImage:[UIImage imageNamed:@"nav_bar_call"] forState:UIControlStateNormal];
+            _navigationView.rightButtonBlock2 = ^{
+                [weakSelf callAction];
+            };
+        }
         _navigationView.chatButtonBlock = ^{
             [weakSelf goInfoPage];
         };
         _navigationView.tag = -1999;
-
     }
     return _navigationView;
 }
@@ -468,6 +605,26 @@
     }];
 }
 
+- (void)callAction {
+    __weak typeof(self)weakSelf = self;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Audio Call" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (weakSelf.conversationType == AgoraChatConversationTypeChat) {
+            [AgoraChatCallKitManager.shareManager audioCallToUser:weakSelf.conversationId];
+        } else {
+            [AgoraChatCallKitManager.shareManager audioCallToGroup:weakSelf.conversationId viewController:weakSelf];
+        }
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Video Call" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (weakSelf.conversationType == AgoraChatConversationTypeChat) {
+            [AgoraChatCallKitManager.shareManager videoCallToUser:weakSelf.conversationId];
+        } else {
+            [AgoraChatCallKitManager.shareManager videoCallToGroup:weakSelf.conversationId viewController:weakSelf];
+        }
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    [weakSelf presentViewController:alertController animated:YES completion:nil];
+}
 
 - (void)goInfoPage {
     if (self.conversationType == AgoraChatConversationTypeChat) {

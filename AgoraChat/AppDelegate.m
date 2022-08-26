@@ -18,18 +18,19 @@
 #import "AgoraChatHttpRequest.h"
 
 #import <AgoraChat/AgoraChatOptions+PrivateDeploy.h>
+#import "AgoraChatCallKitManager.h"
 #import "PresenceManager.h"
-
-
+#import <DoraemonKit/DoraemonKit.h>
 @interface AppDelegate () <AgoraChatClientDelegate,UNUserNotificationCenterDelegate>
+
 @property (nonatomic, strong) NSString *userName;
 @property (nonatomic, strong) NSString *nickName;
 
+@property (nonatomic, strong) AgoraChatCallKitManager *callKitManager;
+
 @end
 
-
 @implementation AppDelegate
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -46,7 +47,7 @@
         [[UINavigationBar appearance] setTintColor:AlmostBlackColor];
         [[UINavigationBar appearance] setTranslucent:NO];
     }
-            
+    
     [self initAccount];
     [self initUIKit];
         
@@ -65,8 +66,20 @@
     
     [self _registerAPNS];
     [self registerNotifications];
-
+    
+    NSUserDefaults *shareDefault = [NSUserDefaults standardUserDefaults];
+    NSNumber *agoraUid = [shareDefault objectForKey:USER_AGORA_UID];
+    if (agoraUid) {
+        [AgoraChatCallKitManager.shareManager updateAgoraUid:agoraUid.integerValue];
+    }
+    [self initDoraemonKit];
     return YES;
+}
+
+- (void)initDoraemonKit {
+    [[DoraemonManager shareInstance] install];
+    [[DoraemonManager shareInstance] addPluginWithTitle:NSLocalizedString(@"Change Env", nil) icon:@"doraemon_app_info" desc:@"" pluginName:@"DoraemonPluginEnvironment" atModule:NSLocalizedString(@"Business", nil)];
+    [[DoraemonManager shareInstance] hiddenDoraemon];
 }
 
 - (void)initAccount
@@ -79,25 +92,28 @@
 - (void)initUIKit
 {
     AgoraChatOptions *options = [AgoraChatOptions optionsWithAppkey:Appkey];
-    
+
     // Hyphenate cert keys
-    NSString *apnsCertName = nil;
-#if ChatDemo_DEBUG
-    apnsCertName = @"ChatDemoDevPush";
-#else
-    apnsCertName = @"ChatDemoProPush";
-#endif
-    
-    [options setApnsCertName:apnsCertName];
-    [options setEnableDeliveryAck:YES];
-    [options setEnableConsoleLog:YES];
-    [options setIsDeleteMessagesWhenExitGroup:NO];
-    [options setIsDeleteMessagesWhenExitChatRoom:NO];
-    [options setUsingHttpsOnly:YES];
-    [options setIsAutoLogin:YES];
+//    NSString *apnsCertName = nil;
+//#if DEBUG
+//    apnsCertName = @"ChatDemoDevPush";
+//    [options setPushKitCertName:@"com.easemob.enterprise.demo.ui.voip"];
+//#else
+//    apnsCertName = @"ChatDemoProPush";
+//    [options setPushKitCertName:@"com.easemob.enterprise.demo.ui.pro.voip"];
+//#endif
+//
+//    [options setApnsCertName:apnsCertName];
+//
+//    [options setEnableDeliveryAck:YES];
+//    [options setEnableConsoleLog:YES];
+//    [options setIsDeleteMessagesWhenExitGroup:NO];
+//    [options setIsDeleteMessagesWhenExitChatRoom:NO];
+//    [options setUsingHttpsOnly:YES];
+//    [options setIsAutoLogin:YES];
 
 #warning 国内部署设置
-    [self internalSpecOption:options];
+    //[self internalSpecOption:options];
     
 //    [EaseChatKitManager initWithAgoraChatOptions:options];
 
@@ -110,6 +126,10 @@
     option.restServer = @"https://a1-test.easemob.com";
     option.chatServer = @"52.80.99.104";
     option.chatPort = 6717;
+    
+    [option setRestServer:@"http://a1-test.easemob.com"];
+    [option setChatServer:@"52.80.99.104"];
+    [option setChatPort:6717];
 }
 
 - (void)loadViewController {
@@ -141,7 +161,8 @@
 {
     if (aErrorCode == AgoraChatErrorTokeWillExpire) {
         NSLog(@"%@", [NSString stringWithFormat:@"========= token expire rennew token ! code : %d",aErrorCode]);
-        [[AgoraChatHttpRequest sharedManager] loginToApperServer:self.userName nickName:self.nickName completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+        NSUserDefaults *shareDefault = [NSUserDefaults standardUserDefaults];
+        [[AgoraChatHttpRequest sharedManager] loginToApperServer:self.userName pwd:[shareDefault objectForKey:USER_PWD] completion:^(NSInteger statusCode, NSString * _Nonnull response) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSString *alertStr = nil;
                 if (response && response.length > 0) {
@@ -208,9 +229,11 @@
             [alertError show];
         };
         
-        if (self.userName.length == 0 || self.nickName.length == 0) return;
+        NSUserDefaults *shareDefault = [NSUserDefaults standardUserDefaults];
+        NSString *pwd = [shareDefault objectForKey:USER_PWD];
+        if (self.userName.length == 0 || pwd.length == 0) return;
         //unify token login
-        [[AgoraChatHttpRequest sharedManager] loginToApperServer:self.userName nickName:self.nickName completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+        [[AgoraChatHttpRequest sharedManager] loginToApperServer:self.userName pwd:pwd completion:^(NSInteger statusCode, NSString * _Nonnull response) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSString *alertStr = nil;
                 if (response && response.length > 0) {
@@ -235,6 +258,12 @@
 }
 
 - (void)loadMainPage {
+    // update local db group list
+    [[AgoraChatClient sharedClient].groupManager getJoinedGroupsFromServerWithCompletion:^(NSArray *aList, AgoraChatError *aError) {
+        NSArray *ary = [[AgoraChatClient sharedClient].groupManager getJoinedGroups];
+        [AgoraChatClient.sharedClient.chatManager getAllConversations];
+    }];
+    
     AgoraMainViewController *main = [[AgoraMainViewController alloc] init];
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     if (!navigationController || (navigationController && ![navigationController.viewControllers[0] isKindOfClass:[AgoraMainViewController class]])) {

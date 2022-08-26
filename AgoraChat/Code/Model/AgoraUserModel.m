@@ -22,11 +22,30 @@
         _hyphenateId = hyphenateId;
         _nickname = @"";
 
-        _defaultAvatarImage = [UIImage imageWithColor:[self generateRandomColor] size:CGSizeMake(40.0, 40.0)];
+        //_defaultAvatarImage = [UIImage imageWithColor:[self generateRandomColor] size:CGSizeMake(40.0, 40.0)];
+        _defaultAvatarImage = [self defaultImage];
         
         [self fetchUserInfoData];
     }
     return self;
+}
+
+- (UIImage *)defaultImage {
+    UIImage *originImage = nil;
+    
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    NSString *imageName = [userDefault objectForKey:_hyphenateId];
+    if (imageName && imageName.length > 0) {
+        originImage = ImageWithName(imageName);
+    } else {
+        int random = arc4random() % 7 + 1;
+        NSString *imgName = [NSString stringWithFormat:@"defatult_avatar_%@",@(random)];
+        [userDefault setObject:imgName forKey:_hyphenateId];
+        originImage = ImageWithName(imgName);
+        [userDefault synchronize];
+    }
+    
+    return [originImage acd_scaleToAssignSize:CGSizeMake(kAvatarHeight, kAvatarHeight)];
 }
 
 - (void)fetchUserInfoData {
@@ -42,7 +61,7 @@
         dispatch_semaphore_signal(sema);
     }];
     dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
-    self.nickname = self.userInfo.nickName ? : _hyphenateId;
+    self.nickname = self.userInfo.nickname ? : _hyphenateId;
     self.avatarURLPath = self.userInfo.avatarUrl ? : @"";
     
 }

@@ -11,7 +11,9 @@
 #import "UserInfoStore.h"
 #import "Reachability.h"
 #import "UIViewController+ComponentSize.h"
-
+#import "AgoraChatCallKitManager.h"
+#import "EMRightViewToolView.h"
+#import <DoraemonKit/DoraemonKit.h>
 #define kLoginButtonHeight 48.0f
 #define kMaxLimitLength 64
 
@@ -20,15 +22,23 @@
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIImageView *logoImageView;
 @property (nonatomic, strong) UIImageView* titleImageView;
+@property (nonatomic, strong) UILabel *titleRegisterMarkLabel;
 @property (nonatomic, strong) UIView *hintView;
 @property (nonatomic, strong) UILabel *hintTitleLabel;
 @property (nonatomic, strong) UITextField *usernameTextField;
 @property (nonatomic, strong) UITextField *passwordTextField;
+@property (nonatomic, strong) UITextField *passwordConfirmTextField;
 @property (nonatomic, strong) UIButton *loginButton;
+
+@property (nonatomic, strong) EMRightViewToolView *confirmPswdRightView;
+@property (nonatomic, strong) EMRightViewToolView *pswdRightView;
+@property (nonatomic, strong) EMRightViewToolView *userIdRightView;
 
 @property (nonatomic, strong) UIButton *registerButton;
 @property (nonatomic, strong) UIImageView *loadingImageView;
 @property (nonatomic, assign) CGFloat loadingAngle;
+
+@property (nonatomic, strong) UIButton *operateTypeButton;
 
 @end
 
@@ -71,7 +81,9 @@
     [self.contentView addSubview:self.hintView];
     [self.contentView addSubview:self.usernameTextField];
     [self.contentView addSubview:self.passwordTextField];
+    [self.contentView addSubview:self.passwordConfirmTextField];
     [self.contentView addSubview:self.loginButton];
+    [self.contentView addSubview:self.operateTypeButton];
 
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
@@ -85,17 +97,13 @@
     [self.titleImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.logoImageView.mas_bottom).offset(20);
         make.centerX.equalTo(self.contentView);
-//        make.width.equalTo(@108);
-//        make.height.equalTo(@29);
-        
     }];
-        
-    [self.hintView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titleImageView.mas_bottom).offset(63);
-        make.centerX.equalTo(self.contentView);
-        make.height.equalTo(@20);
-    }];
-    self.hintView.hidden = YES;
+    
+//    [self.titleRegisterMarkLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerY.equalTo(self.titleImageView);
+//        make.left.equalTo(self.titleImageView.mas_right).offset(4);
+//        make.width.equalTo(@90);
+//    }];
     
     [self.usernameTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.titleImageView.mas_bottom).offset(95);
@@ -104,10 +112,24 @@
         make.height.equalTo(@kLoginButtonHeight);
     }];
     
+    [self.hintView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.usernameTextField.mas_top).offset(-10);
+        make.centerX.equalTo(self.contentView);
+        make.height.equalTo(@20);
+    }];
+    self.hintView.hidden = YES;
+    
     [self.passwordTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_usernameTextField.mas_bottom).offset(20);
         make.left.equalTo(self.usernameTextField);
         make.right.equalTo(self.usernameTextField);
+        make.height.equalTo(@kLoginButtonHeight);
+    }];
+    
+    [self.passwordConfirmTextField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_passwordTextField.mas_bottom).offset(20);
+        make.left.equalTo(self.passwordTextField);
+        make.right.equalTo(self.passwordTextField);
         make.height.equalTo(@kLoginButtonHeight);
     }];
     
@@ -118,6 +140,14 @@
         make.height.equalTo(@kLoginButtonHeight);
     }];
     
+    [self.operateTypeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.loginButton.mas_bottom).offset(kAgroaPadding * 2);
+        make.left.equalTo(self.loginButton);
+        make.right.equalTo(self.loginButton);
+        make.height.equalTo(@kLoginButtonHeight);
+    }];
+    
+    self.passwordConfirmTextField.hidden = YES;
 }
 
 #pragma mark - UITextFieldDelegate
@@ -175,7 +205,11 @@
             [self startAnimation];
             
         }else {
-            [self.loginButton setTitle:@"Log In" forState:UIControlStateNormal];
+            if (self.operateTypeButton.tag == 0) {
+                [self.loginButton setTitle:@"Log In" forState:UIControlStateNormal];
+            } else {
+                [self.loginButton setTitle:@"Register" forState:UIControlStateNormal];
+            }
             self.loadingImageView.hidden = YES;
         }
     });
@@ -215,17 +249,81 @@
     return YES;
 }
 
+- (void)changeOperate:(UIButton *)aButton
+{
+    self.hintView.hidden = YES;
+    self.hintTitleLabel.text = @"";
+    if (aButton.tag == 0) {
+        //self.titleRegisterMarkLabel.hidden = NO;
+//        [self.titleImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.centerX.equalTo(self.titleView).offset(- 47);
+//        }];
+        
+        self.titleImageView.image = ImageWithName(@"login.bundle/register_agoraChat");
+        
+        [self.usernameTextField mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.titleImageView.mas_bottom).offset(65);
+            make.left.equalTo(self.contentView).offset(24);
+            make.right.equalTo(self.contentView).offset(-24);
+            make.height.equalTo(@kLoginButtonHeight);
+        }];
+        
+        self.passwordConfirmTextField.hidden = NO;
+        [self.loginButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.passwordConfirmTextField.mas_bottom).offset(kAgroaPadding * 2);
+            make.left.equalTo(self.usernameTextField);
+            make.right.equalTo(self.usernameTextField);
+            make.height.equalTo(@kLoginButtonHeight);
+        }];
+        
+        aButton.tag = 1;
+        [self.loginButton setTitle:@"Set Up" forState:UIControlStateNormal];
+        [self.operateTypeButton setAttributedTitle:[self attributeText:@"Back to Login" key:@"Back to Login"] forState:UIControlStateNormal];
+    } else {
+//        self.titleRegisterMarkLabel.hidden = YES;
+//        [self.titleImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.centerX.equalTo(self.titleView);
+//        }];
+        self.titleImageView.image = ImageWithName(@"login.bundle/login_agoraChat");
+        
+        [self.usernameTextField mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.titleImageView.mas_bottom).offset(95);
+            make.left.equalTo(self.contentView).offset(24);
+            make.right.equalTo(self.contentView).offset(-24);
+            make.height.equalTo(@kLoginButtonHeight);
+        }];
+        
+        self.passwordConfirmTextField.hidden = YES;
+        [self.loginButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.passwordTextField.mas_bottom).offset(kAgroaPadding * 2);
+            make.left.equalTo(self.usernameTextField);
+            make.right.equalTo(self.usernameTextField);
+            make.height.equalTo(@kLoginButtonHeight);
+        }];
+        
+        aButton.tag = 0;
+        [self.loginButton setTitle:@"Log In" forState:UIControlStateNormal];
+        [self.operateTypeButton setAttributedTitle:[self attributeText:@"No account? Register" key:@"Register"] forState:UIControlStateNormal];
+    }
+}
 
 - (void)doLogin {
     
     if (![self conecteNetwork]) {
         self.hintView.hidden = NO;
-        self.hintTitleLabel.text = NSLocalizedString(@"login.networkReachable", @"Network disconnected.");
+        self.hintTitleLabel.text = NSLocalizedString(@"networkReachable", @"Network disconnected.");
         return;
     }
     
     if ([self _isEmpty]) {
         return;
+    }
+    if (self.operateTypeButton.tag == 1) {
+        if (![_passwordTextField.text isEqualToString:_passwordConfirmTextField.text]) {
+            self.hintView.hidden = NO;
+            self.hintTitleLabel.text = NSLocalizedString(@"register.confirm.differentPswd", @"Please enter the same password");
+            return;
+        }
     }
     [self.view endEditing:YES];
         
@@ -233,32 +331,41 @@
     self.hintView.hidden = YES;
     self.hintTitleLabel.text = @"";
     
-    void (^finishBlock) (NSString *aName, NSString *nickName, AgoraChatError *aError) = ^(NSString *aName, NSString *nickName, AgoraChatError *aError) {
+    if (self.operateTypeButton.tag == 1) {
+        [self doRegister];
+        return;
+    }
+    
+    void (^finishBlock) (NSString *aName, NSString *nickName, NSInteger agoraUid, AgoraChatError *aError) = ^(NSString *aName, NSString *nickName, NSInteger agoraUid, AgoraChatError *aError) {
         if (!aError) {
             if (nickName) {
-//                [AgoraChatClient.sharedClient.userInfoManager updateOwnUserInfo:nickName withType:AgoraChatUserInfoTypeNickName completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
-//                    if (!aError) {
-//                        [self updateLoginStateWithStart:NO];
-//
-//                        [UserInfoStore.sharedInstance setUserInfo:aUserInfo forId:aName];
-//                        [[NSNotificationCenter defaultCenter] postNotificationName:USERINFO_UPDATE  object:nil userInfo:@{USERINFO_LIST:@[aUserInfo]}];
-//                    }
-//                }];
-//                if (aError.code == 204) {
-//                    [AgoraChatClient.sharedClient registerWithUsername:self.usernameTextField.text password:self.passwordTextField.text];
-//                } else {
+                [AgoraChatClient.sharedClient.userInfoManager updateOwnUserInfo:nickName withType:AgoraChatUserInfoTypeNickName completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
+                    if (!aError) {
+                        [self updateLoginStateWithStart:NO];
+
+                        [UserInfoStore.sharedInstance setUserInfo:aUserInfo forId:aName];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:USERINFO_UPDATE  object:nil userInfo:@{USERINFO_LIST:@[aUserInfo]}];
+                    }
+                }];
+                if (aError.code == 204) {
+                    [AgoraChatClient.sharedClient registerWithUsername:self.usernameTextField.text password:self.passwordTextField.text];
+                } else {
                 
-//                }
+                }
             }
             
             NSUserDefaults *shareDefault = [NSUserDefaults standardUserDefaults];
             [shareDefault setObject:aName forKey:USER_NAME];
             [shareDefault setObject:nickName forKey:USER_NICKNAME];
+            [shareDefault setObject:@(agoraUid) forKey:USER_AGORA_UID];
+            [shareDefault setObject:self.passwordTextField.text forKey:USER_PWD];
             [shareDefault synchronize];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.hintView.hidden = YES;
                 self.hintTitleLabel.text = @"";
+                [AgoraChatCallKitManager.shareManager updateAgoraUid:agoraUid];
+                [self updateLoginStateWithStart:NO];
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@YES userInfo:@{@"userName":aName,@"nickName":!nickName ? @"" : nickName}];
             });
@@ -288,52 +395,69 @@
         
         self.hintView.hidden = NO;
         self.hintTitleLabel.text = errorDes;
+        [self updateLoginStateWithStart:NO];
     };
-    [AgoraChatClient.sharedClient loginWithUsername:self.usernameTextField.text password:self.passwordTextField.text completion:^(NSString *aUsername, AgoraChatError *aError) {
-        if (!aError) {
-            [self updateLoginStateWithStart:NO];
-            AgoraChatUserInfo *user = [AgoraChatUserInfo new];
-            user.userId = aUsername;
-            user.nickname = @"";
-            [UserInfoStore.sharedInstance setUserInfo:user forId:aUsername];
-            [[NSNotificationCenter defaultCenter] postNotificationName:USERINFO_UPDATE  object:nil userInfo:@{USERINFO_LIST:@[user]}];
-            
-            finishBlock([_usernameTextField.text lowercaseString], [_passwordTextField.text lowercaseString], nil);
-        }
-    }];
-//    finishBlock([_usernameTextField text],[_passwordTextField text],nil);
-    //unify token login
-//    [[AgoraChatHttpRequest sharedManager] loginToApperServer:[_usernameTextField.text lowercaseString] nickName:_passwordTextField.text completion:^(NSInteger statusCode, NSString * _Nonnull response) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            NSString *alertStr = nil;
-//            if (response && response.length > 0 && statusCode) {
-//                NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
-//                NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-//                NSString *token = [responsedict objectForKey:@"accessToken"];
-//                NSString *loginName = [responsedict objectForKey:@"chatUserName"];
-//                NSString *nickName = [responsedict objectForKey:@"chatUserNickname"];
-//                if (token && token.length > 0) {
-//                    [[AgoraChatClient sharedClient] loginWithUsername:[loginName lowercaseString] agoraToken:token completion:^(NSString *aUsername, AgoraChatError *aError) {
-//                        finishBlock(aUsername, nickName, aError);
-//                    }];
-//                    return;
-//                } else {
-//                    alertStr = NSLocalizedString(@"login analysis token failure", @"analysis token failure");
-//                }
-//            } else {
-//                alertStr = NSLocalizedString(@"login appserver failure", @"Sign in appserver failure");
-//            }
-//
-//            [self updateLoginStateWithStart:NO];
-//
-//            self.hintView.hidden = NO;
-//            self.hintTitleLabel.text = alertStr;
-//
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:alertStr delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"loginAppServer.ok", @"Ok"), nil];
-//            [alert show];
-//        });
-//    }];
     
+    //unify token login
+    [[AgoraChatHttpRequest sharedManager] loginToApperServer:[_usernameTextField.text lowercaseString] pwd:_passwordTextField.text completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString *alertStr = nil;
+            if (response && response.length > 0 && statusCode) {
+                NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+                NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+                NSString *token = [responsedict objectForKey:@"accessToken"];
+                NSString *loginName = [responsedict objectForKey:@"chatUserName"];
+                NSString *nickName = [responsedict objectForKey:@"chatUserNickname"];
+                NSInteger agoraUid = [responsedict[@"agoraUid"] integerValue];
+
+                if (token && token.length > 0) {
+                    [[AgoraChatClient sharedClient] loginWithUsername:[loginName lowercaseString] agoraToken:token completion:^(NSString *aUsername, AgoraChatError *aError) {
+                        finishBlock(aUsername, nickName, agoraUid, aError);
+                    }];
+                    return;
+                } else {
+                    alertStr = NSLocalizedString(@"login analysis token failure", @"analysis token failure");
+                }
+            } else {
+                alertStr = NSLocalizedString(@"login appserver failure", @"Sign in appserver failure");
+            }
+            [self updateLoginStateWithStart:NO];
+            finishBlock([_usernameTextField.text lowercaseString], @"", 0, [AgoraChatError errorWithDescription:alertStr code:AgoraChatErrorGeneral]);
+        });
+    }];
+}
+
+- (void)doRegister
+{
+    [[AgoraChatHttpRequest sharedManager] registerToApperServer:[_usernameTextField.text lowercaseString] pwd:_passwordTextField.text completion:^(NSInteger statusCode, NSString * _Nonnull response) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString *alertStr = nil;
+            BOOL isRegisterSuccess = NO;
+            if (response && response.length > 0 && statusCode) {
+                NSData *responseData = [response dataUsingEncoding:NSUTF8StringEncoding];
+                NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+                NSString *result = [responsedict objectForKey:@"code"];
+                if ([result isEqualToString:@"RES_OK"]) {
+                    isRegisterSuccess = YES;
+                    alertStr = NSLocalizedString(@"register appserver success", @"Register appserver success");
+                } else {
+                    alertStr = NSLocalizedString(@"register appserver failure", @"Sign in appserver failure");
+                }
+            } else {
+                alertStr = NSLocalizedString(@"register appserver failure", @"Sign in appserver failure");
+            }
+            
+            [self updateLoginStateWithStart:NO];
+            
+            if (!isRegisterSuccess) {
+                self.hintView.hidden = NO;
+                self.hintTitleLabel.text = alertStr;
+            }
+
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:alertStr delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"RegisterAppServer.ok", @"Ok"), nil];
+            [alert show];
+        });
+    }];
 }
 
 #pragma mark - notification
@@ -401,7 +525,80 @@
     }];
 }
 
+#pragma mark Action
 
+//clear user id
+- (void)clearUserIdAction
+{
+    self.usernameTextField.text = @"";
+    self.userIdRightView.hidden = YES;
+}
+
+//hidden show pwd
+- (void)pswdSecureAction:(UIButton *)aButton
+{
+    aButton.selected = !aButton.selected;
+    self.passwordTextField.secureTextEntry = !self.passwordTextField.secureTextEntry;
+}
+
+//hidden show confirm pwd
+- (void)confirmPswdSecureAction:(UIButton *)aButton
+{
+    aButton.selected = !aButton.selected;
+    self.passwordConfirmTextField.secureTextEntry = !self.passwordConfirmTextField.secureTextEntry;
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (textField == self.usernameTextField && [self.usernameTextField.text length] == 0) {
+        self.userIdRightView.hidden = YES;
+    }
+    if (textField == self.passwordTextField && [self.passwordTextField.text length] == 0) {
+        self.pswdRightView.hidden = YES;
+    }
+    if (textField == self.passwordConfirmTextField && [self.passwordConfirmTextField.text length] == 0) {
+        self.confirmPswdRightView.hidden = YES;
+    }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if ([string isEqualToString:@"\n"]) {
+        [textField resignFirstResponder];
+        return NO;
+    }
+    if (textField == self.usernameTextField) {
+        self.userIdRightView.hidden = NO;
+        if ([self.usernameTextField.text length] <= 1 && [string isEqualToString:@""])
+            self.userIdRightView.hidden = YES;
+    }
+    if (textField == self.passwordTextField) {
+        NSString *updatedString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        textField.text = updatedString;
+        self.pswdRightView.hidden = NO;
+        if ([self.passwordTextField.text length] <= 0 && [string isEqualToString:@""]) {
+            self.pswdRightView.hidden = YES;
+            self.passwordTextField.secureTextEntry = YES;
+            [self.pswdRightView.rightViewBtn setSelected:NO];
+        }
+        return NO;
+    }
+    if (textField == self.passwordConfirmTextField) {
+        NSString *updatedString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        textField.text = updatedString;
+        self.confirmPswdRightView.hidden = NO;
+        if ([self.passwordConfirmTextField.text length] <= 0 && [string isEqualToString:@""]) {
+            self.confirmPswdRightView.hidden = YES;
+            self.passwordConfirmTextField.secureTextEntry = YES;
+            [self.confirmPswdRightView.rightViewBtn setSelected:NO];
+        }
+        return NO;
+    }
+    
+    return YES;
+}
 
 
 #pragma mark getter and setter
@@ -410,8 +607,17 @@
         _logoImageView = [[UIImageView alloc] init];
         _logoImageView.contentMode = UIViewContentModeScaleAspectFill;
         _logoImageView.image = ImageWithName(@"login.bundle/login_logo");
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showUtils)];
+        tap.numberOfTapsRequired = 3;
+        tap.numberOfTouchesRequired = 1;
+        _logoImageView.userInteractionEnabled = YES;
+        [_logoImageView addGestureRecognizer:tap];
     }
     return _logoImageView;
+}
+
+- (void)showUtils {
+    [[DoraemonManager shareInstance] showDoraemon];
 }
 
 - (UIImageView *)titleImageView {
@@ -421,6 +627,21 @@
         _titleImageView.image = ImageWithName(@"login.bundle/login_agoraChat");
     }
     return _titleImageView;
+}
+
+- (UILabel *)titleRegisterMarkLabel
+{
+    if (_titleRegisterMarkLabel == nil) {
+        _titleRegisterMarkLabel = [[UILabel alloc]init];
+        _titleRegisterMarkLabel.backgroundColor = [UIColor whiteColor];
+        _titleRegisterMarkLabel.font = [UIFont fontWithName:@"SFCompact-Medium" size:24];
+        _titleRegisterMarkLabel.text = @"Register";
+        _titleRegisterMarkLabel.textColor = COLOR_HEX(0x666666);
+        _titleRegisterMarkLabel.hidden = YES;
+        _titleRegisterMarkLabel.textAlignment = NSTextAlignmentLeft;
+    }
+    
+    return _titleRegisterMarkLabel;
 }
 
 - (UIView *)hintView
@@ -471,6 +692,13 @@
         _usernameTextField.leftViewMode = UITextFieldViewModeAlways;
         _usernameTextField.layer.cornerRadius = kLoginButtonHeight * 0.5;
         
+        _usernameTextField.rightViewMode = UITextFieldViewModeWhileEditing;
+        _usernameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _userIdRightView = [[EMRightViewToolView alloc]initRightViewWithViewType:EMUsernameRightView];
+        [_userIdRightView.rightViewBtn addTarget:self action:@selector(clearUserIdAction) forControlEvents:UIControlEventTouchUpInside];
+        _userIdRightView.hidden = YES;
+        _usernameTextField.rightView = _userIdRightView;
+        
     }
     return _usernameTextField;
 }
@@ -484,15 +712,52 @@
 
         _passwordTextField.font = [UIFont fontWithName:@"PingFang SC" size:14.0];
         _passwordTextField.textColor = COLOR_HEX(0x000000);
-        _passwordTextField.attributedPlaceholder = [self textFieldAttributeString:@"NickName"];
+        _passwordTextField.attributedPlaceholder = [self textFieldAttributeString:@"Password"];
 
+        _passwordTextField.secureTextEntry = YES;
         _passwordTextField.returnKeyType = UIReturnKeyDone;
         _passwordTextField.clearsOnBeginEditing = NO;
         _passwordTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 18, 10)];
         _passwordTextField.leftViewMode = UITextFieldViewModeAlways;
         _passwordTextField.layer.cornerRadius = kLoginButtonHeight * 0.5;
+        
+        _passwordTextField.rightViewMode = UITextFieldViewModeWhileEditing;
+        _passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        self.pswdRightView = [[EMRightViewToolView alloc]initRightViewWithViewType:EMPswdRightView];
+        [self.pswdRightView.rightViewBtn addTarget:self action:@selector(pswdSecureAction:) forControlEvents:UIControlEventTouchUpInside];
+        self.pswdRightView.hidden = YES;
+        _passwordTextField.rightView = self.pswdRightView;
     }
     return _passwordTextField;
+}
+
+- (UITextField *)passwordConfirmTextField
+{
+    if (_passwordConfirmTextField == nil) {
+        _passwordConfirmTextField = [[UITextField alloc] init];
+        _passwordConfirmTextField.backgroundColor = COLOR_HEX(0xF2F2F2);
+        _passwordConfirmTextField.delegate = self;
+        _passwordConfirmTextField.borderStyle = UITextBorderStyleNone;
+
+        _passwordConfirmTextField.font = [UIFont fontWithName:@"PingFang SC" size:14.0];
+        _passwordConfirmTextField.textColor = COLOR_HEX(0x000000);
+        _passwordConfirmTextField.attributedPlaceholder = [self textFieldAttributeString:@"Confirm Password"];
+
+        _passwordConfirmTextField.secureTextEntry = YES;
+        _passwordConfirmTextField.returnKeyType = UIReturnKeyDone;
+        _passwordConfirmTextField.clearsOnBeginEditing = NO;
+        _passwordConfirmTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 18, 10)];
+        _passwordConfirmTextField.leftViewMode = UITextFieldViewModeAlways;
+        _passwordConfirmTextField.layer.cornerRadius = kLoginButtonHeight * 0.5;
+        
+        _passwordConfirmTextField.rightViewMode = UITextFieldViewModeWhileEditing;
+        _passwordConfirmTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        self.confirmPswdRightView = [[EMRightViewToolView alloc]initRightViewWithViewType:EMPswdRightView];
+        [self.confirmPswdRightView.rightViewBtn addTarget:self action:@selector(confirmPswdSecureAction:) forControlEvents:UIControlEventTouchUpInside];
+        self.confirmPswdRightView.hidden = YES;
+        _passwordConfirmTextField.rightView = self.confirmPswdRightView;
+    }
+    return _passwordConfirmTextField;
 }
 
 
@@ -528,6 +793,33 @@
     return _loadingImageView;
 }
 
+- (UIButton *)operateTypeButton
+{
+    if (_operateTypeButton == nil) {
+        _operateTypeButton = [[UIButton alloc] init];
+        _operateTypeButton.titleLabel.font = [UIFont fontWithName:@"SFCompact-Medium" size:16.0];
+        [_operateTypeButton setAttributedTitle:[self attributeText:@"No account? Register" key:@"Register"] forState:UIControlStateNormal];
+        _operateTypeButton.backgroundColor = [UIColor whiteColor];
+        [_operateTypeButton addTarget:self action:@selector(changeOperate:) forControlEvents:UIControlEventTouchUpInside];
+        _operateTypeButton.layer.cornerRadius = kLoginButtonHeight * 0.5;
+        _operateTypeButton.tag = 0;
+    }
+    return _operateTypeButton;
+}
+
+- (NSAttributedString *)attributeText:(NSString *)message key:(NSString *)keyInfo {
+    NSMutableAttributedString *attribute = [[NSMutableAttributedString alloc]initWithString:message];
+    
+    [attribute addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16 weight:UIFontWeightMedium],NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#999999"]} range:NSMakeRange(0, message.length)];
+    
+    if (keyInfo && keyInfo.length > 0) {
+        [attribute addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16 weight:UIFontWeightMedium],NSForegroundColorAttributeName:COLOR_HEX(0x114EFF)} range:[message rangeOfString:keyInfo]];
+    }
+    
+    return attribute;
+    
+
+}
 
 @end
 #undef loginButtonHeight

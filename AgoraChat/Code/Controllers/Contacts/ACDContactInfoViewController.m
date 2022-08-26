@@ -282,6 +282,7 @@ typedef enum : NSUInteger {
         };
         
         _contactInfoHeaderView.goBackBlock = ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_UPDATE_CONVERSATIONS object:nil];
             [weakSelf.navigationController popViewControllerAnimated:YES];
         };
     }

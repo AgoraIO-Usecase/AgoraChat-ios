@@ -268,7 +268,7 @@ static NSString *kGroupName = @"GroupName";
 {
     [_chatsVC networkChanged:aConnectionState];
     
-    [_settingsVC networkChanged:aConnectionState];
+    //[_settingsVC networkChanged:aConnectionState];
 }
 
 - (void)userAccountDidLoginFromOtherDevice
@@ -280,6 +280,17 @@ static NSString *kGroupName = @"GroupName";
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO userInfo:@{@"userName":@"",@"nickName":@""}];
 }
+
+- (void)userDidForbidByServer
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO userInfo:@{@"userName":@"",@"nickName":@""}];
+}
+
+- (void)userAccountDidForcedToLogout:(AgoraChatError *)aError
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO userInfo:@{@"userName":@"",@"nickName":@""}];
+}
+
 - (void)clearNavigationItem
 {
     self.navigationItem.titleView = nil;

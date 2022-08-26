@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
                    completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
 
 - (void)loginToApperServer:(NSString *)uName
-                  nickName:(NSString *)pwd
+                       pwd:(NSString *)pwd
                 completion:(void (^)(NSInteger statusCode, NSString *response))aCompletionBlock;
 
 @end

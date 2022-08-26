@@ -181,6 +181,7 @@
 
 #pragma mark - Action
 - (void)backAction {
+    [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_UPDATE_CONVERSATIONS object:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -249,6 +250,10 @@
                 [self showHint:NSLocalizedString(@"group.leaveFailure", @"exit the group failure")];
             }
             else{
+//                [[AgoraChatClient sharedClient].chatManager deleteConversation:groupId isDeleteMessages:YES completion:nil];
+//                [[AgoraChatClient sharedClient].chatManager deleteServerConversation:groupId conversationType:AgoraChatConversationTypeGroupChat isDeleteServerMessages:YES completion:nil];
+//                [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_UPDATE_CONVERSATIONS object:nil];
+                
                 [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_END_CHAT object:groupId];
                 [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
                 [self.navigationController popViewControllerAnimated:YES];
@@ -268,6 +273,10 @@
                 [self showHint:NSLocalizedString(@"group.destroyFailure", @"dissolution of group failure")];
             }
             else{
+//                [[AgoraChatClient sharedClient].chatManager deleteConversation:groupId isDeleteMessages:YES completion:nil];
+//                [[AgoraChatClient sharedClient].chatManager deleteServerConversation:groupId conversationType:AgoraChatConversationTypeGroupChat isDeleteServerMessages:YES completion:nil];
+//                [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_UPDATE_CONVERSATIONS object:nil];
+                
                 [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_END_CHAT object:groupId];
                 [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
                 [self.navigationController popViewControllerAnimated:YES];
