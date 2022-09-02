@@ -34,7 +34,7 @@
             NSArray *groups = [[AgoraChatClient sharedClient].groupManager getJoinedGroups];
             for (AgoraChatGroup *group in groups) {
                 if ([_conversation.conversationId isEqualToString:group.groupId]) {
-                    _title = group.subject;
+                    _title = group.groupName;
                     break;
                 }
             }

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D28344FE1D8FD1D400FD48A9"
-               BuildableName = "AgoraChat.app"
-               BlueprintName = "AgoraChat"
-               ReferencedContainer = "container:AgoraChat.xcodeproj">
+               BuildableName = "AgoraChat-Demo.app"
+               BlueprintName = "AgoraChat-Demo"
+               ReferencedContainer = "container:AgoraChat-Demo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D28344FE1D8FD1D400FD48A9"
-            BuildableName = "AgoraChat.app"
-            BlueprintName = "AgoraChat"
-            ReferencedContainer = "container:AgoraChat.xcodeproj">
+            BuildableName = "AgoraChat-Demo.app"
+            BlueprintName = "AgoraChat-Demo"
+            ReferencedContainer = "container:AgoraChat-Demo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D28344FE1D8FD1D400FD48A9"
-            BuildableName = "AgoraChat.app"
-            BlueprintName = "AgoraChat"
-            ReferencedContainer = "container:AgoraChat.xcodeproj">
+            BuildableName = "AgoraChat-Demo.app"
+            BlueprintName = "AgoraChat-Demo"
+            ReferencedContainer = "container:AgoraChat-Demo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

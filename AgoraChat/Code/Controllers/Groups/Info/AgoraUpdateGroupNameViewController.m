@@ -119,7 +119,7 @@
         if (!aError) {
             if ([weakSelf.groupId isEqualToString:conversation.conversationId]) {
                 NSMutableDictionary *ext = [NSMutableDictionary dictionaryWithDictionary:conversation.ext];
-                [ext setObject:aGroup.subject forKey:@"subject"];
+                [ext setObject:aGroup.groupName forKey:@"subject"];
                 [ext setObject:[NSNumber numberWithBool:aGroup.isPublic] forKey:@"isPublic"];
                 conversation.ext = ext;
                 if (self.updateGroupNameBlock) {

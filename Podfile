@@ -22,7 +22,7 @@ end
     pod 'WHToast'
     pod 'FMDB'
     pod 'Agora_Chat_iOS'
-    pod 'chat-uikit'
+    pod 'chat-uikit', '~> 1.0.7'
     pod 'AgoraChatCallKit'
     pod 'DoraemonKit'
 end

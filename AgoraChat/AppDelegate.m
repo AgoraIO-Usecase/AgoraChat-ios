@@ -259,7 +259,7 @@
 
 - (void)loadMainPage {
     // update local db group list
-    [[AgoraChatClient sharedClient].groupManager getJoinedGroupsFromServerWithCompletion:^(NSArray *aList, AgoraChatError *aError) {
+    [[AgoraChatClient sharedClient].groupManager getJoinedGroupsFromServerWithPage:0 pageSize:200 completion:^(NSArray *aList, AgoraChatError *aError) {
         NSArray *ary = [[AgoraChatClient sharedClient].groupManager getJoinedGroups];
         [AgoraChatClient.sharedClient.chatManager getAllConversations];
     }];
