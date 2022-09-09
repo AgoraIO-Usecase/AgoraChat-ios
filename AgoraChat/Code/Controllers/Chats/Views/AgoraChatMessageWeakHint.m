@@ -13,7 +13,7 @@
 
 - (instancetype)initWithMessageModel:(EaseMessageModel *)model
 {
-    NSString *identifier = @"AgoraChatMessageSystemHint";
+    NSString *identifier = @"AgoraChatMessageWeakHint";
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;

@@ -228,6 +228,9 @@ static ACDDemoOptions *sharedOptions = nil;
 #else
     self.apnsCertName = @"ChatDemoProPush";
 #endif
+#ifdef TFRELEASE
+    self.apnsCertName = @"ChatDemoPro";
+#endif
     self.usingHttpsOnly = YES;
     //self.specifyServer = YES;
     self.specifyServer = NO;
@@ -274,6 +277,10 @@ static ACDDemoOptions *sharedOptions = nil;
         apnsCertName = @"ChatDemoProPush";
         [retOpt setPushKitCertName:@"com.easemob.enterprise.demo.ui.pro.voip"];
     #endif
+#ifdef TFRELEASE
+    apnsCertName = @"ChatDemoPro";
+    [retOpt setPushKitCertName:@"io.agora.chat.demo.pro.voip"];
+#endif
     [retOpt setApnsCertName:apnsCertName];
     retOpt.enableDeliveryAck = self.isAutoDeliveryAck;
     retOpt.enableConsoleLog = YES;
