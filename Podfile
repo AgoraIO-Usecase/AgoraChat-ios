@@ -8,7 +8,7 @@ inhibit_all_warnings!
 # Import CocoaPods sources
 source 'https://github.com/CocoaPods/Specs.git'
 
-target 'AgoraChat' do
+target 'AgoraChat-Demo' do
   
 post_install do |installer|
   installer.pods_project.build_configurations.each do |config|
@@ -24,7 +24,6 @@ end
     pod 'Agora_Chat_iOS'
     pod 'chat-uikit', '~> 1.0.7'
     pod 'AgoraChatCallKit'
-    pod 'DoraemonKit'
 end
 
 
