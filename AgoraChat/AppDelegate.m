@@ -20,7 +20,6 @@
 #import <AgoraChat/AgoraChatOptions+PrivateDeploy.h>
 #import "AgoraChatCallKitManager.h"
 #import "PresenceManager.h"
-#import <DoraemonKit/DoraemonKit.h>
 @interface AppDelegate () <AgoraChatClientDelegate,UNUserNotificationCenterDelegate>
 
 @property (nonatomic, strong) NSString *userName;
@@ -72,14 +71,7 @@
     if (agoraUid) {
         [AgoraChatCallKitManager.shareManager updateAgoraUid:agoraUid.integerValue];
     }
-    [self initDoraemonKit];
     return YES;
-}
-
-- (void)initDoraemonKit {
-    [[DoraemonManager shareInstance] install];
-    [[DoraemonManager shareInstance] addPluginWithTitle:NSLocalizedString(@"Change Env", nil) icon:@"doraemon_app_info" desc:@"" pluginName:@"DoraemonPluginEnvironment" atModule:NSLocalizedString(@"Business", nil)];
-    [[DoraemonManager shareInstance] hiddenDoraemon];
 }
 
 - (void)initAccount
@@ -259,7 +251,7 @@
 
 - (void)loadMainPage {
     // update local db group list
-    [[AgoraChatClient sharedClient].groupManager getJoinedGroupsFromServerWithCompletion:^(NSArray *aList, AgoraChatError *aError) {
+    [[AgoraChatClient sharedClient].groupManager getJoinedGroupsFromServerWithPage:0 pageSize:200 completion:^(NSArray *aList, AgoraChatError *aError) {
         NSArray *ary = [[AgoraChatClient sharedClient].groupManager getJoinedGroups];
         [AgoraChatClient.sharedClient.chatManager getAllConversations];
     }];

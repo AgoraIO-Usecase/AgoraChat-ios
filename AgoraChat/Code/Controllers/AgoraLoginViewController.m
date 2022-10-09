@@ -13,7 +13,6 @@
 #import "UIViewController+ComponentSize.h"
 #import "AgoraChatCallKitManager.h"
 #import "EMRightViewToolView.h"
-#import <DoraemonKit/DoraemonKit.h>
 #define kLoginButtonHeight 48.0f
 #define kMaxLimitLength 64
 
@@ -607,17 +606,8 @@
         _logoImageView = [[UIImageView alloc] init];
         _logoImageView.contentMode = UIViewContentModeScaleAspectFill;
         _logoImageView.image = ImageWithName(@"login.bundle/login_logo");
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showUtils)];
-        tap.numberOfTapsRequired = 3;
-        tap.numberOfTouchesRequired = 1;
-        _logoImageView.userInteractionEnabled = YES;
-        [_logoImageView addGestureRecognizer:tap];
     }
     return _logoImageView;
-}
-
-- (void)showUtils {
-    [[DoraemonManager shareInstance] showDoraemon];
 }
 
 - (UIImageView *)titleImageView {

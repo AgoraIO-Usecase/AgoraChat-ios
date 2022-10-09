@@ -342,7 +342,7 @@ static NSString *kGroupName = @"GroupName";
 
 - (void)showBackgroundNotificationWithMessage:(AgoraChatMessage *)message
 {
-    AgoraChatPushOptions *options = [[AgoraChatClient sharedClient] pushOptions];
+    AgoraChatPushOptions *options = [[[AgoraChatClient sharedClient] pushManager] pushOptions];
     __block NSString *alertBody = @"";
     __block NSString *title = @"";
 
@@ -376,7 +376,7 @@ static NSString *kGroupName = @"GroupName";
                 NSArray *groupArray = [[AgoraChatClient sharedClient].groupManager getJoinedGroups];
                 for (AgoraChatGroup *group in groupArray) {
                     if ([group.groupId isEqualToString:message.conversationId]) {
-                        title = [NSString stringWithFormat:@"%@(%@)", message.from, group.subject];
+                        title = [NSString stringWithFormat:@"%@(%@)", message.from, group.groupName];
                     }
                 }
             }

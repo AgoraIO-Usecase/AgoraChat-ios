@@ -22,8 +22,6 @@
 
 @property (nonatomic) AgoraChatPushDisplayStyle pushDisplayStyle;
 
-@property (nonatomic) AgoraChatPushNoDisturbStatus noDisturbStatus;
-
 @property (nonatomic, copy) NSString *pushNickname;
 
 @end
@@ -98,7 +96,7 @@
 - (void)loadPushOptions
 {
     WEAK_SELF
-    [[AgoraChatClient sharedClient] getPushNotificationOptionsFromServerWithCompletion:^(AgoraChatPushOptions *aOptions, AgoraChatError *aError) {
+    [[[AgoraChatClient sharedClient] pushManager] getPushNotificationOptionsFromServerWithCompletion:^(AgoraChatPushOptions * _Nullable aOptions, AgoraChatError * _Nullable aError) {
         
         if (!aError) {
             [weakSelf updatePushOptions:aOptions];
@@ -111,13 +109,12 @@
 - (void)updatePushOptions:(AgoraChatPushOptions *)options
 {
     _pushDisplayStyle = options.displayStyle;
-    _noDisturbStatus = options.noDisturbStatus;
     _pushNickname = options.displayName;
     NSLog(@"%@",options.displayName);
     BOOL display = _pushDisplayStyle == AgoraChatPushDisplayStyleSimpleBanner ? NO : YES;
-    BOOL noDisturb = _noDisturbStatus == AgoraChatPushNoDisturbStatusClose ? NO: YES;
+    //BOOL noDisturb = _noDisturbStatus == AgoraChatPushNoDisturbStatusClose ? NO: YES;
     [self.displaySwitch setOn:display animated:YES];
-    [self.pushSwitch setOn:noDisturb animated:YES];
+    [self.pushSwitch setOn:options.silentModeEnabled animated:YES];
     [self.tableView reloadData];
 }
 
@@ -306,9 +303,15 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         AgoraChatError *aError = nil;
         if (uiSwitch.isOn) {
-            aError = [AgoraChatClient.sharedClient.pushManager disableOfflinePushStart:0 end:24];
+            AgoraChatSilentModeParam*param = [[AgoraChatSilentModeParam alloc] initWithParamType:AgoraChatSilentModeParamTypeInterval];
+            param.silentModeStartTime = [[AgoraChatSilentModeTime alloc] initWithHours:0 minutes:0];
+            param.silentModeEndTime = [[AgoraChatSilentModeTime alloc] initWithHours:23 minutes:59];
+            [AgoraChatClient.sharedClient.pushManager setSilentModeForAll:param completion:nil];
         } else {
-            aError = [AgoraChatClient.sharedClient.pushManager enableOfflinePush];
+            AgoraChatSilentModeParam*param = [[AgoraChatSilentModeParam alloc] initWithParamType:AgoraChatSilentModeParamTypeInterval];
+            param.silentModeStartTime = [[AgoraChatSilentModeTime alloc] initWithHours:0 minutes:0];
+            param.silentModeEndTime = [[AgoraChatSilentModeTime alloc] initWithHours:0 minutes:0];
+            [AgoraChatClient.sharedClient.pushManager setSilentModeForAll:param completion:nil];
         }
         
         if (aError) {

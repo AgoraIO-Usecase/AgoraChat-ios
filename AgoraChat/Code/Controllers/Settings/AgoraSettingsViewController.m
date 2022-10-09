@@ -19,7 +19,6 @@
 
 @property (nonatomic, strong) UISwitch *callPushSwitch;
 
-@property (nonatomic) AgoraChatPushNoDisturbStatus pushStatus;
 @end
 
 @implementation AgoraSettingsViewController
