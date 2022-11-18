@@ -57,7 +57,7 @@ If you have any problems or suggestions regarding the sample projects, feel free
 
 ## Reference
 
-Agora provides the full set of documentation and API Reference at [Agora Chat documents](https://docs.agora.io/en/agora-chat/agora_chat_get_started_ios?platform=iOS).
+Agora provides the full set of documentation and API Reference at [Agora Chat documents](https://docs.agora.io/en/agora-chat/get-started/get-started-sdk?platform=ios).
 
 ## Related Resources
 

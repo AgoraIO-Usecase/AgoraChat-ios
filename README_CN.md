@@ -55,7 +55,7 @@
 
 ## 参考
 
-声网提交全套文档和 API 参考 [即时通讯 IM 文档](https://docs.agora.io/en/agora-chat/agora_chat_get_started_ios?platform=iOS)。
+声网提交全套文档和 API 参考 [即时通讯 IM 文档](https://docs.agora.io/en/agora-chat/get-started/get-started-sdk?platform=ios)。
 
 ## 相关资源
 
