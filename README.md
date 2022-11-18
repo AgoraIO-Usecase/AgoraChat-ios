@@ -38,9 +38,14 @@ Follow the steps to add the Agora Chat UIKit into your project and run the demo.
 
 3. Open the project with the following command:
 
-   ```shell
-   open AgoraChat.xcworkspace
-   ```
+   	Objective-C  
+	```shell
+	open AgoraChat.xcworkspace
+	```
+	Swift  
+   	```shell
+   	open AgoraChat-Swift.xcworkspace
+   	```
 
 4. Press `command + r` to run the project. And you can see the app launched on the simulator.
 
