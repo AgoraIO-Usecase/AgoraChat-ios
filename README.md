@@ -1,3 +1,4 @@
+> [中文 Readme](README_CN.md)
 # Run the AgoraChat UIKit Demo
 
 ## Overview
@@ -37,9 +38,14 @@ Follow the steps to add the Agora Chat UIKit into your project and run the demo.
 
 3. Open the project with the following command:
 
-   ```shell
-   open AgoraChat.xcworkspace
-   ```
+   	Objective-C  
+	```shell
+	open AgoraChat.xcworkspace
+	```
+	Swift  
+   	```shell
+   	open AgoraChat-Swift.xcworkspace
+   	```
 
 4. Press `command + r` to run the project. And you can see the app launched on the simulator.
 
@@ -51,7 +57,7 @@ If you have any problems or suggestions regarding the sample projects, feel free
 
 ## Reference
 
-Agora provides the full set of documentation and API Reference at [Agora Chat documents](https://docs.agora.io/en/agora-chat/agora_chat_get_started_ios?platform=iOS).
+Agora provides the full set of documentation and API Reference at [Agora Chat documents](https://docs.agora.io/en/agora-chat/get-started/get-started-sdk?platform=ios).
 
 ## Related Resources
 

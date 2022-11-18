@@ -1,0 +1,42 @@
+
+/* Class = "UILabel"; text = "Show Typing"; ObjectID = "Fct-Dt-hfQ"; */
+"Fct-Dt-hfQ.text" = "Show Typing";
+
+/* Class = "UILabel"; text = "Privacy"; ObjectID = "FdK-jy-GsO"; */
+"FdK-jy-GsO.text" = "Privacy";
+
+/* Class = "UITableViewSection"; headerTitle = "Settings"; ObjectID = "J5u-On-ql8"; */
+"J5u-On-ql8.headerTitle" = "Settings";
+
+/* Class = "UILabel"; text = "General"; ObjectID = "KNd-cQ-hoE"; */
+"KNd-cQ-hoE.text" = "General";
+
+/* Class = "UILabel"; text = "Agora.io"; ObjectID = "Rbh-3Z-Idw"; */
+"Rbh-3Z-Idw.text" = "Agora.io";
+
+/* Class = "UILabel"; text = "SDK Version"; ObjectID = "TPb-iq-Vye"; */
+"TPb-iq-Vye.text" = "SDK Version";
+
+/* Class = "UILabel"; text = "UI Library Version"; ObjectID = "aL0-qK-qWl"; */
+"aL0-qK-qWl.text" = "UI Library Version";
+
+/* Class = "UITableViewSection"; headerTitle = "Logins"; ObjectID = "bfa-no-bbv"; */
+"bfa-no-bbv.headerTitle" = "Logins";
+
+/* Class = "UILabel"; text = "Log Out"; ObjectID = "jDE-jC-Olz"; */
+"jDE-jC-Olz.text" = "Log Out";
+
+/* Class = "UILabel"; text = "Notifications"; ObjectID = "l3W-3G-nDA"; */
+"l3W-3G-nDA.text" = "Notifications";
+
+/* Class = "UILabel"; text = "More"; ObjectID = "lhf-ea-jTe"; */
+"lhf-ea-jTe.text" = "More";
+
+/* Class = "UILabel"; text = "About"; ObjectID = "mRl-eo-uvw"; */
+"mRl-eo-uvw.text" = "About";
+
+/* Class = "UILabel"; text = "Delete the Chat after Leaving Group"; ObjectID = "npk-GU-421"; */
+"npk-GU-421.text" = "Delete the Chat after Leaving Group";
+
+/* Class = "UILabel"; text = "Add Group Request"; ObjectID = "vMk-5Z-4GD"; */
+"vMk-5Z-4GD.text" = "Add Group Request";

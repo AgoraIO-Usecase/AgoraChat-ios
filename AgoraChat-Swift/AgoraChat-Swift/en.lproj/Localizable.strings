@@ -1,0 +1,269 @@
+/************************************************************
+ *  * Hyphenate
+ * __________________
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
+ *
+ * NOTICE: All information contained herein is, and remains
+ * the property of Hyphenate Inc.
+ */
+
+// common
+"Loading" = "Loading";
+"Ok" = "Ok";
+"Yes" = "Yes";
+"Report" = "Report";
+"Block" = "Block";
+"Blocked" = "Blocked";
+"Unblock" = "Unblock";
+"Mute" = "Mute";
+"Unmute" = "Unmute";
+"Muted" = "Muted";
+"Delete" = "Delete";
+"Cancel" = "Cancel";
+"Next" = "Next";
+"Search" = "Search";
+"Sticky" = "Sticky";
+"Unsticky" = "Unsticky";
+"Friends" = "Friends";
+"Groups" = "Groups";
+"Requests" = "Requests";
+"Now" = "Now";
+"Accept" = "Accept";
+"Accepted" = "Accepted";
+"Ignored" = "Ignored";
+"Operation succeeded" = "Operation succeeded";
+"Operation failed" = "Operation failed";
+"Leave" = "Leave";
+"Disband" = "Disband";
+"Create" = "Create";
+"Owner" = "Owner";
+"Members" = "Members";
+"All" = "All";
+"Admin" = "Admin";
+"Image" = "Image";
+"Video" = "Video";
+"File" = "File";
+"Are you sure to delete?" = "Are you sure to delete?";
+"Done" = "Done";
+"Apply" = "Apply";
+"Applied" = "Applied";
+"Add" = "Add";
+"Added" = "Added";
+"General" = "General";
+"Privacy" = "Privacy";
+"About" = "About";
+"AgoraChat" = "AgoraChat";
+"Confirm" = "Confirm";
+"Vibrate" = "Vibrate";
+"Nothing" = "Nothing";
+"Default" = "Default";
+"Turn On" = "Turn On";
+"Turn Off" = "Turn Off";
+"Frequency" = "Frequency";
+"Minute" = "Minute";
+"Minutes" = "Minutes";
+"Hour" = "Hour";
+"Hours" = "Hours";
+"Days" = "Days";
+"Weeks" = "Weeks";
+"Pull Down Refresh" = "Pull Down Refresh";
+"No Data" = "No Data";
+"Adult" = "Adult";
+"Racy" = "Racy";
+"Other" = "Other";
+"Location" = "Location";
+"Voice" = "Voice";
+"MMM dd,yyyy, HH:mm" = "MMM dd,yyyy, HH:mm";
+"Options" = "Options";
+
+//login
+"Log in" = "Log in";
+"Login failed" = "Login failed";
+"Password" = "Password";
+"No account? Register" = "No account? Register";
+
+// login.error
+"Please enter username and nickname." = "Please enter username and nickname.";
+"Login analysis token failure" = "Login analysis token failure";
+
+// register
+"Register" = "Register";
+"Register success" = "Register success";
+"Register failed" = "Register failed";
+"Please enter the same password" = "Please enter the same password";
+"Back to Login" = "Back to Login";
+
+// register.error
+"Username is already taken" = "Username is already taken";
+
+//chat
+"other party is typing" = "other party is typing";
+"you have a new message" = "you have a new message";
+"You agreed the friend request" = "You agreed the friend request";
+"Chats" = "Chats";
+"You invited %@ to join the group" = "You invited %@ to join the group";
+"You have created a group %@" = "You have created a group %@";
+
+//call
+"There can only be 3 people in the channel" = "There can only be 3 people in the channel";
+
+//error
+"No network connection!" = "No network connection!";
+"Connect to the server failed!" = "Connect to the server failed!";
+"Connect to the server timed out!" = "Connect to the server timed out!";
+"%@ can't be null" = "%@ can't be null";
+"You haven't made a choice yet!" = "You haven't made a choice yet!";
+
+//setting
+"Notifications" = "Notifications";
+"Sure to Quit?" = "Sure to Quit?";
+"Settings" = "Settings";
+
+// setting.notification
+"Show Preview Text" = "Show Preview Text";
+"Alert Sound" = "Alert Sound";
+"Do Not Disturb" = "Do Not Disturb";
+"Notification Setting" = "Notification Setting";
+"All Messages" = "All Messages";
+"Only @Metions" = "Only @Metions";
+"Push Notifications" = "Push Notifications";
+"In-App Notifications" = "In-App Notifications";
+"Contact Notifications" = "Contact Notifications";
+"Group Notifications" = "Group Notifications";
+"Thread Notifications" = "Thread Notifications";
+"Turn off Do Not Disturb?" = "Turn off Do Not Disturb?";
+"You have set Do Not Disturb until \n %@" = "You have set Do Not Disturb until \n %@";
+"Until 8:00 AM Tomorow" = "Until 8:00 AM Tomorow";
+
+// contact
+"Contacts" = "Contacts";
+"Add Contacts" = "Add Contacts";
+"Contact Name" = "Contact Name";
+"Block Contact" = "Block Contact";
+"Block this contact now?" = "Block this contact now?";
+"When you block this contact, you will not receive any messages from them." = "When you block this contact, you will not receive any messages from them.";
+"Blocked List" = "Blocked List";
+"Delete Contact" = "Delete Contact";
+"Delete this contact now?" = "Delete this contact now?";
+"Delete this contact and associated Chats." = "Delete this contact and associated Chats.";
+"Delete contacts failed" = "Delete contacts failed";
+"%@ add you as a friend" = "%@ add you as a friend";
+"Not allowed to send their own friends to apply for" = "Not allowed to send their own friends to apply for";
+"This contact has been added" = "This contact has been added";
+"%@ agreed to add friends to apply" = "%@ agreed to add friends to apply";
+"%@ refuse to add friends to apply" = "%@ refuse to add friends to apply";
+"Your friend request has been approved" = "Your friend request has been approved";
+
+//group
+"GroupID" = "GroupID";
+"Group Name" = "Group Name";
+"Group Description" = "Group Description";
+"Change Group Name" = "Change Group Name";
+"Change Group Description" = "Change Group Description";
+"The Group Does Not Exist" = "The Group Does Not Exist";
+"%@ request join the group" = "%@ request join the group";
+"Leave this group now?" = "Leave this group now?";
+"No prompt for other members and no group messages after you quit this group." = "No prompt for other members and no group messages after you quit this group.";
+"Disband this group now?" = "Disband this group now?";
+"Delete this group and associated Chats." = "Delete this group and associated Chats.";
+"Transfer Ownership and Leave" = "Transfer Ownership and Leave";
+"Make Admin" = "Make Admin";
+"Remove as Admin" = "Remove as Admin";
+"Remove From Group" = "Remove From Group";
+"%@ invite you to join the group [%@]" = "%@ invite you to join the group [%@]";
+"Add Members" = "Add Members";
+"Public Groups" = "Public Groups";
+"New Group" = "New Group";
+"Allow members to invite" = "Allow members to invite";
+"Member quantity: 3 to 2000" = "Member quantity: 3 to 2000";
+"Join a Group" = "Join a Group";
+"Transfer Ownership to %@ and Leave this Group?" = "Transfer Ownership to %@ and Leave this Group?";
+"Transfer Ownership to %@ " = "Transfer Ownership to %@ ";
+"Your are kicked out from group: %@" = "Your are kicked out from group: %@";
+"Group: %@ is destroyed" = "Group: %@ is destroyed";
+"%@ apply to join group \'%@\'" = "%@ apply to join group \'%@\'";
+"%@ apply to join group \'%@\'：%@" = "%@ apply to join group \'%@\'：%@";
+"You have automatically agreed to %@ group invitation." = "You have automatically agreed to %@ group invitation.";
+"be refused to join the group\'%@\'" = "be refused to join the group\'%@\'";
+"You are agreed to join the group of \'%@\'" = "You are agreed to join the group of \'%@\'";
+"%@ agreed to join the group [%@]" = "%@ agreed to join the group [%@]";
+"%@ agreed to your invitation to join the group." = "%@ agreed to your invitation to join the group.";
+"%@ decline to join the group [%@]" = "%@ decline to join the group [%@]";
+"%@ becomes the new Group Owner." = "%@ becomes the new Group Owner.";
+"%@ joined the Group." = "%@ joined the Group.";
+"%@ left the Group." = "%@ left the Group.";
+"Authorized to join" = "Authorized to join";
+
+//network
+"Network disconnected" = "Network disconnected";
+
+//Chatroom
+"You are removed from chatroom %@" = "You are removed from chatroom %@";
+"chatroom %@ has been destroyed" = "chatroom %@ has been destroyed";
+
+// call
+"Audio Call" = "Audio Call";
+"Video Call" = "Video Call";
+"The line is busy" = "The line is busy";
+"Request declined" = "Request declined";
+"No response" = "No response";
+"Other devices connected" = "Other devices connected";
+"Other devices declined" = "Other devices declined";
+
+// user
+"AgoraID" = "AgoraID";
+"Change Avatar" = "Change Avatar";
+"Change Nickname" = "Change Nickname";
+
+// presence
+"Status" = "Status";
+"Busy" = "Busy";
+"Online" = "Online";
+"Offline" = "Offline";
+"Leave" = "Leave";
+"Online %@ ago" = "Online %@ ago";
+"Custom Status" = "Custom Status";
+"Set Status" = "Set Status";
+"Input custom status" = "Input custom status";
+"Presence Setting" = "Presence Setting";
+"Change your Custom Status" = "Change your Custom Status";
+"Clear your '%@',change to \'%@\'" = "Clear your '%@',change to \'%@\'";
+
+// apply
+"Refused to apply for failed" = "Refused to apply for failed";
+"Agree to apply for failed" = "Agree to apply for failed";
+
+// thread
+"New Thread" = "New Thread";
+"All Threads" = "All Threads";
+"Edit Thread" = "Edit Thread";
+"Failed to get the Thread Members, please try again later" = "Failed to get the Thread Members, please try again later";
+
+// report
+"Confirm to Report?" = "Confirm to Report?";
+
+"Remove from Thread" = "Remove from Thread";
+"Audio Call Ended" = "Audio Call Ended";
+"Video Call Ended" = "Video Call Ended";
+"Message Report" = "Message Report";
+"Group Notification" = "Group Notification";
+"Select Members" = "Select Members";
+"Audio Call Invite" = "Audio Call Invite";
+"Video Call Invite" = "Video Call Invite";
+"Thread Members" = "Thread Members";
+"Mute this Thread" = "Mute this Thread";
+"You have muted this Group until \n %@" = "You have muted this Group until \n %@";
+"You have muted this Thread until \n %@" = "You have muted this Thread until \n %@";
+"Leave Thread" = "Leave Thread";
+"Disband Thread" = "Disband Thread";
+"Mute this Contact" = "Mute this Contact";
+"Mute this Group" = "Mute this Group";
+"Upload File" = "Upload File";
+"Upload Video" = "Upload Video";
+"Upload Image" = "Upload Image";
+"Share Files" = "Share Files";
+"Group Files" = "Group Files";
+"Copy AgoraID" = "Copy AgoraID";
+"Copy GroupID" = "Copy GroupID";
+"Renew token failed" = "Renew token failed";
+"Latin letters and numbers only." = "Latin letters and numbers only.";

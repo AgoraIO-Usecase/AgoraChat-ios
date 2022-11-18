@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AgoraLoginViewController" customModule="AgoraChat_Swift" customModuleProvider="target">
+            <connections>
+                <outlet property="hintTitleLabel" destination="Ynm-t4-X0U" id="QkY-Lu-Ofy"/>
+                <outlet property="hintView" destination="0bs-QG-lhm" id="8a1-Ty-rbl"/>
+                <outlet property="loadingImageView" destination="oQr-Z4-4yH" id="ceO-S1-8AZ"/>
+                <outlet property="loginButton" destination="7vk-SD-vOV" id="a7C-nu-rek"/>
+                <outlet property="loginButtonTopContraint" destination="UTN-VZ-Ypc" id="gBn-7O-gej"/>
+                <outlet property="logoImageViewTopConstraint" destination="fxJ-py-jsI" id="dXy-Wo-109"/>
+                <outlet property="operateTypeButton" destination="QlF-PQ-IOE" id="qQ3-Kt-Qzx"/>
+                <outlet property="passwordConfirmTextField" destination="iPQ-1d-f34" id="gfz-vA-GVD"/>
+                <outlet property="passwordTextField" destination="Shi-eJ-T0V" id="bsK-NF-heI"/>
+                <outlet property="titleImageView" destination="c51-kM-ghF" id="WgJ-uT-6Qx"/>
+                <outlet property="usernameTextField" destination="Dqm-Xj-jfy" id="8YA-Mw-cf3"/>
+                <outlet property="usernameTextFieldTopContraint" destination="dhN-na-rTY" id="D0R-KO-psb"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login_logo" translatesAutoresizingMaskIntoConstraints="NO" id="6tE-Ps-hOz">
+                    <rect key="frame" x="160.5" y="134" width="93" height="89"/>
+                </imageView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login_agoraChat" translatesAutoresizingMaskIntoConstraints="NO" id="c51-kM-ghF">
+                    <rect key="frame" x="43.5" y="243" width="327" height="48"/>
+                </imageView>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Dqm-Xj-jfy">
+                    <rect key="frame" x="24" y="386" width="366" height="48"/>
+                    <color key="backgroundColor" name="#F2F2F2"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="KkY-d4-x5F"/>
+                    </constraints>
+                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="24"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="WAa-cQ-H4B"/>
+                    </connections>
+                </textField>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Shi-eJ-T0V">
+                    <rect key="frame" x="24" y="454" width="366" height="48"/>
+                    <color key="backgroundColor" name="#F2F2F2"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="hb1-HS-5hu"/>
+                    </constraints>
+                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="24"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="id4-hE-OSP"/>
+                    </connections>
+                </textField>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="iPQ-1d-f34">
+                    <rect key="frame" x="24" y="522" width="366" height="48"/>
+                    <color key="backgroundColor" name="#F2F2F2"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="VVq-Di-RKO"/>
+                    </constraints>
+                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="24"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="E8G-P5-8dp"/>
+                    </connections>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7vk-SD-vOV">
+                    <rect key="frame" x="24" y="590" width="366" height="48"/>
+                    <color key="backgroundColor" name="#114EFF"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="Fsf-Rx-gJ6"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="16"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Log In">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="24"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="doLogin" destination="-1" eventType="touchUpInside" id="BsY-iv-dZg"/>
+                    </connections>
+                </button>
+                <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loading" translatesAutoresizingMaskIntoConstraints="NO" id="oQr-Z4-4yH">
+                    <rect key="frame" x="197" y="604" width="20" height="20"/>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QlF-PQ-IOE">
+                    <rect key="frame" x="24" y="658" width="366" height="48"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="MfO-nI-Ic9"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <connections>
+                        <action selector="changeOperate:" destination="-1" eventType="touchUpInside" id="BkB-fk-FpD"/>
+                    </connections>
+                </button>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0bs-QG-lhm">
+                    <rect key="frame" x="191" y="346" width="32" height="20"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ynm-t4-X0U">
+                            <rect key="frame" x="27" y="0.0" width="0.0" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="0f8-Ph-o6d"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="PingFangSC-Regular" family="PingFang SC" pointSize="14"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loginFail" translatesAutoresizingMaskIntoConstraints="NO" id="GhX-rh-GEU">
+                            <rect key="frame" x="5" y="1" width="18" height="18"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="18" id="qF3-Zd-SnF"/>
+                                <constraint firstAttribute="width" constant="18" id="vwJ-fB-I1X"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="Ynm-t4-X0U" secondAttribute="trailing" constant="5" id="24U-KA-Mqe"/>
+                        <constraint firstAttribute="height" constant="20" id="NaI-d9-P6T"/>
+                        <constraint firstItem="Ynm-t4-X0U" firstAttribute="centerX" secondItem="0bs-QG-lhm" secondAttribute="centerX" constant="11" id="TkZ-8M-qgW"/>
+                        <constraint firstItem="GhX-rh-GEU" firstAttribute="centerY" secondItem="0bs-QG-lhm" secondAttribute="centerY" id="U7O-ap-1Yj"/>
+                        <constraint firstItem="Ynm-t4-X0U" firstAttribute="leading" secondItem="GhX-rh-GEU" secondAttribute="trailing" constant="4" id="o4f-wX-bb1"/>
+                        <constraint firstItem="GhX-rh-GEU" firstAttribute="leading" secondItem="0bs-QG-lhm" secondAttribute="leading" constant="5" id="qke-o8-pz4"/>
+                        <constraint firstItem="Ynm-t4-X0U" firstAttribute="centerY" secondItem="0bs-QG-lhm" secondAttribute="centerY" id="upU-i3-DGb"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="7vk-SD-vOV" firstAttribute="leading" secondItem="iPQ-1d-f34" secondAttribute="leading" id="7Ix-uk-5Lc"/>
+                <constraint firstItem="c51-kM-ghF" firstAttribute="top" secondItem="6tE-Ps-hOz" secondAttribute="bottom" constant="20" id="8NG-0Q-Ue8"/>
+                <constraint firstItem="QlF-PQ-IOE" firstAttribute="trailing" secondItem="7vk-SD-vOV" secondAttribute="trailing" id="9FT-Or-9XD"/>
+                <constraint firstItem="0bs-QG-lhm" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="Dqj-GC-kqU"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Dqm-Xj-jfy" secondAttribute="trailing" constant="24" id="EN6-J3-FOh"/>
+                <constraint firstItem="6tE-Ps-hOz" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="Hvh-HL-yk3"/>
+                <constraint firstItem="oQr-Z4-4yH" firstAttribute="centerY" secondItem="7vk-SD-vOV" secondAttribute="centerY" id="JWq-Dm-IVK"/>
+                <constraint firstItem="Shi-eJ-T0V" firstAttribute="top" secondItem="Dqm-Xj-jfy" secondAttribute="bottom" constant="20" id="RFH-GY-ZtU"/>
+                <constraint firstItem="oQr-Z4-4yH" firstAttribute="centerX" secondItem="7vk-SD-vOV" secondAttribute="centerX" id="Rzi-Yr-UAz"/>
+                <constraint firstItem="7vk-SD-vOV" firstAttribute="top" secondItem="Shi-eJ-T0V" secondAttribute="bottom" constant="88" id="UTN-VZ-Ypc"/>
+                <constraint firstItem="QlF-PQ-IOE" firstAttribute="leading" secondItem="7vk-SD-vOV" secondAttribute="leading" id="Z3o-TN-JNR"/>
+                <constraint firstItem="c51-kM-ghF" firstAttribute="centerX" secondItem="6tE-Ps-hOz" secondAttribute="centerX" id="abS-gu-5tE"/>
+                <constraint firstItem="QlF-PQ-IOE" firstAttribute="top" secondItem="7vk-SD-vOV" secondAttribute="bottom" constant="20" id="agk-Hc-nAn"/>
+                <constraint firstItem="Shi-eJ-T0V" firstAttribute="leading" secondItem="Dqm-Xj-jfy" secondAttribute="leading" id="aqa-fn-m7Z"/>
+                <constraint firstItem="7vk-SD-vOV" firstAttribute="trailing" secondItem="iPQ-1d-f34" secondAttribute="trailing" id="bkg-bq-McF"/>
+                <constraint firstItem="Dqm-Xj-jfy" firstAttribute="top" secondItem="c51-kM-ghF" secondAttribute="bottom" constant="95" id="dhN-na-rTY"/>
+                <constraint firstItem="Dqm-Xj-jfy" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="e9k-0e-mit"/>
+                <constraint firstItem="iPQ-1d-f34" firstAttribute="leading" secondItem="Shi-eJ-T0V" secondAttribute="leading" id="eQ8-kY-czo"/>
+                <constraint firstItem="6tE-Ps-hOz" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="134" id="fxJ-py-jsI"/>
+                <constraint firstItem="iPQ-1d-f34" firstAttribute="trailing" secondItem="Shi-eJ-T0V" secondAttribute="trailing" id="jIl-gJ-Cys"/>
+                <constraint firstItem="Dqm-Xj-jfy" firstAttribute="top" secondItem="0bs-QG-lhm" secondAttribute="bottom" constant="20" id="tT9-7c-VhF"/>
+                <constraint firstItem="iPQ-1d-f34" firstAttribute="top" secondItem="Shi-eJ-T0V" secondAttribute="bottom" constant="20" id="yQ1-bP-MQL"/>
+                <constraint firstItem="Shi-eJ-T0V" firstAttribute="trailing" secondItem="Dqm-Xj-jfy" secondAttribute="trailing" id="yjd-BS-bkh"/>
+            </constraints>
+            <point key="canvasLocation" x="139" y="132"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="loading" width="20" height="20"/>
+        <image name="loginFail" width="16" height="16"/>
+        <image name="login_agoraChat" width="327" height="48"/>
+        <image name="login_logo" width="93" height="89"/>
+        <namedColor name="#114EFF">
+            <color red="0.066666666666666666" green="0.30588235294117649" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="#F2F2F2">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
