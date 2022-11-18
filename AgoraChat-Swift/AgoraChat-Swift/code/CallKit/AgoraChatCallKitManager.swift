@@ -112,7 +112,7 @@ class AgoraChatCallKitManager: NSObject {
     private func fetchUserMapsFromServer(channelName: String) {
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
-        let strUrl = "http://a41.easemob.com/agora/channel/mapper?channelName=\(channelName)&userAccount=\(AgoraChatClient.shared().currentUsername!)"
+        let strUrl = "https://a41.chat.agora.io/agora/channel/mapper?channelName=\(channelName)&userAccount=\(AgoraChatClient.shared().currentUsername!)"
         guard let utf8Url = strUrl.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) else {
             return
         }
@@ -193,7 +193,7 @@ extension AgoraChatCallKitManager: AgoraChatCallDelegate {
     func callDidRequestRTCToken(forAppId aAppId: String, channelName aChannelName: String, account aUserAccount: String, uid aAgoraUid: Int) {
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
-        let strUrl = "http://a41.easemob.com/token/rtc/channel/\(aChannelName)/agorauid/\(aAgoraUid)?userAccount=\(aUserAccount)"
+        let strUrl = "https://a41.chat.agora.io/token/rtc/channel/\(aChannelName)/agorauid/\(aAgoraUid)?userAccount=\(aUserAccount)"
         guard let utf8Url = strUrl.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) else {
             return
         }

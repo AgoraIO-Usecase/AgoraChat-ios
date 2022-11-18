@@ -157,7 +157,7 @@ class ACDDemoOptions: NSObject, NSCoding, NSSecureCoding {
         opt.pushKitCertName = "io.agora.chat.demo.pro.voip"
         #endif
         opt.enableDeliveryAck = self.isAutoDeliveryAck
-        opt.enableConsoleLog = false
+        opt.enableConsoleLog = true
         opt.enableFpa = true
         return opt
     }
