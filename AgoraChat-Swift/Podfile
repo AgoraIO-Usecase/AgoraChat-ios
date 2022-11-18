@@ -9,14 +9,19 @@ inhibit_all_warnings!
 source 'https://github.com/CocoaPods/Specs.git'
 
 target 'AgoraChat-Swift' do
-    pod 'MBProgressHUD'
-    pod 'MJRefresh'
-    pod 'Agora_Chat_iOS'
-    pod 'chat-uikit'
-    pod 'AgoraChatCallKit'
-    pod 'SnapKit'
-    pod 'SwiftLint'
-    pod 'Kingfisher'
-    pod 'MJExtension'
-    pod 'Bugly'
+  post_install do |installer|
+    installer.pods_project.build_configurations.each do |config|
+      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+    end
+  end
+  pod 'MBProgressHUD'
+  pod 'MJRefresh'
+  pod 'Agora_Chat_iOS'
+  pod 'chat-uikit', :git => 'https://github.com/AgoraIO-Usecase/AgoraChat-UIKit-ios.git', :commit => '5161b2a'
+  pod 'AgoraChatCallKit', :git => 'https://github.com/AgoraIO-Usecase/AgoraChat-CallKit-ios.git', :commit => 'ad1ec81'
+  pod 'SnapKit'
+  pod 'SwiftLint'
+  pod 'Kingfisher'
+  pod 'MJExtension'
+  pod 'Bugly'
 end

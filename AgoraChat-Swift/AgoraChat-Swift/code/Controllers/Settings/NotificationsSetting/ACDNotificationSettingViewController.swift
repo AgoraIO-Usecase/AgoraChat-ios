@@ -259,9 +259,9 @@ class ACDNotificationSettingViewController: UITableViewController {
         let style: AgoraChatPushDisplayStyle = self.showPreTextCell.switch.isOn ? .messageSummary : .simpleBanner
         AgoraChatClient.shared().pushManager?.update(style) { error in
 //            let error: AgoraChatError? = error
-            if let error = error {
-                self.showHint(error.errorDescription)
-            }
+//            if let error = error {
+//                self.showHint(error.errorDescription)
+//            }
         }
     }
 
