@@ -12,8 +12,8 @@ target 'AgoraChat-Swift' do
     pod 'MBProgressHUD'
     pod 'MJRefresh'
     pod 'Agora_Chat_iOS'
-    pod 'chat-uikit', :path => "../AgoraChat-UIKit-ios/chat-uikit.podspec"
-    pod 'AgoraChatCallKit', :path => "../AgoraChatCallKit/AgoraChatCallKit.podspec"
+    pod 'chat-uikit'
+    pod 'AgoraChatCallKit'
     pod 'SnapKit'
     pod 'SwiftLint'
     pod 'Kingfisher'
