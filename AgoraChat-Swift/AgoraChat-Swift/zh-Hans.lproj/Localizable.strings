@@ -1,0 +1,269 @@
+/************************************************************
+ *  * Hyphenate
+ * __________________
+ * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
+ *
+ * NOTICE: All information contained herein is, and remains
+ * the property of Hyphenate Inc.
+ */
+
+// common
+"Loading" = "加载中";
+"Ok" = "好";
+"Yes" = "是";
+"Report" = "举报";
+"Block" = "加入黑名单";
+"Blocked" = "已加入黑名单";
+"Unblock" = "从黑名单移除";
+"Mute" = "禁言";
+"Unmute" = "取消禁言";
+"Muted" = "禁言中";
+"Delete" = "删除";
+"Cancel" = "取消";
+"Next" = "下一步";
+"Search" = "搜索";
+"Sticky" = "置顶";
+"Unsticky" = "取消置顶";
+"Friends" = "好友";
+"Groups" = "群组";
+"Requests" = "申请";
+"Now" = "现在";
+"Accept" = "同意";
+"Accepted" = "已同意";
+"Ignored" = "忽略";
+"Operation succeeded" = "操作成功";
+"Operation failed" = "操作失败";
+"Leave" = "离开";
+"Disband" = "解散";
+"Create" = "创建";
+"Owner" = "群主";
+"Members" = "成员";
+"All" = "全部";
+"Admin" = "管理员";
+"Image" = "图片";
+"Video" = "视频";
+"File" = "文件";
+"Are you sure to delete?" = "确定要删除吗？";
+"Done" = "完成";
+"Apply" = "申请";
+"Applied" = "已申请";
+"Add" = "添加";
+"Added" = "已添加";
+"General" = "通用";
+"Privacy" = "隐私";
+"About" = "关于";
+"AgoraChat" = "AgoraChat";
+"Confirm" = "确认";
+"Vibrate" = "震动";
+"Nothing" = "不接收";
+"Default" = "默认";
+"Turn On" = "打开";
+"Turn Off" = "关闭";
+"Frequency" = "频率";
+"Minute" = "分钟";
+"Minutes" = "分钟";
+"Hour" = "小时";
+"Hours" = "小时";
+"Days" = "天";
+"Weeks" = "周";
+"Pull Down Refresh" = "下拉刷新";
+"No Data" = "暂无数据";
+"Adult" = "成人";
+"Racy" = "色情";
+"Other" = "其他";
+"Location" = "位置";
+"Voice" = "语音";
+"MMM dd,yyyy, HH:mm" = "yyyy-MM-dd HH:mm";
+"Options" = "选择操作";
+
+//login
+"Log in" = "登录";
+"Login failed" = "登录失败";
+"Password" = "密码";
+"No account? Register" = "没有账号？注册";
+
+// login.error
+"Please enter username and nickname." = "请输入用户名和昵称。";
+"Login analysis token failure" = "获取token失败";
+
+// register
+"Register" = "注册";
+"Register success" = "注册成功";
+"Register failed" = "注册失败";
+"Please enter the same password" = "请输入相同的密码";
+"Back to Login" = "返回登录";
+
+// register.error
+"Username is already taken" = "用户名已存在";
+
+//chat
+"other party is typing" = "对方正在输入";
+"you have a new message" = "你有一条新的消息";
+"You agreed the friend request" = "你同意了好友申请";
+"Chats" = "聊天";
+"You invited %@ to join the group" = "邀请 %@ 加入群组";
+"You have created a group %@" = "你创建了一个群组 %@";
+
+//call
+"There can only be 3 people in the channel" = "该频道最多存在3人";
+
+//error
+"No network connection!" = "未连接到网路!";
+"Connect to the server failed!" = "连接失败!";
+"Connect to the server timed out!" = "连接超时!";
+"%@ can't be null" = "%@ 不能为空";
+"You haven't made a choice yet!" = "请选择一项选项!";
+
+//setting
+"Notifications" = "通知";
+"Sure to Quit?" = "确定要退出吗?";
+"Settings" = "设置";
+
+// setting.notification
+"Show Preview Text" = "显示消息预览";
+"Alert Sound" = "通知声音";
+"Do Not Disturb" = "勿扰";
+"Notification Setting" = "通知设置";
+"All Messages" = "所有消息";
+"Only @Metions" = "仅@消息";
+"Push Notifications" = "推送通知";
+"In-App Notifications" = "应用内推送通知";
+"Contact Notifications" = "私聊通知";
+"Group Notifications" = "群组通知";
+"Thread Notifications" = "子区通知";
+"Turn off Do Not Disturb?" = "确定要关闭勿扰模式吗?";
+"You have set Do Not Disturb until \n %@" = "%@\n前保持勿扰模式";
+"Until 8:00 AM Tomorow" = "直到明天早上8:00";
+
+// contact
+"Contacts" = "联系人";
+"Add Contacts" = "添加联系人";
+"Contact Name" = "联系人名字";
+"Block Contact" = "加入黑名单";
+"Block this contact now?" = "确定要拉黑该联系人吗?";
+"When you block this contact, you will not receive any messages from them." = "拉黑联系人后，将无法收到对方的消息。";
+"Blocked List" = "黑名单";
+"Delete Contact" = "删除联系人";
+"Delete this contact now?" = "确定要删除该联系人吗?";
+"Delete this contact and associated Chats." = "删除联系人将会同步删除会话记录.";
+"Delete contacts failed" = "删除联系人失败";
+"%@ add you as a friend" = "%@ 想将你变为联系人";
+"Not allowed to send their own friends to apply for" = "不能添加自己为联系人";
+"This contact has been added" = "该联系人已添加";
+"%@ agreed to add friends to apply" = "%@ 同意了好友申请";
+"%@ refuse to add friends to apply" = "%@ 拒绝了好友申请";
+"Your friend request has been approved" = "对方已同意你的好友申请";
+
+//group
+"GroupID" = "GroupID";
+"Group Name" = "群组名称";
+"Group Description" = "群组描述";
+"Change Group Name" = "修改群组名称";
+"Change Group Description" = "修改群组描述";
+"The Group Does Not Exist" = "群组不存在";
+"%@ request join the group" = "%@ 申请加入群组";
+"Leave this group now?" = "确定要离开该群组吗?";
+"No prompt for other members and no group messages after you quit this group." = "退出该群后，不会提示其他成员，也不会收到群消息。";
+"Disband this group now?" = "确定要解散该群组吗?";
+"Delete this group and associated Chats." = "删除该群组以及相关会话.";
+"Transfer Ownership and Leave" = "转让群主并离开";
+"Make Admin" = "设置管理员";
+"Remove as Admin" = "取消管理员";
+"Remove From Group" = "踢出群组";
+"%@ invite you to join the group [%@]" = "%@ 邀请你加入 [%@] 群";
+"Add Members" = "添加成员";
+"Public Groups" = "公开群组";
+"New Group" = "创建群组";
+"Allow members to invite" = "允许成员邀请";
+"Member quantity: 3 to 2000" = "该群只能有3到2000人";
+"Join a Group" = "加入群组";
+"Transfer Ownership to %@ and Leave this Group?" = "转让群主给 %@ 并且离开群组?";
+"Transfer Ownership to %@ " = "转让群主给 %@ ";
+"Your are kicked out from group: %@" = "你被从群主中踢出: %@";
+"Group: %@ is destroyed" = "群: %@ 被解散";
+"%@ apply to join group \'%@\'" = "%@ 同意加入群组 \'%@\'";
+"%@ apply to join group \'%@\'：%@" = "%@ 同意加入群组 \'%@\'：%@";
+"You have automatically agreed to %@ group invitation." = "你自动同意了 %@ 的群组邀请.";
+"be refused to join the group\'%@\'" = "你被拒绝加入\'%@\'群组";
+"You are agreed to join the group of \'%@\'" = "群组 \'%@\' 已同意你的加入申请";
+"%@ agreed to join the group [%@]" = "%@ 同意加入群组 [%@]";
+"%@ agreed to your invitation to join the group." = "%@ 同意了你的群组邀请。";
+"%@ decline to join the group [%@]" = "%@ 拒绝加入 [%@] 群组";
+"%@ becomes the new Group Owner." = "%@ 成为了新的群主。";
+"%@ joined the Group." = "%@ 加入了群组。";
+"%@ left the Group." = "%@ 离开了群组。";
+"Authorized to join" = "授权加入";
+
+//network
+"Network disconnected" = "网络连接断开";
+
+//Chatroom
+"You are removed from chatroom %@" = "你已被从 %@ 聊天室踢出";
+"chatroom %@ has been destroyed" = "聊天室 %@ 被解散";
+
+// call
+"Audio Call" = "语音通话";
+"Video Call" = "视频通话";
+"The line is busy" = "对方忙";
+"Request declined" = "对方暂时无法接通";
+"No response" = "对方未应答";
+"Other devices connected" = "已在其他设备接听";
+"Other devices declined" = "已在其他设备拒接";
+
+// user
+"AgoraID" = "AgoraID";
+"Change Avatar" = "修改头像";
+"Change Nickname" = "修改昵称";
+
+// presence
+"Status" = "状态";
+"Busy" = "忙碌";
+"Online" = "在线";
+"Offline" = "离线";
+"Leave" = "离开";
+"Online %@ ago" = "%@前在线";
+"Custom Status" = "自定义状态";
+"Set Status" = "设置状态";
+"Input custom status" = "输入自定义状态";
+"Presence Setting" = "在线状态设置";
+"Change your Custom Status" = "修改你的自定义状态";
+"Clear your \'%@\',change to \'%@\'" = "将你的状态 \'%@\' 改为 \'%@\'";
+
+// apply
+"Refused to apply for failed" = "拒绝失败";
+"Agree to apply for failed" = "同意失败";
+
+// thread
+"New Thread" = "创建子区";
+"All Threads" = "全部子区";
+"Edit Thread" = "编辑子区";
+"Failed to get the Thread Members, please try again later" = "获取子区成员失败，请稍后再试";
+
+// report
+"Confirm to Report?" = "确定要举报吗?";
+
+"Remove from Thread" = "踢出子区";
+"Audio Call Ended" = "语音通话结束";
+"Video Call Ended" = "视频通话结束";
+"Message Report" = "消息举报";
+"Group Notification" = "群组通知";
+"Select Members" = "选择成员";
+"Audio Call Invite" = "语音通话邀请";
+"Video Call Invite" = "视频通话邀请";
+"Thread Members" = "子区成员";
+"Mute this Thread" = "子区消息免打扰";
+"You have muted this Group until \n %@" = "在 %@ 前\n该群组消息不在提示";
+"You have muted this Thread until \n %@" = "在 %@ 前\n该子区消息不在提示";
+"Leave Thread" = "离开子区";
+"Disband Thread" = "销毁子区";
+"Mute this Contact" = "联系人禁言";
+"Mute this Group" = "群组禁言";
+"Upload File" = "上传文件";
+"Upload Video" = "上传视频";
+"Upload Image" = "上传图片";
+"Share Files" = "共享文件";
+"Group Files" = "群文件";
+"Copy AgoraID" = "复制 AgoraID";
+"Copy GroupID" = "复制 GroupID";
+"Renew token failed" = "重新申请凭证失败";
+"Latin letters and numbers only." = "只能使用英文和数字。";
