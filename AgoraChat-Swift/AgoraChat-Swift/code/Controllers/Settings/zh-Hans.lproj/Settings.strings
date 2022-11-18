@@ -1,0 +1,42 @@
+
+/* Class = "UILabel"; text = "Show Typing"; ObjectID = "Fct-Dt-hfQ"; */
+"Fct-Dt-hfQ.text" = "显示输入状态";
+
+/* Class = "UILabel"; text = "Privacy"; ObjectID = "FdK-jy-GsO"; */
+"FdK-jy-GsO.text" = "隐私";
+
+/* Class = "UITableViewSection"; headerTitle = "Settings"; ObjectID = "J5u-On-ql8"; */
+"J5u-On-ql8.headerTitle" = "设置";
+
+/* Class = "UILabel"; text = "General"; ObjectID = "KNd-cQ-hoE"; */
+"KNd-cQ-hoE.text" = "通用";
+
+/* Class = "UILabel"; text = "Agora.io"; ObjectID = "Rbh-3Z-Idw"; */
+"Rbh-3Z-Idw.text" = "Agora.io";
+
+/* Class = "UILabel"; text = "SDK Version"; ObjectID = "TPb-iq-Vye"; */
+"TPb-iq-Vye.text" = "SDK 版本";
+
+/* Class = "UILabel"; text = "UI Library Version"; ObjectID = "aL0-qK-qWl"; */
+"aL0-qK-qWl.text" = "App 版本";
+
+/* Class = "UITableViewSection"; headerTitle = "Logins"; ObjectID = "bfa-no-bbv"; */
+"bfa-no-bbv.headerTitle" = "登录";
+
+/* Class = "UILabel"; text = "Log Out"; ObjectID = "jDE-jC-Olz"; */
+"jDE-jC-Olz.text" = "注销";
+
+/* Class = "UILabel"; text = "Notifications"; ObjectID = "l3W-3G-nDA"; */
+"l3W-3G-nDA.text" = "通知";
+
+/* Class = "UILabel"; text = "More"; ObjectID = "lhf-ea-jTe"; */
+"lhf-ea-jTe.text" = "更多";
+
+/* Class = "UILabel"; text = "About"; ObjectID = "mRl-eo-uvw"; */
+"mRl-eo-uvw.text" = "关于";
+
+/* Class = "UILabel"; text = "Delete the Chat after Leaving Group"; ObjectID = "npk-GU-421"; */
+"npk-GU-421.text" = "离开群组时删除会话记录";
+
+/* Class = "UILabel"; text = "Add Group Request"; ObjectID = "vMk-5Z-4GD"; */
+"vMk-5Z-4GD.text" = "自动同意群组邀请";
