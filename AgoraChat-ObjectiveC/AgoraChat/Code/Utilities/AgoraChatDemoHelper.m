@@ -303,25 +303,26 @@ static AgoraChatDemoHelper *helper = nil;
 }
 
 - (void)groupInvitationDidReceive:(NSString *)aGroupId
-                          inviter:(NSString *)aInviter
-                          message:(NSString *)aMessage
+                        groupName:(NSString * _Nonnull)aGroupName
+                          inviter:(NSString * _Nonnull)aInviter
+                          message:(NSString * _Nullable)aMessage
 {
     if (!aGroupId || !aInviter) {
         return;
-    }
-
-    if (!aMessage || aMessage.length == 0) {
-        aMessage = [NSString stringWithFormat:NSLocalizedString(@"group.invite", @"%@ invite you to group: %@ "), aInviter,aGroupId];
     }
     
     [[AgoraChatClient sharedClient].groupManager getGroupSpecificationFromServerWithId:aGroupId completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
         
         AgoraApplyModel *model = [[AgoraApplyModel alloc] init];
         model.groupId = aGroupId;
-        model.groupSubject = aGroup.groupName;
+        model.groupSubject = aGroupName;
         model.applyHyphenateId = aInviter;
         model.applyNickName = aInviter;
-        model.reason = aMessage;
+        NSString* message = aMessage;
+        if (message.length == 0) {
+            message = [NSString stringWithFormat:NSLocalizedString(@"group.invite", @""), aInviter,aGroupName,aGroupId];
+        }
+        model.reason = message;
         model.style = AgoraApplyStyle_groupInvitation;
         
         if (![[AgoraApplyManager defaultManager] isExistingRequest:aInviter

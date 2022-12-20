@@ -224,9 +224,9 @@ static ACDDemoOptions *sharedOptions = nil;
 
     self.appkey = Appkey;
 #if DEBUG
-    self.apnsCertName = @"ChatDemoDevPush";
+    self.apnsCertName = @"AgoraChatDemoDevPush";
 #else
-    self.apnsCertName = @"ChatDemoProPush";
+    self.apnsCertName = @"AgoraChatDemoProPush";
 #endif
 #ifdef TFRELEASE
     self.apnsCertName = @"ChatDemoPro";
@@ -271,11 +271,11 @@ static ACDDemoOptions *sharedOptions = nil;
     retOpt.sortMessageByServerTime = self.isSortMessageByServerTime;
     NSString *apnsCertName = nil;
     #if DEBUG
-        apnsCertName = @"ChatDemoDevPush";
-        [retOpt setPushKitCertName:@"com.easemob.enterprise.demo.ui.voip"];
+        apnsCertName = @"AgoraChatDemoDevPush";
+        [retOpt setPushKitCertName:@"com.easemob.agorachat.demo.voip"];
     #else
-        apnsCertName = @"ChatDemoProPush";
-        [retOpt setPushKitCertName:@"com.easemob.enterprise.demo.ui.pro.voip"];
+        apnsCertName = @"AgoraChatDemoProPush";
+        [retOpt setPushKitCertName:@"com.easemob.agorachat.demo.pro.voip"];
     #endif
 #ifdef TFRELEASE
     apnsCertName = @"ChatDemoPro";

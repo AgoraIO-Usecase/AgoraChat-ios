@@ -256,7 +256,8 @@
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_END_CHAT object:groupId];
                 [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
-                [self.navigationController popViewControllerAnimated:YES];
+                [self.navigationController popToRootViewControllerAnimated:YES];
+                
             }
         });
     });
@@ -443,7 +444,9 @@
     [[AgoraChatClient sharedClient].groupManager joinPublicGroup:groupId
                                                completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
            [MBProgressHUD hideAllHUDsForView:[UIApplication sharedApplication].keyWindow animated:YES];
+        
            if (!aError) {
+               [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
     //               [weakSelf updateUI];
                
            }

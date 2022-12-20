@@ -71,6 +71,10 @@
     if (agoraUid) {
         [AgoraChatCallKitManager.shareManager updateAgoraUid:agoraUid.integerValue];
     }
+    // No save cache.db in GET method
+    NSURLCache* cache = [NSURLCache sharedURLCache];
+    cache.memoryCapacity = 0;
+    cache.diskCapacity = 0;
     return YES;
 }
 
