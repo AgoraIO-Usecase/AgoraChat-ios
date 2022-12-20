@@ -16,7 +16,7 @@
 #if ACDENV == 0
 //美东
 #define Appkey @"41117440#383391"
-#define AppServerHost @"http://a41.easemob.com"
+#define AppServerHost @"https://a41.chat.agora.io"
 
 #endif
 

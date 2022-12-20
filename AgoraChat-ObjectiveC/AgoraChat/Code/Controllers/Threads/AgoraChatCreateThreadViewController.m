@@ -40,7 +40,7 @@
     return self;
 }
 
-- (void)didSendMessage:(AgoraChatMessage *)message thread:(nonnull AgoraChatThread *)thread error:(nonnull AgoraChatError *)error {
+-(void)didSendMessage:(AgoraChatMessage *)message thread:(AgoraChatThread *)thread error:(nullable AgoraChatError *)error {
     if (!thread.threadId.length) {
         [self showHint:@"conversationId is empty!"];
         return;

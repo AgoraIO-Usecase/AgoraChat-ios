@@ -151,26 +151,26 @@
     [viewController presentViewController:controller animated:YES completion:nil];
 }
 
-- (void)callDidEnd:(NSString*_Nonnull)aChannelName reason:(AgoarChatCallEndReason)aReason time:(int)aTm type:(AgoraChatCallType)aType
+- (void)callDidEnd:(NSString*_Nonnull)aChannelName reason:(AgoraChatCallEndReason)aReason time:(int)aTm type:(AgoraChatCallType)aType
 {
     NSString *msg = @"";
     switch (aReason) {
-        case AgoarChatCallEndReasonAnswerOtherDevice:
+        case AgoraChatCallEndReasonAnswerOtherDevice:
             msg = NSLocalizedString(@"call.otherDeviceAnswer", nil);
             break;
-        case AgoarChatCallEndReasonRefuseOtherDevice:
+        case AgoraChatCallEndReasonRefuseOtherDevice:
             msg = NSLocalizedString(@"call.otherDeviceRefuse", nil);
             break;
-        case AgoarChatCallEndReasonBusy:
+        case AgoraChatCallEndReasonBusy:
             msg = NSLocalizedString(@"call.busy", nil);
             break;
-        case AgoarChatCallEndReasonRemoteRefuse:
+        case AgoraChatCallEndReasonRemoteRefuse:
             msg = NSLocalizedString(@"call.refuse", nil);
             break;
-        case AgoarChatCallEndReasonNoResponse:
+        case AgoraChatCallEndReasonNoResponse:
             msg = NSLocalizedString(@"call.noanswer", nil);
             break;
-        case AgoarChatCallEndReasonHangup:
+        case AgoraChatCallEndReasonHangup:
             break;
         default:
             break;
@@ -226,7 +226,7 @@
                                                           delegate:nil
                                                      delegateQueue:[NSOperationQueue mainQueue]];
     
-    NSString *strUrl = [NSString stringWithFormat:@"http://a41.easemob.com/token/rtc/channel/%@/agorauid/%@?userAccount=%@", aChannelName, @(aAgoraUid), aUserAccount];
+    NSString *strUrl = [NSString stringWithFormat:@"https://a41.chat.agora.io/token/rtc/channel/%@/agorauid/%@?userAccount=%@", aChannelName, @(aAgoraUid), aUserAccount];
     NSString *utf8Url = [strUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
     NSURL *url = [NSURL URLWithString:utf8Url];
     NSMutableURLRequest *urlReq = [[NSMutableURLRequest alloc] initWithURL:url];
@@ -280,7 +280,7 @@
     NSURLSession *session = [NSURLSession sessionWithConfiguration:config
                                                           delegate:nil
                                                      delegateQueue:[NSOperationQueue mainQueue]];
-    NSString *strUrl = [NSString stringWithFormat:@"http://a41.easemob.com/agora/channel/mapper?channelName=%@&userAccount=%@", aChannelName, [AgoraChatClient sharedClient].currentUsername];
+    NSString *strUrl = [NSString stringWithFormat:@"https://a41.chat.agora.io/agora/channel/mapper?channelName=%@&userAccount=%@", aChannelName, [AgoraChatClient sharedClient].currentUsername];
     NSString*utf8Url = [strUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
     NSURL* url = [NSURL URLWithString:utf8Url];
     NSMutableURLRequest* urlReq = [[NSMutableURLRequest alloc] initWithURL:url];

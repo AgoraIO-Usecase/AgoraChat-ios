@@ -91,17 +91,18 @@
     [self.view addSubview:self.easeConvsVC.view];
     [self.view addSubview:self.navView];
 
+    WEAK_SELF
     [self.navView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view);
-        make.left.right.equalTo(self.view);
+        make.top.equalTo(weakSelf.view);
+        make.left.right.equalTo(weakSelf.view);
     }];
 
 
     [self.easeConvsVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.navView.mas_bottom).offset(15);
-        make.left.equalTo(self.view);
-        make.right.equalTo(self.view);
-        make.bottom.equalTo(self.view);
+        make.top.equalTo(weakSelf.navView.mas_bottom).offset(15);
+        make.left.equalTo(weakSelf.view);
+        make.right.equalTo(weakSelf.view);
+        make.bottom.equalTo(weakSelf.view);
     }];
     [self _updateConversationViewTableHeader];
 }
@@ -116,21 +117,21 @@
     control.backgroundColor = [UIColor colorWithHexString:@"#F2F2F2"];;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(searchButtonAction)];
     [control addGestureRecognizer:tap];
-    
+    WEAK_SELF
     [self.easeConvsVC.tableView.tableHeaderView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.easeConvsVC.tableView);
-        make.width.equalTo(self.easeConvsVC.tableView);
-        make.top.equalTo(self.easeConvsVC.tableView);
+        make.left.equalTo(weakSelf.easeConvsVC.tableView);
+        make.width.equalTo(weakSelf.easeConvsVC.tableView);
+        make.top.equalTo(weakSelf.easeConvsVC.tableView);
         make.height.mas_equalTo(54);
     }];
     
     [self.easeConvsVC.tableView.tableHeaderView addSubview:control];
     [control mas_updateConstraints:^(MASConstraintMaker *make) {
         make.height.mas_offset(36);
-        make.top.equalTo(self.easeConvsVC.tableView.tableHeaderView).offset(8);
-        make.bottom.equalTo(self.easeConvsVC.tableView.tableHeaderView).offset(-8);
-        make.left.equalTo(self.easeConvsVC.tableView.tableHeaderView.mas_left).offset(16);
-        make.right.equalTo(self.easeConvsVC.tableView.tableHeaderView).offset(-16);
+        make.top.equalTo(weakSelf.easeConvsVC.tableView.tableHeaderView).offset(8);
+        make.bottom.equalTo(weakSelf.easeConvsVC.tableView.tableHeaderView).offset(-8);
+        make.left.equalTo(weakSelf.easeConvsVC.tableView.tableHeaderView.mas_left).offset(16);
+        make.right.equalTo(weakSelf.easeConvsVC.tableView.tableHeaderView).offset(-16);
     }];
     
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"search"]];
@@ -235,17 +236,19 @@
 
 - (void)refreshTableView
 {
+    WEAK_SELF
     dispatch_async(dispatch_get_main_queue(), ^{
-        if(self.view.window)
-            [self.easeConvsVC refreshTable];
+        if(weakSelf.view.window)
+            [weakSelf.easeConvsVC refreshTable];
     });
 }
 
 - (void)refreshConversationList
 {
+    WEAK_SELF
     dispatch_async(dispatch_get_main_queue(), ^{
         //if(self.view.window)
-        [self.easeConvsVC refreshTabView];
+        [weakSelf.easeConvsVC refreshTabView];
     });
 }
 
@@ -301,7 +304,7 @@
     [[AgoraChatClient sharedClient].chatManager getConversationsFromServer:^(NSArray *aCoversations, AgoraChatError *aError) {
         if (!aError && [aCoversations count] > 0) {
             [weakself.easeConvsVC.dataAry removeAllObjects];
-            NSArray<EaseConversationModel *> *modelAry = [self formateConversations:aCoversations];
+            NSArray<EaseConversationModel *> *modelAry = [weakself formateConversations:aCoversations];
             if (modelAry.count > 0) {
                 [weakself.easeConvsVC.dataAry addObjectsFromArray:modelAry];
                 [weakself.easeConvsVC refreshTable];
@@ -650,7 +653,7 @@
     if(presence.statusDescription.length > 0 && ![presence.statusDescription isEqualToString:kPresenceBusyDescription] && ![presence.statusDescription isEqualToString:kPresenceDNDDescription] && ![presence.statusDescription isEqualToString:kPresenceLeaveDescription])
         customtitle = presence.statusDescription;
     UIAlertAction* customAction = [self _createStatusAlertActionTitle:customtitle image:[UIImage imageNamed:@"custom"] handler:^(UIAlertAction * _Nonnull action) {
-        [self _updateCustomStatus];
+        [weakSelf _updateCustomStatus];
     }];
     [alertController addAction:customAction];
     
