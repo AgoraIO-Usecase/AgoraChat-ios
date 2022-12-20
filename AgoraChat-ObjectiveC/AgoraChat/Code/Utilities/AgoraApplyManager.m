@@ -83,7 +83,18 @@ static AgoraApplyManager *manager = nil;
 #pragma mark - public
 
 - (NSUInteger)unHandleApplysCount {
-    return _contactApplys.count + _groupApplys.count;
+    NSInteger count = 0;
+    for (AgoraApplyModel* model in _contactApplys) {
+        if (model.applyStatus == ACDApplyStatusDefault) {
+            count++;
+        }
+    }
+    for (AgoraApplyModel* model in _groupApplys) {
+        if (model.applyStatus == ACDApplyStatusDefault) {
+            count++;
+        }
+    }
+    return count;
 }
 
 - (NSArray *)contactApplys {

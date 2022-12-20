@@ -38,13 +38,10 @@
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Agora need your Camera</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Agora need your Location permission to get a location message</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Agora need your Location</string>
 	<key>NSMicrophoneUsageDescription</key>

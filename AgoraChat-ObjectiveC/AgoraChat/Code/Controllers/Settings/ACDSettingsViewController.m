@@ -182,9 +182,9 @@ typedef enum : NSUInteger {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     WEAK_SELF
     [[AgoraChatClient sharedClient] logout:YES completion:^(AgoraChatError *aError) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO userInfo:@{@"userName":@"",@"nickName":@""}];
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (!aError) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO userInfo:@{@"userName":@"",@"nickName":@""}];
             NSUserDefaults *shareDefault = [NSUserDefaults standardUserDefaults];
             [shareDefault setObject:@"" forKey:USER_NAME];
             [shareDefault setObject:@"" forKey:USER_NICKNAME];
@@ -528,6 +528,7 @@ typedef enum : NSUInteger {
         _logoutCell = [[ACDSettingLogoutCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDSettingLogoutCell reuseIdentifier]];
         _logoutCell.nameLabel.textColor = TextLabelBlueColor;
         _logoutCell.nameLabel.text = @"Log Out";
+        _logoutCell.selectionStyle = UITableViewCellSelectionStyleNone;
         ACD_WS
         _logoutCell.tapCellBlock = ^{
             [weakSelf logoutAlert];

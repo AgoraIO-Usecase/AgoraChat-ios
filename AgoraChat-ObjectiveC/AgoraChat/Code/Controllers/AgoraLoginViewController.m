@@ -225,7 +225,7 @@
         self.hintView.hidden = NO;
         self.hintTitleLabel.text = NSLocalizedString(@"login.inputNameAndPswd", @"Please enter username and nickname");
     } else {
-        NSString *regex = @"^[A-Za-z0-9]+$";
+        NSString *regex = @"^[A-Za-z0-9_.-]+$";
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex];
         BOOL result = [predicate evaluateWithObject:username];
         if (!result) {
@@ -569,6 +569,12 @@
         return NO;
     }
     if (textField == self.usernameTextField) {
+        NSInteger existedLength = textField.text.length;
+        NSInteger selectedLength = range.length;
+        NSInteger replaceLength = string.length;
+        if (existedLength - selectedLength + replaceLength > 64) {
+            return NO;
+        }
         self.userIdRightView.hidden = NO;
         if ([self.usernameTextField.text length] <= 1 && [string isEqualToString:@""])
             self.userIdRightView.hidden = YES;
