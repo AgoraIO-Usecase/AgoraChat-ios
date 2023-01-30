@@ -4568,7 +4568,6 @@
 				DEVELOPMENT_TEAM = JC854K845H;
 				ENABLE_BITCODE = YES;
 				EXCLUDED_ARCHS = "";
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				EXLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
