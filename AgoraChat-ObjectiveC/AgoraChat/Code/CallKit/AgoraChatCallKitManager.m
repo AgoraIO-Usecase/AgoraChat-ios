@@ -109,6 +109,10 @@
 
 - (void)audioCallToGroup:(NSString *)groupId viewController:(UIViewController *)viewController
 {
+    if (groupId.length <= 0) {
+        [self showHint:@"groupId is empty!!"];
+        return;
+    }
     ConfInviteUsersViewController *controller = [[ConfInviteUsersViewController alloc] initWithGroupId:groupId excludeUsers:@[AgoraChatClient.sharedClient.currentUsername]];
     controller.didSelectedUserList = ^(NSArray * _Nonnull aInviteUsers) {
         for (NSString *strId in aInviteUsers) {
@@ -131,6 +135,10 @@
 
 - (void)videoCallToGroup:(NSString *)groupId viewController:(UIViewController *)viewController
 {
+    if (groupId.length <= 0) {
+        [self showHint:@"groupId is empty!!"];
+        return;
+    }
     ConfInviteUsersViewController *controller = [[ConfInviteUsersViewController alloc] initWithGroupId:groupId excludeUsers:@[AgoraChatClient.sharedClient.currentUsername]];
     controller.didSelectedUserList = ^(NSArray * _Nonnull aInviteUsers) {
         for (NSString* strId in aInviteUsers) {
