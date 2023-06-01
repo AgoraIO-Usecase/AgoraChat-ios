@@ -75,6 +75,7 @@
 "Voice" = "Voice";
 "MMM dd,yyyy, HH:mm" = "MMM dd,yyyy, HH:mm";
 "Options" = "Options";
+"common.parsing" = "Parsing...";
 
 //login
 "Log in" = "Log in";

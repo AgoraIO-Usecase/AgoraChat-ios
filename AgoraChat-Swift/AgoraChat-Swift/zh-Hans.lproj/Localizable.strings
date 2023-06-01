@@ -75,6 +75,7 @@
 "Voice" = "语音";
 "MMM dd,yyyy, HH:mm" = "yyyy-MM-dd HH:mm";
 "Options" = "选择操作";
+"common.parsing" = "解析中。。。";
 
 //login
 "Log in" = "登录";

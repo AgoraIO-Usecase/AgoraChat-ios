@@ -286,6 +286,7 @@
 "common.addblackList" = "加入黑名单";
 "common.search" = "搜索";
 "common.done" = "完成";
+"common.parsing" = "解析中。。。";
 
 //message
 "message.friendapply.agree" = "%@同意了加好友申请";
