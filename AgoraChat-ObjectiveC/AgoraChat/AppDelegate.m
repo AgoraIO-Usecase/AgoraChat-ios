@@ -149,11 +149,12 @@
         [self loadMainPage];
         
     } else {
+        ACDDemoOptions.sharedOptions.tokenExpiredTimestamp = 0;
         [self loadLoginPage];
     }
 }
 
-- (void)tokenWillExpire:(int)aErrorCode
+- (void)tokenWillExpire:(AgoraChatErrorCode)aErrorCode
 {
     if (aErrorCode == AgoraChatErrorTokeWillExpire) {
         NSLog(@"%@", [NSString stringWithFormat:@"========= token expire rennew token ! code : %d",aErrorCode]);
@@ -191,15 +192,13 @@
     }
 }
 
-- (void)tokenDidExpire:(int)aErrorCode
+- (void)tokenDidExpire:(AgoraChatErrorCode)aErrorCode
 {
+    __block NSString* nickName = nil;
     if (aErrorCode == AgoraChatErrorTokenExpire || aErrorCode == 401) {
         void (^finishBlock) (NSString *aName, AgoraChatError *aError) = ^(NSString *aName, AgoraChatError *aError) {
             if (!aError) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    UIAlertView *alertError = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"login.succeed", @"Sign in succeed") delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"login.ok", @"Ok"), nil];
-                    [alertError show];
-                });
+                [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_UPDATE_CONVERSATIONS object:nil];
                 return ;
             }
             
@@ -223,6 +222,7 @@
             }
             UIAlertView *alertError = [[UIAlertView alloc] initWithTitle:nil message:errorDes delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"login.ok", @"Ok"), nil];
             [alertError show];
+            [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO userInfo:@{@"userName":@"",@"nickName":@""}];
         };
         
         NSUserDefaults *shareDefault = [NSUserDefaults standardUserDefaults];
@@ -237,6 +237,10 @@
                     NSDictionary *responsedict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
                     NSString *token = [responsedict objectForKey:@"accessToken"];
                     NSString *loginName = [responsedict objectForKey:@"chatUserName"];
+                    nickName = [responsedict objectForKey:@"chatUserNickname"];
+                    NSInteger agoraUid = [responsedict[@"agoraUid"] integerValue];
+                    NSInteger expireTime = [[responsedict objectForKey:@"expireTimestamp"] integerValue];
+                    ACDDemoOptions.sharedOptions.tokenExpiredTimestamp = expireTime;
                     if (token && token.length > 0) {
                         [[AgoraChatClient sharedClient] loginWithUsername:[loginName lowercaseString] agoraToken:token completion:finishBlock];
                         return;
@@ -246,6 +250,7 @@
                 } else {
                     alertStr = NSLocalizedString(@"login appserver failure", @"Sign in appserver failure");
                 }
+                [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO userInfo:@{@"userName":@"",@"nickName":@""}];
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:alertStr delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"loginAppServer.ok", @"Ok"), nil];
                 [alert show];
             });
@@ -286,18 +291,29 @@
     [[AgoraChatClient sharedClient] applicationDidEnterBackground:application];
 }
 
-
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    [[AgoraChatClient sharedClient] applicationWillEnterForeground:application];
-    
-    if ([AgoraChatDemoHelper shareHelper].pushVC) {
-        [[AgoraChatDemoHelper shareHelper].pushVC reloadNotificationStatus];
-    }
-    
-    if ([AgoraChatDemoHelper shareHelper].settingsVC) {
-        [[AgoraChatDemoHelper shareHelper].settingsVC reloadNotificationStatus];
-    }
+    do {
+        NSInteger tokenExpiredTs = ACDDemoOptions.sharedOptions.tokenExpiredTimestamp;
+        if(ACDDemoOptions.sharedOptions.tokenExpiredTimestamp > 1600000000000) {
+            NSInteger currentTs = [[NSDate date] timeIntervalSince1970] * 1000;
+            if ( currentTs > tokenExpiredTs) {
+                [AgoraChatClient.sharedClient log:[NSString stringWithFormat:@"applicationWillEnterForeground begin logout!!currentTs:%ld,tokenExpiredTs:%ld",currentTs,tokenExpiredTs]];
+                [AgoraChatClient.sharedClient logout:NO];
+                [self tokenDidExpire:AgoraChatErrorTokenExpire];
+                break;
+            }
+        }
+        [[AgoraChatClient sharedClient] applicationWillEnterForeground:application];
+        
+        if ([AgoraChatDemoHelper shareHelper].pushVC) {
+            [[AgoraChatDemoHelper shareHelper].pushVC reloadNotificationStatus];
+        }
+        
+        if ([AgoraChatDemoHelper shareHelper].settingsVC) {
+            [[AgoraChatDemoHelper shareHelper].settingsVC reloadNotificationStatus];
+        }
+    } while(0);
 }
 
 #pragma mark - Remote Notification Registration
@@ -312,7 +328,7 @@
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
-{    
+{
     [self showAlertWithTitle:NSLocalizedString(@"apns.failToRegisterApns", @"Fail to register apns") message:error.description];
 }
 
@@ -406,12 +422,13 @@
 }
 
 #pragma mark - AgoraChatClientDelegate
-
 - (void)autoLoginDidCompleteWithError:(AgoraChatError *)aError
 {
     if (aError) {
         [self loadLoginPage];
     }
 }
+
+
 
 @end
