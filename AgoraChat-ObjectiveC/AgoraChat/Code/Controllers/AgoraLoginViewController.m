@@ -408,6 +408,8 @@
                 NSString *loginName = [responsedict objectForKey:@"chatUserName"];
                 NSString *nickName = [responsedict objectForKey:@"chatUserNickname"];
                 NSInteger agoraUid = [responsedict[@"agoraUid"] integerValue];
+                NSInteger expireTime = [[responsedict objectForKey:@"expireTimestamp"] integerValue];
+                ACDDemoOptions.sharedOptions.tokenExpiredTimestamp = expireTime;
 
                 if (token && token.length > 0) {
                     [[AgoraChatClient sharedClient] loginWithUsername:[loginName lowercaseString] agoraToken:token completion:^(NSString *aUsername, AgoraChatError *aError) {
