@@ -97,7 +97,7 @@
 }
 
 - (void)loadContactInfo {
-    self.contactInfoHeaderView.userIdLabel.text = [NSString stringWithFormat:@"AgoraID: %@",_model.hyphenateId];
+    self.contactInfoHeaderView.userIdLabel.text = [NSString stringWithFormat:@"Agora ID: %@",_model.hyphenateId];
     self.contactInfoHeaderView.nameLabel.text = _model.nickname;
     self.contactInfoHeaderView.avatarImageView.image = _model.defaultAvatarImage;
     if (_model.avatarURLPath.length > 0) {

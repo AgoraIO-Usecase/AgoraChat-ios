@@ -85,7 +85,7 @@
         _placeholderLabel = UILabel.new;
         _placeholderLabel.font = NFont(14.0);
         _placeholderLabel.textColor = COLOR_HEX(0xE6E6E6);
-        _placeholderLabel.text = @"Group Description, not required";
+        _placeholderLabel.text = NSLocalizedString(@"group.desc.placeholder", nil);
     }
     return _placeholderLabel;
 }

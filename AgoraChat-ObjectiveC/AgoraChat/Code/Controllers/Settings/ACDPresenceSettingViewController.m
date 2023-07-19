@@ -27,7 +27,7 @@
 
 - (void)loadData
 {
-    self.dataArray = [@[kPresenceOnlineDescription,kPresenceBusyDescription,kPresenceDNDDescription,kPresenceLeaveDescription,@"custom"] mutableCopy];
+    self.dataArray = [@[kPresenceOnlineDescription,kPresenceBusyDescription,kPresenceDNDDescription,kPresenceLeaveDescription,@"Custom Status"] mutableCopy];
     AgoraChatPresence* minePresence = [[[PresenceManager sharedInstance] presences] objectForKey:[AgoraChatClient sharedClient].currentUsername];
     self.currentPresence = minePresence.statusDescription;
     if(self.currentPresence.length == 0)

@@ -97,7 +97,7 @@
         _searchHistoryCell.detailLabel.text = @"";
         ACD_WS
         _searchHistoryCell.tapCellBlock = ^{
-            ACDChatRecordViewController *chatRrcordController = [[ACDChatRecordViewController alloc]initWithCoversationModel:weakSelf.conversation];
+            ACDChatRecordViewController *chatRrcordController = [[ACDChatRecordViewController alloc]initWithConversationModel:weakSelf.conversation];
             [weakSelf.navigationController pushViewController:chatRrcordController animated:YES];
         };
         

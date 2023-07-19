@@ -16,6 +16,7 @@
 #import "ACDChatViewController.h"
 #import "ACDGroupTransferOwnerViewController.h"
 #import "ACDNotificationSettingViewController.h"
+#import "ACDGroupNoticeViewController.h"
 #import "ACDTextViewController.h"
 #import "ACDTextViewController.h"
 #import "ACDGroupSharedFilesViewController.h"
@@ -28,6 +29,7 @@
 @property (nonatomic, strong) ACDInfoHeaderView *groupInfoHeaderView;
 @property (nonatomic, strong) ACDJoinGroupCell *joinGroupCell;
 @property (nonatomic, strong) ACDInfoDetailCell *membersCell;
+@property (nonatomic, strong) ACDImageTitleContentCell *notificationCell;
 @property (nonatomic, strong) ACDImageTitleContentCell *groupNoticesCell;
 @property (nonatomic, strong) ACDInfoDetailCell *groupFilesCell;
 @property (nonatomic, strong) ACDInfoSwitchCell *allowSearchCell;
@@ -158,11 +160,11 @@
         self.groupInfoHeaderView.isHideChatButton = YES;
     }else {
         if (self.group.permissionType == AgoraChatGroupPermissionTypeOwner) {
-            self.cells = @[self.membersCell,self.groupNoticesCell,self.groupFilesCell,self.transferOwnerCell,self.disbandCell];
+            self.cells = @[self.membersCell,self.notificationCell,self.groupNoticesCell,self.groupFilesCell,self.transferOwnerCell,self.disbandCell];
         } else if(self.group.permissionType == AgoraChatGroupPermissionTypeAdmin){
-            self.cells = @[self.membersCell,self.groupNoticesCell,self.groupFilesCell,self.leaveCell];
+            self.cells = @[self.membersCell,self.notificationCell,self.groupNoticesCell,self.groupFilesCell,self.leaveCell];
         }else {
-            self.cells = @[self.membersCell,self.groupNoticesCell,self.groupFilesCell,self.leaveCell];
+            self.cells = @[self.membersCell,self.notificationCell,self.groupNoticesCell,self.groupFilesCell,self.leaveCell];
         }
     }
 
@@ -414,10 +416,19 @@
     [self.navigationController pushViewController:chatViewController animated:YES];
 }
 
-- (void)goGroupNotice {
+- (void)goNotification {
     ACDNotificationSettingViewController *controller = [[ACDNotificationSettingViewController alloc] init];
     controller.notificationType = AgoraNotificationSettingTypeGroup;
     controller.conversationID = self.groupId;
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)goGroupNotice {
+    ACDGroupNoticeViewController *controller = [[ACDGroupNoticeViewController alloc] initWithGroup:self.group];
+    WEAK_SELF
+    controller.updateNoticeBlock = ^(AgoraChatGroup* group) {
+        [weakSelf updateUI];
+    };
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -509,7 +520,7 @@
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 1) {
+    if (indexPath.row == 1 || indexPath.row == 2) {
         return UITableViewAutomaticDimension;
     }
     return 54.0f;
@@ -595,12 +606,28 @@
     return _membersCell;
 }
 
+- (ACDImageTitleContentCell *)notificationCell
+{
+    if (_notificationCell == nil) {
+        _notificationCell = [[ACDImageTitleContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDImageTitleContentCell reuseIdentifier]];
+        _notificationCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        [_notificationCell.iconImageView setImage:ImageWithName(@"notifications_yellow")];
+        _notificationCell.nameLabel.text = @"Notifications";
+        ACD_WS
+        _notificationCell.tapCellBlock = ^{
+            [weakSelf goNotification];
+        };
+    }
+    return _notificationCell;
+}
+
 - (ACDImageTitleContentCell *)groupNoticesCell {
     if (_groupNoticesCell == nil) {
         _groupNoticesCell = [[ACDImageTitleContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDImageTitleContentCell reuseIdentifier]];
         _groupNoticesCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [_groupNoticesCell.iconImageView setImage:ImageWithName(@"groupInfo_notice")];
         _groupNoticesCell.nameLabel.text = @"Group Notice";
+        _groupNoticesCell.contentLabel.text = self.group.announcement;
         ACD_WS
         _groupNoticesCell.tapCellBlock = ^{
             [weakSelf goGroupNotice];

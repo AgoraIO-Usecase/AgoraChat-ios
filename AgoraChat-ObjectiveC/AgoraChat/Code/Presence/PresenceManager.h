@@ -19,7 +19,7 @@ static NSString* const kPresenceOnlineDescription = @"Online";
 static NSString* const kPresenceOfflineDescription = @"Offline";
 static NSString* const kPresenceBusyDescription = @"Busy";
 static NSString* const kPresenceDNDDescription = @"Do not Disturb";
-static NSString* const kPresenceLeaveDescription = @"Leave";
+static NSString* const kPresenceLeaveDescription = @"Away";
 
 @interface PresenceManager : NSObject<AgoraChatPresenceManagerDelegate,AgoraChatClientDelegate>
 +(instancetype _Nonnull ) alloc __attribute__((unavailable("call sharedInstance instead")));

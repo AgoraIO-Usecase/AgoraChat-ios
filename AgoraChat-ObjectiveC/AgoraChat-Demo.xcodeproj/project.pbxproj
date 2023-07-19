@@ -280,6 +280,10 @@
 		C08C5F9827BFE93300D18CF1 /* PresenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C08C5F9727BFE93200D18CF1 /* PresenceManager.m */; };
 		C08C62C027BFF69D00D18CF1 /* AgoraChatAvatarView.m in Sources */ = {isa = PBXBuildFile; fileRef = C08C62BE27BFF69D00D18CF1 /* AgoraChatAvatarView.m */; };
 		C0CCE49627CB58B3008131B2 /* ACDPresenceSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0CCE49527CB58B3008131B2 /* ACDPresenceSettingViewController.m */; };
+		C0E298B52A65117000F55EBF /* chat_setting_top@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0E298B32A65117000F55EBF /* chat_setting_top@3x.png */; };
+		C0E298B62A65117000F55EBF /* chat_setting_top@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0E298B42A65117000F55EBF /* chat_setting_top@2x.png */; };
+		C0E298B92A65117900F55EBF /* chat_setting_search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0E298B72A65117900F55EBF /* chat_setting_search@2x.png */; };
+		C0E298BA2A65117900F55EBF /* chat_setting_search@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0E298B82A65117900F55EBF /* chat_setting_search@3x.png */; };
 		D20E26D71DCA011C00B3FAC6 /* icon_info.png in Resources */ = {isa = PBXBuildFile; fileRef = D20E26D41DCA011C00B3FAC6 /* icon_info.png */; };
 		D20E26D81DCA011C00B3FAC6 /* icon_info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D20E26D51DCA011C00B3FAC6 /* icon_info@2x.png */; };
 		D20E26D91DCA011C00B3FAC6 /* icon_info@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D20E26D61DCA011C00B3FAC6 /* icon_info@3x.png */; };
@@ -1164,6 +1168,10 @@
 		C08C62BF27BFF69D00D18CF1 /* AgoraChatAvatarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraChatAvatarView.h; sourceTree = "<group>"; };
 		C0CCE49427CB58B3008131B2 /* ACDPresenceSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACDPresenceSettingViewController.h; sourceTree = "<group>"; };
 		C0CCE49527CB58B3008131B2 /* ACDPresenceSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACDPresenceSettingViewController.m; sourceTree = "<group>"; };
+		C0E298B32A65117000F55EBF /* chat_setting_top@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "chat_setting_top@3x.png"; path = "AgoraChat/Resources/Chat Details/chat_setting_top@3x.png"; sourceTree = SOURCE_ROOT; };
+		C0E298B42A65117000F55EBF /* chat_setting_top@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "chat_setting_top@2x.png"; path = "AgoraChat/Resources/Chat Details/chat_setting_top@2x.png"; sourceTree = SOURCE_ROOT; };
+		C0E298B72A65117900F55EBF /* chat_setting_search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "chat_setting_search@2x.png"; path = "AgoraChat/Resources/Chat Details/chat_setting_search@2x.png"; sourceTree = SOURCE_ROOT; };
+		C0E298B82A65117900F55EBF /* chat_setting_search@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "chat_setting_search@3x.png"; path = "AgoraChat/Resources/Chat Details/chat_setting_search@3x.png"; sourceTree = SOURCE_ROOT; };
 		D20E26D41DCA011C00B3FAC6 /* icon_info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_info.png; sourceTree = "<group>"; };
 		D20E26D51DCA011C00B3FAC6 /* icon_info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_info@2x.png"; sourceTree = "<group>"; };
 		D20E26D61DCA011C00B3FAC6 /* icon_info@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_info@3x.png"; sourceTree = "<group>"; };
@@ -2886,6 +2894,10 @@
 				D2BF7D811D914DB20090AA66 /* Icon_Video.png */,
 				D2BF7D821D914DB20090AA66 /* Icon_Video@2x.png */,
 				D2BF7D831D914DB20090AA66 /* Icon_Video@3x.png */,
+				C0E298B42A65117000F55EBF /* chat_setting_top@2x.png */,
+				C0E298B32A65117000F55EBF /* chat_setting_top@3x.png */,
+				C0E298B72A65117900F55EBF /* chat_setting_search@2x.png */,
+				C0E298B82A65117900F55EBF /* chat_setting_search@3x.png */,
 			);
 			path = Chatting;
 			sourceTree = "<group>";
@@ -3520,6 +3532,8 @@
 				7F6CC87126568B9900BA60BB /* AgoraBaseRefreshTableController.xib in Resources */,
 				D2BF7F211D914DB30090AA66 /* logo5@3x.png in Resources */,
 				6639B18127FD98300066145D /* thread_members@3x.png in Resources */,
+				C0E298B52A65117000F55EBF /* chat_setting_top@3x.png in Resources */,
+				C0E298B92A65117900F55EBF /* chat_setting_search@2x.png in Resources */,
 				90375D28287FE9C700058AF0 /* reportPlay@3x.png in Resources */,
 				D2BF7E621D914DB30090AA66 /* Button_Current Location.png in Resources */,
 				D2BF7E4C1D914DB30090AA66 /* Button_Radio Active@3x.png in Resources */,
@@ -3586,6 +3600,7 @@
 				D2BF7F181D914DB30090AA66 /* logo2@3x.png in Resources */,
 				EC432EDF27202B34001B31DE /* gray_goBack@3x.png in Resources */,
 				D2BF7E8C1D914DB30090AA66 /* Icon_Current Location pin.png in Resources */,
+				C0E298B62A65117000F55EBF /* chat_setting_top@2x.png in Resources */,
 				716633FB1DB0DE5600C92E27 /* message@3x.png in Resources */,
 				3A79D1061E7797120085AB6E /* Button_AddUser@2x.png in Resources */,
 				C00A003D27C61F4900C7E1BE /* Busy_whitestroke@2x.png in Resources */,
@@ -3681,6 +3696,7 @@
 				D24328051DAB71BC00EDCDAB /* Icon_error@2x.png in Resources */,
 				EC54DE1C272A7DEB00ABEE3E /* groupInfo_search@2x.png in Resources */,
 				EC570EB02731295700CBC408 /* default_avatar_setting@3x.png in Resources */,
+				C0E298BA2A65117900F55EBF /* chat_setting_search@3x.png in Resources */,
 				EC54DE0F272A7DEB00ABEE3E /* groupInfo_trans@3x.png in Resources */,
 				D2BF7EBB1D914DB30090AA66 /* Icon_Location@3x.png in Resources */,
 				9ECE6749274B9D60007CF85F /* deleteSearch@3x.png in Resources */,
@@ -3949,20 +3965,20 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AgoraChat-Demo/Pods-AgoraChat-Demo-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_iOS/RtcBasic/AgoraCore.framework/AgoraCore",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_iOS/RtcBasic/AgoraRtcKit.framework/AgoraRtcKit",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_iOS/RtcBasic/AgoraSoundTouch.framework/AgoraSoundTouch",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_iOS/RtcBasic/AgoraDav1d.framework/AgoraDav1d",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_iOS/RtcBasic/Agorafdkaac.framework/Agorafdkaac",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_iOS/RtcBasic/Agoraffmpeg.framework/Agoraffmpeg",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/AgoraRtcEngine_iOS/RtcBasic/AgoraSoundTouch.framework/AgoraSoundTouch",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Agora_Chat_iOS/AgoraChat.framework/AgoraChat",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraRtcKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraSoundTouch.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraDav1d.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Agorafdkaac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Agoraffmpeg.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraSoundTouch.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AgoraChat.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4348,7 +4364,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Agora Lab, Inc. (48TB6ZZL5S)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = JC854K845H;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -4563,11 +4579,12 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 5;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = JC854K845H;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				EXLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4677,7 +4694,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: EaseMob Inc. (JC854K845H)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: EaseMob Inc. (JC854K845H)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = JC854K845H;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";

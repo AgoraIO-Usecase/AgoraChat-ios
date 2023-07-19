@@ -65,7 +65,7 @@
     ACDDemoOptions *options = [ACDDemoOptions sharedOptions];
 
     if(indexPath.row == 0) {
-        cell.nameLabel.text = @"Show Typing";
+        cell.nameLabel.text = @"Typing Indicator";
         [cell.aSwitch setOn:options.isChatTyping animated:NO];
         
         cell.switchActionBlock  = ^(BOOL isOn) {
@@ -74,17 +74,17 @@
             [self.table reloadData];
         };
     }else if(indexPath.row == 1) {
-        cell.nameLabel.text = @"Add Group Request";
+        cell.nameLabel.text = @"Need approval when invited to join a group";
 
         [cell.aSwitch setOn:options.isAutoAcceptGroupInvitation animated:NO];
         cell.switchActionBlock = ^(BOOL isOn) {
-            [AgoraChatClient.sharedClient.options setIsAutoAcceptGroupInvitation:isOn];
+            [AgoraChatClient.sharedClient.options setAutoAcceptGroupInvitation:isOn];
             options.isAutoAcceptGroupInvitation = isOn;
             [options archive];
             [self.table reloadData];
         };
     }else {
-        cell.nameLabel.text = @"Delete the Chat after Leaving Group";
+        cell.nameLabel.text = NSLocalizedString(@"setting.deleteChatAfterLeaveGroup", nil);
         [cell.aSwitch setOn:options.deleteMessagesOnLeaveGroup animated:NO];
         cell.switchActionBlock  = ^(BOOL isOn) {
             [AgoraChatClient.sharedClient.options setDeleteMessagesOnLeaveGroup:isOn];

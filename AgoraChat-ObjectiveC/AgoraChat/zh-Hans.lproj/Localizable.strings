@@ -158,6 +158,7 @@
 //setting.chats
 "setting.chats.acceptInvitation" = "自动接受群组邀请";
 "setting.chats.blockedUsers" = "黑名单列表";
+"setting.deleteChatAfterLeaveGroup" = "离开群组时销毁会话";
 
 //logout
 "logout.failed" = "退出登录失败";
@@ -219,8 +220,6 @@
 "group.blockGroupSuccess" = "屏蔽群组消息成功";
 "group.unblockGroupFailure" = "解除群消息屏蔽失败";
 "group.unblockGroupSuccess" = "解除群消息屏蔽成功";
-"group.setFailure" = "设置失败";
-"group.setSuccess" = "设置成功";
 "group.removeSuccess" = "移除群成员成功";
 "group.removeFailure" = "移除群成员失败";
 "group.applyJoin" = "%@ 申请加入群组\'%@\'";
@@ -260,6 +259,10 @@
 "group.updateAnnouncement" = "群组:%@ 公告内容: %@";
 "group.new.publicGroups" = "公开群";
 "group.new.NewGroup" = "新建群组";
+"group.desc.placeholder" = "群描述，非必填";
+"group.maxMemberSize" = "最大人数";
+"group.setAsPublic" = "设为公开群";
+"group.allowMemberInvite" = "允许群成员邀请";
 
 
 //Group Bans
@@ -355,8 +358,8 @@
 "retranslate" = "重译";
 "retranslatePrompt" = "每条翻译都只能被重译一次.提供的译文仅供参考";
 "hide" = "隐藏";
-"MultiLanguages" = "多语言";
-"languageSetting" = "设置语言";
+"demandLanguages" = "按需翻译语言";
+"autoLanguageSetting" = "自动翻译语言";
 "prompt" = "提示";
 
 // call
@@ -365,3 +368,5 @@
 "call.noanswer" = "对方无应答";
 "call.otherDeviceAnswer" = "其他设备已接起";
 "call.otherDeviceRefuse" = "其他设备已拒绝";
+
+"translate.setting" = "翻译设置";

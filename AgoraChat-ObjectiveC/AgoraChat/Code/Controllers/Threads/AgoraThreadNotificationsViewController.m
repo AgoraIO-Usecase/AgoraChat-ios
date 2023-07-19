@@ -80,7 +80,7 @@
                                          handler:^(UIAlertAction *action) {
                                              // do something here
                                          }];
-    UIAlertAction *onlyRemindMetions = [UIAlertAction actionWithTitle:@"Only @Metions"
+    UIAlertAction *onlyRemindMetions = [UIAlertAction actionWithTitle:@"Only @Mentions"
                                            style:UIAlertActionStyleDefault
                                          handler:^(UIAlertAction *action) {
                                              // do something here

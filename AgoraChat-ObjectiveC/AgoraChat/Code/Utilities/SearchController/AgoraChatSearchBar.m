@@ -59,7 +59,7 @@
     
     UIImageView *leftView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 15)];
     leftView.contentMode = UIViewContentModeScaleAspectFit;
-    leftView.image = [UIImage imageNamed:@"search_gray"];
+    leftView.image = [UIImage imageNamed:@"search"];
     self.textField.leftView = leftView;
     
     

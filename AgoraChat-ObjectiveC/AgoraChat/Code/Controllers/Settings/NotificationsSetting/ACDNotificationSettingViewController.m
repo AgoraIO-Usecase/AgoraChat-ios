@@ -107,7 +107,7 @@
     
     if(self.notificationType != AgoraNotificationSettingTypeSingleChat)
     {
-        UIAlertAction *metionAction = [UIAlertAction actionWithTitle:@"Only @Metions" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *metionAction = [UIAlertAction actionWithTitle:@"Only @Mentions" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self remindTypeChange:AgoraChatPushRemindTypeMentionOnly];
         }];
         [alertController addAction:metionAction];
@@ -261,12 +261,12 @@
             return 3;
         }
         return 2;
-        
     }else if (self.notificationType == AgoraNotificationSettingTypeSingleChat)
     {
         return 2;
     }else{
-        return 2;
+        // hide 'Frequency Mute' setting
+        return 1;
     }
 }
 
@@ -368,7 +368,7 @@
             typeStr = @"All Messages";
             break;
         case AgoraChatPushRemindTypeMentionOnly:
-            typeStr = @"Only @Metions";
+            typeStr = @"Only @Mentions";
             break;
         case AgoraChatPushRemindTypeNone:
             typeStr = @"Nothing";

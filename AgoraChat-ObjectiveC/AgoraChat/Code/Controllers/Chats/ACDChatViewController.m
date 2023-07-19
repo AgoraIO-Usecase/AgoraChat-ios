@@ -30,6 +30,7 @@
 #import "AgoraChatCallKitManager.h"
 #import "AgoraChatCallCell.h"
 #import "AgoraChatCallKit/AgoraChatCallKit.h"
+#import "ACDChatRecordViewController.h"
 
 @interface ACDChatViewController ()<EaseChatViewControllerDelegate, AgoraChatroomManagerDelegate, AgoraChatGroupManagerDelegate, EaseMessageCellDelegate>
 @property (nonatomic, strong) EaseConversationModel *conversationModel;
@@ -566,23 +567,27 @@
 //        _navigationView.rightButtonBlock = ^{
 //            [weakSelf goChatDetailPage];
 //        };
-        
+        _navigationView.rightButton.hidden = NO;
+        [_navigationView.rightButton setImage:ImageWithName(@"thread_more") forState:UIControlStateNormal];
+        _navigationView.rightButtonBlock = ^{
+            [weakSelf moreAction];
+        };
         if (self.conversationType == AgoraChatConversationTypeChat) {
-            _navigationView.rightButton.hidden = NO;
-            [_navigationView.rightButton setImage:[UIImage imageNamed:@"nav_bar_call"] forState:UIControlStateNormal];
-            _navigationView.rightButtonBlock = ^{
-                [weakSelf callAction];
-            };
-        } else {
-            _navigationView.rightButton.hidden = NO;
-            [_navigationView.rightButton setImage:ImageWithName(@"groupThread") forState:UIControlStateNormal];
-            _navigationView.rightButtonBlock = ^{
-                [weakSelf pushThreadListAction];
-            };
-            
             _navigationView.rightButton2.hidden = NO;
             [_navigationView.rightButton2 setImage:[UIImage imageNamed:@"nav_bar_call"] forState:UIControlStateNormal];
             _navigationView.rightButtonBlock2 = ^{
+                [weakSelf callAction];
+            };
+        } else {
+            _navigationView.rightButton2.hidden = NO;
+            [_navigationView.rightButton2 setImage:ImageWithName(@"groupThread") forState:UIControlStateNormal];
+            _navigationView.rightButtonBlock2 = ^{
+                [weakSelf pushThreadListAction];
+            };
+            
+            _navigationView.rightButton3.hidden = NO;
+            [_navigationView.rightButton3 setImage:[UIImage imageNamed:@"nav_bar_call"] forState:UIControlStateNormal];
+            _navigationView.rightButtonBlock3 = ^{
                 [weakSelf callAction];
             };
         }
@@ -622,6 +627,74 @@
             [AgoraChatCallKitManager.shareManager videoCallToGroup:weakSelf.conversationId viewController:weakSelf];
         }
     }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    [weakSelf presentViewController:alertController animated:YES completion:nil];
+}
+
+- (UIAlertAction*)_createAlertActionTitle:(NSString*)title image:(UIImage*)image handler:(void(^ _Nonnull)(UIAlertAction * _Nonnull action))handler
+{
+    UIAlertAction* action = [UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:handler];
+    if(image) {
+        [action setValue:[image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forKey:@"image"];
+    }
+    [action setValue:[NSNumber numberWithInt:0] forKey:@"titleTextAlignment"];
+    [action setValue:[UIColor blackColor] forKey:@"titleTextColor"];
+    return action;
+}
+
+- (void)moreAction
+{
+    __weak typeof(self)weakSelf = self;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction* searchAction = [self _createAlertActionTitle:@"Search Message History" image:[UIImage imageNamed:@"chat_setting_search"] handler:^(UIAlertAction * _Nonnull action) {
+        ACDChatRecordViewController *chatRecordController = [[ACDChatRecordViewController alloc] initWithConversationModel:weakSelf.conversation];
+        chatRecordController.searchDoneBlock = ^(NSString* msgId) {
+            if (msgId.length > 0) {
+                __block NSUInteger index = -1;
+                [weakSelf.chatController.dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    if ([obj isKindOfClass:[EaseMessageModel class]]) {
+                        AgoraChatMessage* msg = ((EaseMessageModel*)obj).message;
+                        if ([msg.messageId isEqualToString:msgId]) {
+                            index = idx;
+                            *stop = YES;
+                            
+                        }
+                    }
+                    
+                }];
+                if (index == -1) {
+                    [weakSelf.conversation loadMessagesStartFromId:msgId count:50 searchDirection:AgoraChatMessageSearchDirectionDown completion:^(NSArray<AgoraChatMessage *> * _Nullable aMessages, AgoraChatError * _Nullable aError) {
+                        weakSelf.chatController.dataArray = [aMessages mutableCopy];
+                    }];
+                }
+                if (index != -1) {
+                    [weakSelf.chatController.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                }
+            }
+        };
+        [weakSelf.navigationController pushViewController:chatRecordController animated:YES];
+    }];
+    [alertController addAction:searchAction];
+    
+    UIAlertAction* clearMessageAction = [self _createAlertActionTitle:@"Clear Message History" image:[UIImage imageNamed:@"delete"] handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertController* deleteAlertController = [UIAlertController alertControllerWithTitle:nil message:@"Are you sure you want to delete all chat history?" preferredStyle:UIAlertControllerStyleAlert];
+        [deleteAlertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"ok", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            AgoraChatError*err = nil;
+            [weakSelf.conversation deleteAllMessages:&err];
+            [weakSelf.chatController.dataArray removeAllObjects];
+            [weakSelf.chatController refreshTableView:YES];
+        }]];
+        [deleteAlertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }]];
+        [weakSelf presentViewController:deleteAlertController animated:NO completion:nil];
+    }];
+    [alertController addAction:clearMessageAction];
+    
+    UIAlertAction* stickyAction = [self _createAlertActionTitle:self.conversationModel.isTop ? @"UnSticky" : @"Sticky on Top" image:[UIImage imageNamed:@"chat_setting_top"] handler:^(UIAlertAction * _Nonnull action) {
+        weakSelf.conversationModel.isTop = !weakSelf.conversationModel.isTop;
+    }];
+    [alertController addAction:stickyAction];
+    
     [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
     [weakSelf presentViewController:alertController animated:YES completion:nil];
 }

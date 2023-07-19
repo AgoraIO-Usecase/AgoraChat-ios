@@ -158,9 +158,9 @@
     
     NSString *title = @"";
     if (self.isSearchGroup) {
-        title = [NSString stringWithFormat:@"GroupID：%@",self.searchSource[0]];
+        title = [NSString stringWithFormat:@"Group ID：%@",self.searchSource[0]];
     }else {
-        title = [NSString stringWithFormat:@"AgoraID：%@",self.searchSource[0]];
+        title = [NSString stringWithFormat:@"Agora ID：%@",self.searchSource[0]];
     }
 
     ACD_WS

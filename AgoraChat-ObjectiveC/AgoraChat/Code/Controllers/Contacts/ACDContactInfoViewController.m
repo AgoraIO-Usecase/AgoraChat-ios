@@ -84,7 +84,7 @@ typedef enum : NSUInteger {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
     
-    UIAlertAction *copyAction = [UIAlertAction alertActionWithTitle:@"Copy AgoraID" iconImage:ImageWithName(@"action_icon_copy") textColor:TextLabelBlackColor alignment:NSTextAlignmentLeft completion:^{
+    UIAlertAction *copyAction = [UIAlertAction alertActionWithTitle:@"Copy Agora ID" iconImage:ImageWithName(@"action_icon_copy") textColor:TextLabelBlackColor alignment:NSTextAlignmentLeft completion:^{
         [UIPasteboard generalPasteboard].string = _model.hyphenateId;
     }];
    
