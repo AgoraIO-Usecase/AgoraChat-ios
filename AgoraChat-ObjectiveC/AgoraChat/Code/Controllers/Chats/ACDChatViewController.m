@@ -29,6 +29,7 @@
 
 #import "AgoraChatCallKitManager.h"
 #import "AgoraChatCallCell.h"
+#import "AgoraChatURLPreviewCell.h"
 #import "AgoraChatCallKit/AgoraChatCallKit.h"
 
 @interface ACDChatViewController ()<EaseChatViewControllerDelegate, AgoraChatroomManagerDelegate, AgoraChatGroupManagerDelegate, EaseMessageCellDelegate>
@@ -185,20 +186,37 @@
 
 #pragma mark - EaseChatViewControllerDelegate
 - (UITableViewCell *)cellForItem:(UITableView *)tableView messageModel:(EaseMessageModel *)messageModel {
-    if (messageModel.message.body.type == AgoraChatMessageTypeText) {
-        if ([messageModel.message.ext[@"msgType"] isEqualToString:@"rtcCallWithAgora"]) {
-            NSString *action = messageModel.message.ext[@"action"];
-            if ([action isEqualToString:@"invite"]) {
-                if (messageModel.message.chatType == AgoraChatTypeChat) {
-                    return nil;
-                }
+    switch (messageModel.message.body.type) {
+        case AgoraChatMessageTypeText:
+            if (messageModel.isUrl) {
+                AgoraChatURLPreviewCell *cell = [[AgoraChatURLPreviewCell alloc] initWithDirection:messageModel.direction chatType:messageModel.message.chatType messageType:messageModel.type viewModel:_viewModel];
+                messageModel.type = AgoraChatMessageTypeExtURLPreview;
+                cell.delegate = self;
+                cell.model = messageModel;
+                return cell;
             }
-            AgoraChatCallCell *cell = [[AgoraChatCallCell alloc] initWithDirection:messageModel.direction chatType:messageModel.message.chatType messageType:messageModel.type viewModel:_viewModel];
-            cell.delegate = self;
-            cell.model = messageModel;
-            return cell;
-        }
+            if ([messageModel.message.ext[@"msgType"] isEqualToString:@"rtcCallWithAgora"]) {
+                NSString *action = messageModel.message.ext[@"action"];
+                if ([action isEqualToString:@"invite"]) {
+                    if (messageModel.message.chatType == AgoraChatTypeChat) {
+                        return nil;
+                    }
+                }
+                if ([[messageModel.message.ext objectForKey:kMSG_EXT_NEWNOTI] isEqualToString:kNOTI_EXT_ADDFRIEND]) {
+                    AgoraChatMessageWeakHint *weakHintCell = [[AgoraChatMessageWeakHint alloc]initWithMessageModel:messageModel];
+                    return weakHintCell;
+                }
+                AgoraChatCallCell *cell = [[AgoraChatCallCell alloc] initWithDirection:messageModel.direction chatType:messageModel.message.chatType messageType:messageModel.type viewModel:_viewModel];
+                cell.delegate = self;
+                cell.model = messageModel;
+                return cell;
+            }
+            break;
+        default:
+            break;
     }
+    
+    
 
 ////    if (messageModel.type == AgoraChatMessageTypePictMixText) {
 ////        AgoraChatMsgPicMixTextBubbleView* picMixBV = [[AgoraChatMsgPicMixTextBubbleView alloc] init];
@@ -222,32 +240,10 @@
 //        }
 //    }
     
-    if (messageModel.message.body.type == AgoraChatMessageTypeText) {
-            if ([messageModel.message.ext[@"msgType"] isEqualToString:@"rtcCallWithAgora"]) {
-                NSString *action = messageModel.message.ext[@"action"];
-                if ([action isEqualToString:@"invite"]) {
-                    if (messageModel.message.chatType == AgoraChatTypeChat) {
-                        return nil;
-                    }
-                }
-                AgoraChatCallCell *cell = [[AgoraChatCallCell alloc] initWithDirection:messageModel.direction chatType:messageModel.message.chatType messageType:messageModel.type viewModel:_viewModel];
-                cell.delegate = self;
-                cell.model = messageModel;
-                return cell;
-            }
-        }
+   
 
     //@{kMSG_EXT_NEWNOTI : kNOTI_EXT_ADDGROUP, kNOTI_EXT_USERID : mutableStr}
-    if (messageModel.message.body.type == AgoraChatMessageBodyTypeText) {
-        if ([[messageModel.message.ext objectForKey:kMSG_EXT_NEWNOTI] isEqualToString:kNOTI_EXT_ADDFRIEND]) {
-            AgoraChatMessageWeakHint *weakHintCell = [[AgoraChatMessageWeakHint alloc]initWithMessageModel:messageModel];
-            return weakHintCell;
-        }
-        if ([[messageModel.message.ext objectForKey:kMSG_EXT_NEWNOTI] isEqualToString:kNOTI_EXT_ADDGROUP]) {
-            AgoraChatMessageWeakHint *weakHintCell = [[AgoraChatMessageWeakHint alloc]initWithMessageModel:messageModel];
-            return weakHintCell;
-        }
-    }
+
     return nil;
 }
 
@@ -368,6 +364,14 @@
 }
 
 #pragma mark - AgoraChatMessageCellDelegate
+- (void)messageCellNeedReload:(EaseMessageCell *)cell
+{
+    NSIndexPath *indexPath = [self.chatController.tableView indexPathForCell:cell];
+    if (indexPath) {
+        [self.chatController.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
+
 - (void)messageCellDidSelected:(EaseMessageCell *)aCell
 {
     if (!aCell.model.message.isReadAcked) {
