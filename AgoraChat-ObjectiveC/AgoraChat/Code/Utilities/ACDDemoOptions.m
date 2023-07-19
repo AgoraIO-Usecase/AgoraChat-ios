@@ -52,6 +52,7 @@ static ACDDemoOptions *sharedOptions = nil;
         
         self.playVibration = YES;
         self.playNewMsgSound = YES;
+        self.tokenExpiredTimestamp = 0;
     }
     
     return self;
@@ -112,6 +113,7 @@ static ACDDemoOptions *sharedOptions = nil;
         
         self.playVibration = [aDecoder decodeBoolForKey:kOptions_playVibration];
         self.playNewMsgSound = [aDecoder decodeBoolForKey:kOptions_playNewMsgSound];
+        self.tokenExpiredTimestamp = 0;
 
     }
     return self;
@@ -205,6 +207,7 @@ static ACDDemoOptions *sharedOptions = nil;
     retModel.language = self.language;
     retModel.playVibration = self.playVibration;
     retModel.playNewMsgSound = self.playNewMsgSound;
+    retModel.tokenExpiredTimestamp = self.tokenExpiredTimestamp;
     
     return retModel;
 }

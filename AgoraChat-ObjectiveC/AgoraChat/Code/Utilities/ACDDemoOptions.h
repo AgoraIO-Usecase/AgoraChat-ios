@@ -94,6 +94,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString* language;
 @property (nonatomic) BOOL  playVibration;
 @property (nonatomic) BOOL  playNewMsgSound;
+@property (nonatomic) NSInteger tokenExpiredTimestamp;
 
 
 + (instancetype)sharedOptions;
