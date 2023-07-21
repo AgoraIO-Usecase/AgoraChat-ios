@@ -191,7 +191,7 @@
             if (messageModel.isUrl) {
                 AgoraChatURLPreviewCell *cell = [[AgoraChatURLPreviewCell alloc] initWithDirection:messageModel.direction chatType:messageModel.message.chatType messageType:messageModel.type viewModel:_viewModel];
                 messageModel.type = AgoraChatMessageTypeExtURLPreview;
-                cell.delegate = self;
+                cell.delegate = self.chatController;
                 cell.model = messageModel;
                 return cell;
             }
@@ -364,6 +364,8 @@
 }
 
 #pragma mark - AgoraChatMessageCellDelegate
+
+
 - (void)messageCellNeedReload:(EaseMessageCell *)cell
 {
     NSIndexPath *indexPath = [self.chatController.tableView indexPathForCell:cell];
