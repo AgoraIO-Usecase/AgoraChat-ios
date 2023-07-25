@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		055F7C6B2A6696D500858835 /* AgoraChatURLPreviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 055F7C6A2A6696D500858835 /* AgoraChatURLPreviewCell.m */; };
+		05CA005A2A6F679B00F8FCCF /* TextEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CA00592A6F679B00F8FCCF /* TextEditorView.swift */; };
+		05CA00622A6F6D2A00F8FCCF /* UIKitDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CA005E2A6F6D2A00F8FCCF /* UIKitDSL.swift */; };
+		05CA00632A6F6D2A00F8FCCF /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CA005F2A6F6D2A00F8FCCF /* UIColorExtension.swift */; };
+		05CA00662A6F6D6000F8FCCF /* Contants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CA00652A6F6D6000F8FCCF /* Contants.swift */; };
+		05CA00682A6F6E3600F8FCCF /* AgoraEditTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CA00672A6F6E3600F8FCCF /* AgoraEditTextView.swift */; };
+		05CA006A2A6F73CA00F8FCCF /* CALayerDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CA00692A6F73C900F8FCCF /* CALayerDSL.swift */; };
+		05CA00782A6F767A00F8FCCF /* Notification+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CA006D2A6F767900F8FCCF /* Notification+Presentation.swift */; };
 		05CA942F2A665CFA0036E199 /* AgoraChatURLPreviewBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 05CA942E2A665CFA0036E199 /* AgoraChatURLPreviewBubbleView.m */; };
 		05CA94322A665D680036E199 /* AgoraURLPreviewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 05CA94302A665D680036E199 /* AgoraURLPreviewManager.m */; };
 		3A4BB1B01ED3DD6F00B07FCA /* AgoraChatroomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4BB1AE1ED3DD6F00B07FCA /* AgoraChatroomCell.m */; };
@@ -714,6 +721,14 @@
 /* Begin PBXFileReference section */
 		055F7C692A6696D500858835 /* AgoraChatURLPreviewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AgoraChatURLPreviewCell.h; sourceTree = "<group>"; };
 		055F7C6A2A6696D500858835 /* AgoraChatURLPreviewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AgoraChatURLPreviewCell.m; sourceTree = "<group>"; };
+		05CA00582A6F679A00F8FCCF /* AgoraChat-Demo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AgoraChat-Demo-Bridging-Header.h"; sourceTree = "<group>"; };
+		05CA00592A6F679B00F8FCCF /* TextEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditorView.swift; sourceTree = "<group>"; };
+		05CA005E2A6F6D2A00F8FCCF /* UIKitDSL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitDSL.swift; sourceTree = "<group>"; };
+		05CA005F2A6F6D2A00F8FCCF /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		05CA00652A6F6D6000F8FCCF /* Contants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contants.swift; sourceTree = "<group>"; };
+		05CA00672A6F6E3600F8FCCF /* AgoraEditTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraEditTextView.swift; sourceTree = "<group>"; };
+		05CA00692A6F73C900F8FCCF /* CALayerDSL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CALayerDSL.swift; sourceTree = "<group>"; };
+		05CA006D2A6F767900F8FCCF /* Notification+Presentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notification+Presentation.swift"; sourceTree = "<group>"; };
 		05CA942D2A665CFA0036E199 /* AgoraChatURLPreviewBubbleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraChatURLPreviewBubbleView.h; sourceTree = "<group>"; };
 		05CA942E2A665CFA0036E199 /* AgoraChatURLPreviewBubbleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraChatURLPreviewBubbleView.m; sourceTree = "<group>"; };
 		05CA94302A665D680036E199 /* AgoraURLPreviewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraURLPreviewManager.m; sourceTree = "<group>"; };
@@ -2594,6 +2609,7 @@
 				7F6CC87626568C0000BA60BB /* AgoraLocationViewController.m */,
 				7F6CC87726568C0000BA60BB /* AgoraLocationViewController.xib */,
 				D2AA4DE81D92712400967E0E /* Views */,
+				05CA006D2A6F767900F8FCCF /* Notification+Presentation.swift */,
 			);
 			path = Chats;
 			sourceTree = "<group>";
@@ -2690,6 +2706,13 @@
 				7F6CC89026568C2400BA60BB /* AgoraFacialView.m */,
 				66D2483F27DDDCF80060981C /* AgoraChatThreadMemberCell.h */,
 				66D2484027DDDCF80060981C /* AgoraChatThreadMemberCell.m */,
+				05CA00592A6F679B00F8FCCF /* TextEditorView.swift */,
+				05CA00672A6F6E3600F8FCCF /* AgoraEditTextView.swift */,
+				05CA00652A6F6D6000F8FCCF /* Contants.swift */,
+				05CA005F2A6F6D2A00F8FCCF /* UIColorExtension.swift */,
+				05CA005E2A6F6D2A00F8FCCF /* UIKitDSL.swift */,
+				05CA00692A6F73C900F8FCCF /* CALayerDSL.swift */,
+				05CA00582A6F679A00F8FCCF /* AgoraChat-Demo-Bridging-Header.h */,
 				D2CAE2001D9A497100B9A532 /* ChatCell */,
 			);
 			path = Views;
@@ -3438,6 +3461,7 @@
 					D28344FE1D8FD1D400FD48A9 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = JC854K845H;
+						LastSwiftMigration = 1500;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -4040,6 +4064,7 @@
 				D2426AEE1DCCAD14009C1632 /* UIViewController+HUD.m in Sources */,
 				7F6CC90226568D5000BA60BB /* AgoraUserModel.m in Sources */,
 				EC19F548273900DA00F88012 /* ACDGroupEnterController.m in Sources */,
+				05CA005A2A6F679B00F8FCCF /* TextEditorView.swift in Sources */,
 				EC54DDEA27282D8400ABEE3E /* ACDJoinGroupCell.m in Sources */,
 				7F6CC93326568DC300BA60BB /* AgoraCDDeviceManagerBase.m in Sources */,
 				EC54DDE72728158B00ABEE3E /* ACDGroupInfoViewController.m in Sources */,
@@ -4072,6 +4097,7 @@
 				7F6CC89126568C2400BA60BB /* AgoraFaceView.m in Sources */,
 				EC54DD502722A29200ABEE3E /* ACDTextViewCell.m in Sources */,
 				7F6CC86B26568B8B00BA60BB /* AgoraMemberCell.m in Sources */,
+				05CA00682A6F6E3600F8FCCF /* AgoraEditTextView.swift in Sources */,
 				9EED2FE02818ED3B00D6B11C /* ACDBlockListViewController.m in Sources */,
 				EC7A3299272EC91C00AF0C19 /* ACDPublicGroupListViewController.m in Sources */,
 				D24327F01DAA444C00EDCDAB /* UIView+HyphenateView.m in Sources */,
@@ -4085,6 +4111,7 @@
 				7F2A1FBA2667417000800ACC /* AgoraBlackListCell.m in Sources */,
 				9ECE66F0273B6F69007CF85F /* AgoraChatUserDataModel.m in Sources */,
 				7F6CC90F26568D8E00BA60BB /* AgoraChatDemoHelper.m in Sources */,
+				05CA00662A6F6D6000F8FCCF /* Contants.swift in Sources */,
 				66D2484127DDDCF80060981C /* AgoraChatThreadMemberCell.m in Sources */,
 				EC54DCE72721502200ABEE3E /* MISScrollPageController.m in Sources */,
 				055F7C6B2A6696D500858835 /* AgoraChatURLPreviewCell.m in Sources */,
@@ -4123,6 +4150,7 @@
 				9EED2FEE2818EE4700D6B11C /* ACDTitleSwitchCell.m in Sources */,
 				9EED2FF62818EE8600D6B11C /* SPDateTimePickerView.m in Sources */,
 				3AEBE3EE1E792ED400B82986 /* AgoraGroupPermissionCell.m in Sources */,
+				05CA00632A6F6D2A00F8FCCF /* UIColorExtension.swift in Sources */,
 				9ECE66DF273B6ECF007CF85F /* AgoraChatSearchViewController.m in Sources */,
 				90375D0E287FD21400058AF0 /* ACDReportDocumentMessageCell.m in Sources */,
 				9ECE66D2273B6E7C007CF85F /* SelectUserViewController.m in Sources */,
@@ -4188,6 +4216,7 @@
 				EC54DDC327269BA300ABEE3E /* AgoraGroupMemberCell.m in Sources */,
 				9E8B5AC92818EC58003530C0 /* ACDCustomTableViewController.m in Sources */,
 				EC432EEE27210ABC001B31DE /* ACDImageTextButtonView.m in Sources */,
+				05CA00622A6F6D2A00F8FCCF /* UIKitDSL.swift in Sources */,
 				9ECE66E3273B6F41007CF85F /* AgoraChatHttpRequest.m in Sources */,
 				EC54DDFB272A455D00ABEE3E /* ACDInfoSwitchCell.m in Sources */,
 				3A4BB1B51ED422BA00B07FCA /* AgoraChatroomInfoViewController.m in Sources */,
@@ -4228,6 +4257,7 @@
 				7F0516E726A0184100B2C795 /* AgoraChatBaseCell.m in Sources */,
 				5D3B8B2D280D68E100A471BF /* ConfInviteUserCell.m in Sources */,
 				A5E5F23727E98EB7006ADFEC /* ACDSilentModeSetViewController.m in Sources */,
+				05CA00782A6F767A00F8FCCF /* Notification+Presentation.swift in Sources */,
 				7F6CC8EF26568C8600BA60BB /* AgoraPushDisplaynameViewController.m in Sources */,
 				9E8B5ACB2818EC58003530C0 /* ACDCustomBaseCell.m in Sources */,
 				EC54DD4D27229BA300ABEE3E /* ACDTextFieldCell.m in Sources */,
@@ -4264,6 +4294,7 @@
 				EC54DCFC272170E600ABEE3E /* ACDCustomBaseView.m in Sources */,
 				9ECE66CB273B6E7C007CF85F /* AgoraChatAvatarNameCell.m in Sources */,
 				EC658DF427338E9700472939 /* ACDContactCell.m in Sources */,
+				05CA006A2A6F73CA00F8FCCF /* CALayerDSL.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4361,6 +4392,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = AgoraChat/AgoraChat.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -4397,7 +4429,7 @@
 					"\"${PODS_ROOT}/Headers/Public/DACircularProgress\"",
 				);
 				INFOPLIST_FILE = AgoraChat/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4466,6 +4498,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "AgoraChat/Code/Controllers/Chats/Views/AgoraChat-Demo-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TVOS_DEPLOYMENT_TARGET = "";
 				VALIDATE_WORKSPACE = NO;
@@ -4576,6 +4610,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = AgoraChat/AgoraChat.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -4608,7 +4643,7 @@
 					"\"${PODS_ROOT}/Headers/Public/DACircularProgress\"",
 				);
 				INFOPLIST_FILE = AgoraChat/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4676,6 +4711,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.agorachat.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "AgoraChat/Code/Controllers/Chats/Views/AgoraChat-Demo-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TVOS_DEPLOYMENT_TARGET = "";
 				VALIDATE_WORKSPACE = NO;
@@ -4690,11 +4728,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = AgoraChat/AgoraChat.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: EaseMob Inc. (JC854K845H)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: EaseMob Inc. (JC854K845H)";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = JC854K845H;
 				ENABLE_BITCODE = NO;
@@ -4721,7 +4759,7 @@
 					"\"${PODS_ROOT}/Headers/Public/DACircularProgress\"",
 				);
 				INFOPLIST_FILE = AgoraChat/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4789,7 +4827,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.agorachat.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = AgoraChatDemo;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "AgoraChat/Code/Controllers/Chats/Views/AgoraChat-Demo-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				TVOS_DEPLOYMENT_TARGET = "";
 				VALIDATE_WORKSPACE = NO;

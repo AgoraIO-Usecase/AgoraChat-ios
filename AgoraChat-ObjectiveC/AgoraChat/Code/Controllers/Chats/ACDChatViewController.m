@@ -31,6 +31,7 @@
 #import "AgoraChatCallCell.h"
 #import "AgoraChatURLPreviewCell.h"
 #import "AgoraChatCallKit/AgoraChatCallKit.h"
+#import "AgoraChat_Demo-Swift.h"
 
 @interface ACDChatViewController ()<EaseChatViewControllerDelegate, AgoraChatroomManagerDelegate, AgoraChatGroupManagerDelegate, EaseMessageCellDelegate>
 @property (nonatomic, strong) EaseConversationModel *conversationModel;
@@ -360,7 +361,51 @@
             [defaultLongPressItems addObject:reportItem];
         }
     }
+    if (msgModel.message.body.type == AgoraChatMessageBodyTypeText) {
+        EaseExtendMenuModel *editItem = [[EaseExtendMenuModel alloc]initWithData:[UIImage imageNamed:@"edit"] funcDesc:@"Edit" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+            [weakSelf modifyAction:messageModel];
+        }];
+        [defaultLongPressItems addObject:editItem];
+    }
+    
     return defaultLongPressItems;
+}
+
+- (void)modifyAction:(EaseMessageModel *)model {
+    AgoraEditTextView* editor = [[AgoraEditTextView alloc] initWithTitle:@"Message Edit" placeHolder:((AgoraChatTextMessageBody *)model.message.body).text changeClosure:^(NSString * _Nonnull content) {
+        [self modifyMessage:content model:model];
+    }];
+    [editor show];
+
+}
+
+- (void)modifyMessage:(NSString *)content model:(EaseMessageModel *)model {
+    AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:content];
+    body.targetLanguages = @[@"en"];
+    [self showHudInView:self.view hint:@"Modifying message..."];
+    [AgoraChatClient.sharedClient.chatManager modifyMessage:model.message.messageId body:body completion:^(AgoraChatError * _Nullable error, AgoraChatMessage * _Nullable message) {
+        [self hideHud];
+        if (!error) {
+            [self.chatController.dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if ([obj isKindOfClass:[EaseMessageModel class]]) {
+                    EaseMessageModel *model = (EaseMessageModel *)obj;
+                    if ( model.message &&[model.message.messageId isEqualToString:message.messageId]) {
+                        model.message = message;
+                        UITableViewCell *cell = [self.chatController.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]];
+                        if ([cell isKindOfClass:[EaseMessageCell class]]) {
+                            EaseMessageCell *messageCell = (EaseMessageCell*)cell;
+                            messageCell.model = model;
+                            if ([self.chatController.tableView.visibleCells containsObject:cell]) {
+                                [self.chatController.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                            }
+                            *stop = YES;
+                        }
+                    }
+                }                    }];
+        } {
+            [self showHint:error.errorDescription];
+        }
+    }];
 }
 
 #pragma mark - AgoraChatMessageCellDelegate
