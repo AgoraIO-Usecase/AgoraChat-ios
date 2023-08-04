@@ -14,10 +14,11 @@
 @implementation ACDContactCell
 
 - (void)prepare {
-    [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
+//    [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
     [self.contentView addSubview:self.iconImageView];
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.detailLabel];
+    [self.contentView addSubview:self.sender];
 }
 
 - (void)placeSubViews {
@@ -33,13 +34,22 @@
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.mas_equalTo(self.iconImageView);
         make.left.equalTo(self.iconImageView.mas_right).offset(kAgroaPadding);
-        make.right.equalTo(self.contentView).offset(-kAgroaPadding * 1.5);
+        make.right.equalTo(self.contentView).offset(-kAgroaPadding * 1.5-66);
     }];
     
     [self.detailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.nameLabel.mas_bottom);
         make.left.equalTo(self.nameLabel);
+        make.right.equalTo(self.nameLabel);
     }];
+    
+    [self.sender mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(self.contentView);
+        make.right.equalTo(self.contentView).offset(-16);
+        make.size.mas_equalTo(CGSizeMake(66, 28));
+    }];
+    _sender.layer.cornerRadius = 14;
+    _sender.clipsToBounds = YES;
 
 }
 
@@ -68,6 +78,26 @@
         _detailLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     }
     return _detailLabel;
+}
+
+- (UIButton *)sender {
+    if (_sender == nil) {
+        _sender = [[UIButton alloc] init];
+        _sender.backgroundColor = COLOR_HEX(0xF2F2F2);
+        [_sender setTitleColor:COLOR_HEX(0x1A1A1A) forState:UIControlStateNormal];
+        [_sender setTitleColor:COLOR_HEX(0x999999) forState:UIControlStateDisabled];
+        [_sender setTitle:@"Send" forState:UIControlStateNormal];
+        [_sender setTitle:@"Sent" forState:UIControlStateDisabled];
+        [_sender addTarget:self action:@selector(sendAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _sender;
+}
+
+- (void)sendAction {
+    self.sender.enabled = NO;
+    if (self.tapCellBlock) {
+        self.tapCellBlock();
+    }
 }
 
 @end

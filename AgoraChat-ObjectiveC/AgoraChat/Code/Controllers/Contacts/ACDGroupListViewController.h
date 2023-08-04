@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ACDGroupListViewController : ACDContainerSearchTableViewController
 @property (nonatomic,copy)void (^selectedBlock)(NSString *groupId);
 
+@property (nonatomic, assign) BOOL forward;
+
 @end
 
 NS_ASSUME_NONNULL_END

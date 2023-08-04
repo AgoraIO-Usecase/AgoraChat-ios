@@ -41,7 +41,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.searchBar.hidden = self.forward;
+    if (self.forward) {
+        [self.table mas_makeConstraints:^(MASConstraintMaker* make) {
+            make.top.bottom.left.right.equalTo(self.view);
+        }];
+    }
     [self useRefresh];
     
     [self tableDidTriggerHeaderRefresh];
@@ -157,7 +162,7 @@
         cell = [[ACDContactCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDContactCell reuseIdentifier]];
     }
     AgoraUserModel *model = nil;
-
+    cell.sender.hidden = !self.forward;
     if (self.isSearchState) {
         model = self.searchResults[indexPath.row];
         cell.model = model;
@@ -186,6 +191,22 @@
     };
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.forward) {
+        return;
+    }
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    AgoraUserModel *model = nil;
+    if (self.isSearchState) {
+        model = self.searchResults[indexPath.row];
+    }else {
+        model = self.dataArray[indexPath.section][indexPath.row];
+    }
+    if (self.selectedBlock) {
+        self.selectedBlock(model.hyphenateId);
+    }
 }
 
 #pragma mark getter and setter

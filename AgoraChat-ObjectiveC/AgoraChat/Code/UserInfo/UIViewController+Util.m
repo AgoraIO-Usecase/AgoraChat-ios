@@ -49,4 +49,19 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+- (UIViewController *)currentViewController {
+    if (@available(iOS 13.0, *)) {
+        for (UIWindowScene *scene in [[UIApplication sharedApplication] connectedScenes]) {
+            if (scene.activationState == UISceneActivationStateForegroundActive) {
+                if (scene.windows.firstObject.window.isKeyWindow) {
+                    return scene.windows.firstObject.window.rootViewController;
+                }
+            }
+        }
+    } else {
+        return [UIApplication sharedApplication].keyWindow.rootViewController;
+    }
+    return nil;
+}
+
 @end
