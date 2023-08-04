@@ -290,16 +290,24 @@
 }
 
 - (void)removeLocalHistoryMessages {
+    if (self.forwardMessages.count >= 50) {
+        [self showHint:@"Remove history message reach limit."];
+        return;
+    }
     [self fillForwardMessages];
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Delete Message" message:[NSString stringWithFormat:@"Delete %lu messages form database",(unsigned long)self.forwardMessages.count] preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"Delete" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        NSMutableArray <__kindof NSString *>* ids = [NSMutableArray array];
         for (AgoraChatMessage *message in self.forwardMessages) {
-            [self.conversation deleteMessageWithId:message.messageId error:nil];
+            [ids addObject:message.messageId];
         }
+        [AgoraChatClient.sharedClient.chatManager removeMessagesFromServerWithConversation:self.conversation messageIds:ids completion:^(AgoraChatError * _Nullable aError) {
+            if (aError) {
+                [self showHint:aError.errorDescription];
+            }
+        }];
     }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        
-    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) { }]];
     [self presentViewController:alert animated:YES completion:nil];
 }
 
