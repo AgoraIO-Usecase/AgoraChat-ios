@@ -39,5 +39,13 @@ import UIKit
         self.actionClosure?(AgoraEditBarOperation(rawValue: sender.tag) ?? .delete)
     }
 
-    
+    @objc public func hidden(tag: AgoraEditBarOperation) {
+        if tag == .delete {
+            self.delete.isHidden = true
+            self.forward.isHidden = false
+        } else {
+            self.forward.isHidden = true
+            self.delete.isHidden = false
+        }
+    }
 }

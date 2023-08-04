@@ -209,6 +209,7 @@
 - (AgoraEditBar *)editBar {
     if (!_editBar) {
         _editBar = [[AgoraEditBar alloc] initWithFrame:CGRectMake(0, EMScreenHeight-kBottomSafeHeight-54, EMScreenWidth, kBottomSafeHeight+54)];
+        [_editBar hiddenWithTag:AgoraEditBarOperationDelete];
     }
     return _editBar;
 }
