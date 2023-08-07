@@ -490,10 +490,13 @@
             break;
         } else {
             AgoraChatMessage *message = self.forwardMessages[i];
+            AgoraChatUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:message.from];
+            AgoraChatUserDataModel *model = [[AgoraChatUserDataModel alloc]initWithUserInfo:userInfo];
+            NSString *nickName = IsStringEmpty(model.showName) ? message.from:model.showName;
             if (i == 0) {
-                summary = message.showText;
+                summary = [NSString stringWithFormat:@"%@:%@",nickName,message.showText];
             } else {
-                summary = [NSString stringWithFormat:@"%@\n%@",summary,message.showText];
+                summary = [NSString stringWithFormat:@"%@\n%@:%@",summary,nickName,message.showText];
             }
         }
     }
