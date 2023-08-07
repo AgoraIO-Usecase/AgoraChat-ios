@@ -500,11 +500,14 @@
     AgoraChatCombineMessageBody *body = [[AgoraChatCombineMessageBody alloc] initWithTitle:@"A Chat History" summary:summary compatibleText:@"A Chat History" messageIdList:ids];
     AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:target body:body ext:nil];
     message.chatType = (AgoraChatType)self.conversation.type;
+    __weak typeof(self) weakSelf = self;
     [AgoraChatClient.sharedClient.chatManager sendMessage:message progress:nil completion:^(AgoraChatMessage * _Nullable message, AgoraChatError * _Nullable error) {
         if (!error && message != nil) {
-            [self showHint:@"Forward successful!"];
+            [weakSelf showHint:@"Forward successful!"];
+            [weakSelf.chatController.dataArray addObject:[[EaseMessageModel alloc] initWithAgoraChatMessage:message]];
+            [weakSelf.chatController.tableView reloadData];
         } else {
-            [self showHint:error.errorDescription];
+            [weakSelf showHint:error.errorDescription];
         }
     }];
 }
