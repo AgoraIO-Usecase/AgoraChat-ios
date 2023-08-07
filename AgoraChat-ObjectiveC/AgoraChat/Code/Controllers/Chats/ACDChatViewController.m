@@ -505,13 +505,14 @@
     message.chatType = (AgoraChatType)self.conversation.type;
     __weak typeof(self) weakSelf = self;
     [AgoraChatClient.sharedClient.chatManager sendMessage:message progress:nil completion:^(AgoraChatMessage * _Nullable message, AgoraChatError * _Nullable error) {
+        NSString *alert = @"Forward successful!";
         if (!error && message != nil) {
-            [weakSelf showHint:@"Forward successful!"];
             [weakSelf.chatController.dataArray addObject:[[EaseMessageModel alloc] initWithAgoraChatMessage:message]];
             [weakSelf.chatController.tableView reloadData];
         } else {
-            [weakSelf showHint:error.errorDescription];
+            alert = error.errorDescription;
         }
+        [weakSelf showHint:alert];
     }];
 }
 
