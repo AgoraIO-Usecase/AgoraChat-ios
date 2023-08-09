@@ -36,6 +36,7 @@
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(saveAction)];
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor blueColor];
     [self.view addSubview:[self nickNameField]];
     [self.view addSubview:[self countLabel]];
 }
@@ -49,6 +50,7 @@
     if (!_nickNameField) {
         _nickNameField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds) - 60, 50)];
         _nickNameField.placeholder = self.nickName ? self.nickName:NSLocalizedString(@"Please input your nick name in group",nil);
+        _nickNameField.text = _nickNameField.placeholder;
         _nickNameField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 50)];
         _nickNameField.leftViewMode = UITextFieldViewModeAlways;
         _nickNameField.clearButtonMode = UITextFieldViewModeWhileEditing;

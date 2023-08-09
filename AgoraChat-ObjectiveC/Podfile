@@ -10,11 +10,17 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 target 'AgoraChat-Demo' do
   
-post_install do |installer|
-  installer.pods_project.build_configurations.each do |config|
-    config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+  post_install do |installer|
+    installer.generated_projects.each do |project|
+      project.targets.each do |target|
+        target.build_configurations.each do |config|
+          config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "13.0"
+          config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+          config.build_settings["DEVELOPMENT_TEAM"] = "JC854K845H"
+        end
+      end
+    end
   end
-end
 
     pod 'MWPhotoBrowser', '~> 2.1.2'
     pod 'MJRefresh'
@@ -22,8 +28,11 @@ end
     pod 'WHToast'
     pod 'FMDB'
     pod 'Agora_Chat_iOS'
-    pod 'chat-uikit', '~> 1.1.0'
+    pod 'chat-uikit', :path => '../../AgoraChat-UIKit-ios'
     pod 'AgoraChatCallKit', '~> 1.1.0'
+    pod 'TFHpple'
+    
+    
 end
 
 

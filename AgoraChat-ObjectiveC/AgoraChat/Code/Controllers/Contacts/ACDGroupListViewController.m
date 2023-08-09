@@ -26,6 +26,12 @@
     [super viewDidLoad];
     self.view.backgroundColor = UIColor.whiteColor;
     
+    self.searchBar.hidden = self.forward;
+    if (self.forward) {
+        [self.table mas_makeConstraints:^(MASConstraintMaker* make) {
+            make.top.bottom.left.right.equalTo(self.view);
+        }];
+    }
     [self addNotifications];
     [self loadGroupsFromServer];
 
@@ -109,19 +115,27 @@
     if (!cell) {
         cell = [[ACDGroupCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
-    
+    cell.sender.hidden = !self.forward;
     if (self.isSearchState) {
         cell.model = self.searchResults[indexPath.row];
     }else {
         cell.model = self.dataArray[indexPath.row];
     }
-    
+    NSString *groupId = cell.model.group.groupId;
+    cell.tapCellBlock = ^{
+        if (self.selectedBlock) {
+            self.selectedBlock(groupId);
+        }
+    };
     return cell;
 }
 
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (self.forward) {
+        return;
+    }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     AgoraGroupModel *model = nil;
