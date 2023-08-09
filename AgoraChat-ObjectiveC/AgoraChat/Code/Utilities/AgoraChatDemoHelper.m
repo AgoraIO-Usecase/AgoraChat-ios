@@ -12,6 +12,7 @@
 #import <UserNotifications/UserNotifications.h>
 #import "AgoraNotificationNames.h"
 #import "ACDChatViewController.h"
+#import "ACDGroupMemberAttributesCache.h"
 
 static AgoraChatDemoHelper *helper = nil;
 
@@ -204,6 +205,7 @@ static AgoraChatDemoHelper *helper = nil;
     if (msgstr.length > 0) {
         [self showHint:msgstr];
     }
+    [ACDGroupMemberAttributesCache.shareInstance removeCacheWithGroupId:aGroup.groupId];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
 
@@ -443,6 +445,7 @@ static AgoraChatDemoHelper *helper = nil;
     
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.member.leaved", @"%@ has leaved from the group [%@]"), aUsername, aGroup.groupName];
     [self showAlertWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message];
+    [[ACDGroupMemberAttributesCache shareInstance] removeCacheWithGroupId:aGroup.groupId userId:aUsername];
     
     [self notificationMsg:aGroup.groupId aUserName:aUsername conversationType:AgoraChatConversationTypeGroupChat hintMsg:[NSString stringWithFormat:@"%@ left the Group.", aUsername]];
 }

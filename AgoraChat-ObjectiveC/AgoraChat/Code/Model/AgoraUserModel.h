@@ -19,5 +19,6 @@
 @property (nonatomic, assign) BOOL  selected;
 
 - (instancetype)initWithHyphenateId:(NSString *)hyphenateId;
+- (instancetype)initWithHyphenateId:(NSString *)hyphenateId nickname:(NSString*)nickname;
 
 @end

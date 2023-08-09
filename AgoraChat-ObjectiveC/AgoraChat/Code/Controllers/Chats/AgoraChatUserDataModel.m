@@ -21,6 +21,16 @@
     return self;
 }
 
+- (instancetype)initWithUserId:(NSString*)userId showName:(NSString *)showName
+{
+    if (self = [super init]) {
+        _easeId = userId;
+        _showName = showName;
+        _defaultAvatar = [self getAvatar:userId];
+    }
+    return self;
+}
+
 - (UIImage *)getAvatar:(NSString *)uName
 {
     if ([uName isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {

@@ -31,8 +31,13 @@
 #import "AgoraChatCallCell.h"
 #import "AgoraChatCallKit/AgoraChatCallKit.h"
 #import "ACDChatRecordViewController.h"
+#import "ACDTextTranslationCell.h"
+#import "ACDTextTranslationBubbleView.h"
+#import "EaseMessageModel+Translation.h"
+#import "ACDAtGroupMembersViewController.h"
+#import "ACDGroupMemberAttributesCache.h"
 
-@interface ACDChatViewController ()<EaseChatViewControllerDelegate, AgoraChatroomManagerDelegate, AgoraChatGroupManagerDelegate, EaseMessageCellDelegate>
+@interface ACDChatViewController ()<EaseChatViewControllerDelegate, AgoraChatroomManagerDelegate, AgoraChatGroupManagerDelegate, EaseMessageCellDelegate,TranslationCellDelegate,EaseUserUtilsDelegate>
 @property (nonatomic, strong) EaseConversationModel *conversationModel;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *titleDetailLabel;
@@ -45,7 +50,9 @@
 @property (nonatomic, strong) NSArray *contacts;
 
 @property (nonatomic, strong) EaseChatViewModel *viewModel;
-
+@property (nonatomic, strong) NSMutableArray<NSString *> *atUserList;
+@property (nonatomic, assign) BOOL atAll;
+@property (nonatomic, strong) NSDictionary<NSAttributedStringKey, id> *typingAttributes;
 
 @end
 
@@ -71,6 +78,7 @@
                                                         chatViewModel:_viewModel];
         [_chatController setEditingStatusVisible:[ACDDemoOptions sharedOptions].isChatTyping];
         _chatController.delegate = self;
+        _atAll = NO;
     }
     return self;
 }
@@ -82,6 +90,10 @@
     [[AgoraChatClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
     [[AgoraChatClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [self _setupChatSubviews];
+    EaseUserUtils.shared.delegate = self;
+    [ACDGroupMemberAttributesCache.shareInstance fetchCacheValueGroupId:self.conversationId userName:AgoraChatClient.sharedClient.currentUsername key:@"nickName" completion:^(AgoraChatError * _Nullable error, NSString * _Nullable value) {
+        [self.chatController refreshTableView:YES];
+    }];
     if (_conversation.unreadMessagesCount > 0) {
         [[AgoraChatClient sharedClient].chatManager ackConversationRead:_conversation.conversationId completion:nil];
     }
@@ -237,6 +249,14 @@
                 return cell;
             }
         }
+    
+    if (messageModel.isTranslation) {
+        ACDTextTranslationCell* textTranslationCell = [[ACDTextTranslationCell alloc] initWithDirection:messageModel.message.direction chatType:messageModel.message.chatType messageType:50 viewModel:self.viewModel];
+        textTranslationCell.delegate = self.chatController;
+        textTranslationCell.model = messageModel;
+        textTranslationCell.translateDelegate = self;
+        return textTranslationCell;
+    }
 
     //@{kMSG_EXT_NEWNOTI : kNOTI_EXT_ADDGROUP, kNOTI_EXT_USERID : mutableStr}
     if (messageModel.message.body.type == AgoraChatMessageBodyTypeText) {
@@ -279,9 +299,20 @@
     if ([huanxinID isEqualToString:@""] || huanxinID == nil) {
         return model;
     }
+    if (self.chatController.currentConversation.type == AgoraChatConversationTypeGroupChat && self.chatController.endScroll) {
+        NSString* alias = [ACDGroupMemberAttributesCache.shareInstance fetchGroupAlias:self.conversation.conversationId userId:huanxinID];
+        if (alias == nil) {
+            [self fetchMemberNickNameOnGroup:huanxinID model:model];
+            return model;
+        }
+        if (alias.length > 0) {
+            model = [[AgoraChatUserDataModel alloc] initWithUserId:huanxinID showName:alias];
+            return model;
+        }
+    }
     AgoraChatUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:huanxinID];
     if(userInfo) {
-        model = [[AgoraChatUserDataModel alloc]initWithUserInfo:userInfo];
+        model = [[AgoraChatUserDataModel alloc] initWithUserInfo:userInfo];
     }else{
         AgoraChatUserInfo* userInfo = [[AgoraChatUserInfo alloc]init];
         userInfo.userId = huanxinID;
@@ -291,6 +322,58 @@
     return model;
 }
 
+- (void)fetchMemberNickNameOnGroup:(NSString *)userId model:(AgoraChatUserDataModel *)model{
+    if ([userId isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
+        return;
+    }
+    [[ACDGroupMemberAttributesCache shareInstance] fetchCacheValueGroupId:self.chatController.currentConversation.conversationId userName:userId key:@"nickName" completion:^(AgoraChatError * _Nullable error, NSString * _Nullable value) {
+        if (error == nil && value != nil && ![value isEqualToString:@""]) {
+            //model.showName = value;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSMutableArray<NSIndexPath*>* updateIndexPaths = [NSMutableArray array];
+                for (NSIndexPath* indexPath in self.chatController.tableView.indexPathsForVisibleRows) {
+                    id cell = [self.chatController.tableView cellForRowAtIndexPath:indexPath];
+                    EaseMessageModel *msgModel = nil;
+                    if (cell && [cell respondsToSelector:@selector(model)]) {
+                        id tmp = [cell performSelector:@selector(model)];
+                        if ([tmp isKindOfClass:[EaseMessageModel class]]) {
+                            msgModel = tmp;
+                        }
+                    }
+                    if ([msgModel isKindOfClass:[EaseMessageModel class]] && [msgModel.message.from isEqualToString:userId]) {
+                        [updateIndexPaths addObject:indexPath];
+                        msgModel.userDataProfile = [self userProfile:userId];
+                    }
+                }
+                if (updateIndexPaths.count > 0)
+                    [self.chatController.tableView reloadRowsAtIndexPaths:updateIndexPaths withRowAnimation:NO];
+            });
+        }
+    }];
+}
+
+- (AgoraChatMessage *)willSendMessage:(AgoraChatMessage *)aMessage
+{
+    if (aMessage.body.type == AgoraChatMessageTypeText && ACDDemoOptions.sharedOptions.enableTranslate && ACDDemoOptions.sharedOptions.autoLanguages.count > 0) {
+        AgoraChatTextMessageBody* textBody = (AgoraChatTextMessageBody*)aMessage.body;
+        NSMutableArray<NSString*> * languages = [NSMutableArray array];
+        [ACDDemoOptions.sharedOptions.autoLanguages enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [languages addObject:((AgoraChatTranslateLanguage*)obj).languageCode];
+        }];
+        textBody.targetLanguages = languages;
+    }
+    if (self.conversation.type == AgoraChatConversationTypeGroupChat && aMessage.body.type == AgoraChatMessageTypeText && (self.atUserList.count > 0 || self.atAll)) {
+        AgoraChatTextMessageBody* textBody = (AgoraChatTextMessageBody*)aMessage.body;
+        if (self.atAll) {
+            aMessage.ext = @{@"em_at_list":@"ALL"};
+        } else if (self.atUserList.count > 0) {
+            aMessage.ext = @{@"em_at_list":self.atUserList};
+        }
+        self.atAll = NO;
+        [self.atUserList removeAllObjects];
+    }
+    return aMessage;
+}
 
 - (void)avatarDidSelected:(id<EaseUserProfile>)userData
 {
@@ -303,6 +386,18 @@
 {
     if (error) {
         [self showHint:error.errorDescription];
+    }
+}
+
+- (void)scrollViewEndScroll
+{
+    for (UITableViewCell *cell in [self.chatController.tableView visibleCells]) {
+        if ([cell canPerformAction:@selector(model) withSender:nil]) {
+            id model = [cell performSelector:@selector(model)];
+            if ([model isKindOfClass:[EaseMessageModel class]]) {
+                [cell performSelector:@selector(setModel:) withObject:model];
+            }
+        }
     }
 }
 
@@ -365,8 +460,123 @@
             [defaultLongPressItems addObject:reportItem];
         }
     }
+    if (msgModel.message.body.type == AgoraChatMessageTypeText && ACDDemoOptions.sharedOptions.enableTranslate && ACDDemoOptions.sharedOptions.demandLanguage.languageCode > 0) {
+        EaseExtendMenuModel *reportItem = [[EaseExtendMenuModel alloc]initWithData:[UIImage imageNamed:@"report"] funcDesc:@"Translate" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+            [weakSelf translateMessage:messageModel];
+        }];
+        [defaultLongPressItems addObject:reportItem];
+    }
     return defaultLongPressItems;
 }
+
+- (BOOL)textView:(UITextView*)textView ShouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if (self.conversation.type == AgoraChatConversationTypeGroupChat) {
+        if ([text isEqualToString:@"@"]) {
+            // input @ in group chat
+            [self _willInputAt:textView range:range];
+            
+        } else if ([text isEqualToString:@""]) {
+            // delete something in group chat
+            __block BOOL isAt = NO;
+            NSAttributedString *attributedString = textView.attributedText;
+            [attributedString enumerateAttributesInRange:NSMakeRange(0, attributedString.length) options:0 usingBlock:^(NSDictionary<NSAttributedStringKey,id> * _Nonnull attrs, NSRange blockRange, BOOL * _Nonnull stop) {
+                NSString *atUser = attrs[@"AtInfo"];
+                if (atUser) {
+                    if (range.location + range.length == blockRange.location + blockRange.length) {
+                        isAt = YES;
+                        NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithAttributedString:textView.attributedText];
+                        [result deleteCharactersInRange:blockRange];
+                        textView.attributedText = result;
+                        if ([atUser isEqualToString:@"ALL"]) {
+                            self.atAll = NO;
+                        } else {
+                            [self.atUserList enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stopAtUserList) {
+                                 if (obj.length > 0 && [obj isEqualToString:atUser]) {
+                                     [self.atUserList removeObjectAtIndex:idx];
+                                     *stopAtUserList = YES;
+                                 }
+                            }];
+                        }
+                        *stop = YES;
+                    }
+                }
+            }];
+            return !isAt;
+        }
+        if (!self.typingAttributes) {
+            self.typingAttributes = textView.typingAttributes;
+        }
+        textView.typingAttributes = self.typingAttributes;
+    }
+    
+    return YES;
+}
+
+- (void)textViewDidChangeSelection:(UITextView *)textView
+{
+    NSRange selectRange = textView.selectedRange;
+    if (selectRange.length > 0)
+    {
+        return;
+    }
+    [textView.attributedText enumerateAttributesInRange:NSMakeRange(0, textView.attributedText.length) options:0 usingBlock:^(NSDictionary<NSAttributedStringKey,id> * _Nonnull attrs, NSRange range, BOOL * _Nonnull stop) {
+        if (attrs[@"AtInfo"]) {
+            NSUInteger min = textView.selectedRange.location;
+            NSUInteger max = textView.selectedRange.location + textView.selectedRange.length;
+            if (min > range.location && max < range.location + range.length) {
+                NSUInteger location = range.location + range.length;
+                NSUInteger length = 0;
+                if (textView.selectedRange.location + textView.selectedRange.length > location) {
+                    length = textView.selectedRange.location + textView.selectedRange.length - location;
+                }
+                textView.selectedRange = NSMakeRange(location, length);
+                *stop = YES;
+            }
+        }
+    }];
+}
+
+// @ feature
+- (void)_willInputAt:(UITextView *)aInputView range:(NSRange)range
+{
+    do {
+        AgoraChatGroup *group = [AgoraChatGroup groupWithId:self.conversation.conversationId];
+        if (!group) {
+            break;
+        }
+//        [self.view endEditing:YES];
+        //选择 @ 某群成员
+        ACDAtGroupMembersViewController *controller = [[ACDAtGroupMembersViewController alloc] initWithGroup:group];
+        [self.navigationController pushViewController:controller animated:NO];
+        [controller setSelectedCompletion:^(NSString * _Nonnull aUserId,NSString* showName) {
+            NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithAttributedString:aInputView.attributedText];
+            NSString *newStr = [NSString stringWithFormat:@"@%@ ", showName];
+            NSAttributedString *newString = [[NSAttributedString alloc] initWithString:newStr attributes:@{
+                NSFontAttributeName: aInputView.font,
+                @"AtInfo": aUserId,
+                NSForegroundColorAttributeName: [UIColor colorWithHexString:@"154dfe"]
+            }];
+            if (result.length > 0 && [result.string hasSuffix:@"@"]) {
+                [result deleteCharactersInRange:NSMakeRange(result.length - 1, 1)];
+            }
+            //[result replaceCharactersInRange:range withAttributedString:newString];
+            [result appendAttributedString:newString];
+            NSDictionary* old = aInputView.typingAttributes;
+            aInputView.attributedText = result;
+            aInputView.typingAttributes = old;
+            aInputView.selectedRange = NSMakeRange(result.length, 0);
+            [aInputView becomeFirstResponder];
+            if ([aUserId isEqualToString:@"ALL"]) {
+                self.atAll = YES;
+            } else {
+                [self.atUserList addObject:aUserId];
+            }
+        }];
+    } while (0);
+}
+
+
 
 #pragma mark - AgoraChatMessageCellDelegate
 - (void)messageCellDidSelected:(EaseMessageCell *)aCell
@@ -392,9 +602,63 @@
     [self personData:model.message.from];
 }
 
+- (void)avatarDidLongPress:(id<EaseUserProfile>)userData
+{
+    if (self.conversation.type == AgoraChatConversationTypeGroupChat && userData) {
+        UITextView* inputView = [self.chatController.inputBar valueForKey:@"textView"];
+        NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithAttributedString:inputView.attributedText];
+        NSString *newStr = [NSString stringWithFormat:@"@%@ ", userData.showName];
+        id font = inputView.font;
+        NSAttributedString *newString = [[NSAttributedString alloc] initWithString:newStr attributes:@{
+            NSFontAttributeName: inputView.font,
+            @"AtInfo": userData.easeId,
+            NSForegroundColorAttributeName: [UIColor colorWithHexString:@"154dfe"]
+        }];
+        [result appendAttributedString:newString];
+        NSDictionary* old = inputView.typingAttributes;
+        inputView.attributedText = result;
+        inputView.typingAttributes = old;
+        inputView.selectedRange = NSMakeRange(result.length, 0);
+        [inputView becomeFirstResponder];
+        [self.atUserList addObject:userData.easeId];
+    }
+}
+
+# pragma mark - EaseUserUtilsDelegate
+- (nullable id<EaseUserProfile>)getUserInfo:(NSString *)easeId moduleType:(EaseUserModuleType)moduleType
+{
+    if (moduleType == EaseUserModuleTypeGroupChat && self.conversation.type == AgoraChatConversationTypeGroupChat) {
+        NSString* alias = [ACDGroupMemberAttributesCache.shareInstance fetchGroupAlias:self.conversationId userId:easeId];
+        if (alias.length > 0) {
+            return [[AgoraChatUserDataModel alloc] initWithUserId:easeId showName:alias];
+        }
+    }
+    
+    return [self userProfile:easeId];
+}
+
 - (void)pushToReportMessageViewController:(EaseMessageModel *)messageModel {
     ACDReportMessageViewController *vc = [[ACDReportMessageViewController alloc] initWithReportMessage:messageModel];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)translateMessage:(EaseMessageModel*)model {
+    if (model.message.body.type == AgoraChatMessageBodyTypeText) {
+        NSString *text = ((AgoraChatTextMessageBody*)model.message.body).text;
+        if (text.length > 0) {
+            [self showHudInView:self.view hint:@"Translating..."];
+            WEAK_SELF
+            [AgoraChatClient.sharedClient.chatManager translateMessage:model.message targetLanguages:@[ACDDemoOptions.sharedOptions.demandLanguage.languageCode] completion:^(AgoraChatMessage * _Nullable message, AgoraChatError * _Nullable error) {
+                [weakSelf hideHud];
+                if (!error) {
+                    model.showTranslation = YES;
+                    [weakSelf.chatController refreshTableView:NO];
+                } else {
+                    [weakSelf showHint:@"Translate failed"];
+                }
+            }];
+        }
+    }
 }
 
 #pragma mark - data
@@ -599,6 +863,14 @@
     return _navigationView;
 }
 
+- (NSMutableArray<NSString *> *)atUserList
+{
+    if (!_atUserList) {
+        _atUserList = [NSMutableArray array];
+    }
+    return _atUserList;
+}
+
 - (void)pushThreadListAction {
     [AgoraChatClient.sharedClient.groupManager getGroupSpecificationFromServerWithId:self.conversationId fetchMembers:YES completion:^(AgoraChatGroup *aGroup, AgoraChatError *aError) {
         if (!aError) {
@@ -793,6 +1065,22 @@
     vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 
+}
+
+- (void)cellDidRetryTranslate:(ACDTextTranslationCell *)cell
+{
+    cell.model.translateStatus = TranslateStatusTranslating;
+    WEAK_SELF
+    [AgoraChatClient.sharedClient.chatManager translateMessage:cell.model.message targetLanguages:@[ACDDemoOptions.sharedOptions.demandLanguage.languageCode] completion:^(AgoraChatMessage * _Nullable message, AgoraChatError * _Nullable error) {
+        if (!error) {
+            cell.model.translateStatus = TranslateStatusSuccess;
+        } else {
+            cell.model.translateStatus = TranslateStatusFailed;
+        }
+        NSIndexPath* path = [self.chatController.tableView indexPathForCell:cell];
+        if (path)
+            [weakSelf.chatController.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
+    }];
 }
 
 @end

@@ -30,6 +30,19 @@
     return self;
 }
 
+- (instancetype)initWithHyphenateId:(NSString *)hyphenateId nickname:(NSString*)nickname
+{
+    self = [super init];
+    if (self) {
+        _hyphenateId = hyphenateId;
+        _nickname = nickname;
+
+        //_defaultAvatarImage = [UIImage imageWithColor:[self generateRandomColor] size:CGSizeMake(40.0, 40.0)];
+        _defaultAvatarImage = [self defaultImage];
+    }
+    return self;
+}
+
 - (UIImage *)defaultImage {
     UIImage *originImage = nil;
     

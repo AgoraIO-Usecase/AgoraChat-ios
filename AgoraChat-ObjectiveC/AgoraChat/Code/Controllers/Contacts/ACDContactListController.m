@@ -118,7 +118,7 @@
 }
 
 - (void)viewDidAppearForIndex:(NSUInteger)index{
-    [self reloadContacts];
+    //[self reloadContacts];
 }
 
 #pragma mark NSNotification

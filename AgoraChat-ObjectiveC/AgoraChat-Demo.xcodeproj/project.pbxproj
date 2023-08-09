@@ -277,8 +277,24 @@
 		C00A004B27C61F4900C7E1BE /* Do not Disturb_whitestroke@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C00A003827C61F4800C7E1BE /* Do not Disturb_whitestroke@2x.png */; };
 		C00A004C27C61F4900C7E1BE /* custom_graystroke@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C00A003927C61F4800C7E1BE /* custom_graystroke@2x.png */; };
 		C00A004E27C62BA500C7E1BE /* go_small_black_mobile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C00A004D27C62BA500C7E1BE /* go_small_black_mobile@2x.png */; };
+		C05751122A821A900023123C /* AgoraChatTranslateLanguage+NSCoder.m in Sources */ = {isa = PBXBuildFile; fileRef = C05751112A821A900023123C /* AgoraChatTranslateLanguage+NSCoder.m */; };
+		C061CB6B2A7BB40900214B0B /* ACDGroupMemberAttributesCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C061CB692A7BB40900214B0B /* ACDGroupMemberAttributesCache.m */; };
+		C061CB712A7BB4EC00214B0B /* NSDictionary+Safely.m in Sources */ = {isa = PBXBuildFile; fileRef = C061CB6F2A7BB4EC00214B0B /* NSDictionary+Safely.m */; };
+		C061CB772A7BB6BA00214B0B /* ACDGroupMemberNickNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C061CB752A7BB6B900214B0B /* ACDGroupMemberNickNameViewController.m */; };
+		C061CB7A2A7CA75D00214B0B /* group_Nickname@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C061CB782A7CA75D00214B0B /* group_Nickname@2x.png */; };
+		C061CB7B2A7CA75D00214B0B /* group_Nickname@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C061CB792A7CA75D00214B0B /* group_Nickname@3x.png */; };
+		C085EDBD2A6E2FD10091C83F /* EaseMessageModel+Translation.m in Sources */ = {isa = PBXBuildFile; fileRef = C085EDBC2A6E2FD10091C83F /* EaseMessageModel+Translation.m */; };
 		C08C5F9827BFE93300D18CF1 /* PresenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C08C5F9727BFE93200D18CF1 /* PresenceManager.m */; };
 		C08C62C027BFF69D00D18CF1 /* AgoraChatAvatarView.m in Sources */ = {isa = PBXBuildFile; fileRef = C08C62BE27BFF69D00D18CF1 /* AgoraChatAvatarView.m */; };
+		C0968CE42A6805C000A4604E /* AgoraTranslateSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0968CDB2A6805C000A4604E /* AgoraTranslateSettingViewController.m */; };
+		C0968CE52A6805C000A4604E /* AutoTranslateLanguageTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0968CDC2A6805C000A4604E /* AutoTranslateLanguageTableViewController.xib */; };
+		C0968CE62A6805C000A4604E /* TranslateLanguageTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0968CDD2A6805C000A4604E /* TranslateLanguageTableViewController.m */; };
+		C0968CE72A6805C000A4604E /* TranslateLanguageTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0968CDE2A6805C000A4604E /* TranslateLanguageTableViewController.xib */; };
+		C0968CE82A6805C000A4604E /* AgoraTranslateSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0968CE02A6805C000A4604E /* AgoraTranslateSettingViewController.xib */; };
+		C0968CE92A6805C000A4604E /* AutoTranslateLanguageTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0968CE12A6805C000A4604E /* AutoTranslateLanguageTableViewController.m */; };
+		C0968CEC2A68087000A4604E /* ACDTextTranslationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C0968CEB2A68087000A4604E /* ACDTextTranslationCell.m */; };
+		C0968CEF2A680B8700A4604E /* ACDTextTranslationBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0968CEE2A680B8700A4604E /* ACDTextTranslationBubbleView.m */; };
+		C0C6D3702A778A53005D4BB2 /* ACDAtGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C6D36E2A778A53005D4BB2 /* ACDAtGroupMembersViewController.m */; };
 		C0CCE49627CB58B3008131B2 /* ACDPresenceSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0CCE49527CB58B3008131B2 /* ACDPresenceSettingViewController.m */; };
 		C0E298B52A65117000F55EBF /* chat_setting_top@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0E298B32A65117000F55EBF /* chat_setting_top@3x.png */; };
 		C0E298B62A65117000F55EBF /* chat_setting_top@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0E298B42A65117000F55EBF /* chat_setting_top@2x.png */; };
@@ -1162,10 +1178,37 @@
 		C00A003827C61F4800C7E1BE /* Do not Disturb_whitestroke@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Do not Disturb_whitestroke@2x.png"; sourceTree = "<group>"; };
 		C00A003927C61F4800C7E1BE /* custom_graystroke@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "custom_graystroke@2x.png"; sourceTree = "<group>"; };
 		C00A004D27C62BA500C7E1BE /* go_small_black_mobile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "go_small_black_mobile@2x.png"; sourceTree = "<group>"; };
+		C05751102A821A900023123C /* AgoraChatTranslateLanguage+NSCoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AgoraChatTranslateLanguage+NSCoder.h"; sourceTree = "<group>"; };
+		C05751112A821A900023123C /* AgoraChatTranslateLanguage+NSCoder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AgoraChatTranslateLanguage+NSCoder.m"; sourceTree = "<group>"; };
+		C061CB692A7BB40900214B0B /* ACDGroupMemberAttributesCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACDGroupMemberAttributesCache.m; sourceTree = "<group>"; };
+		C061CB6A2A7BB40900214B0B /* ACDGroupMemberAttributesCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACDGroupMemberAttributesCache.h; sourceTree = "<group>"; };
+		C061CB6F2A7BB4EC00214B0B /* NSDictionary+Safely.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Safely.m"; sourceTree = "<group>"; };
+		C061CB702A7BB4EC00214B0B /* NSDictionary+Safely.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Safely.h"; sourceTree = "<group>"; };
+		C061CB752A7BB6B900214B0B /* ACDGroupMemberNickNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACDGroupMemberNickNameViewController.m; sourceTree = "<group>"; };
+		C061CB762A7BB6BA00214B0B /* ACDGroupMemberNickNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACDGroupMemberNickNameViewController.h; sourceTree = "<group>"; };
+		C061CB782A7CA75D00214B0B /* group_Nickname@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group_Nickname@2x.png"; sourceTree = "<group>"; };
+		C061CB792A7CA75D00214B0B /* group_Nickname@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group_Nickname@3x.png"; sourceTree = "<group>"; };
+		C085EDBB2A6E2FD10091C83F /* EaseMessageModel+Translation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EaseMessageModel+Translation.h"; sourceTree = "<group>"; };
+		C085EDBC2A6E2FD10091C83F /* EaseMessageModel+Translation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "EaseMessageModel+Translation.m"; sourceTree = "<group>"; };
 		C08C5F9627BFE93200D18CF1 /* PresenceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresenceManager.h; sourceTree = "<group>"; };
 		C08C5F9727BFE93200D18CF1 /* PresenceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PresenceManager.m; sourceTree = "<group>"; };
 		C08C62BE27BFF69D00D18CF1 /* AgoraChatAvatarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraChatAvatarView.m; sourceTree = "<group>"; };
 		C08C62BF27BFF69D00D18CF1 /* AgoraChatAvatarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraChatAvatarView.h; sourceTree = "<group>"; };
+		C0968CDB2A6805C000A4604E /* AgoraTranslateSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AgoraTranslateSettingViewController.m; sourceTree = "<group>"; };
+		C0968CDC2A6805C000A4604E /* AutoTranslateLanguageTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AutoTranslateLanguageTableViewController.xib; sourceTree = "<group>"; };
+		C0968CDD2A6805C000A4604E /* TranslateLanguageTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TranslateLanguageTableViewController.m; sourceTree = "<group>"; };
+		C0968CDE2A6805C000A4604E /* TranslateLanguageTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TranslateLanguageTableViewController.xib; sourceTree = "<group>"; };
+		C0968CDF2A6805C000A4604E /* AgoraTranslateSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgoraTranslateSettingViewController.h; sourceTree = "<group>"; };
+		C0968CE02A6805C000A4604E /* AgoraTranslateSettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AgoraTranslateSettingViewController.xib; sourceTree = "<group>"; };
+		C0968CE12A6805C000A4604E /* AutoTranslateLanguageTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoTranslateLanguageTableViewController.m; sourceTree = "<group>"; };
+		C0968CE22A6805C000A4604E /* TranslateLanguageTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TranslateLanguageTableViewController.h; sourceTree = "<group>"; };
+		C0968CE32A6805C000A4604E /* AutoTranslateLanguageTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTranslateLanguageTableViewController.h; sourceTree = "<group>"; };
+		C0968CEA2A68087000A4604E /* ACDTextTranslationCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACDTextTranslationCell.h; sourceTree = "<group>"; };
+		C0968CEB2A68087000A4604E /* ACDTextTranslationCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACDTextTranslationCell.m; sourceTree = "<group>"; };
+		C0968CED2A680B8700A4604E /* ACDTextTranslationBubbleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACDTextTranslationBubbleView.h; sourceTree = "<group>"; };
+		C0968CEE2A680B8700A4604E /* ACDTextTranslationBubbleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACDTextTranslationBubbleView.m; sourceTree = "<group>"; };
+		C0C6D36E2A778A53005D4BB2 /* ACDAtGroupMembersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACDAtGroupMembersViewController.m; sourceTree = "<group>"; };
+		C0C6D36F2A778A53005D4BB2 /* ACDAtGroupMembersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACDAtGroupMembersViewController.h; sourceTree = "<group>"; };
 		C0CCE49427CB58B3008131B2 /* ACDPresenceSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACDPresenceSettingViewController.h; sourceTree = "<group>"; };
 		C0CCE49527CB58B3008131B2 /* ACDPresenceSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACDPresenceSettingViewController.m; sourceTree = "<group>"; };
 		C0E298B32A65117000F55EBF /* chat_setting_top@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "chat_setting_top@3x.png"; path = "AgoraChat/Resources/Chat Details/chat_setting_top@3x.png"; sourceTree = SOURCE_ROOT; };
@@ -1924,6 +1967,10 @@
 				7F6CC84926568B4600BA60BB /* AgoraMemberSelectViewController.h */,
 				7F6CC84226568B4600BA60BB /* AgoraMemberSelectViewController.m */,
 				7F6CC84126568B4600BA60BB /* AgoraMemberSelectViewController.xib */,
+				C0C6D36F2A778A53005D4BB2 /* ACDAtGroupMembersViewController.h */,
+				C0C6D36E2A778A53005D4BB2 /* ACDAtGroupMembersViewController.m */,
+				C061CB762A7BB6BA00214B0B /* ACDGroupMemberNickNameViewController.h */,
+				C061CB752A7BB6B900214B0B /* ACDGroupMemberNickNameViewController.m */,
 				716634261DB0EB7C00C92E27 /* Cell */,
 				3A79D1071E77AAF40085AB6E /* Info */,
 				7166342E1DB0EC0A00C92E27 /* Protocol */,
@@ -2143,6 +2190,8 @@
 				9ECE66A6273B6E7C007CF85F /* ConfirmUserCardView.m */,
 				9ECE66B0273B6E7C007CF85F /* DBManager.h */,
 				9ECE66BF273B6E7C007CF85F /* DBManager.m */,
+				C061CB6A2A7BB40900214B0B /* ACDGroupMemberAttributesCache.h */,
+				C061CB692A7BB40900214B0B /* ACDGroupMemberAttributesCache.m */,
 				9ECE66A7273B6E7C007CF85F /* RefreshController */,
 				9ECE66B8273B6E7C007CF85F /* resource */,
 				9ECE66B3273B6E7C007CF85F /* SelectAvatarViewController.h */,
@@ -2414,6 +2463,8 @@
 				C004B41F279D33D0009E5E3E /* NSObject+Hint.h */,
 				C004B420279D33D0009E5E3E /* NSObject+Hint.m */,
 				7F0516C0269FE0D200B2C795 /* AgoraCategory.h */,
+				C061CB702A7BB4EC00214B0B /* NSDictionary+Safely.h */,
+				C061CB6F2A7BB4EC00214B0B /* NSDictionary+Safely.m */,
 				D24327EC1DAA444C00EDCDAB /* UIView+HyphenateView.h */,
 				D24327ED1DAA444C00EDCDAB /* UIView+HyphenateView.m */,
 				D24327EE1DAA444C00EDCDAB /* UIViewController+DismissKeyboard.h */,
@@ -2664,6 +2715,15 @@
 				7F6CC8E726568C8600BA60BB /* AgoraSettingsViewController.xib */,
 				C0CCE49427CB58B3008131B2 /* ACDPresenceSettingViewController.h */,
 				C0CCE49527CB58B3008131B2 /* ACDPresenceSettingViewController.m */,
+				C0968CDF2A6805C000A4604E /* AgoraTranslateSettingViewController.h */,
+				C0968CDB2A6805C000A4604E /* AgoraTranslateSettingViewController.m */,
+				C0968CE02A6805C000A4604E /* AgoraTranslateSettingViewController.xib */,
+				C0968CE32A6805C000A4604E /* AutoTranslateLanguageTableViewController.h */,
+				C0968CE12A6805C000A4604E /* AutoTranslateLanguageTableViewController.m */,
+				C0968CDC2A6805C000A4604E /* AutoTranslateLanguageTableViewController.xib */,
+				C0968CE22A6805C000A4604E /* TranslateLanguageTableViewController.h */,
+				C0968CDD2A6805C000A4604E /* TranslateLanguageTableViewController.m */,
+				C0968CDE2A6805C000A4604E /* TranslateLanguageTableViewController.xib */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -2738,6 +2798,10 @@
 				EC1B2C2B27465A9100A6FA6E /* UITabBar+RedPoint.m */,
 				9ECE674D274DE7C0007CF85F /* UIViewController+ComponentSize.h */,
 				9ECE674E274DE7C0007CF85F /* UIViewController+ComponentSize.m */,
+				C085EDBB2A6E2FD10091C83F /* EaseMessageModel+Translation.h */,
+				C085EDBC2A6E2FD10091C83F /* EaseMessageModel+Translation.m */,
+				C05751102A821A900023123C /* AgoraChatTranslateLanguage+NSCoder.h */,
+				C05751112A821A900023123C /* AgoraChatTranslateLanguage+NSCoder.m */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -3278,6 +3342,8 @@
 				EC432EED27210ABC001B31DE /* ACDImageTextButtonView.m */,
 				90155A812876D89E00509241 /* ACDNormalNavigationView.h */,
 				90155A822876D89E00509241 /* ACDNormalNavigationView.m */,
+				C0968CED2A680B8700A4604E /* ACDTextTranslationBubbleView.h */,
+				C0968CEE2A680B8700A4604E /* ACDTextTranslationBubbleView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -3301,6 +3367,8 @@
 				EC54DD0F2722653B00ABEE3E /* ACDCustomCell.m */,
 				EC00E2202744BC8B00EEB474 /* ACDTitleDetailCell.h */,
 				EC00E2212744BC8B00EEB474 /* ACDTitleDetailCell.m */,
+				C0968CEA2A68087000A4604E /* ACDTextTranslationCell.h */,
+				C0968CEB2A68087000A4604E /* ACDTextTranslationCell.m */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -3343,6 +3411,8 @@
 				EC54DE00272A7DEA00ABEE3E /* groupInfo_search@3x.png */,
 				EC54DE09272A7DEA00ABEE3E /* groupInfo_trans@2x.png */,
 				EC54DDFF272A7DEA00ABEE3E /* groupInfo_trans@3x.png */,
+				C061CB782A7CA75D00214B0B /* group_Nickname@2x.png */,
+				C061CB792A7CA75D00214B0B /* group_Nickname@3x.png */,
 				EC54DDEB2728F42F00ABEE3E /* request_join_group@2x.png */,
 				EC54DDEC2728F42F00ABEE3E /* request_join_group@3x.png */,
 				EC54DDCC2726A81A00ABEE3E /* member_delete@2x.png */,
@@ -3521,6 +3591,7 @@
 				D27AC3491DE3EF13002C6020 /* Icon_error_white@2x.png in Resources */,
 				C00A004027C61F4900C7E1BE /* Offline_whitestroke@2x.png in Resources */,
 				9ECE66F3273B6F69007CF85F /* backleft@3x.png in Resources */,
+				C0968CE72A6805C000A4604E /* TranslateLanguageTableViewController.xib in Resources */,
 				D28345121D8FD1D400FD48A9 /* LaunchScreen.storyboard in Resources */,
 				D2BF7EAD1D914DB30090AA66 /* Icon_Emoji.png in Resources */,
 				D2BF7E3F1D914DB30090AA66 /* Toggle off@2x.png in Resources */,
@@ -3730,6 +3801,7 @@
 				EC54DDCA2726A47100ABEE3E /* member_normal@2x.png in Resources */,
 				EC570EB3273129B100CBC408 /* default_avatar_setting@2x.png in Resources */,
 				D2BF7E801D914DB30090AA66 /* Button_Stats disabled.png in Resources */,
+				C0968CE52A6805C000A4604E /* AutoTranslateLanguageTableViewController.xib in Resources */,
 				D2BF7F131D914DB30090AA66 /* logo11@3x.png in Resources */,
 				D2BF7E371D914DB30090AA66 /* Icon_Requests@3x.png in Resources */,
 				3AA9B4411E7AA2FB0093AD25 /* oval@2x.png in Resources */,
@@ -3836,6 +3908,7 @@
 				D2BF7EBA1D914DB30090AA66 /* Icon_Location@2x.png in Resources */,
 				EC54DD3927226C1700ABEE3E /* new_group@2x.png in Resources */,
 				D2BF7E7F1D914DB30090AA66 /* Button_Speaker@3x.png in Resources */,
+				C061CB7A2A7CA75D00214B0B /* group_Nickname@2x.png in Resources */,
 				EC54DE26272B951A00ABEE3E /* chat_nav_add@2x.png in Resources */,
 				9ECE66CE273B6E7C007CF85F /* check-circle@3x.png in Resources */,
 				D2BF7F221D914DB30090AA66 /* logo6.png in Resources */,
@@ -3845,6 +3918,7 @@
 				7F6CC87D26568C0000BA60BB /* AgoraLocationViewController.xib in Resources */,
 				D2BF7E771D914DB30090AA66 /* Button_Speaker active.png in Resources */,
 				D28360041D95009C00EC7A4A /* Icon_File_disable.png in Resources */,
+				C0968CE82A6805C000A4604E /* AgoraTranslateSettingViewController.xib in Resources */,
 				A5D68F8027E1A06500561570 /* notifications_yellow@2x.png in Resources */,
 				EC54DD3E27226C1700ABEE3E /* join_group@2x.png in Resources */,
 				7F6CC89626568C2400BA60BB /* AgoraChatEmojiView.xib in Resources */,
@@ -3854,6 +3928,7 @@
 				EC19F5372737C9DC00F88012 /* defatult_avatar_2@2x.png in Resources */,
 				6639B18427FD98550066145D /* thread_notifications@3x.png in Resources */,
 				D2BF7E7D1D914DB30090AA66 /* Button_Speaker.png in Resources */,
+				C061CB7B2A7CA75D00214B0B /* group_Nickname@3x.png in Resources */,
 				90375D0B287FD21400058AF0 /* ACDReportDocumentMessageCell.xib in Resources */,
 				C00A004927C61F4900C7E1BE /* set_status@2x.png in Resources */,
 				D2BF7E5B1D914DB30090AA66 /* Button_Camera switch disabled@3x.png in Resources */,
@@ -3996,13 +4071,13 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/AgoraChatCallKit/AgoraChatCallKit.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/MWPhotoBrowser/MWPhotoBrowser.bundle",
-				"${PODS_ROOT}/chat-uikit/chat-uikit/Resources/chat-uikit.bundle",
-				"${PODS_ROOT}/chat-uikit/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomMoreFunctionView.xib",
-				"${PODS_ROOT}/chat-uikit/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomMoreFunctionViewEmojiCell.xib",
-				"${PODS_ROOT}/chat-uikit/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomMoreFunctionViewMenuItemCell.xib",
-				"${PODS_ROOT}/chat-uikit/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomReactionDetailReactionCell.xib",
-				"${PODS_ROOT}/chat-uikit/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomReactionDetailUserCell.xib",
-				"${PODS_ROOT}/chat-uikit/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomReactionDetailView.xib",
+				"${PODS_ROOT}/../../../AgoraChat-UIKit-ios/chat-uikit/Resources/chat-uikit.bundle",
+				"${PODS_ROOT}/../../../AgoraChat-UIKit-ios/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomMoreFunctionView.xib",
+				"${PODS_ROOT}/../../../AgoraChat-UIKit-ios/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomMoreFunctionViewEmojiCell.xib",
+				"${PODS_ROOT}/../../../AgoraChat-UIKit-ios/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomMoreFunctionViewMenuItemCell.xib",
+				"${PODS_ROOT}/../../../AgoraChat-UIKit-ios/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomReactionDetailReactionCell.xib",
+				"${PODS_ROOT}/../../../AgoraChat-UIKit-ios/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomReactionDetailUserCell.xib",
+				"${PODS_ROOT}/../../../AgoraChat-UIKit-ios/chat-uikit/Classes/Chat/InputMenu/MoreView/MoreFunction/EMBottomReactionDetailView.xib",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -4037,10 +4112,12 @@
 				90375D0C287FD21400058AF0 /* ACDReportMessageReasonCell.m in Sources */,
 				EC432EB4271D852C001B31DE /* AgoraLoginViewController.m in Sources */,
 				9ECE66C8273B6E7C007CF85F /* AgoraChatAvatarNameModel.m in Sources */,
+				C0968CEC2A68087000A4604E /* ACDTextTranslationCell.m in Sources */,
 				9ECE66DE273B6ECF007CF85F /* AgoraChatSearchBar.m in Sources */,
 				D2426AEE1DCCAD14009C1632 /* UIViewController+HUD.m in Sources */,
 				7F6CC90226568D5000BA60BB /* AgoraUserModel.m in Sources */,
 				EC19F548273900DA00F88012 /* ACDGroupEnterController.m in Sources */,
+				C0968CE62A6805C000A4604E /* TranslateLanguageTableViewController.m in Sources */,
 				EC54DDEA27282D8400ABEE3E /* ACDJoinGroupCell.m in Sources */,
 				7F6CC93326568DC300BA60BB /* AgoraCDDeviceManagerBase.m in Sources */,
 				EC54DDE72728158B00ABEE3E /* ACDGroupInfoViewController.m in Sources */,
@@ -4077,6 +4154,7 @@
 				EC7A3299272EC91C00AF0C19 /* ACDPublicGroupListViewController.m in Sources */,
 				D24327F01DAA444C00EDCDAB /* UIView+HyphenateView.m in Sources */,
 				7F6CC8EC26568C8600BA60BB /* AgoraChatsSettingViewController.m in Sources */,
+				C085EDBD2A6E2FD10091C83F /* EaseMessageModel+Translation.m in Sources */,
 				C08C62C027BFF69D00D18CF1 /* AgoraChatAvatarView.m in Sources */,
 				EC432EC2271EF1D6001B31DE /* ACDContactInfoViewController.m in Sources */,
 				EC54DD432722951100ABEE3E /* ACDCreateNewGroupViewController.m in Sources */,
@@ -4115,6 +4193,7 @@
 				7F6CC8F626568D2500BA60BB /* AgoraContactListSectionHeader.m in Sources */,
 				EC432EBF271EE73A001B31DE /* ACDContactsViewController.m in Sources */,
 				90375D12287FD21400058AF0 /* ACDReportTextMessageCell.m in Sources */,
+				C0968CE92A6805C000A4604E /* AutoTranslateLanguageTableViewController.m in Sources */,
 				EC00E2192743AC5300EEB474 /* ACDGroupMemberSelectViewController.m in Sources */,
 				7F663CF3265F7F86003F74B8 /* AgoraChatUserInfo+expireTime.m in Sources */,
 				9E8B5AD62818ECA2003530C0 /* ACDAvatarNameCell+UserInfo.m in Sources */,
@@ -4174,6 +4253,8 @@
 				90155A832876D89E00509241 /* ACDNormalNavigationView.m in Sources */,
 				EC19F55A27395A9800F88012 /* UIAlertAction+Custom.m in Sources */,
 				7F6CC8AE26568C3600BA60BB /* AgoraChatBaseBubbleView.m in Sources */,
+				C0968CEF2A680B8700A4604E /* ACDTextTranslationBubbleView.m in Sources */,
+				C061CB712A7BB4EC00214B0B /* NSDictionary+Safely.m in Sources */,
 				9ECE6704274271DB007CF85F /* Reachability.m in Sources */,
 				EC54DCED2721502200ABEE3E /* MISScrollPageControllerDelegate.m in Sources */,
 				EC54DDFE272A45B100ABEE3E /* ACDInfoDetailCell.m in Sources */,
@@ -4187,6 +4268,7 @@
 				EC54DDC327269BA300ABEE3E /* AgoraGroupMemberCell.m in Sources */,
 				9E8B5AC92818EC58003530C0 /* ACDCustomTableViewController.m in Sources */,
 				EC432EEE27210ABC001B31DE /* ACDImageTextButtonView.m in Sources */,
+				C05751122A821A900023123C /* AgoraChatTranslateLanguage+NSCoder.m in Sources */,
 				9ECE66E3273B6F41007CF85F /* AgoraChatHttpRequest.m in Sources */,
 				EC54DDFB272A455D00ABEE3E /* ACDInfoSwitchCell.m in Sources */,
 				3A4BB1B51ED422BA00B07FCA /* AgoraChatroomInfoViewController.m in Sources */,
@@ -4208,6 +4290,7 @@
 				7F6CC8AB26568C3600BA60BB /* AgoraChatVideoBubbleView.m in Sources */,
 				7F6CC93426568DC300BA60BB /* AgoraAudioRecorderUtil.m in Sources */,
 				D24327E61DAA395F00EDCDAB /* amrFileCodec.mm in Sources */,
+				C0968CE42A6805C000A4604E /* AgoraTranslateSettingViewController.m in Sources */,
 				EC54DCCF272148E300ABEE3E /* ACDSearchTableViewController.m in Sources */,
 				EC7A3236272BADE000AF0C19 /* ACDGroupMemberAllViewController.m in Sources */,
 				7F0516BE269FDF4000B2C795 /* UIViewController+DarkMode.m in Sources */,
@@ -4220,6 +4303,7 @@
 				9EED2FF72818EE8600D6B11C /* ACDNodisturbTimeCell.m in Sources */,
 				7F6CC8F026568C8600BA60BB /* AgoraAccountViewController.m in Sources */,
 				7F13569D2656582E00A181DD /* AgoraMainViewController.m in Sources */,
+				C061CB6B2A7BB40900214B0B /* ACDGroupMemberAttributesCache.m in Sources */,
 				EC54DCF427215ABE00ABEE3E /* ACDRequestListViewController.m in Sources */,
 				ECCAF7E1273E558B001DA505 /* ACDNaviBackView.m in Sources */,
 				9ECE66EF273B6F69007CF85F /* AgoraChatConvUserDataModel.m in Sources */,
@@ -4233,11 +4317,13 @@
 				EC54DCE92721502200ABEE3E /* MISScrollPageSegmentView.m in Sources */,
 				7F6CC8EB26568C8600BA60BB /* AgoraSettingsViewController.m in Sources */,
 				7F6CC8EE26568C8600BA60BB /* AgoraModifyNickNameViewController.m in Sources */,
+				C0C6D3702A778A53005D4BB2 /* ACDAtGroupMembersViewController.m in Sources */,
 				3A4BB1CC1ED43D7700B07FCA /* AgoraChatroomMutesViewController.m in Sources */,
 				7F6CC86926568B8B00BA60BB /* AgoraRefreshFootViewCell.m in Sources */,
 				9ECE66C5273B6E7C007CF85F /* ConfirmUserCardView.m in Sources */,
 				7F6CC91126568D8E00BA60BB /* AgoraRealtimeSearchUtil.m in Sources */,
 				EC432EC5271EF51F001B31DE /* ACDInfoHeaderView.m in Sources */,
+				C061CB772A7BB6BA00214B0B /* ACDGroupMemberNickNameViewController.m in Sources */,
 				9E8B5ACF2818EC85003530C0 /* ACDGroupTransferOwnerViewController.m in Sources */,
 				7F6CC93126568DC300BA60BB /* AgoraCDDeviceManager+Remind.m in Sources */,
 				7F6CC8AF26568C3600BA60BB /* AgoraChatAudioBubbleView.m in Sources */,

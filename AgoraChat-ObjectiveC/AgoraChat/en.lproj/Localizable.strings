@@ -360,7 +360,9 @@
 "retranslatePrompt" = "Each translation can be retranslated only once.The translation provided is to reference only";
 "hide" = "hide";
 "demandLanguages" = "Demand Translate Language";
+"pushLanguages" = "Push Translate Language";
 "autoLanguageSetting" = "Auto Language Setting";
+"pushLanguageSetting" = "Push Language Setting";
 "prompt" = "Prompt";
 
 // call

@@ -148,6 +148,27 @@
     self.searchSource = [NSMutableArray arrayWithArray:searchSource];
 }
 
+- (void)sortGroupMembers:(NSString*)groupId members:(NSArray<NSString*> *)members
+{
+    if (groupId.length == 0 || members.count == 0) {
+        self.dataArray = [@[] mutableCopy];
+        self.sectionTitles = [@[] mutableCopy];
+        self.searchSource = [@[] mutableCopy];
+        return;
+    }
+    
+    NSMutableArray *sectionTitles = nil;
+    NSMutableArray *searchSource = nil;
+//    NSArray *sortArray = [NSArray sortContacts:members
+//                                 sectionTitles:&sectionTitles
+//                                  searchSource:&searchSource];
+    NSArray *sortArray = [NSArray sortGroupMembers:members sectionTitles:&sectionTitles searchSource:&searchSource groupId:groupId];
+    [self.dataArray removeAllObjects];
+    [self.dataArray addObjectsFromArray:sortArray];
+    self.sectionTitles = [NSMutableArray arrayWithArray:sectionTitles];
+    self.searchSource = [NSMutableArray arrayWithArray:searchSource];
+}
+
 #pragma mark getter and setter
 - (UISearchBar*)searchBar
 {

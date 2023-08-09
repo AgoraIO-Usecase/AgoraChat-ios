@@ -359,7 +359,9 @@
 "retranslatePrompt" = "每条翻译都只能被重译一次.提供的译文仅供参考";
 "hide" = "隐藏";
 "demandLanguages" = "按需翻译语言";
+"pushLanguages" = "推送翻译语言";
 "autoLanguageSetting" = "自动翻译语言";
+"pushLanguageSetting" = "推送翻译语言";
 "prompt" = "提示";
 
 // call
