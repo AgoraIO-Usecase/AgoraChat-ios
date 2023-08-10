@@ -105,7 +105,7 @@
     [[AgoraChatClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [self _setupChatSubviews];
     EaseUserUtils.shared.delegate = self;
-    [ACDGroupMemberAttributesCache.shareInstance fetchCacheValueGroupId:self.conversationId userName:AgoraChatClient.sharedClient.currentUsername key:@"nickName" completion:^(AgoraChatError * _Nullable error, NSString * _Nullable value) {
+    [ACDGroupMemberAttributesCache.shareInstance fetchCacheValueGroupId:self.conversationId userName:AgoraChatClient.sharedClient.currentUsername key:GROUP_NICKNAME_KEY completion:^(AgoraChatError * _Nullable error, NSString * _Nullable value) {
         [self.chatController refreshTableView:YES];
     }];
     if (_conversation.unreadMessagesCount > 0) {
@@ -324,7 +324,7 @@
     if (self.chatController.currentConversation.type == AgoraChatConversationTypeGroupChat && self.chatController.endScroll) {
         NSString* alias = [ACDGroupMemberAttributesCache.shareInstance fetchGroupAlias:self.conversation.conversationId userId:huanxinID];
         if (alias == nil) {
-            //[self fetchMemberNickNameOnGroup:huanxinID model:model];
+            [self fetchMemberNickNameOnGroup:huanxinID model:model];
             return model;
         }
         if (alias.length > 0) {
@@ -348,7 +348,7 @@
     if ([userId isEqualToString:AgoraChatClient.sharedClient.currentUsername]) {
         return;
     }
-    [[ACDGroupMemberAttributesCache shareInstance] fetchCacheValueGroupId:self.chatController.currentConversation.conversationId userName:userId key:@"nickName" completion:^(AgoraChatError * _Nullable error, NSString * _Nullable value) {
+    [[ACDGroupMemberAttributesCache shareInstance] fetchCacheValueGroupId:self.chatController.currentConversation.conversationId userName:userId key:GROUP_NICKNAME_KEY completion:^(AgoraChatError * _Nullable error, NSString * _Nullable value) {
         if (error == nil && value != nil && ![value isEqualToString:@""]) {
             //model.showName = value;
             dispatch_async(dispatch_get_main_queue(), ^{

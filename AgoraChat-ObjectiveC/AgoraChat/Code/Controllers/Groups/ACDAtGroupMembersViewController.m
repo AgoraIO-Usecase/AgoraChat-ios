@@ -14,6 +14,8 @@
 #import "ACDContactCell.h"
 #import "NSArray+AgoraSortContacts.h"
 #import "AgoraUserModel.h"
+#import "ACDGroupMemberAttributesCache.h"
+#import "UserInfoStore.h"
 
 @interface ACDAtGroupMembersViewController ()
 
@@ -54,6 +56,7 @@
 {
     self.title = @"@Mention";
      self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelAction)];
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor colorWithHexString:@"154dfe"];
     self.navigationItem.leftBarButtonItem = nil;
     self.navigationItem.hidesBackButton = YES;
 }
@@ -72,27 +75,40 @@
 }
 
 - (void)updateUIWithResultList:(NSArray *)sourceList IsHeader:(BOOL)isHeader {
-    
+    NSMutableArray* members = [sourceList mutableCopy];
     if (isHeader) {
-        [self.members removeAllObjects];
-        [self.members addObject:self.group.owner];
-        [self.members addObjectsFromArray:self.group.adminList];
+        [members addObject:self.group.owner];
+        [members addObjectsFromArray:self.group.adminList];
+        [self.dataArray removeAllObjects];
     }
 
-    [self.members addObjectsFromArray:sourceList];
     if (AgoraChatClient.sharedClient.currentUsername.length > 0)
-        [self.members removeObject:AgoraChatClient.sharedClient.currentUsername];
+        [members removeObject:AgoraChatClient.sharedClient.currentUsername];
     
-    //[self sortContacts:self.members];
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        [self sortGroupMembers:self.groupId members:self.members];
-        dispatch_async(dispatch_get_main_queue(), ^(){
-            [self.table reloadData];
-        });
-    });
-//    dispatch_async(dispatch_get_main_queue(), ^(){
-//        [self.table reloadData];
-//    });
+    [ACDGroupMemberAttributesCache.shareInstance fetchCacheValueGroupId:self.groupId userIds:members key:GROUP_NICKNAME_KEY completion:^(AgoraChatError * _Nullable error, NSDictionary<NSString *,NSString *> * _Nonnull value) {
+        NSMutableArray<NSString* >* usersNeedUserInfo = [NSMutableArray array];
+        [value enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSString * _Nonnull obj, BOOL * _Nonnull stop) {
+            if (obj.length <= 0) {
+                AgoraChatUserInfo* userInfo = [UserInfoStore.sharedInstance getUserInfoById:key];
+                AgoraUserModel *model = [[AgoraUserModel alloc] initWithHyphenateId:key nickname:(userInfo.nickname.length > 0 ? userInfo.nickname : key)];
+                [self.dataArray addObject:model];
+                if (!userInfo || userInfo.nickname.length == 0)
+                {
+                    [usersNeedUserInfo addObject:key];
+                }
+            } else {
+                AgoraUserModel *model = [[AgoraUserModel alloc] initWithHyphenateId:key nickname:obj];
+                if (model) {
+                    [self.dataArray addObject:model];
+                }
+            }
+        }];
+        if (usersNeedUserInfo.count > 0) {
+            [UserInfoStore.sharedInstance fetchUserInfosFromServer:usersNeedUserInfo];
+        }
+        self.searchSource = self.dataArray;
+        [self.table reloadData];
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -122,19 +138,21 @@
 
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)table {
-    if (self.isSearchState) {
-        return 1;
-    }
-    return  self.sectionTitles.count + 1;
+//    if (self.isSearchState) {
+//        return 1;
+//    }
+//    return  self.sectionTitles.count + 1;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (self.isSearchState) {
         return self.searchResults.count;
     }
-    if (section == 0)
-        return 1;
-    return ((NSArray *)self.dataArray[section-1]).count;
+    return self.dataArray.count + 1;
+//    if (section == 0)
+//        return 1;
+//    return ((NSArray *)self.dataArray[section-1]).count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -155,7 +173,7 @@
         if (indexPath.row == 0 && indexPath.section == 0) {
             model = self.allModel;
         } else {
-            model = self.dataArray[indexPath.section - 1][indexPath.row];
+            model = self.dataArray[indexPath.row - 1];
         }
         
     }
@@ -173,23 +191,25 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    if (section == 0)
-        return @"";
-    if (section-1 < self.sectionTitles.count) {
-        return self.sectionTitles[section-1];
+    ACDContactCell*cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell && cell.tapCellBlock) {
+        cell.tapCellBlock();
     }
-    return @"";
 }
 
-- (NSArray*)sectionIndexTitlesForTableView:(UITableView *)tableView{
-     return self.sectionTitles;
-}
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//{
+//    if (section == 0)
+//        return @"";
+//    if (section-1 < self.sectionTitles.count) {
+//        return self.sectionTitles[section-1];
+//    }
+//    return @"";
+//}
+//
+//- (NSArray*)sectionIndexTitlesForTableView:(UITableView *)tableView{
+//     return self.sectionTitles;
+//}
 
 #pragma mark refresh and load more
 - (void)didStartRefresh {
@@ -218,7 +238,7 @@
 - (void)fetchMembersWithCursor:(NSString *)aCursor
                       isHeader:(BOOL)aIsHeader
 {
-    NSInteger pageSize = 2;
+    NSInteger pageSize = 20;
         
     ACD_WS
 

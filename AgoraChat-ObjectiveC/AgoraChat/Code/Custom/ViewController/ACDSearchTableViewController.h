@@ -27,7 +27,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)cancelSearchState;
 - (void)loadAllDatas;
 - (void)sortContacts:(NSArray *)contacts;
-- (void)sortGroupMembers:(NSString*)groupId members:(NSArray<NSString*> *)members;
 
 @end
 

@@ -36,7 +36,7 @@
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(saveAction)];
-    self.navigationItem.rightBarButtonItem.tintColor = [UIColor blueColor];
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor colorWithHexString:@"154dfe"];
     [self.view addSubview:[self nickNameField]];
     [self.view addSubview:[self countLabel]];
 }
@@ -77,10 +77,10 @@
     if ([self.nickNameField.text isEqualToString:@""] || self.nickNameField.text == nil) {
         self.nickNameField.text = @"";
     }
-    [AgoraChatClient.sharedClient.groupManager setMemberAttribute:self.groupId userId:AgoraChatClient.sharedClient.currentUsername attributes:@{@"nickName":self.nickNameField.text} completion:^(AgoraChatError * _Nullable error) {
+    [AgoraChatClient.sharedClient.groupManager setMemberAttribute:self.groupId userId:AgoraChatClient.sharedClient.currentUsername attributes:@{GROUP_NICKNAME_KEY:self.nickNameField.text} completion:^(AgoraChatError * _Nullable error) {
         if (error == nil) {
-            [self showHint:NSLocalizedString(@"Modify successful!", nil)];
-            [[ACDGroupMemberAttributesCache shareInstance] updateCacheWithGroupId:self.groupId userName:AgoraChatClient.sharedClient.currentUsername key:@"nickName" value:self.nickNameField.text];
+            [self showHint:NSLocalizedString(@"Saved", nil)];
+            [[ACDGroupMemberAttributesCache shareInstance] updateCacheWithGroupId:self.groupId userName:AgoraChatClient.sharedClient.currentUsername key:GROUP_NICKNAME_KEY value:self.nickNameField.text];
             if (self.changeResult) {
                 self.changeResult(self.nickNameField.text);
             }

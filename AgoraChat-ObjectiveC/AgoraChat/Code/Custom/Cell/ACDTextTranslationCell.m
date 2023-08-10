@@ -63,14 +63,8 @@
         }
     }
     [self updateTranslateInfo];
-    
-//    [self.bubbleView mas_updateConstraints:^(MASConstraintMaker *make) {
-//        make.bottom.equalTo(self.contentView).offset(self.model.message.body.operatorCount > 0 ? (self.model.message.reactionList.count > 0 ? -64 : -44) : -30);
-//        make.top.equalTo(self.contentView).offset(self.direction == AgoraChatMessageDirectionSend ? 6 : 25);
-//    }];
     [self.translationsLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.bubbleView.mas_bottom).offset(self.model.message.reactionList.count > 0 ? 19 : 5);
-        //make.bottom.equalTo(self.contentView).offset(self.model.message.body.operatorCount > 0 ? -24 : 0);
     }];
     
 }
@@ -115,11 +109,11 @@
         case TranslateStatusSuccess:
         {
             self.model.showTranslation = !self.model.showTranslation;
-            [self updateTranslateInfo];
-            //self.model = self.model;
-            UITableView* tableView = (UITableView*)self.superview;
-            NSIndexPath* indexPath = [tableView indexPathForCell:self];
-            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:NO];
+            //[self updateTranslateInfo];
+            self.model = self.model;
+//            UITableView* tableView = (UITableView*)self.superview;
+//            NSIndexPath* indexPath = [tableView indexPathForCell:self];
+//            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:NO];
         }
             break;
         case TranslateStatusFailed:

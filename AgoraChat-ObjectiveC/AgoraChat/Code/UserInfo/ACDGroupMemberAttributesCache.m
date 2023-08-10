@@ -108,7 +108,7 @@ static ACDGroupMemberAttributesCache *instance = nil;
 
 - (NSString *)fetchGroupAlias:(NSString *)groupId userId:(NSString *)usrId
 {
-    NSString *value = [[[self.attributes objectForKeySafely:groupId] objectForKeySafely:usrId] objectForKeySafely:@"nickName"];
+    NSString *value = [[[self.attributes objectForKeySafely:groupId] objectForKeySafely:usrId] objectForKeySafely:GROUP_NICKNAME_KEY];
     return value;
 }
 
@@ -117,10 +117,10 @@ static ACDGroupMemberAttributesCache *instance = nil;
     NSMutableArray<NSString* >* memberToFetch = [NSMutableArray array];
     NSMutableDictionary* result = [NSMutableDictionary dictionary];
     for (NSString* userId in userName) {
-        NSString* tmp = [[[self.attributes objectForKeySafely:groupId] objectForKeySafely:userId] objectForKeySafely:@"nickName"];
+        NSString* tmp = [[[self.attributes objectForKeySafely:groupId] objectForKeySafely:userId] objectForKeySafely:GROUP_NICKNAME_KEY];
         if (tmp == nil) {
             [memberToFetch addObject:userId];
-            [result setObject:userId forKey:userId];
+            [result setObject:@"" forKey:userId];
         } else {
             [result setObject:tmp forKey:userId];
         }
@@ -129,8 +129,9 @@ static ACDGroupMemberAttributesCache *instance = nil;
         if (!error) {
             for (NSString* user in attributes) {
                 NSDictionary* keyValues = [attributes valueForKeySafely:user];
-                NSString* value = [keyValues objectForKey:@"nickName"];
+                NSString* value = [keyValues objectForKey:GROUP_NICKNAME_KEY];
                 if (value.length > 0) {
+                    [self updateCacheWithGroupId:groupId userName:user key:key value:value];
                     [result setObject:value forKey:user];
                 }
             }

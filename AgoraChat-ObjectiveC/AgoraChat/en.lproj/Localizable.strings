@@ -359,10 +359,10 @@
 "retranslate" = "Re-Tran";
 "retranslatePrompt" = "Each translation can be retranslated only once.The translation provided is to reference only";
 "hide" = "hide";
-"demandLanguages" = "Demand Translate Language";
+"demandLanguages" = "Translate Language";
 "pushLanguages" = "Push Translate Language";
-"autoLanguageSetting" = "Auto Language Setting";
-"pushLanguageSetting" = "Push Language Setting";
+"autoLanguageSetting" = "Auto Translate Language";
+"pushLanguageSetting" = "Push Language";
 "prompt" = "Prompt";
 
 // call

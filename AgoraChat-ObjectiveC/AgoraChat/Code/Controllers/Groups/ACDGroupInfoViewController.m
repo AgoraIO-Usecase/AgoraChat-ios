@@ -164,11 +164,11 @@
         self.groupInfoHeaderView.isHideChatButton = YES;
     }else {
         if (self.group.permissionType == AgoraChatGroupPermissionTypeOwner) {
-            self.cells = @[self.membersCell,self.notificationCell,self.groupNoticesCell,self.groupFilesCell,self.groupNicknameCell ,self.transferOwnerCell,self.disbandCell];
+            self.cells = @[self.membersCell,self.groupNicknameCell,self.notificationCell,self.groupNoticesCell,self.groupFilesCell ,self.transferOwnerCell,self.disbandCell];
         } else if(self.group.permissionType == AgoraChatGroupPermissionTypeAdmin){
-            self.cells = @[self.membersCell,self.notificationCell,self.groupNoticesCell,self.groupFilesCell,self.groupNicknameCell,self.leaveCell];
+            self.cells = @[self.membersCell,self.groupNicknameCell,self.notificationCell,self.groupNoticesCell,self.groupFilesCell,self.leaveCell];
         }else {
-            self.cells = @[self.membersCell,self.notificationCell,self.groupNoticesCell,self.groupFilesCell,self.groupNicknameCell,self.leaveCell];
+            self.cells = @[self.membersCell,self.groupNicknameCell,self.notificationCell,self.groupNoticesCell,self.groupFilesCell,self.leaveCell];
         }
     }
 
@@ -207,7 +207,7 @@
             [weakSelf showHint:NSLocalizedString(@"group.fetchInfoFail", @"failed to get the group details, please try again later")];
         }
     }];
-    [[ACDGroupMemberAttributesCache shareInstance] fetchCacheValueGroupId:self.groupId userName:AgoraChatClient.sharedClient.currentUsername key:@"nickName" completion:^(AgoraChatError * _Nullable error, NSString * _Nullable value) {
+    [[ACDGroupMemberAttributesCache shareInstance] fetchCacheValueGroupId:self.groupId userName:AgoraChatClient.sharedClient.currentUsername key:GROUP_NICKNAME_KEY completion:^(AgoraChatError * _Nullable error, NSString * _Nullable value) {
         if (!error) {
             weakSelf.groupNickname = value;
             [weakSelf.table reloadData];

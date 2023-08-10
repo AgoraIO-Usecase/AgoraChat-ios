@@ -158,14 +158,14 @@
     if (checkArr.count == 1) {
         NSTextCheckingResult *result = checkArr.firstObject;
         NSString *urlStr = result.URL.absoluteString;
-        NSRange range = [text rangeOfString:urlStr options:NSCaseInsensitiveSearch];
+        NSRange range = result.range;
         if (range.length > 0) {
             NSURL *url = [NSURL URLWithString:urlStr];
             [attaStr setAttributes:@{
                 NSLinkAttributeName : url,
                 NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
                 NSUnderlineColorAttributeName: self.direction == AgoraChatMessageDirectionSend ? _viewModel.sentFontColor : self.tintColor
-            } range:NSMakeRange(range.location, urlStr.length)];
+            } range:range];
             [AgoraURLPreviewManager.shared preview:url successHandle:^(AgoraURLPreviewResult * _Nonnull result) {
                 [self updateLayoutWithURLPreview: result];
             } faieldHandle:^{

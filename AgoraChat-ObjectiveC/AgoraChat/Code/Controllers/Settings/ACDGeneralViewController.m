@@ -115,7 +115,7 @@
             [self.table reloadData];
         };
     } else if(indexPath.row == 4) {
-        cell.nameLabel.text = NSLocalizedString(@"translate.setting", nil);
+        cell.textLabel.text = NSLocalizedString(@"translate.setting", nil);
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         WEAK_SELF
         cell.tapCellBlock = ^{
