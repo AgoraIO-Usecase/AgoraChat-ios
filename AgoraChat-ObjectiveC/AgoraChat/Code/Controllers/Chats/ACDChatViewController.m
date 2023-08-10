@@ -489,12 +489,6 @@
         }];
         [defaultLongPressItems addObject:reportItem];
     }
-    if (msgModel.message.body.type == AgoraChatMessageBodyTypeText) {
-        EaseExtendMenuModel *editItem = [[EaseExtendMenuModel alloc]initWithData:[UIImage imageNamed:@"edit"] funcDesc:@"Edit" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
-            [weakSelf modifyAction:messageModel];
-        }];
-        [defaultLongPressItems addObject:editItem];
-    }
     return defaultLongPressItems;
 }
 
@@ -605,54 +599,17 @@
     } while (0);
 }
 
-- (void)modifyAction:(EaseMessageModel *)model {
-    AgoraEditTextView* editor = [[AgoraEditTextView alloc] initWithTitle:@"Message Edit" placeHolder:((AgoraChatTextMessageBody *)model.message.body).text changeClosure:^(NSString * _Nonnull content) {
-        [self modifyMessage:content model:model];
-    }];
-    [editor show];
-
-}
-
-- (void)modifyMessage:(NSString *)content model:(EaseMessageModel *)model {
-    AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:content];
-    body.targetLanguages = @[@"en"];
-    [self showHudInView:self.view hint:@"Modifying message..."];
-    [AgoraChatClient.sharedClient.chatManager modifyMessage:model.message.messageId body:body completion:^(AgoraChatError * _Nullable error, AgoraChatMessage * _Nullable message) {
-        [self hideHud];
-        if (!error) {
-            [self.chatController.dataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                if ([obj isKindOfClass:[EaseMessageModel class]]) {
-                    EaseMessageModel *model = (EaseMessageModel *)obj;
-                    if ( model.message &&[model.message.messageId isEqualToString:message.messageId]) {
-                        model.message = message;
-                        UITableViewCell *cell = [self.chatController.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]];
-                        if ([cell isKindOfClass:[EaseMessageCell class]]) {
-                            EaseMessageCell *messageCell = (EaseMessageCell*)cell;
-                            messageCell.model = model;
-                            if ([self.chatController.tableView.visibleCells containsObject:cell]) {
-                                [self.chatController.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-                            }
-                            *stop = YES;
-                        }
-                    }
-                }                    }];
-        } {
-            [self showHint:error.errorDescription];
-        }
-    }];
-}
-
 - (BOOL)didSelectMessageItem:(AgoraChatMessage *)message userProfile:(id<EaseUserProfile>)userData {
     return YES;
 }
-
-- (AgoraEditBar *)editBar {
-    if (!_editBar) {
-        _editBar = [[AgoraEditBar alloc] initWithFrame:CGRectMake(0, EMScreenHeight-kBottomSafeHeight-54, EMScreenWidth, kBottomSafeHeight+54)];
-    }
-    return _editBar;
-}
-
+//
+//- (AgoraEditBar *)editBar {
+//    if (!_editBar) {
+//        _editBar = [[AgoraEditBar alloc] initWithFrame:CGRectMake(0, EMScreenHeight-kBottomSafeHeight-54, EMScreenWidth, kBottomSafeHeight+54)];
+//    }
+//    return _editBar;
+//}
+//
 -(AgoraEditNavigation *)editNavigation {
     if (!_editNavigation) {
         _editNavigation = [[AgoraEditNavigation alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.navigationView.frame)) avatar:self.navigationView.chatImageView.image nickName:self.navigationView.leftLabel.text];
@@ -660,28 +617,37 @@
     return _editNavigation;
 }
 
-- (void)messageListEntryEditMode {
-    [self.view addSubview:self.editBar];
+- (void)messageListEntryEditModeThenOperation:(EditBarOperationType)type {
+    switch (type) {
+        case EditBarOperationTypeDelete: {
+            [self removeLocalHistoryMessages];
+        }
+            break;
+        case EditBarOperationTypeForward: {
+            [self chooseForwardTargets];
+        }
+            break;
+        default:
+            break;
+    }
+
+}
+
+- (BOOL)messageListEntryEditModeWhetherShowBottom {
+    [self.view addSubview:self.chatController.toolBar];
     [self.view addSubview:self.editNavigation];
     __weak typeof(self) weakSelf = self;
-    self.editBar.actionClosure = ^(enum AgoraEditBarOperation op) {
-        if (op == AgoraEditBarOperationDelete) {
-            [weakSelf removeLocalHistoryMessages];
-        } else {
-            [weakSelf chooseForwardTargets];
-        }
-    };
     self.editNavigation.cancelClosure = ^{
         for (id model in weakSelf.chatController.dataArray) {
             if ([model isKindOfClass:[EaseMessageModel class]]) {
                 ((EaseMessageModel *)model).selected = NO;
             }
         }
-        [weakSelf.editBar removeFromSuperview];
         [weakSelf.editNavigation removeFromSuperview];
         weakSelf.chatController.editMode = NO;
         [weakSelf.chatController.tableView reloadData];
     };
+    return YES;
 }
 
 - (void)chooseForwardTargets {
@@ -691,17 +657,17 @@
     contact.forward = YES;
     group.forward = YES;
     contact.selectedBlock = ^(NSString * _Nonnull contactId) {
-        [self forwardCombineMessages:contactId];
+        [self forwardCombineMessages:contactId chat:YES];
     };
     group.selectedBlock = ^(NSString * _Nonnull groupId) {
-        [self forwardCombineMessages:groupId];
+        [self forwardCombineMessages:groupId chat:NO];
     };
     
     ForwardTargetsViewController *vc = [[ForwardTargetsViewController alloc] initWithViewControllers:@[contact,group] indicators:@[@"Contact",@"Group"]];
     [self presentViewController:vc animated:YES completion:nil];
 }
 
-- (void)forwardCombineMessages:(NSString *)target {
+- (void)forwardCombineMessages:(NSString *)target chat:(BOOL)chat {
     NSMutableArray <__kindof NSString*>*ids = [NSMutableArray array];
     for (AgoraChatMessage *message in self.forwardMessages) {
         [ids addObject:message.messageId];
@@ -725,9 +691,9 @@
             }
         }
     }
-    AgoraChatCombineMessageBody *body = [[AgoraChatCombineMessageBody alloc] initWithTitle:@"A Chat History" summary:summary compatibleText:@"A Chat History" messageIdList:ids];
+    AgoraChatCombineMessageBody *body = [[AgoraChatCombineMessageBody alloc] initWithTitle:@"Chat History" summary:summary compatibleText:@"The version is low and unable to display the content." messageIdList:ids];
     AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:target body:body ext:nil];
-    message.chatType = (AgoraChatType)self.conversation.type;
+    message.chatType = chat ? AgoraChatTypeChat:AgoraChatTypeGroupChat;
     __weak typeof(self) weakSelf = self;
     [AgoraChatClient.sharedClient.chatManager sendMessage:message progress:nil completion:^(AgoraChatMessage * _Nullable message, AgoraChatError * _Nullable error) {
         NSString *alert = @"Forward successful!";
