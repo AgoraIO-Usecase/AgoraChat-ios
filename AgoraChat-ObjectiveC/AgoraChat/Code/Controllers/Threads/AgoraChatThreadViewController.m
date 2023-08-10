@@ -83,6 +83,7 @@
     if (_conversation.unreadMessagesCount > 0) {
         [[AgoraChatClient sharedClient].chatManager ackConversationRead:_conversation.conversationId completion:nil];
     }
+    self.forwardMessages = [NSMutableArray array];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -215,18 +216,29 @@
 }
 
 
-- (void)messageListEntryEditMode {
-    [self.view addSubview:self.editBar];
-    [self.navBar editMode:YES];
-    __weak typeof(self) weakSelf = self;
-    self.editBar.actionClosure = ^(enum AgoraEditBarOperation op) {
-        if (op == AgoraEditBarOperationDelete) {
-            [weakSelf removeLocalHistoryMessages];
-        } else {
-            [weakSelf chooseForwardTargets];
+- (void)messageListEntryEditModeThenOperation:(EditBarOperationType)type {
+    switch (type) {
+        case EditBarOperationTypeDelete: {
+            [self removeLocalHistoryMessages];
         }
-    };
+            break;
+        case EditBarOperationTypeForward: {
+            [self chooseForwardTargets];
+        }
+            break;
+        default:
+            break;
+    }
+
 }
+
+- (BOOL)messageListEntryEditModeWhetherShowBottom {
+    [self.view addSubview:self.chatController.toolBar];
+    [self.chatController.toolBar hiddenWithOperation:EditBarOperationTypeDelete];
+    [self.navBar editMode:YES];
+    return YES;
+}
+
 
 - (void)chooseForwardTargets {
     [self fillForwardMessages];
@@ -235,17 +247,17 @@
     contact.forward = YES;
     group.forward = YES;
     contact.selectedBlock = ^(NSString * _Nonnull contactId) {
-        [self forwardCombineMessages:contactId];
+        [self forwardCombineMessages:contactId chat:YES];
     };
     group.selectedBlock = ^(NSString * _Nonnull groupId) {
-        [self forwardCombineMessages:groupId];
+        [self forwardCombineMessages:groupId chat:NO];
     };
     
     ForwardTargetsViewController *vc = [[ForwardTargetsViewController alloc] initWithViewControllers:@[contact,group] indicators:@[@"Contact",@"Group"]];
     [self presentViewController:vc animated:YES completion:nil];
 }
 
-- (void)forwardCombineMessages:(NSString *)target {
+- (void)forwardCombineMessages:(NSString *)target chat:(BOOL)chat{
     NSMutableArray <__kindof NSString*>*ids = [NSMutableArray array];
     for (AgoraChatMessage *message in self.forwardMessages) {
         [ids addObject:message.messageId];
@@ -259,16 +271,19 @@
             break;
         } else {
             AgoraChatMessage *message = self.forwardMessages[i];
+            AgoraChatUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:message.from];
+            AgoraChatUserDataModel *model = [[AgoraChatUserDataModel alloc]initWithUserInfo:userInfo];
+            NSString *nickName = IsStringEmpty(model.showName) ? message.from:model.showName;
             if (i == 0) {
-                summary = message.showText;
+                summary = [NSString stringWithFormat:@"%@:%@",nickName,message.showText];
             } else {
-                summary = [NSString stringWithFormat:@"%@\n%@",summary,message.showText];
+                summary = [NSString stringWithFormat:@"%@\n%@:%@",summary,nickName,message.showText];
             }
         }
     }
-    AgoraChatCombineMessageBody *body = [[AgoraChatCombineMessageBody alloc] initWithTitle:@"A Chat History" summary:summary compatibleText:@"A Chat History" messageIdList:ids];
+    AgoraChatCombineMessageBody *body = [[AgoraChatCombineMessageBody alloc] initWithTitle:@"Chat History" summary:summary compatibleText:@"The version is low and unable to display the content." messageIdList:ids];
     AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:target body:body ext:nil];
-    message.chatType = (AgoraChatType)self.conversation.type;
+    message.chatType = chat ? AgoraChatTypeChat:AgoraChatTypeGroupChat;
     [AgoraChatClient.sharedClient.chatManager sendMessage:message progress:nil completion:^(AgoraChatMessage * _Nullable message, AgoraChatError * _Nullable error) {
         if (!error && message != nil) {
             [self showHint:@"Forward successful!"];

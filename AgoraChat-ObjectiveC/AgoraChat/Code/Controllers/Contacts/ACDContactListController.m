@@ -32,6 +32,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
+        self.forward = NO;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingBlackListDidChange) name:@"AgoraSettingBlackListDidChange" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presencesUpdated:) name:PRESENCES_UPDATE object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contactListDidChange) name:KACD_REFRESH_CONTACTS object:nil];
