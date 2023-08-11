@@ -24,6 +24,7 @@
 #import "EaseDefines.h"
 #import "AgoraChatMessage+ShowText.h"
 #import "AgoraChatURLPreviewCell.h"
+#import "ACDReportMessageViewController.h"
 @interface AgoraChatThreadViewController ()<EaseChatViewControllerDelegate,AgoraChatroomManagerDelegate,EMBottomMoreFunctionViewDelegate>
 @property (nonatomic, strong) EaseConversationModel *conversationModel;
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -196,6 +197,25 @@
     if (error) {
         [self showHint:error.errorDescription];
     }
+}
+
+- (NSMutableArray<EaseExtendMenuModel *> *)messageLongPressExtMenuItemArray:(NSMutableArray<EaseExtendMenuModel*>*)defaultLongPressItems messageModel:(nonnull EaseMessageModel *)messageModel{
+    __weak typeof(self) weakSelf = self;
+    __block EaseMessageModel *msgModel = messageModel;
+    if(msgModel.direction == AgoraChatMessageDirectionReceive) {
+        if (msgModel.message.body.type == AgoraChatMessageBodyTypeText || msgModel.message.body.type == AgoraChatMessageBodyTypeImage || msgModel.message.body.type == AgoraChatMessageBodyTypeFile || msgModel.message.body.type == AgoraChatMessageBodyTypeVideo || msgModel.message.body.type == AgoraChatMessageBodyTypeVoice) {
+            EaseExtendMenuModel *reportItem = [[EaseExtendMenuModel alloc]initWithData:[UIImage imageNamed:@"report"] funcDesc:@"Report" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+                [weakSelf pushToReportMessageViewController:messageModel];
+            }];
+            [defaultLongPressItems addObject:reportItem];
+        }
+    }
+    return defaultLongPressItems;
+}
+
+- (void)pushToReportMessageViewController:(EaseMessageModel *)messageModel {
+    ACDReportMessageViewController *vc = [[ACDReportMessageViewController alloc] initWithReportMessage:messageModel];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (AgoraEditBar *)editBar {
