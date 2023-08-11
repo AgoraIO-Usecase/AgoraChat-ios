@@ -638,21 +638,27 @@
     [self.view addSubview:self.editNavigation];
     __weak typeof(self) weakSelf = self;
     self.editNavigation.cancelClosure = ^{
-        for (id model in weakSelf.chatController.dataArray) {
-            if ([model isKindOfClass:[EaseMessageModel class]]) {
-                ((EaseMessageModel *)model).selected = NO;
-            }
-        }
-        [weakSelf.editNavigation removeFromSuperview];
-        [weakSelf.chatController.toolBar dismiss];
-        weakSelf.chatController.editMode = NO;
-        [weakSelf.chatController.tableView reloadData];
+        [weakSelf recoverNormalMode];
     };
     return YES;
 }
 
+- (void)recoverNormalMode {
+    for (id model in self.chatController.dataArray) {
+        if ([model isKindOfClass:[EaseMessageModel class]]) {
+            ((EaseMessageModel *)model).selected = NO;
+        }
+    }
+    [self.editNavigation removeFromSuperview];
+    [self.chatController.toolBar dismiss];
+    self.chatController.editMode = NO;
+    [self.chatController.tableView reloadData];
+}
+
+
 - (void)chooseForwardTargets {
     [self fillForwardMessages];
+    [self recoverNormalMode];
     ACDContactListController *contact = [[ACDContactListController alloc] init];
     ACDGroupListViewController *group = [[ACDGroupListViewController alloc] init];
     contact.forward = YES;
@@ -699,7 +705,9 @@
     [AgoraChatClient.sharedClient.chatManager sendMessage:message progress:nil completion:^(AgoraChatMessage * _Nullable message, AgoraChatError * _Nullable error) {
         NSString *alert = @"Forward successful!";
         if (!error && message != nil) {
-            [weakSelf.chatController.dataArray addObject:[[EaseMessageModel alloc] initWithAgoraChatMessage:message]];
+            if ([target isEqualToString:self.conversation.conversationId]) {
+                [weakSelf.chatController.dataArray addObject:[[EaseMessageModel alloc] initWithAgoraChatMessage:message]];
+            }
             [weakSelf.chatController.tableView reloadData];
         } else {
             alert = error.errorDescription;
@@ -724,9 +732,22 @@
     [self fillForwardMessages];
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Delete Message" message:[NSString stringWithFormat:@"Delete %lu messages form database",(unsigned long)self.forwardMessages.count] preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"Delete" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        NSMutableArray *models = [NSMutableArray array];
+        [self.chatController.dataArray enumerateObjectsUsingBlock:^(EaseMessageModel *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([obj isKindOfClass:[EaseMessageModel class]] && obj.selected) {
+                [models addObject:obj];
+            }
+        }];
         for (AgoraChatMessage *message in self.forwardMessages) {
             [self.conversation deleteMessageWithId:message.messageId error:nil];
         }
+        for (EaseMessageModel *model in models) {
+            if (model.selected) {
+                [self.chatController.dataArray removeObject:model];
+            }
+        }
+        [self.chatController.tableView reloadData];
+        [self recoverNormalMode];
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         

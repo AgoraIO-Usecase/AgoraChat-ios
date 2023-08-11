@@ -242,6 +242,7 @@
 
 - (void)chooseForwardTargets {
     [self fillForwardMessages];
+    [self recoverNormalState];
     ACDContactListController *contact = [[ACDContactListController alloc] init];
     ACDGroupListViewController *group = [[ACDGroupListViewController alloc] init];
     contact.forward = YES;
@@ -534,22 +535,25 @@
 
 - (void)navBarMoreAction {
     if (self.navBar.back.isHidden) {
-        self.editMode = NO;
-        [self.navBar editMode:NO];
-        for (id model in self.chatController.dataArray) {
-            if ([model isKindOfClass:[EaseMessageModel class]]) {
-                ((EaseMessageModel *)model).selected = NO;
-            }
-        }
-        [self.editBar removeFromSuperview];
-        self.chatController.editMode = NO;
-        [self.chatController.toolBar dismiss];
-        [self.chatController.tableView reloadData];
+        [self recoverNormalState];
     } else {
         [self showSheet];
     }
 }
 
+- (void)recoverNormalState {
+    self.editMode = NO;
+    [self.navBar editMode:NO];
+    for (id model in self.chatController.dataArray) {
+        if ([model isKindOfClass:[EaseMessageModel class]]) {
+            ((EaseMessageModel *)model).selected = NO;
+        }
+    }
+    [self.editBar removeFromSuperview];
+    self.chatController.editMode = NO;
+    [self.chatController.toolBar dismiss];
+    [self.chatController.tableView reloadData];
+}
 
 - (void)popDestinationVC {
     UIViewController *tmp;
