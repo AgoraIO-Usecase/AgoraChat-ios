@@ -23,6 +23,7 @@
 #import "AgoraChat_Demo-Swift.h"
 #import "EaseDefines.h"
 #import "AgoraChatMessage+ShowText.h"
+#import "AgoraChatURLPreviewCell.h"
 @interface AgoraChatThreadViewController ()<EaseChatViewControllerDelegate,AgoraChatroomManagerDelegate,EMBottomMoreFunctionViewDelegate>
 @property (nonatomic, strong) EaseConversationModel *conversationModel;
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -138,33 +139,23 @@
 
 #pragma mark - EaseChatViewControllerDelegate
 
-//- (UITableViewCell *)cellForItem:(UITableView *)tableView messageModel:(EaseMessageModel *)messageModel
-//{
-////    if (messageModel.type == AgoraChatMessageTypePictMixText) {
-////        AgoraChatMsgPicMixTextBubbleView* picMixBV = [[AgoraChatMsgPicMixTextBubbleView alloc] init];
-////        [picMixBV setModel:messageModel];
-////        AgoraChatMessageCell *cell = [[AgoraChatMessageCell alloc] initWithDirection:messageModel.direction type:messageModel.type msgView:picMixBV];
-////        cell.model = messageModel;
-////        cell.delegate = self;
-////        return cell;
-////    }
-//
-//    if(messageModel.message.body.type == AgoraChatMessageBodyTypeCustom) {
-//        AgoraChatCustomMessageBody* body = (AgoraChatCustomMessageBody*)messageModel.message.body;
-//        if([body.event isEqualToString:@"userCard"]){
-////            AgoraChatUserCardMsgView* userCardMsgView = [[AgoraChatUserCardMsgView alloc] init];
-////            userCardMsgView.backgroundColor = [UIColor whiteColor];
-////            [userCardMsgView setModel:messageModel];
-////            AgoraChatMessageCell* userCardCell = [[AgoraChatMessageCell alloc] initWithDirection:messageModel.direction type:messageModel.type msgView:userCardMsgView];
-////            userCardCell.model = messageModel;
-////            userCardCell.delegate = self;
-////            return userCardCell;
-//        }
-//    }
-//    return nil;
-//}
-
-//typing 1v1 single chat only
+#pragma mark - EaseChatViewControllerDelegate
+- (UITableViewCell *)cellForItem:(UITableView *)tableView messageModel:(EaseMessageModel *)messageModel {
+    switch (messageModel.message.body.type) {
+        case AgoraChatMessageTypeText:
+            if (messageModel.isUrl) {
+                AgoraChatURLPreviewCell *cell = [[AgoraChatURLPreviewCell alloc] initWithDirection:messageModel.direction chatType:messageModel.message.chatType messageType:messageModel.type viewModel:self.chatController.viewModel];
+                messageModel.type = AgoraChatMessageTypeExtURLPreview;
+                cell.delegate = self.chatController;
+                cell.model = messageModel;
+                return cell;
+            }
+            break;
+        default:
+            break;
+    }
+    return nil;
+}
 - (void)peerTyping
 {
     self.titleDetailLabel.text = @"other party is typing";
