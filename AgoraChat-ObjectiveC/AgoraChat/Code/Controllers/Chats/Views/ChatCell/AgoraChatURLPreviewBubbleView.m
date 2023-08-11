@@ -11,6 +11,10 @@
 #import <chat-uikit/EaseEmojiHelper.h>
 #import <chat-uikit/EaseEmojiHelper.h>
 #import "AgoraURLPreviewManager.h"
+#import <chat-uikit/EMMsgThreadPreviewBubble.h>
+#define kHorizontalPadding 12
+#define kVerticalPadding 8
+#define KEMThreadBubbleWidth (EMScreenWidth*(3/5.0))
 
 @interface AgoraChatURLPreviewBubbleView ()
 {
@@ -24,6 +28,7 @@
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *descLabel;
 @property (nonatomic, strong) CAShapeLayer *shapeLayer;
+@property (nonatomic, strong) EMMsgThreadPreviewBubble *threadBubble;
 
 @end
 
@@ -37,6 +42,12 @@
     if (self) {
         _viewModel = viewModel;
         [self _setupSubviews];
+        self.threadBubble = [[EMMsgThreadPreviewBubble alloc] initWithDirection:aDirection type:aType viewModel:viewModel];
+        self.threadBubble.tag = 777;
+        [self addSubview:self.threadBubble];
+        self.threadBubble.layer.cornerRadius = 8;
+        self.threadBubble.clipsToBounds = YES;
+        self.threadBubble.hidden = YES;
     }
     
     return self;
@@ -144,10 +155,23 @@
     self.layer.mask = _shapeLayer;
 }
 
+
 #pragma mark - Setter
 
 - (void)setModel:(EaseMessageModel *)model
 {
+    [super setModel:model];
+    if (model.isHeader == NO) {
+        if (model.message.chatThread) {
+            self.threadBubble.model = model;
+            self.threadBubble.hidden = !model.message.chatThread;
+        }else {
+            self.threadBubble.hidden = YES;
+        }
+    } else {
+        self.threadBubble.hidden = YES;
+    }
+    
     self.image = nil;
     AgoraChatTextMessageBody *body = (AgoraChatTextMessageBody *)model.message.body;
     NSString *text = [EaseEmojiHelper convertEmoji:body.text];
@@ -186,6 +210,7 @@
 
 - (void)updateLayoutWithURLPreview:(AgoraURLPreviewResult *)result
 {
+    BOOL hasThread = (self.model.message.chatThread != nil && self.model.isHeader == NO);
     [_textView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(@12);
         make.top.equalTo(@8);
@@ -206,7 +231,7 @@
         [_contentView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_imageView.mas_bottom);
             make.left.right.equalTo(_imageView);
-            make.bottom.equalTo(self);
+            make.bottom.equalTo(self).offset(hasThread ? (-KEMThreadBubbleWidth*0.4-8):0);
         }];
         [_titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(@8);
@@ -257,7 +282,7 @@
         [_contentView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_textView.mas_bottom).offset(8);
             make.left.right.equalTo(_imageView);
-            make.bottom.equalTo(self);
+            make.bottom.equalTo(self).offset(hasThread ? (-KEMThreadBubbleWidth*0.4-8):0);
         }];
         [_titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_textView.mas_bottom).offset(8);
@@ -269,6 +294,20 @@
         _titleLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightRegular];
         _titleLabel.textColor = [UIColor colorWithRed:0.5 green:0.5 blue:0.5 alpha:1];
         _titleLabel.text = NSLocalizedString(@"common.parsing", nil);
+    }
+    if (hasThread) {
+        [self.threadBubble mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(kHorizontalPadding);
+            make.right.mas_equalTo(-kHorizontalPadding);
+            make.width.mas_equalTo(KEMThreadBubbleWidth);
+            make.height.mas_equalTo(KEMThreadBubbleWidth*0.4);
+            make.bottom.equalTo(self).offset(-kHorizontalPadding);
+        }];
+    } else {
+        self.threadBubble.hidden = YES;
+        [self.threadBubble mas_remakeConstraints:^(MASConstraintMaker *make) {
+            
+        }];
     }
 }
 
