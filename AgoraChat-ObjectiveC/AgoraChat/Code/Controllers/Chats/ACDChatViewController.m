@@ -377,14 +377,14 @@
 - (AgoraChatMessage *)willSendMessage:(AgoraChatMessage *)aMessage
 {
     // diable auto translating
-//    if (aMessage.body.type == AgoraChatMessageTypeText && ACDDemoOptions.sharedOptions.enableTranslate && ACDDemoOptions.sharedOptions.autoLanguages.count > 0) {
-//        AgoraChatTextMessageBody* textBody = (AgoraChatTextMessageBody*)aMessage.body;
-//        NSMutableArray<NSString*> * languages = [NSMutableArray array];
-//        [ACDDemoOptions.sharedOptions.autoLanguages enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//            [languages addObject:((AgoraChatTranslateLanguage*)obj).languageCode];
-//        }];
-//        textBody.targetLanguages = languages;
-//    }
+    if (aMessage.body.type == AgoraChatMessageTypeText && ACDDemoOptions.sharedOptions.enableTranslate && ACDDemoOptions.sharedOptions.autoLanguages.count > 0) {
+        AgoraChatTextMessageBody* textBody = (AgoraChatTextMessageBody*)aMessage.body;
+        NSMutableArray<NSString*> * languages = [NSMutableArray array];
+        [ACDDemoOptions.sharedOptions.autoLanguages enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [languages addObject:((AgoraChatTranslateLanguage*)obj).languageCode];
+        }];
+        textBody.targetLanguages = languages;
+    }
     if (self.conversation.type == AgoraChatConversationTypeGroupChat && aMessage.body.type == AgoraChatMessageTypeText && (self.atUserList.count > 0 || self.atAll)) {
         AgoraChatTextMessageBody* textBody = (AgoraChatTextMessageBody*)aMessage.body;
         if (self.atAll) {
@@ -644,6 +644,7 @@
             }
         }
         [weakSelf.editNavigation removeFromSuperview];
+        [weakSelf.chatController.toolBar dismiss];
         weakSelf.chatController.editMode = NO;
         [weakSelf.chatController.tableView reloadData];
     };

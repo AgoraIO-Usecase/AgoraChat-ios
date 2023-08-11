@@ -543,6 +543,7 @@
         }
         [self.editBar removeFromSuperview];
         self.chatController.editMode = NO;
+        [self.chatController.toolBar dismiss];
         [self.chatController.tableView reloadData];
     } else {
         [self showSheet];
