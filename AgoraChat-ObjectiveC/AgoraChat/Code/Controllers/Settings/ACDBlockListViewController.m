@@ -221,6 +221,14 @@ static NSString *cellIndentifier = @"AgoraBlackListCellIndentifier";
     return cell;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    ACDContactCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell && cell.tapCellBlock) {
+        cell.tapCellBlock();
+    }
+}
 
 #pragma mark getter and setter
 - (UITableView *)table {

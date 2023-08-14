@@ -14,7 +14,7 @@
 @implementation ACDContactCell
 
 - (void)prepare {
-//    [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
+    //[self.contentView addGestureRecognizer:self.tapGestureRecognizer];
     [self.contentView addSubview:self.iconImageView];
     [self.contentView addSubview:self.nameLabel];
     [self.contentView addSubview:self.detailLabel];
