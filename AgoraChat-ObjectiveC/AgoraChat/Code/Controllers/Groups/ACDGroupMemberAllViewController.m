@@ -57,7 +57,12 @@
 
     [self.members addObjectsFromArray:sourceList];
     
-    [self sortContacts:self.members];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            [self sortGroupMembers:self.group.groupId members:self.members];
+            dispatch_async(dispatch_get_main_queue(), ^(){
+                [self.table reloadData];
+            });
+        });
 
     dispatch_async(dispatch_get_main_queue(), ^(){
         [self.table reloadData];

@@ -14,5 +14,9 @@
 + (NSArray<NSArray *> *)sortContacts:(NSArray *)contacts
                        sectionTitles:(NSArray **)sectionTitles
                         searchSource:(NSArray **)searchSource;
++ (NSArray<NSArray *> *)sortGroupMembers:(NSArray *)members
+                           sectionTitles:(NSArray **)sectionTitles
+                            searchSource:(NSArray **)searchSource
+                                 groupId:(NSString*)groupId;
 
 @end
