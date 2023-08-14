@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		055F7C6B2A6696D500858835 /* AgoraChatURLPreviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 055F7C6A2A6696D500858835 /* AgoraChatURLPreviewCell.m */; };
+		0596A8762A863D2000F02946 /* NSObject+Safe.m in Sources */ = {isa = PBXBuildFile; fileRef = 0596A8752A863D2000F02946 /* NSObject+Safe.m */; };
 		05A868E92A774B8400932366 /* AgoraEditBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A868E82A774B8400932366 /* AgoraEditBar.swift */; };
 		05A868EB2A774E6E00932366 /* AgoraEditNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A868EA2A774E6E00932366 /* AgoraEditNavigation.swift */; };
 		05B4CF5C2A736BE3004E86D0 /* AgoraPageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4CF5B2A736BE3004E86D0 /* AgoraPageContainer.swift */; };
@@ -747,6 +748,8 @@
 /* Begin PBXFileReference section */
 		055F7C692A6696D500858835 /* AgoraChatURLPreviewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AgoraChatURLPreviewCell.h; sourceTree = "<group>"; };
 		055F7C6A2A6696D500858835 /* AgoraChatURLPreviewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AgoraChatURLPreviewCell.m; sourceTree = "<group>"; };
+		0596A8742A863D2000F02946 /* NSObject+Safe.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+Safe.h"; sourceTree = "<group>"; };
+		0596A8752A863D2000F02946 /* NSObject+Safe.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Safe.m"; sourceTree = "<group>"; };
 		05A868E82A774B8400932366 /* AgoraEditBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraEditBar.swift; sourceTree = "<group>"; };
 		05A868EA2A774E6E00932366 /* AgoraEditNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraEditNavigation.swift; sourceTree = "<group>"; };
 		05B4CF5B2A736BE3004E86D0 /* AgoraPageContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraPageContainer.swift; sourceTree = "<group>"; };
@@ -2856,6 +2859,8 @@
 				C085EDBC2A6E2FD10091C83F /* EaseMessageModel+Translation.m */,
 				C05751102A821A900023123C /* AgoraChatTranslateLanguage+NSCoder.h */,
 				C05751112A821A900023123C /* AgoraChatTranslateLanguage+NSCoder.m */,
+				0596A8742A863D2000F02946 /* NSObject+Safe.h */,
+				0596A8752A863D2000F02946 /* NSObject+Safe.m */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -4260,6 +4265,7 @@
 				C0968CE92A6805C000A4604E /* AutoTranslateLanguageTableViewController.m in Sources */,
 				EC00E2192743AC5300EEB474 /* ACDGroupMemberSelectViewController.m in Sources */,
 				05CA94322A665D680036E199 /* AgoraURLPreviewManager.m in Sources */,
+				0596A8762A863D2000F02946 /* NSObject+Safe.m in Sources */,
 				7F663CF3265F7F86003F74B8 /* AgoraChatUserInfo+expireTime.m in Sources */,
 				9E8B5AD62818ECA2003530C0 /* ACDAvatarNameCell+UserInfo.m in Sources */,
 				EC54DCC7272143B300ABEE3E /* ACDContactListController.m in Sources */,
@@ -4526,7 +4532,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Agora Lab, Inc. (48TB6ZZL5S)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = JC854K845H;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -4565,7 +4571,7 @@
 					"$(PROJECT_DIR)/AgoraChat/Code/Utilities/DeviceHelper/VoiceConvert/opencore-amrwb",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.2.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -4744,7 +4750,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = JC854K845H;
 				ENABLE_BITCODE = NO;
@@ -4780,7 +4786,7 @@
 					"$(PROJECT_DIR)/AgoraChat/Code/Utilities/DeviceHelper/VoiceConvert/opencore-amrwb",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.2.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -4860,10 +4866,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_ENTITLEMENTS = AgoraChat/AgoraChat.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: EaseMob Inc. (JC854K845H)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: EaseMob Inc. (JC854K845H)";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 5;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = JC854K845H;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -4897,7 +4902,7 @@
 					"$(PROJECT_DIR)/AgoraChat/Code/Utilities/DeviceHelper/VoiceConvert/opencore-amrwb",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.2.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"$(inherited)",

@@ -484,7 +484,7 @@
         }
     }
     if (msgModel.message.body.type == AgoraChatMessageTypeText && ACDDemoOptions.sharedOptions.enableTranslate && ACDDemoOptions.sharedOptions.demandLanguage.languageCode > 0) {
-        EaseExtendMenuModel *reportItem = [[EaseExtendMenuModel alloc]initWithData:[UIImage imageNamed:@"report"] funcDesc:@"Translate" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+        EaseExtendMenuModel *reportItem = [[EaseExtendMenuModel alloc]initWithData:[UIImage imageNamed:@"Translate"] funcDesc:@"Translate" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
             [weakSelf translateMessage:messageModel];
         }];
         [defaultLongPressItems addObject:reportItem];

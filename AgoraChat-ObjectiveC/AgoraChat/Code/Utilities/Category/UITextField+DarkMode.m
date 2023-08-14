@@ -39,14 +39,14 @@
 }
 
 - (void)updatePlaceholder:(NSString *)placeholder {
-    NSLog(@"%s class:%@ placeholder:%@",__func__,NSStringFromClass([self class]),placeholder);
-    if (placeholder == nil) {
-        [self updatePlaceholder:placeholder];
-        return;
-    }
-    
-    self.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName: UIColor.grayColor}];
-    self.textColor = UIColor.blackColor;
+//    NSLog(@"%s class:%@ placeholder:%@",__func__,NSStringFromClass([self class]),placeholder);
+//    if (placeholder == nil) {
+//        [self updatePlaceholder:placeholder];
+//        return;
+//    }
+//    
+//    self.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:@{NSForegroundColorAttributeName: UIColor.grayColor}];
+//    self.textColor = UIColor.blackColor;
     
 }
 
