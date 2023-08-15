@@ -99,8 +99,10 @@
         } else {
             UITableViewCell* selectedCell = [tableView cellForRowAtIndexPath:indexPath];
             selectedCell.accessoryType = UITableViewCellAccessoryCheckmark;
+            [self.selectedItems removeAllObjects];
             [self.selectedItems addObject:@(indexPath.row)];
         }
+        [self.tableView reloadData];
     };
     
     // Configure the cell...

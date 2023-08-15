@@ -44,7 +44,7 @@
             AgoraChatUserInfo *usr1 = (AgoraChatUserInfo *)obj1;
             AgoraChatUserInfo *usr2 = (AgoraChatUserInfo *)obj2;
 
-            return [usr1.nickName caseInsensitiveCompare:usr2.nickName];
+            return [usr1.nickname caseInsensitiveCompare:usr2.nickname];
         }];
         
         for (int k = 0; k < userInfos.count; ++k) {
@@ -110,17 +110,21 @@
     [ACDGroupMemberAttributesCache.shareInstance fetchCacheValueGroupId:groupId userIds:members key:@"nickName" completion:^(AgoraChatError * _Nullable error, NSDictionary<NSString *,NSString *> * _Nonnull value) {
         groupMemberInfos = [value mutableCopy];
         NSMutableArray<NSString*>* userIdsNeedUserInfo = [NSMutableArray array];
+        NSMutableDictionary<NSString*,NSString*>* userInfosToModify = [NSMutableDictionary dictionary];
         for (NSString* key in groupMemberInfos) {
             NSString* val = [groupMemberInfos objectForKey:key];
             if (val.length == 0) {
                 AgoraChatUserInfo* userInfo = [UserInfoStore.sharedInstance getUserInfoById:key];
                 if (userInfo.nickname.length > 0) {
                     val = userInfo.nickname;
-                    [groupMemberInfos setObject:val forKey:key];
+                    [userInfosToModify setObject:val forKey:key];
                 } else {
                     [userIdsNeedUserInfo addObject:key];
                 }
             }
+        }
+        if (userInfosToModify.count > 0) {
+            [groupMemberInfos addEntriesFromDictionary:userInfosToModify];
         }
         if (userIdsNeedUserInfo.count > 0) {
             [UserInfoStore.sharedInstance fetchUserInfosFromServer:userIdsNeedUserInfo];
