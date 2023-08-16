@@ -29,6 +29,7 @@
 @property (nonatomic, strong) UILabel *descLabel;
 @property (nonatomic, strong) CAShapeLayer *shapeLayer;
 @property (nonatomic, strong) EMMsgThreadPreviewBubble *threadBubble;
+@property (nonatomic) BOOL previewed;
 
 @end
 
@@ -190,17 +191,17 @@
                 NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
                 NSUnderlineColorAttributeName: self.direction == AgoraChatMessageDirectionSend ? _viewModel.sentFontColor : self.tintColor
             } range:range];
-            
-            if (!model.previewSuccess) {
+            AgoraURLPreviewResult *result = [AgoraURLPreviewManager.shared resultWithURL:url];
+            if (result.state == AgoraURLPreviewStateSuccess) {
+                if (!self.previewed) {
+                    [self updateLayoutWithURLPreview: result];
+                }
+            } else {
                 [AgoraURLPreviewManager.shared preview:url successHandle:^(AgoraURLPreviewResult * _Nonnull result) {
-                    model.previewSuccess = YES;
                     [self updateLayoutWithURLPreview: result];
                 } faieldHandle:^{
-                    model.previewSuccess = NO;
                     [self updateLayoutWithoutURLPreview];
                 }];
-            } else {
-                [self updateLayoutWithURLPreview: [AgoraURLPreviewManager.shared resultWithURL:url]];
             }
         }
     } else {
@@ -224,6 +225,7 @@
         make.right.equalTo(@-12);
     }];
     if (result.state == AgoraURLPreviewStateSuccess) {
+        self.previewed = YES;
         _imageView.hidden = NO;
         _titleLabel.hidden = NO;
         _contentView.hidden = NO;
@@ -233,7 +235,7 @@
             make.top.equalTo(_textView.mas_bottom).offset(8);
             make.left.right.equalTo(self);
             make.width.equalTo(self);
-            make.height.equalTo(@0);
+            make.height.equalTo(@130);
         }];
         [_contentView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(_imageView.mas_bottom);
@@ -258,19 +260,11 @@
         } else {
             [_descLabel mas_remakeConstraints:^(MASConstraintMaker *make) {}];
         }
+        __weak typeof(self) weakself = self;
         
         [_imageView sd_setImageWithURL:[NSURL URLWithString:result.imageUrl] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-            if (error || image.size.width == 0 || image.size.height == 0) {
-                return;
-            }
-            [_imageView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(_textView.mas_bottom).offset(8);
-                make.left.right.equalTo(self);
-                make.width.equalTo(self);
-                make.height.equalTo(_imageView.mas_width).multipliedBy(image.size.height / image.size.width);
-            }];
-            if (_delegate && [_delegate respondsToSelector:@selector(URLPreviewBubbleViewNeedLayout:)]) {
-                [_delegate URLPreviewBubbleViewNeedLayout:self];
+            if (weakself.delegate && [weakself.delegate respondsToSelector:@selector(URLPreviewBubbleViewNeedLayout:)]) {
+                [weakself.delegate URLPreviewBubbleViewNeedLayout:weakself];
             }
         }];
         _titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
