@@ -190,11 +190,18 @@
                 NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
                 NSUnderlineColorAttributeName: self.direction == AgoraChatMessageDirectionSend ? _viewModel.sentFontColor : self.tintColor
             } range:range];
-            [AgoraURLPreviewManager.shared preview:url successHandle:^(AgoraURLPreviewResult * _Nonnull result) {
-                [self updateLayoutWithURLPreview: result];
-            } faieldHandle:^{
-                [self updateLayoutWithoutURLPreview];
-            }];
+            
+            if (!model.previewSuccess) {
+                [AgoraURLPreviewManager.shared preview:url successHandle:^(AgoraURLPreviewResult * _Nonnull result) {
+                    model.previewSuccess = YES;
+                    [self updateLayoutWithURLPreview: result];
+                } faieldHandle:^{
+                    model.previewSuccess = NO;
+                    [self updateLayoutWithoutURLPreview];
+                }];
+            } else {
+                [self updateLayoutWithURLPreview: [AgoraURLPreviewManager.shared resultWithURL:url]];
+            }
         }
     } else {
         [self updateLayoutWithoutURLPreview];
