@@ -17,7 +17,7 @@
 #import "AgoraContactsUIProtocol.h"
 #import "ACDNotificationSettingViewController.h"
 
-#define kContactInfoHeaderViewHeight 360.0
+#define kContactInfoHeaderViewHeight 400.0
 
 typedef enum : NSUInteger {
     AgoraContactInfoActionNone,
@@ -202,7 +202,6 @@ typedef enum : NSUInteger {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];    
 }
-
 
 
 #pragma mark - UIActionSheetDelegate

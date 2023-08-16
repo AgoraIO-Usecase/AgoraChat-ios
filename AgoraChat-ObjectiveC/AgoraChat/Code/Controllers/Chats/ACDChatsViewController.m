@@ -288,7 +288,7 @@
         hintMsg = [NSString stringWithFormat:@"You have created a group %@", group.groupName];
     }
     AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:hintMsg];
-    AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:group.groupId from:AgoraChatClient.sharedClient.currentUsername to:AgoraChatClient.sharedClient.currentUsername body:body ext:@{kMSG_EXT_NEWNOTI : kNOTI_EXT_ADDGROUP, kNOTI_EXT_USERID : mutableStr}];
+    AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:group.groupId from:AgoraChatClient.sharedClient.currentUsername to:AgoraChatClient.sharedClient.currentUsername body:body ext:@{MSG_EXT_NEWNOTI:NOTI_EXT_ADDGROUP, kNOTI_EXT_USERID : mutableStr}];
     message.chatType = AgoraChatTypeGroupChat;
     message.isRead = YES;
     AgoraChatConversation *conversation = [[AgoraChatClient sharedClient].chatManager getConversation:group.groupId type:AgoraChatConversationTypeGroupChat createIfNotExist:YES];

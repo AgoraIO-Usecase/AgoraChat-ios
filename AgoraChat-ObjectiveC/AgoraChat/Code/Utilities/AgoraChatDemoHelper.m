@@ -470,10 +470,10 @@ static AgoraChatDemoHelper *helper = nil;
     AgoraChatMessage *message;
     if (conversationType == AgoraChatTypeChat) {
         body = [[AgoraChatTextMessageBody alloc] initWithText:aHintMsg];
-        message = [[AgoraChatMessage alloc] initWithConversationID:to from:AgoraChatClient.sharedClient.currentUsername to:to body:body ext:@{kMSG_EXT_NEWNOTI : kNOTI_EXT_ADDFRIEND, kNOTI_EXT_USERID : aUserName}];
+        message = [[AgoraChatMessage alloc] initWithConversationID:to from:AgoraChatClient.sharedClient.currentUsername to:to body:body ext:@{MSG_EXT_NEWNOTI : NOTI_EXT_ADDFRIEND, kNOTI_EXT_USERID : aUserName}];
     } else if (conversationType == AgoraChatTypeGroupChat) {
         body = [[AgoraChatTextMessageBody alloc] initWithText:aHintMsg];
-        message = [[AgoraChatMessage alloc] initWithConversationID:to from:aUserName to:to body:body ext:@{kMSG_EXT_NEWNOTI : kNOTI_EXT_ADDGROUP, kNOTI_EXT_USERID : aUserName}];
+        message = [[AgoraChatMessage alloc] initWithConversationID:to from:aUserName to:to body:body ext:@{MSG_EXT_NEWNOTI : NOTI_EXT_ADDGROUP, kNOTI_EXT_USERID : aUserName}];
     }
     message.chatType = (AgoraChatType)conversation.type;
     message.isRead = YES;

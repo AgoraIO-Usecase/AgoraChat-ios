@@ -25,7 +25,7 @@
 #import "ACDGroupMemberNickNameViewController.h"
 #import "ACDGroupMemberAttributesCache.h"
 
-#define kGroupInfoHeaderViewHeight 360.0
+#define kGroupInfoHeaderViewHeight 400.0
 
 @interface ACDGroupInfoViewController ()
 @property (nonatomic, strong) ACDInfoHeaderView *groupInfoHeaderView;
