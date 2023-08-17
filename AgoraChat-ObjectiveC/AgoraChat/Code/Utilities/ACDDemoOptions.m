@@ -53,11 +53,10 @@ static ACDDemoOptions *sharedOptions = nil;
         self.playVibration = YES;
         self.playNewMsgSound = YES;
         self.tokenExpiredTimestamp = 0;
-        
-        self.enableTranslate = NO;
+
         self.demandLanguage = nil;
         self.pushLanguage = nil;
-        self.autoLanguages = [NSArray array];
+        self.autoLanguages = [NSDictionary dictionary];
     }
     
     return self;
@@ -120,7 +119,6 @@ static ACDDemoOptions *sharedOptions = nil;
         self.playNewMsgSound = [aDecoder decodeBoolForKey:kOptions_playNewMsgSound];
         self.tokenExpiredTimestamp = 0;
         
-        self.enableTranslate = [aDecoder decodeBoolForKey:kOptions_enableTranslate];
         self.autoLanguages = [aDecoder decodeObjectForKey:kOptions_autoLanguages];
         self.demandLanguage = [aDecoder decodeObjectForKey:kOptions_demandLanguage];
         self.pushLanguage = [aDecoder decodeObjectForKey:kOptions_pushLanguage];
@@ -177,7 +175,6 @@ static ACDDemoOptions *sharedOptions = nil;
     [aCoder encodeBool:self.playVibration forKey:kOptions_playVibration];
     [aCoder encodeBool:self.playNewMsgSound forKey:kOptions_playNewMsgSound];
 
-    [aCoder encodeBool:self.enableTranslate forKey:kOptions_enableTranslate];
     [aCoder encodeObject:self.autoLanguages forKey:kOptions_autoLanguages];
     [aCoder encodeObject:self.demandLanguage forKey:kOptions_demandLanguage];
     [aCoder encodeObject:self.pushLanguage forKey:kOptions_pushLanguage];
@@ -222,7 +219,6 @@ static ACDDemoOptions *sharedOptions = nil;
     retModel.playVibration = self.playVibration;
     retModel.playNewMsgSound = self.playNewMsgSound;
     retModel.tokenExpiredTimestamp = self.tokenExpiredTimestamp;
-    retModel.enableTranslate = self.enableTranslate;
     retModel.autoLanguages = self.autoLanguages;
     retModel.demandLanguage = self.demandLanguage;
     retModel.pushLanguage = self.pushLanguage;

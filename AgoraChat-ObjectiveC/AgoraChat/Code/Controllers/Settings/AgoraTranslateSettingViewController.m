@@ -10,7 +10,6 @@
 #import "ACDTitleDetailCell.h"
 #import "ACDTitleSwitchCell.h"
 #import "TranslateLanguageTableViewController.h"
-#import "AutoTranslateLanguageTableViewController.h"
 
 @interface AgoraTranslateSettingViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -57,19 +56,7 @@
         cell.tapCellBlock = ^{
             [weakSelf pushDemandLanguageSettingVC];
         };
-    } else if (indexPath.row == 1){
-        cell.nameLabel.text = NSLocalizedString(@"autoLanguageSetting", nil);
-        NSMutableArray<NSString*>* languages = [NSMutableArray array];
-        [ACDDemoOptions.sharedOptions.autoLanguages enumerateObjectsUsingBlock:^(AgoraChatTranslateLanguage * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [languages addObject:obj.languageNativeName];
-        }];
-        if (languages.count > 0) {
-            cell.detailLabel.text = [languages componentsJoinedByString:@" "];
-        }
-        cell.tapCellBlock = ^{
-            [weakSelf pushAutoLanguageSettingVC];
-        };
-    } else if (indexPath.row == 2) {
+    } else if (indexPath.row == 1) {
         cell.nameLabel.text = NSLocalizedString(@"pushLanguageSetting", nil);
         cell.detailLabel.text = ACDDemoOptions.sharedOptions.pushLanguage.languageNativeName;
         cell.tapCellBlock = ^{
@@ -86,7 +73,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return 2;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -98,12 +85,6 @@
     TranslateLanguageTableViewController* demandTLVC = [[TranslateLanguageTableViewController alloc] initWithNibName:@"TranslateLanguageTableViewController" bundle:nil];
     demandTLVC.pushSetting = NO;
     [self.navigationController pushViewController:demandTLVC animated:YES];
-}
-
-- (void)pushAutoLanguageSettingVC
-{
-    AutoTranslateLanguageTableViewController* autoTLVC = [[AutoTranslateLanguageTableViewController alloc] initWithNibName:@"AutoTranslateLanguageTableViewController" bundle:nil];
-    [self.navigationController pushViewController:autoTLVC animated:YES];
 }
 
 - (void)pushNotificationLanguageSettingVC

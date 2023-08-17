@@ -274,12 +274,12 @@
 		A5D68F8727E1C60E00561570 /* ACDNotificationSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D68F8627E1C60E00561570 /* ACDNotificationSettingViewController.m */; };
 		A5E5F23727E98EB7006ADFEC /* ACDSilentModeSetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5E5F23627E98EB7006ADFEC /* ACDSilentModeSetViewController.m */; };
 		C004B421279D33D0009E5E3E /* NSObject+Hint.m in Sources */ = {isa = PBXBuildFile; fileRef = C004B420279D33D0009E5E3E /* NSObject+Hint.m */; };
-		C00A003A27C61F4900C7E1BE /* Leave_graystroke@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C00A002727C61F4800C7E1BE /* Leave_graystroke@2x.png */; };
+		C00A003A27C61F4900C7E1BE /* Away_graystroke@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C00A002727C61F4800C7E1BE /* Away_graystroke@2x.png */; };
 		C00A003B27C61F4900C7E1BE /* Online@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C00A002827C61F4800C7E1BE /* Online@2x.png */; };
-		C00A003C27C61F4900C7E1BE /* Leave@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C00A002927C61F4800C7E1BE /* Leave@2x.png */; };
+		C00A003C27C61F4900C7E1BE /* Away@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C00A002927C61F4800C7E1BE /* Away@2x.png */; };
 		C00A003D27C61F4900C7E1BE /* Busy_whitestroke@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C00A002A27C61F4800C7E1BE /* Busy_whitestroke@2x.png */; };
 		C00A003E27C61F4900C7E1BE /* Do not Disturb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C00A002B27C61F4800C7E1BE /* Do not Disturb@2x.png */; };
-		C00A003F27C61F4900C7E1BE /* Leave_whitestroke@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C00A002C27C61F4800C7E1BE /* Leave_whitestroke@2x.png */; };
+		C00A003F27C61F4900C7E1BE /* Away_whitestroke@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C00A002C27C61F4800C7E1BE /* Away_whitestroke@2x.png */; };
 		C00A004027C61F4900C7E1BE /* Offline_whitestroke@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C00A002D27C61F4800C7E1BE /* Offline_whitestroke@2x.png */; };
 		C00A004127C61F4900C7E1BE /* Offline@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C00A002E27C61F4800C7E1BE /* Offline@2x.png */; };
 		C00A004227C61F4900C7E1BE /* Offline_graystroke@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C00A002F27C61F4800C7E1BE /* Offline_graystroke@2x.png */; };
@@ -1198,12 +1198,12 @@
 		A5E5F23627E98EB7006ADFEC /* ACDSilentModeSetViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACDSilentModeSetViewController.m; sourceTree = "<group>"; };
 		C004B41F279D33D0009E5E3E /* NSObject+Hint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+Hint.h"; sourceTree = "<group>"; };
 		C004B420279D33D0009E5E3E /* NSObject+Hint.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Hint.m"; sourceTree = "<group>"; };
-		C00A002727C61F4800C7E1BE /* Leave_graystroke@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Leave_graystroke@2x.png"; sourceTree = "<group>"; };
+		C00A002727C61F4800C7E1BE /* Away_graystroke@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Away_graystroke@2x.png"; sourceTree = "<group>"; };
 		C00A002827C61F4800C7E1BE /* Online@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Online@2x.png"; sourceTree = "<group>"; };
-		C00A002927C61F4800C7E1BE /* Leave@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Leave@2x.png"; sourceTree = "<group>"; };
+		C00A002927C61F4800C7E1BE /* Away@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Away@2x.png"; sourceTree = "<group>"; };
 		C00A002A27C61F4800C7E1BE /* Busy_whitestroke@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Busy_whitestroke@2x.png"; sourceTree = "<group>"; };
 		C00A002B27C61F4800C7E1BE /* Do not Disturb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Do not Disturb@2x.png"; sourceTree = "<group>"; };
-		C00A002C27C61F4800C7E1BE /* Leave_whitestroke@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Leave_whitestroke@2x.png"; sourceTree = "<group>"; };
+		C00A002C27C61F4800C7E1BE /* Away_whitestroke@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Away_whitestroke@2x.png"; sourceTree = "<group>"; };
 		C00A002D27C61F4800C7E1BE /* Offline_whitestroke@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Offline_whitestroke@2x.png"; sourceTree = "<group>"; };
 		C00A002E27C61F4800C7E1BE /* Offline@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Offline@2x.png"; sourceTree = "<group>"; };
 		C00A002F27C61F4800C7E1BE /* Offline_graystroke@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Offline_graystroke@2x.png"; sourceTree = "<group>"; };
@@ -2369,12 +2369,12 @@
 			isa = PBXGroup;
 			children = (
 				C00A004D27C62BA500C7E1BE /* go_small_black_mobile@2x.png */,
-				C00A002727C61F4800C7E1BE /* Leave_graystroke@2x.png */,
+				C00A002727C61F4800C7E1BE /* Away_graystroke@2x.png */,
 				C00A002827C61F4800C7E1BE /* Online@2x.png */,
-				C00A002927C61F4800C7E1BE /* Leave@2x.png */,
+				C00A002927C61F4800C7E1BE /* Away@2x.png */,
 				C00A002A27C61F4800C7E1BE /* Busy_whitestroke@2x.png */,
 				C00A002B27C61F4800C7E1BE /* Do not Disturb@2x.png */,
-				C00A002C27C61F4800C7E1BE /* Leave_whitestroke@2x.png */,
+				C00A002C27C61F4800C7E1BE /* Away_whitestroke@2x.png */,
 				C00A002D27C61F4800C7E1BE /* Offline_whitestroke@2x.png */,
 				C00A002E27C61F4800C7E1BE /* Offline@2x.png */,
 				C00A002F27C61F4800C7E1BE /* Offline_graystroke@2x.png */,
@@ -3873,7 +3873,7 @@
 				D2BF7ECF1D914DB30090AA66 /* Icon_Clear@2x.png in Resources */,
 				D2BF7F271D914DB30090AA66 /* logo7@3x.png in Resources */,
 				66855CC7285C502E006B67A9 /* EMSDKOptions.plist in Resources */,
-				C00A003A27C61F4900C7E1BE /* Leave_graystroke@2x.png in Resources */,
+				C00A003A27C61F4900C7E1BE /* Away_graystroke@2x.png in Resources */,
 				D2BF7E711D914DB30090AA66 /* Button_Mute disabled.png in Resources */,
 				D2BF7F091D914DB30090AA66 /* Button_Chat@3x.png in Resources */,
 				5D3B8B2C280D68E100A471BF /* ConfInviteUserCell.xib in Resources */,
@@ -4013,7 +4013,7 @@
 				D2BF7ED51D914DB30090AA66 /* Icon_Search@2x.png in Resources */,
 				716633F61DB0DE5600C92E27 /* feedback.png in Resources */,
 				D2BF7F241D914DB30090AA66 /* logo6@3x.png in Resources */,
-				C00A003C27C61F4900C7E1BE /* Leave@2x.png in Resources */,
+				C00A003C27C61F4900C7E1BE /* Away@2x.png in Resources */,
 				D2BF7E381D914DB30090AA66 /* Swipe_Delete.png in Resources */,
 				665B2AAB27E73C30008115DF /* thread_mute_unselect@2x.png in Resources */,
 				D2BF7E7B1D914DB30090AA66 /* Button_Speaker disabled@2x.png in Resources */,
@@ -4053,7 +4053,7 @@
 				D2BF7E6A1D914DB30090AA66 /* Button_Minimize disabled@3x.png in Resources */,
 				D2BF7E741D914DB30090AA66 /* Button_Mute.png in Resources */,
 				90375D19287FE7B300058AF0 /* doc.png in Resources */,
-				C00A003F27C61F4900C7E1BE /* Leave_whitestroke@2x.png in Resources */,
+				C00A003F27C61F4900C7E1BE /* Away_whitestroke@2x.png in Resources */,
 				D2BF7F231D914DB30090AA66 /* logo6@2x.png in Resources */,
 				EC54DE11272A7DEB00ABEE3E /* groupInfo_members@3x.png in Resources */,
 				3AA9B4431E7AA2FB0093AD25 /* Group3@3x.png in Resources */,
@@ -4532,7 +4532,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Agora Lab, Inc. (48TB6ZZL5S)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = JC854K845H;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -4750,7 +4750,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 8;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = JC854K845H;
 				ENABLE_BITCODE = NO;
@@ -4868,7 +4868,7 @@
 				CODE_SIGN_ENTITLEMENTS = AgoraChat/AgoraChat.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = JC854K845H;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";

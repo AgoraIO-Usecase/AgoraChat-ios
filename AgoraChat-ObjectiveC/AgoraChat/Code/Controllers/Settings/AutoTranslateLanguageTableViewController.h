@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AutoTranslateLanguageTableViewController : UITableViewController
-
+@property (nonatomic) NSString* conversationId;
 @end
 
 NS_ASSUME_NONNULL_END

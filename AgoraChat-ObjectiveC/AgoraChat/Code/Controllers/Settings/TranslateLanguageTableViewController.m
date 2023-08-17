@@ -62,6 +62,16 @@
         }else
             ACDDemoOptions.sharedOptions.demandLanguage = self.languages[self.selectedItem];
         [ACDDemoOptions.sharedOptions archive];
+    } else {
+        if (self.pushSetting)
+        {
+            ACDDemoOptions.sharedOptions.pushLanguage = nil;
+            [AgoraChatClient.sharedClient.pushManager setPreferredNotificationLanguage:@"" completion:^(AgoraChatError * _Nullable aError) {
+                            
+            }];
+        }else
+            ACDDemoOptions.sharedOptions.demandLanguage = nil;
+        [ACDDemoOptions.sharedOptions archive];
     }
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -103,6 +113,10 @@
             UITableViewCell* selectedCell = [tableView cellForRowAtIndexPath:indexPath];
             selectedCell.accessoryType = UITableViewCellAccessoryCheckmark;
             self.selectedItem = indexPath.row;
+        } else {
+            UITableViewCell* selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+            selectedCell.accessoryType = UITableViewCellAccessoryNone;
+            self.selectedItem = -1;
         }
     };
     

@@ -136,7 +136,7 @@
     if (_pinTopCell == nil) {
         _pinTopCell = [[ACDInfoSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDInfoSwitchCell reuseIdentifier]];
         [_pinTopCell.iconImageView setImage:ImageWithName(@"chat_setting_top")];
-        _pinTopCell.nameLabel.text = @"Sticky on Top";
+        _pinTopCell.nameLabel.text = @"Pin";
         [_pinTopCell.aSwitch setOn:([self.conversationModel isTop]) animated:YES];
 
         ACD_WS

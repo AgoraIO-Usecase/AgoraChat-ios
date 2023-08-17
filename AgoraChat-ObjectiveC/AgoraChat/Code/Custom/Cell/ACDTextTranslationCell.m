@@ -30,7 +30,7 @@
 {
     self = [super initWithDirection:aDirection chatType:aChatType messageType:aMessageType viewModel:viewModel];
     if (self) {
-        self.model.showTranslation = NO;
+        self.model.showTranslation = YES;
         [self setupTranslationsView];
     }
     return self;

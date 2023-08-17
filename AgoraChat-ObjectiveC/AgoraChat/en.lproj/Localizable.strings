@@ -158,7 +158,7 @@
 // setting.chats
 "setting.chats.acceptInvitation" = "Accept group invites automatically";
 "setting.chats.blockedUsers" = "Blocked Users";
-"setting.deleteChatAfterLeaveGroup" = "deleteChatAfterLeaveGroup";
+"setting.deleteChatAfterLeaveGroup" = "Delete chat after leave group";
 
 // logout
 "logout.failed" = "Logout failed";
@@ -359,8 +359,8 @@
 "retranslate" = "Re-Tran";
 "retranslatePrompt" = "Each translation can be retranslated only once.The translation provided is to reference only";
 "hide" = "hide";
-"demandLanguages" = "Translate Language";
-"pushLanguages" = "Push Translate Language";
+"demandLanguages" = "Preferred Language";
+"pushLanguages" = "Push Preferred Language";
 "autoLanguageSetting" = "Auto Translate Language";
 "pushLanguageSetting" = "Push Language";
 "prompt" = "Prompt";

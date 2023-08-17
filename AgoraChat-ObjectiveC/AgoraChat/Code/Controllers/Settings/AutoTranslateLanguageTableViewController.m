@@ -11,7 +11,7 @@
 
 @interface AutoTranslateLanguageTableViewController ()
 @property (nonatomic,strong) NSArray <AgoraChatTranslateLanguage *> *languages;
-@property (nonatomic) NSMutableSet<NSNumber*>* selectedItems;
+@property (nonatomic) NSInteger selectedItem;
 @end
 
 @implementation AutoTranslateLanguageTableViewController
@@ -24,21 +24,21 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    self.selectedItems = [NSMutableSet set];
+    self.selectedItem = -1;
     WEAK_SELF
     [AgoraChatClient.sharedClient.chatManager fetchSupportedLanguages:^(NSArray<AgoraChatTranslateLanguage *> * _Nullable languages, AgoraChatError * _Nullable error) {
         if (!error) {
             weakSelf.languages = languages;
             NSInteger index = 0;
-            
-            for (AgoraChatTranslateLanguage* language in weakSelf.languages) {
-                [ACDDemoOptions.sharedOptions.autoLanguages enumerateObjectsUsingBlock:^(AgoraChatTranslateLanguage * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    if ([obj.languageCode isEqualToString:language.languageCode]) {
-                        [weakSelf.selectedItems addObject:@(index)];
-                        *stop = YES;
+            AgoraChatTranslateLanguage* currentLanguage = [ACDDemoOptions.sharedOptions.autoLanguages objectForKey:weakSelf.conversationId];
+            if (currentLanguage) {
+                for (AgoraChatTranslateLanguage* language in weakSelf.languages) {
+                    if ([language.languageCode isEqualToString:currentLanguage.languageCode]) {
+                        weakSelf.selectedItem = index;
+                        break;
                     }
-                }];
-                index++;
+                    index++;
+                }
             }
         }
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -54,12 +54,16 @@
 
 - (void)doneButtonAction:(UIButton*)button
 {
-    NSMutableArray<AgoraChatTranslateLanguage*> *codes = [NSMutableArray array];
-    for (NSNumber* index in self.selectedItems) {
-        AgoraChatTranslateLanguage* language = [self.languages objectAtIndex:index.integerValue];
-        [codes addObject:language];
+    
+    NSMutableDictionary* dic =  [ACDDemoOptions.sharedOptions.autoLanguages mutableCopy];
+    if (self.selectedItem != -1) {
+        AgoraChatTranslateLanguage* language = [self.languages objectAtIndex:self.selectedItem];
+        if (language)
+            [dic setObject:language forKey:self.conversationId];
+    } else {
+        [dic removeObjectForKey:dic];
     }
-    ACDDemoOptions.sharedOptions.autoLanguages = codes;
+    ACDDemoOptions.sharedOptions.autoLanguages = dic;
     [ACDDemoOptions.sharedOptions archive];
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -86,26 +90,28 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.text = self.languages[indexPath.row].languageNativeName;
-    if ([self.selectedItems containsObject:@(indexPath.row) ]) {
+    if (self.selectedItem == indexPath.row ) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     cell.tapCellBlock = ^{
-        if ([self.selectedItems containsObject:@(indexPath.row)]) {
-            UITableViewCell* selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-            selectedCell.accessoryType = UITableViewCellAccessoryNone;
-            [self.selectedItems removeObject:@(indexPath.row)];
-        } else {
+        if (indexPath.row != self.selectedItem) {
+            if (self.selectedItem != -1) {
+                NSIndexPath* preSelectedIndex = [NSIndexPath indexPathForRow:self.selectedItem inSection:0];
+                UITableViewCell* preSelectedCell = [tableView cellForRowAtIndexPath:preSelectedIndex];
+                preSelectedCell.accessoryType = UITableViewCellAccessoryNone;
+            }
+            
             UITableViewCell* selectedCell = [tableView cellForRowAtIndexPath:indexPath];
             selectedCell.accessoryType = UITableViewCellAccessoryCheckmark;
-            [self.selectedItems removeAllObjects];
-            [self.selectedItems addObject:@(indexPath.row)];
+            self.selectedItem = indexPath.row;
+        } else {
+            UITableViewCell* selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+            selectedCell.accessoryType = UITableViewCellAccessoryNone;
+            self.selectedItem = -1;
         }
-        [self.tableView reloadData];
     };
-    
-    // Configure the cell...
     
     return cell;
 }

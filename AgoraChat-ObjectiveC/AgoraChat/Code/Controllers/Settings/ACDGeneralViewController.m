@@ -50,8 +50,6 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (ACDDemoOptions.sharedOptions.enableTranslate)
-        return 5;
     return 4;
 }
 
@@ -59,7 +57,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
    
     ACDTitleSwitchCell *cell = nil;
-    if(indexPath.row < 4)
+    if(indexPath.row < 3)
     {
         cell = [tableView dequeueReusableCellWithIdentifier:[ACDTitleSwitchCell reuseIdentifier]];
         if (cell == nil) {
@@ -86,7 +84,7 @@
             [self.table reloadData];
         };
     }else if(indexPath.row == 1) {
-        cell.nameLabel.text = @"Need approval when join a group";
+        cell.textLabel.text = @"Need approval when invited to join group";
 
         [cell.aSwitch setOn:options.isAutoAcceptGroupInvitation animated:NO];
         cell.switchActionBlock = ^(BOOL isOn) {
@@ -106,16 +104,7 @@
             [self.table reloadData];
         };
     } else if(indexPath.row == 3){
-        cell.nameLabel.text = NSLocalizedString(@"translate", nil);
-        [cell.aSwitch setOn:options.enableTranslate animated:NO];
-        cell.switchActionBlock  = ^(BOOL isOn) {
-            options.enableTranslate = isOn;
-            [options archive];
-
-            [self.table reloadData];
-        };
-    } else if(indexPath.row == 4) {
-        cell.textLabel.text = NSLocalizedString(@"translate.setting", nil);
+        cell.nameLabel.text = NSLocalizedString(@"translate.setting", nil);
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         WEAK_SELF
         cell.tapCellBlock = ^{
