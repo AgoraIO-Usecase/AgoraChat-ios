@@ -49,6 +49,7 @@
     self.title = NSLocalizedString(@"autoLanguageSetting", nil);
     // add done button
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor colorWithHexString:@"154dfe"];
     [self.tableView registerClass:[ACDTitleDetailCell class] forCellReuseIdentifier:[ACDTitleDetailCell reuseIdentifier]];
 }
 
@@ -61,7 +62,7 @@
         if (language)
             [dic setObject:language forKey:self.conversationId];
     } else {
-        [dic removeObjectForKey:dic];
+        [dic removeObjectForKey:self.conversationId];
     }
     ACDDemoOptions.sharedOptions.autoLanguages = dic;
     [ACDDemoOptions.sharedOptions archive];

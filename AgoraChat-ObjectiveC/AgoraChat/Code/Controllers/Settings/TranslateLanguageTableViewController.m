@@ -47,6 +47,7 @@
     self.title = self.pushSetting ? NSLocalizedString(@"pushLanguages", nil) : NSLocalizedString(@"demandLanguages", nil);
     // add done button
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor colorWithHexString:@"154dfe"];
     [self.tableView registerClass:[ACDTitleDetailCell class] forCellReuseIdentifier:[ACDTitleDetailCell reuseIdentifier]];
 }
 

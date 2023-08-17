@@ -1147,17 +1147,18 @@
     }];
     [alertController addAction:clearMessageAction];
     
-    UIAlertAction* stickyAction = [self _createAlertActionTitle:self.conversationModel.isTop ? @"Unpin" : @"Pin" image:[UIImage imageNamed:@"chat_setting_top"] handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction* stickyAction = [self _createAlertActionTitle:self.conversationModel.isTop ? @"Unpin this conversation" : @"Pin this conversation" image:[UIImage imageNamed:@"chat_setting_top"] handler:^(UIAlertAction * _Nonnull action) {
         weakSelf.conversationModel.isTop = !weakSelf.conversationModel.isTop;
     }];
     [alertController addAction:stickyAction];
     AgoraChatTranslateLanguage* language = [ACDDemoOptions.sharedOptions.autoLanguages objectForKey:self.conversationId];
     NSString* title = language ? [NSString stringWithFormat:@"Auto-Translate:%@",language.languageNativeName] : @"Auto-Translate";
-    UIAlertAction* translateAction = [self _createAlertActionTitle:title image:[UIImage imageNamed:@"chat_setting_search"] handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction* translateAction = [self _createAlertActionTitle:title image:[UIImage imageNamed:@"AutoTranslate"] handler:^(UIAlertAction * _Nonnull action) {
         AutoTranslateLanguageTableViewController* autoTLVC = [[AutoTranslateLanguageTableViewController alloc] initWithNibName:@"AutoTranslateLanguageTableViewController" bundle:nil];
         autoTLVC.conversationId = weakSelf.conversationId;
         [weakSelf.navigationController pushViewController:autoTLVC animated:YES];
     }];
+    
     [alertController addAction:translateAction];
     
     [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];

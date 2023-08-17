@@ -16,7 +16,7 @@ static ACDGroupMemberAttributesCache *instance = nil;
 
 @property (nonatomic) NSMutableDictionary *attributes;
 
-@property (nonatomic) NSMutableArray *userNames;
+@property (atomic) NSMutableArray *userNames;
 
 @end
 
@@ -82,14 +82,12 @@ static ACDGroupMemberAttributesCache *instance = nil;
             if (error == nil) {
                 for (NSString *userNameKey in attributes.allKeys) {
                     NSDictionary<NSString *,NSString *> *dic = [attributes objectForKeySafely:userNameKey];
+                    NSString* nickname = [dic valueForKeySafely:GROUP_NICKNAME_KEY];
+                    if (nickname.length == 0)
+                        nickname = @"";
+                    [self updateCacheWithGroupId:groupId userName:userNameKey key:GROUP_NICKNAME_KEY value:nickname];
                     [self.userNames removeObject:userNameKey];
-                    for (NSString *valueKey in dic.allKeys) {
-                        NSString *realValue = [dic objectForKeySafely:valueKey];
-                        [self updateCacheWithGroupId:groupId userName:userNameKey key:valueKey value:realValue];
-                        value = realValue;
-                    }
                 }
-                
             } else {
                 for (NSString *userNameKey in attributes.allKeys) {
                     [self.userNames removeObject:userNameKey];
