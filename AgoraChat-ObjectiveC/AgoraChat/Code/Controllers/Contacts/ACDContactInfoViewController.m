@@ -17,7 +17,8 @@
 #import "AgoraContactsUIProtocol.h"
 #import "ACDNotificationSettingViewController.h"
 
-#define kContactInfoHeaderViewHeight 360.0
+
+#define kContactInfoHeaderViewHeight 410.0
 
 typedef enum : NSUInteger {
     AgoraContactInfoActionNone,
