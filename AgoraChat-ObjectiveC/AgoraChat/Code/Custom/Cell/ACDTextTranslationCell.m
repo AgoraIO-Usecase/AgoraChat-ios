@@ -58,7 +58,10 @@
         if (textBody.translations.count > 0) {
             self.model.translateStatus = TranslateStatusSuccess;
         } else {
-            self.model.translateStatus = TranslateStatusTranslating;
+            if(self.model.message.status == AgoraChatMessageStatusPending || self.model.message.status == AgoraChatMessageStatusDelivering)
+                self.model.translateStatus = TranslateStatusTranslating;
+            else
+                self.model.translateStatus = TranslateStatusFailed;
         }
     }
     [self updateTranslateInfo];
@@ -107,7 +110,7 @@
     switch(self.model.translateStatus) {
         case TranslateStatusSuccess:
         {
-            self.model.showTranslation = !self.model.showTranslation;
+            self.model.showOriginText = !self.model.showOriginText;
             //[self updateTranslateInfo];
             self.model = self.model;
 //            UITableView* tableView = (UITableView*)self.superview;
@@ -137,7 +140,7 @@
                 NSForegroundColorAttributeName: grayColor,
                 NSFontAttributeName: [UIFont systemFontOfSize:10]
             }]];
-            NSMutableAttributedString *action = [[NSMutableAttributedString alloc] initWithString:(self.model.showTranslation ? @"View Origin Text" : @"View Translations") attributes:@{
+            NSMutableAttributedString *action = [[NSMutableAttributedString alloc] initWithString:(self.model.showOriginText ?  @"View Translations": @"View Origin Text") attributes:@{
                 NSForegroundColorAttributeName: blueColor,
                 NSFontAttributeName: [UIFont systemFontOfSize:10]
             }];
@@ -150,7 +153,7 @@
                 NSForegroundColorAttributeName: grayColor,
                 NSFontAttributeName: [UIFont systemFontOfSize:10]
             }]];
-            NSMutableAttributedString *action = [[NSMutableAttributedString alloc] initWithString:@"Retry" attributes:@{
+            NSMutableAttributedString *action = [[NSMutableAttributedString alloc] initWithString:@" Retry" attributes:@{
                 NSForegroundColorAttributeName: blueColor,
                 NSFontAttributeName: [UIFont systemFontOfSize:10]
             }];

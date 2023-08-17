@@ -17,7 +17,7 @@ typedef NS_ENUM(NSInteger,TranslateStatus) {
 };
 @interface EaseMessageModel (Translation)
 @property (nonatomic,readonly) BOOL isTranslation;
-@property (nonatomic) BOOL showTranslation;
+@property (nonatomic) BOOL showOriginText;
 @property (nonatomic) TranslateStatus translateStatus;
 @end
 

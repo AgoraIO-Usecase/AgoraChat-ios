@@ -14,7 +14,7 @@
 - (NSString*)showText
 {
     AgoraChatTextMessageBody *body = (AgoraChatTextMessageBody *)self.model.message.body;
-    if (self.model.showTranslation) {
+    if (!self.model.showOriginText) {
         if (body.translations.count > 0) {
             // fetch first translation
             NSString* translation = [body.translations.allValues firstObject];

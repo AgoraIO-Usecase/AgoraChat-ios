@@ -9,44 +9,21 @@
 #import "EaseMessageModel+Translation.h"
 #import <objc/runtime.h>
 
-static char kShowTranslations;
+static char kShowOriginText;
 static char kTranslateStatus;
 
 @implementation EaseMessageModel (Translation)
 
-- (void)setMessage:(AgoraChatMessage *)message
+- (BOOL)showOriginText
 {
-    u_int count;
-    Method *methods = class_copyMethodList([EaseMessageModel class], &count);
-    NSInteger index = 0;
-
-    for (int i = 0; i < count; i++) {
-        SEL name = method_getName(methods[i]);
-        NSString *strName = [NSString stringWithCString:sel_getName(name) encoding:NSUTF8StringEncoding];
-        NSLog(@"method:%@",strName);
-        if ([strName isEqualToString:@"setMessage:"]) {
-            index = i;  // 先获取原类方法在方法列表中的索引
-        }
-    }
-
-    // 调用方法
-    SEL sel = method_getName(methods[index]);
-    IMP imp = method_getImplementation(methods[index]);
-    ((void (*)(id, SEL,id))imp)(self,sel,message);
-    self.showTranslation = message.direction == AgoraChatMessageDirectionReceive;
-}
-
-
-- (BOOL)showTranslation
-{
-    NSNumber* number = objc_getAssociatedObject(self, &kShowTranslations);
+    NSNumber* number = objc_getAssociatedObject(self, &kShowOriginText);
     return [number boolValue];
 }
 
-- (void)setShowTranslation:(BOOL)showTranslation
+- (void)setShowOriginText:(BOOL)showOriginText
 {
-    NSNumber* number = [NSNumber numberWithBool:showTranslation];
-    objc_setAssociatedObject(self, &kShowTranslations, number, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    NSNumber* number = [NSNumber numberWithBool:showOriginText];
+    objc_setAssociatedObject(self, &kShowOriginText, number, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (TranslateStatus)translateStatus

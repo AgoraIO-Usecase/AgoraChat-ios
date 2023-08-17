@@ -836,7 +836,7 @@
             [AgoraChatClient.sharedClient.chatManager translateMessage:model.message targetLanguages:@[ACDDemoOptions.sharedOptions.demandLanguage.languageCode] completion:^(AgoraChatMessage * _Nullable message, AgoraChatError * _Nullable error) {
                 [weakSelf hideHud];
                 if (!error) {
-                    model.showTranslation = YES;
+                    model.showOriginText = NO;
                     [weakSelf.chatController refreshTableView:NO];
                 } else {
                     [weakSelf showHint:@"Translate failed"];
@@ -1265,7 +1265,7 @@
 {
     cell.model.translateStatus = TranslateStatusTranslating;
     WEAK_SELF
-    [AgoraChatClient.sharedClient.chatManager translateMessage:cell.model.message targetLanguages:@[ACDDemoOptions.sharedOptions.demandLanguage.languageCode] completion:^(AgoraChatMessage * _Nullable message, AgoraChatError * _Nullable error) {
+    [AgoraChatClient.sharedClient.chatManager translateMessage:cell.model.message targetLanguages:((AgoraChatTextMessageBody*)(cell.model.message.body)).targetLanguages completion:^(AgoraChatMessage * _Nullable message, AgoraChatError * _Nullable error) {
         if (!error) {
             cell.model.translateStatus = TranslateStatusSuccess;
         } else {
