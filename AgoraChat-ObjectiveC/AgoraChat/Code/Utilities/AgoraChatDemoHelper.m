@@ -482,6 +482,12 @@ static AgoraChatDemoHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_UPDATE_CONVERSATIONS object:nil];
 }
 
+- (void)onAttributesChangedOfGroupMember:(NSString *)groupId userId:(NSString *)userId attributes:(NSDictionary<NSString *,NSString *> *)attributes operatorId:(NSString *)operatorId {
+    for (NSString *key in attributes.allKeys) {
+        [[ACDGroupMemberAttributesCache shareInstance] updateCacheWithGroupId:groupId userName:userId key:key value:attributes[key]];
+    }
+}
+
 #pragma mark - AgoraChatroomManagerDelegate
 
 - (void)didReceiveKickedFromChatroom:(AgoraChatroom *)aChatroom

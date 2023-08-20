@@ -54,6 +54,7 @@ static NSString *kOptions_TranslateLanguage = @"TranslateLanguage";
 static NSString *kOptions_playVibration = @"playVibration";
 static NSString *kOptions_playNewMsgSound = @"playNewMsgSound";
 
+static NSString * _Nonnull kOptions_enableTranslate = @"enableTranslate";
 static NSString * _Nonnull kOptions_demandLanguage = @"demandLanguage";
 static NSString * _Nonnull kOptions_autoLanguages = @"autoLanguages";
 static NSString * _Nonnull kOptions_pushLanguage = @"pushLanguage";
@@ -100,6 +101,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) BOOL  playNewMsgSound;
 @property (nonatomic) NSInteger tokenExpiredTimestamp;
 
+@property (nonatomic) BOOL enableTranslate;
 @property (nonatomic, strong) AgoraChatTranslateLanguage* demandLanguage;
 @property (nonatomic, strong) NSDictionary<NSString*,AgoraChatTranslateLanguage*>* autoLanguages;
 @property (nonatomic, strong) AgoraChatTranslateLanguage* pushLanguage;

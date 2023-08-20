@@ -43,37 +43,62 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ACDTitleDetailCell*cell = [tableView dequeueReusableCellWithIdentifier:[ACDTitleDetailCell reuseIdentifier]];
-    if (cell == nil) {
+    ACDCustomCell*cell = nil;
+    if (indexPath.section == 0) {
         cell = [[ACDTitleDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDTitleDetailCell reuseIdentifier]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    } else {
+        cell = [[ACDTitleSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDTitleSwitchCell reuseIdentifier]];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     WEAK_SELF
-    if (indexPath.row == 0) {
+    if (indexPath.section == 0) {
         cell.nameLabel.text = NSLocalizedString(@"demandLanguages", nil);
-        cell.detailLabel.text = ACDDemoOptions.sharedOptions.demandLanguage.languageNativeName;
+        NSString* code = ACDDemoOptions.sharedOptions.demandLanguage.languageNativeName;
+        if (code.length == 0)
+            code = @"No set";
+        ((ACDTitleDetailCell*)cell).detailLabel.text = code;
         cell.tapCellBlock = ^{
             [weakSelf pushDemandLanguageSettingVC];
         };
-    } else if (indexPath.row == 1) {
-        cell.nameLabel.text = NSLocalizedString(@"pushLanguageSetting", nil);
-        cell.detailLabel.text = ACDDemoOptions.sharedOptions.pushLanguage.languageNativeName;
-        cell.tapCellBlock = ^{
-            [weakSelf pushNotificationLanguageSettingVC];
+    }
+    else if (indexPath.section == 1) {
+        cell.nameLabel.text = @"On-demand Translate Switch";
+        [((ACDTitleSwitchCell*)cell).aSwitch setOn:ACDDemoOptions.sharedOptions.enableTranslate animated:NO];
+        ((ACDTitleSwitchCell*)cell).switchActionBlock  = ^(BOOL isOn) {
+            ACDDemoOptions.sharedOptions.enableTranslate = isOn;
+            [ACDDemoOptions.sharedOptions archive];
         };
     }
+//    else if (indexPath.row == 1) {
+//        cell.nameLabel.text = NSLocalizedString(@"pushLanguageSetting", nil);
+//        cell.detailLabel.text = ACDDemoOptions.sharedOptions.pushLanguage.languageNativeName;
+//        cell.tapCellBlock = ^{
+//            [weakSelf pushNotificationLanguageSettingVC];
+//        };
+//    }
     return cell;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (section == 1)
+        return @"Translation switch";
+    return @"";
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    if(ACDDemoOptions.sharedOptions.demandLanguage.languageCode.length > 0)
+        return 2;
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    
+    return 1;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

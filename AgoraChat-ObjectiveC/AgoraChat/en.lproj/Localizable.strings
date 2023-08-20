@@ -158,7 +158,7 @@
 // setting.chats
 "setting.chats.acceptInvitation" = "Accept group invites automatically";
 "setting.chats.blockedUsers" = "Blocked Users";
-"setting.deleteChatAfterLeaveGroup" = "Delete chat after leave group";
+"setting.deleteChatAfterLeaveGroup" = "  Delete chat after leave group";
 
 // logout
 "logout.failed" = "Logout failed";

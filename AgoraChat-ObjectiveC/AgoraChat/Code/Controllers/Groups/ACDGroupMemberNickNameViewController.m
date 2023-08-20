@@ -49,8 +49,8 @@
 - (UITextField *)nickNameField {
     if (!_nickNameField) {
         _nickNameField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds) - 60, 50)];
-        _nickNameField.placeholder = self.nickName ? self.nickName:NSLocalizedString(@"Please input your nick name in group",nil);
-        _nickNameField.text = _nickNameField.placeholder;
+        _nickNameField.placeholder = @"Please input your nick name in group";
+        _nickNameField.text = self.nickName.length > 0 ? self.nickName:@"";
         _nickNameField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 50)];
         _nickNameField.leftViewMode = UITextFieldViewModeAlways;
         _nickNameField.clearButtonMode = UITextFieldViewModeWhileEditing;

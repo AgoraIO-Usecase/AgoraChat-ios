@@ -75,7 +75,7 @@
     ACDDemoOptions *options = [ACDDemoOptions sharedOptions];
 
     if(indexPath.row == 0) {
-        cell.nameLabel.text = @"Typing Indicator";
+        cell.nameLabel.text = @"  Typing Indicator";
         [cell.aSwitch setOn:options.isChatTyping animated:NO];
         
         cell.switchActionBlock  = ^(BOOL isOn) {
@@ -84,7 +84,7 @@
             [self.table reloadData];
         };
     }else if(indexPath.row == 1) {
-        cell.textLabel.text = @"Need approval when invited to join group";
+        cell.textLabel.text = @"  Need approval when invited to join group";
 
         [cell.aSwitch setOn:options.isAutoAcceptGroupInvitation animated:NO];
         cell.switchActionBlock = ^(BOOL isOn) {

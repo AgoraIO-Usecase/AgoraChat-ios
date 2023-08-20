@@ -42,6 +42,7 @@
 #import "AgoraChat_Demo-Swift.h"
 #import "AgoraChatMessage+ShowText.h"
 #import "AutoTranslateLanguageTableViewController.h"
+#import "AgoraTranslateSettingViewController.h"
 
 @interface ACDChatViewController ()<EaseChatViewControllerDelegate, AgoraChatroomManagerDelegate, AgoraChatGroupManagerDelegate, EaseMessageCellDelegate,TranslationCellDelegate,EaseUserUtilsDelegate>
 
@@ -378,13 +379,12 @@
 - (AgoraChatMessage *)willSendMessage:(AgoraChatMessage *)aMessage
 {
     // diable auto translating
-    AgoraChatTranslateLanguage* language = [ACDDemoOptions.sharedOptions.autoLanguages objectForKey:self.conversationId];
-    if (aMessage.body.type == AgoraChatMessageTypeText && language) {
-        AgoraChatTextMessageBody* textBody = (AgoraChatTextMessageBody*)aMessage.body;
-        textBody.targetLanguages = @[language.languageCode];
-    }
+//    AgoraChatTranslateLanguage* language = [ACDDemoOptions.sharedOptions.autoLanguages objectForKey:self.conversationId];
+//    if (aMessage.body.type == AgoraChatMessageTypeText && language) {
+//        AgoraChatTextMessageBody* textBody = (AgoraChatTextMessageBody*)aMessage.body;
+//        textBody.targetLanguages = @[language.languageCode];
+//    }
     if (self.conversation.type == AgoraChatConversationTypeGroupChat && aMessage.body.type == AgoraChatMessageTypeText && (self.atUserList.count > 0 || self.atAll)) {
-        AgoraChatTextMessageBody* textBody = (AgoraChatTextMessageBody*)aMessage.body;
         if (self.atAll) {
             aMessage.ext = @{@"em_at_list":@"ALL"};
         } else if (self.atUserList.count > 0) {
@@ -481,8 +481,8 @@
             [defaultLongPressItems addObject:reportItem];
         }
     }
-    if (msgModel.message.body.type == AgoraChatMessageTypeText && ACDDemoOptions.sharedOptions.demandLanguage.languageCode > 0 && msgModel.message.direction == AgoraChatMessageDirectionReceive) {
-        EaseExtendMenuModel *reportItem = [[EaseExtendMenuModel alloc]initWithData:[UIImage imageNamed:@"Translate"] funcDesc:@"Translate" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+    if (msgModel.message.body.type == AgoraChatMessageTypeText) {
+        EaseExtendMenuModel *reportItem = [[EaseExtendMenuModel alloc] initWithData:[UIImage imageNamed:@"Translate"] funcDesc:@"Translate" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
             [weakSelf translateMessage:messageModel];
         }];
         [defaultLongPressItems addObject:reportItem];
@@ -828,6 +828,20 @@
 }
 
 - (void)translateMessage:(EaseMessageModel*)model {
+    if (!ACDDemoOptions.sharedOptions.enableTranslate || ACDDemoOptions.sharedOptions.demandLanguage.languageCode.length == 0) {
+        NSString* msg = ACDDemoOptions.sharedOptions.demandLanguage.languageCode.length > 0 ? @"Please turn on on-demand translation to activate the functionality" : @"Please set preferred language to activate the functionality";
+        UIAlertController* alertVC = [UIAlertController alertControllerWithTitle:@"Unable to translate" message:msg preferredStyle:UIAlertControllerStyleAlert];
+        [alertVC addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+
+        }]];
+        NSString* title = ACDDemoOptions.sharedOptions.demandLanguage.languageCode.length > 0 ? @"Turn on" : @"Setting";
+        
+        [alertVC addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self pushTranslateSettingVC];
+        }]];
+        [self presentViewController:alertVC animated:NO completion:nil];
+        return;
+    }
     if (model.message.body.type == AgoraChatMessageBodyTypeText) {
         NSString *text = ((AgoraChatTextMessageBody*)model.message.body).text;
         if (text.length > 0) {
@@ -844,6 +858,12 @@
             }];
         }
     }
+}
+
+- (void)pushTranslateSettingVC
+{
+    AgoraTranslateSettingViewController* translateVC = [[AgoraTranslateSettingViewController alloc] initWithNibName:@"AgoraTranslateSettingViewController" bundle:nil];
+    [self.navigationController pushViewController:translateVC animated:YES];
 }
 
 #pragma mark - data
@@ -1151,15 +1171,15 @@
         weakSelf.conversationModel.isTop = !weakSelf.conversationModel.isTop;
     }];
     [alertController addAction:stickyAction];
-    AgoraChatTranslateLanguage* language = [ACDDemoOptions.sharedOptions.autoLanguages objectForKey:self.conversationId];
-    NSString* title = language ? [NSString stringWithFormat:@"Auto-Translate:%@",language.languageNativeName] : @"Auto-Translate";
-    UIAlertAction* translateAction = [self _createAlertActionTitle:title image:[UIImage imageNamed:@"AutoTranslate"] handler:^(UIAlertAction * _Nonnull action) {
-        AutoTranslateLanguageTableViewController* autoTLVC = [[AutoTranslateLanguageTableViewController alloc] initWithNibName:@"AutoTranslateLanguageTableViewController" bundle:nil];
-        autoTLVC.conversationId = weakSelf.conversationId;
-        [weakSelf.navigationController pushViewController:autoTLVC animated:YES];
-    }];
-    
-    [alertController addAction:translateAction];
+//    AgoraChatTranslateLanguage* language = [ACDDemoOptions.sharedOptions.autoLanguages objectForKey:self.conversationId];
+//    NSString* title = language ? [NSString stringWithFormat:@"Auto-Translate:%@",language.languageNativeName] : @"Auto-Translate";
+//    UIAlertAction* translateAction = [self _createAlertActionTitle:title image:[UIImage imageNamed:@"AutoTranslate"] handler:^(UIAlertAction * _Nonnull action) {
+//        AutoTranslateLanguageTableViewController* autoTLVC = [[AutoTranslateLanguageTableViewController alloc] initWithNibName:@"AutoTranslateLanguageTableViewController" bundle:nil];
+//        autoTLVC.conversationId = weakSelf.conversationId;
+//        [weakSelf.navigationController pushViewController:autoTLVC animated:YES];
+//    }];
+//
+//    [alertController addAction:translateAction];
     
     [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
     [weakSelf presentViewController:alertController animated:YES completion:nil];
