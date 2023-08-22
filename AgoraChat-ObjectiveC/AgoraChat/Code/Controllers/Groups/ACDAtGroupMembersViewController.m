@@ -65,13 +65,14 @@
     if (!_allModel) {
         _allModel = [[AgoraUserModel alloc] initWithHyphenateId:@"ALL"];
         _allModel.nickname = @"ALL";
+        _allModel.defaultAvatarImage = [UIImage imageNamed:@"MensionAll"];
     }
     return _allModel;
 }
 
 - (void)cancelAction
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 - (void)updateUIWithResultList:(NSArray *)sourceList IsHeader:(BOOL)isHeader {
