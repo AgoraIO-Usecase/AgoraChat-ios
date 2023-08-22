@@ -378,12 +378,6 @@
 
 - (AgoraChatMessage *)willSendMessage:(AgoraChatMessage *)aMessage
 {
-    // diable auto translating
-//    AgoraChatTranslateLanguage* language = [ACDDemoOptions.sharedOptions.autoLanguages objectForKey:self.conversationId];
-//    if (aMessage.body.type == AgoraChatMessageTypeText && language) {
-//        AgoraChatTextMessageBody* textBody = (AgoraChatTextMessageBody*)aMessage.body;
-//        textBody.targetLanguages = @[language.languageCode];
-//    }
     if (self.conversation.type == AgoraChatConversationTypeGroupChat && aMessage.body.type == AgoraChatMessageTypeText && (self.atUserList.count > 0 || self.atAll)) {
         if (self.atAll) {
             aMessage.ext = @{@"em_at_list":@"ALL"};
@@ -705,8 +699,8 @@
         if (!error && message != nil) {
             if ([target isEqualToString:self.conversation.conversationId]) {
                 [weakSelf.chatController.dataArray addObject:[[EaseMessageModel alloc] initWithAgoraChatMessage:message]];
+                [weakSelf.chatController refreshTableView:YES];
             }
-            [weakSelf.chatController.tableView reloadData];
         } else {
             alert = error.errorDescription;
         }

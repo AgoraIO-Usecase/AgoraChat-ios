@@ -19,7 +19,7 @@
 - (void)placeSubViews {
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);
-        make.left.equalTo(self.contentView).offset(kAgroaPadding * 1.6);
+        make.left.equalTo(self.contentView).offset(kAgroaPadding);
         make.right.equalTo(self.detailLabel.mas_left);
     }];
     
