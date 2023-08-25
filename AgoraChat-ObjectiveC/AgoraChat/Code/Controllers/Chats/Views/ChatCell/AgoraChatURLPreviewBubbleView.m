@@ -180,7 +180,7 @@
     
     NSDataDetector *detector = [[NSDataDetector alloc] initWithTypes:NSTextCheckingTypeLink error:nil];
     NSArray *checkArr = [detector matchesInString:text options:0 range:NSMakeRange(0, text.length)];
-    if (checkArr.count == 1) {
+    if (checkArr.count > 0) {
         NSTextCheckingResult *result = checkArr.firstObject;
         NSString *urlStr = result.URL.absoluteString;
         NSRange range = result.range;
@@ -189,7 +189,7 @@
             [attaStr setAttributes:@{
                 NSLinkAttributeName : url,
                 NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),
-                NSUnderlineColorAttributeName: self.direction == AgoraChatMessageDirectionSend ? _viewModel.sentFontColor : self.tintColor
+                NSUnderlineColorAttributeName: self.direction == AgoraChatMessageDirectionSend ? _viewModel.sentFontColor : [UIColor colorWithHexString:@"005fff"]
             } range:range];
             AgoraURLPreviewResult *result = [AgoraURLPreviewManager.shared resultWithURL:url];
             if (result.state == AgoraURLPreviewStateSuccess) {

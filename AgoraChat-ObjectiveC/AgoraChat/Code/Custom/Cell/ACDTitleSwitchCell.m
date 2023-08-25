@@ -17,14 +17,12 @@
 
 - (void)placeSubViews {
     [self.aSwitch mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView).offset(kAgroaPadding * 0.5);
-        make.bottom.equalTo(self.contentView).offset(-kAgroaPadding * 0.5);
+        make.centerY.equalTo(self);
         make.right.equalTo(self.contentView).offset(-kAgroaPadding);
         make.width.equalTo(@50);
     }];
-    
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.mas_equalTo(self.aSwitch);
+        make.centerY.mas_equalTo(self);
         make.left.equalTo(self.contentView).offset(kAgroaPadding);
         make.right.lessThanOrEqualTo(self.aSwitch.mas_left).offset(-kAgroaPadding);
     }];

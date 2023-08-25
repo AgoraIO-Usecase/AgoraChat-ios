@@ -64,7 +64,7 @@
 - (AgoraUserModel *)allModel {
     if (!_allModel) {
         _allModel = [[AgoraUserModel alloc] initWithHyphenateId:@"ALL"];
-        _allModel.nickname = @"ALL";
+        _allModel.nickname = @"All";
         _allModel.defaultAvatarImage = [UIImage imageNamed:@"MensionAll"];
     }
     return _allModel;

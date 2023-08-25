@@ -136,7 +136,7 @@
 // setting.push
 "setting.push.getFailed" = "Failed to get push status";
 "setting.push.display" = "Display preview details";
-"setting.push.nodisturb" = "Do not disturb";
+"setting.push.nodisturb" = "Do Not disturb";
 "setting.push.enable" = "Enabled";
 "setting.push.disable" = "Disabled";
 "setting.push.displayname" = "Push notification display name";
@@ -144,7 +144,7 @@
 "setting.push.systemPush" = "Notification";
 "setting.push.anotherTip" = "Enable/Disable Notifications via 'Settings' -> 'Notifications' on the device.";
 "setting.push.changeStyleFailed" = "Failed to modify push display style";
-"setting.push.changeDisturbFailed" = "Failed to modify 'Do not disturb' status";
+"setting.push.changeDisturbFailed" = "Failed to modify 'Do Not disturb' status";
 
 // setting.account
 "setting.account.edit" = "Edit";
@@ -158,7 +158,7 @@
 // setting.chats
 "setting.chats.acceptInvitation" = "Accept group invites automatically";
 "setting.chats.blockedUsers" = "Blocked Users";
-"setting.deleteChatAfterLeaveGroup" = "Delete chat after leave group";
+"setting.deleteChatAfterLeaveGroup" = "Delete Chat after Leaving Group";
 
 // logout
 "logout.failed" = "Logout failed";
@@ -261,7 +261,7 @@
 "group.new.NewGroup" = "New Group";
 "group.desc.placeholder" = "Group description is not required";
 "group.maxMemberSize" = "Maximum group size";
-"group.setAsPublic" = "Set to a Public Group";
+"group.setAsPublic" = "Set as a Public Group";
 "group.allowMemberInvite" = "Allow Members to Invite";
 
 
@@ -372,4 +372,4 @@
 "call.otherDeviceAnswer" = "Other devices connected";
 "call.otherDeviceRefuse" = "Other devices declined";
 
-"translate.setting" = "Translate Setting";
+"translate.setting" = "Translation Settings";

@@ -266,7 +266,7 @@
         return 2;
     }else{
         // hide 'Frequency Mute' setting
-        return 1;
+        return 2;
     }
 }
 
@@ -404,7 +404,7 @@
 -(ACDTitleDetailCell *)remindTypeCell
 {
     if (_remindTypeCell == nil) {
-        _remindTypeCell = [[ACDTitleDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDTitleDetailCell reuseIdentifier]];
+        _remindTypeCell = [[ACDSubDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDSubDetailCell reuseIdentifier]];
         _remindTypeCell.nameLabel.text = self.remindCellNameTitle;
         _remindTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         ACD_WS
@@ -497,12 +497,12 @@
             case AgoraNotificationSettingTypeGroup:
                 _navTitle = @"Group Notifications";
                 self.muteCellNameTitle = @"Mute this Group";
-                self.remindCellNameTitle = @"Frequency";
+                self.remindCellNameTitle = @"Notification Setting";
                 break;
             case AgoraNotificationSettingTypeThread:
                 _navTitle = @"Thead Notifications";
                 self.muteCellNameTitle = @"Mute this Thread";
-                self.remindCellNameTitle = @"Frequency";
+                self.remindCellNameTitle = @"Notification Setting";
                 break;
             default:
                 break;

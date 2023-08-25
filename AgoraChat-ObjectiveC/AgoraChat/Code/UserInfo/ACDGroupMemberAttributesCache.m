@@ -75,6 +75,8 @@ static ACDGroupMemberAttributesCache *instance = nil;
 }
 
 - (void)fetchCacheValueGroupId:(NSString *)groupId userName:(NSString *)userName key:(NSString *)key completion:(void(^)(AgoraChatError *_Nullable error,NSString * _Nullable value))completion {
+    if( userName.length <= 0 || key.length <= 0)
+        return;
     __block NSString *value = [[[self.attributes objectForKeySafely:groupId] objectForKeySafely:userName] objectForKeySafely:key];
     if (![self.userNames containsObject:userName] || value == nil) {
         [self.userNames addObject:userName];

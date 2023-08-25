@@ -21,7 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = NSLocalizedString(@"translate.setting", nil);
+    self.navigationItem.leftBarButtonItem = [ACDUtil customLeftButtonItem:NSLocalizedString(@"translate.setting", nil) action:@selector(back) actionTarget:self];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 }
@@ -35,6 +35,10 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+- (void)back {
+    [self.navigationController popViewControllerAnimated:NO];
+}
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -64,7 +68,7 @@
         };
     }
     else if (indexPath.section == 1) {
-        cell.nameLabel.text = @"On-demand Translate Switch";
+        cell.nameLabel.text = @"On-demand translation";
         [((ACDTitleSwitchCell*)cell).aSwitch setOn:ACDDemoOptions.sharedOptions.enableTranslate animated:NO];
         ((ACDTitleSwitchCell*)cell).switchActionBlock  = ^(BOOL isOn) {
             ACDDemoOptions.sharedOptions.enableTranslate = isOn;

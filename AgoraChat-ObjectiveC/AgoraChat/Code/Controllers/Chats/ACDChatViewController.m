@@ -503,7 +503,7 @@
                         NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithAttributedString:textView.attributedText];
                         [result deleteCharactersInRange:blockRange];
                         textView.attributedText = result;
-                        if ([atUser isEqualToString:@"ALL"]) {
+                        if ([atUser.uppercaseString isEqualToString:@"ALL"]) {
                             self.atAll = NO;
                         } else {
                             [self.atUserList enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stopAtUserList) {
@@ -582,7 +582,7 @@
             aInputView.typingAttributes = old;
             aInputView.selectedRange = NSMakeRange(result.length, 0);
             [aInputView becomeFirstResponder];
-            if ([aUserId isEqualToString:@"ALL"]) {
+            if ([aUserId.uppercaseString isEqualToString:@"ALL"]) {
                 self.atAll = YES;
             } else {
                 [self.atUserList addObject:aUserId];
@@ -828,7 +828,7 @@
         [alertVC addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 
         }]];
-        NSString* title = ACDDemoOptions.sharedOptions.demandLanguage.languageCode.length > 0 ? @"Turn on" : @"Setting";
+        NSString* title = @"Setting";
         
         [alertVC addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self pushTranslateSettingVC];

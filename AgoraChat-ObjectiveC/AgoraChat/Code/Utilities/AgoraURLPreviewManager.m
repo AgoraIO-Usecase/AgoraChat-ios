@@ -148,6 +148,17 @@
                 }
             }
         }
+        if(result.title.length <= 0 && result.desc.length <= 0 && result.imageUrl.length <= 0) {
+            result.state = AgoraURLPreviewStateFaild;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                for (AgoraURLPreviewFailedBlock block in callback.failedBlocks) {
+                    block();
+                }
+                callback.successBlocks = nil;
+                callback.failedBlocks = nil;
+            });
+            return;
+        }
         result.state = AgoraURLPreviewStateSuccess;
         dispatch_async(dispatch_get_main_queue(), ^{
             for (AgoraURLPreviewSuccessBlock block in callback.successBlocks) {

@@ -18,7 +18,7 @@
 static NSString* const kPresenceOnlineDescription = @"Online";
 static NSString* const kPresenceOfflineDescription = @"Offline";
 static NSString* const kPresenceBusyDescription = @"Busy";
-static NSString* const kPresenceDNDDescription = @"Do not Disturb";
+static NSString* const kPresenceDNDDescription = @"Do Not Disturb";
 static NSString* const kPresenceLeaveDescription = @"Away";
 
 @interface PresenceManager : NSObject<AgoraChatPresenceManagerDelegate,AgoraChatClientDelegate>

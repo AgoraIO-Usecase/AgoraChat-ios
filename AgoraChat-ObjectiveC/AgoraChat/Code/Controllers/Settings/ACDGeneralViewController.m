@@ -84,7 +84,7 @@
             [self.table reloadData];
         };
     }else if(indexPath.row == 1) {
-        cell.nameLabel.text = @"Need approval when invited to join group";
+        cell.nameLabel.text = @"Need approval when invited to join a group";
         cell.nameLabel.numberOfLines = 0;
 
         [cell.aSwitch setOn:options.isAutoAcceptGroupInvitation animated:NO];
