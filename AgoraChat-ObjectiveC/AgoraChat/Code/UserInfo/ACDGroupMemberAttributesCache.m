@@ -45,7 +45,7 @@ static ACDGroupMemberAttributesCache *instance = nil;
 
 - (void)updateCacheWithGroupId:(NSString *)groupId userName:(NSString *)userName key:(NSString *)key value:(NSString *)value {
     NSMutableDictionary<NSString*,NSString*> *usesAttributes = [self.attributes objectForKeySafely:groupId];
-    if (usesAttributes == nil) {
+    if (usesAttributes == nil || ![usesAttributes isKindOfClass:[NSDictionary class]]) {
         usesAttributes = [NSMutableDictionary dictionary];
     }
     NSMutableDictionary<NSString*,NSString*> *attributes = [usesAttributes objectForKeySafely:userName];
@@ -59,7 +59,7 @@ static ACDGroupMemberAttributesCache *instance = nil;
 
 - (void)updateCacheWithGroupId:(NSString *)groupId userName:(NSString *)userName attributes:(NSDictionary<NSString*,NSString*>*)attributes {
     NSMutableDictionary<NSString*,NSString*> *usesAttributes = [self.attributes objectForKeySafely:groupId];
-    if (usesAttributes == nil) {
+    if (usesAttributes == nil || ![usesAttributes isKindOfClass:[NSDictionary class]]) {
         usesAttributes = [NSMutableDictionary dictionary];
     }
     [usesAttributes setObject:attributes forKeySafely:userName];
@@ -67,7 +67,7 @@ static ACDGroupMemberAttributesCache *instance = nil;
 }
 
 - (void)removeCacheWithGroupId:(NSString *)groupId {
-    [self.attributes setObject:@{} forKeySafely:groupId];
+    [self.attributes setObject:[@{} mutableCopy] forKeySafely:groupId];
 }
 
 - (void)removeCacheWithGroupId:(NSString *)groupId userId:(NSString *)userId {

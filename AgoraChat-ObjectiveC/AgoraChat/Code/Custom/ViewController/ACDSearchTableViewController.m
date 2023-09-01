@@ -9,7 +9,7 @@
 #import "ACDSearchTableViewController.h"
 #import "AgoraRealtimeSearchUtils.h"
 
-#define kSearchBarHeight 32.0
+#define kSearchBarHeight 54.0
 
 @interface ACDSearchTableViewController ()<UISearchBarDelegate>
 @property (nonatomic, strong) NSMutableArray *searchResults;
@@ -188,7 +188,7 @@
                       searchField.backgroundColor = COLOR_HEX(0xF2F2F2);
                   }
 
-              searchField.layer.cornerRadius = kSearchBarHeight * 0.5;
+              searchField.layer.cornerRadius = 18.0;
               searchField.layer.masksToBounds = YES;
           }
     }

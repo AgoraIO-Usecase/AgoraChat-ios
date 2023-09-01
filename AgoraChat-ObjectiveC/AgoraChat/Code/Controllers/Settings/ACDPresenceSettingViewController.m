@@ -148,14 +148,20 @@
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Custom Status" message:nil preferredStyle:UIAlertControllerStyleAlert];
     [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.placeholder = @"Input custom status";
+        textField.placeholder = @"Custom Status";
+        UILabel* rightLabel = [[UILabel alloc] init];
+        rightLabel.font = [UIFont systemFontOfSize:10];
+        rightLabel.textColor = [UIColor grayColor];
+        rightLabel.text = @"0/10";
+        textField.rightView = rightLabel;
+        textField.rightViewMode = UITextFieldViewModeAlways;
         textField.delegate = self;
     }];
     
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", nil) style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     [alertController addAction:cancelAction];
 
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         UITextField *textField = alertController.textFields.firstObject;
         self.dataArray[4] = textField.text;
         self.currentPresence = textField.text;
@@ -170,8 +176,12 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     NSString * str = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    if(str.length > 64)
+    if(str.length > 10)
         return NO;
+    UILabel* rightLabel = (UILabel*)textField.rightView;
+    if ([rightLabel isKindOfClass:[UILabel class]]) {
+        rightLabel.text = [NSString stringWithFormat:@"%ld/10",str.length];
+    }
     return YES;
 }
 

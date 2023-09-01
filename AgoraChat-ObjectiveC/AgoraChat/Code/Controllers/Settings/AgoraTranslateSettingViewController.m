@@ -42,6 +42,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    self.tableView.rowHeight = 40.0;
     [self.tableView reloadData];
 }
 
@@ -85,11 +86,39 @@
     return cell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//{
+//    if (section == 1)
+//        return @"Translation switch";
+//    return @"";
+//}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section == 1)
-        return @"Translation switch";
-    return @"";
+    if (section == 0) {
+        return [UIView new];
+    }
+    UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 30.0f)];
+    
+    UILabel *label = [self sectionTitleLabel];
+    label.text = @"Translation switch";
+    [sectionView addSubview:label];
+    [label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(sectionView);
+        make.left.equalTo(sectionView).offset(16);
+    }];
+    return sectionView;
+//    UILabel* label =  [self sectionTitleLabel];
+//    label.text = @"Translation switch";
+//    return label;
+}
+
+- (UILabel *)sectionTitleLabel {
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 30)];
+    label.font = [UIFont systemFontOfSize:12.0f];
+    label.textColor = TextLabelGrayColor;
+    label.textAlignment = NSTextAlignmentLeft;
+    return label;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -101,12 +130,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    
     return 1;
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 60;
+    if (section == 0)
+        return 0;
+    return 30;
 }
 
 - (void)pushDemandLanguageSettingVC

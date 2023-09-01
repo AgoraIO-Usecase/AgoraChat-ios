@@ -726,16 +726,25 @@
     [alert addAction:[UIAlertAction actionWithTitle:@"Delete" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         NSMutableArray *models = [NSMutableArray array];
         [self.chatController.dataArray enumerateObjectsUsingBlock:^(EaseMessageModel *  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            if ([obj isKindOfClass:[EaseMessageModel class]] && obj.selected) {
+            if ([obj isKindOfClass:[EaseMessageModel class]]) {
                 [models addObject:obj];
             }
         }];
+        NSMutableArray<NSString*>* messageIds = [NSMutableArray array];
         for (AgoraChatMessage *message in self.forwardMessages) {
             [self.conversation deleteMessageWithId:message.messageId error:nil];
+            [messageIds addObject:message.messageId];
         }
         for (EaseMessageModel *model in models) {
             if (model.selected) {
                 [self.chatController.dataArray removeObject:model];
+            }
+            NSDictionary *quoteInfo = [model.message.ext objectForKey:@"msgQuote"];
+            if (quoteInfo) {
+                NSString *quoteMsgId = quoteInfo[@"msgID"];
+                if (quoteMsgId.length > 0 && [messageIds containsObject:quoteMsgId]) {
+                    model.quoteContent =  nil;
+                }
             }
         }
         [self.chatController.tableView reloadData];

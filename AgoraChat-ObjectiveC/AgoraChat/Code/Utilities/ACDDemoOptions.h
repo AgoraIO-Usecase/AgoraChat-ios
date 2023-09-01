@@ -106,9 +106,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSDictionary<NSString*,AgoraChatTranslateLanguage*>* autoLanguages;
 @property (nonatomic, strong) AgoraChatTranslateLanguage* pushLanguage;
 
-
+///
 + (instancetype)sharedOptions;
-
 + (void)reInitAndSaveServerOptions;
 
 + (void)updateAndSaveServerOptions:(NSDictionary *)aDic;

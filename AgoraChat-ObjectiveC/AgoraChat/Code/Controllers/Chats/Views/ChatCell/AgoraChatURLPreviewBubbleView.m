@@ -174,6 +174,7 @@
     }
     
     self.image = nil;
+    self.contentView.hidden = YES;
     AgoraChatTextMessageBody *body = (AgoraChatTextMessageBody *)model.message.body;
     NSString *text = [EaseEmojiHelper convertEmoji:body.text];
     NSMutableAttributedString *attaStr = [[NSMutableAttributedString alloc] initWithString:text];
@@ -193,9 +194,7 @@
             } range:range];
             AgoraURLPreviewResult *result = [AgoraURLPreviewManager.shared resultWithURL:url];
             if (result.state == AgoraURLPreviewStateSuccess) {
-                if (!self.previewed) {
-                    [self updateLayoutWithURLPreview: result];
-                }
+                [self updateLayoutWithURLPreview: result];
             } else {
                 [AgoraURLPreviewManager.shared preview:url successHandle:^(AgoraURLPreviewResult * _Nonnull result) {
                     [self updateLayoutWithURLPreview: result];
