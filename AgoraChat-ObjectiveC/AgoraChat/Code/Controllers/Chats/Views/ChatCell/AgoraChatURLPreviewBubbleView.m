@@ -224,7 +224,6 @@
         make.right.equalTo(@-12);
     }];
     if (result.state == AgoraURLPreviewStateSuccess) {
-        self.previewed = YES;
         _imageView.hidden = NO;
         _titleLabel.hidden = NO;
         _contentView.hidden = NO;
@@ -260,9 +259,9 @@
             [_descLabel mas_remakeConstraints:^(MASConstraintMaker *make) {}];
         }
         __weak typeof(self) weakself = self;
-        
+        BOOL previewed = self.previewed;
         [_imageView sd_setImageWithURL:[NSURL URLWithString:result.imageUrl] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-            if (weakself.delegate && [weakself.delegate respondsToSelector:@selector(URLPreviewBubbleViewNeedLayout:)]) {
+            if (weakself.delegate && [weakself.delegate respondsToSelector:@selector(URLPreviewBubbleViewNeedLayout:)] && !previewed) {
                 [weakself.delegate URLPreviewBubbleViewNeedLayout:weakself];
             }
         }];
@@ -270,6 +269,7 @@
         _titleLabel.textColor = UIColor.blackColor;
         _titleLabel.text = result.title;
         _descLabel.text = result.desc;
+        self.previewed = YES;
     } else {
         _imageView.hidden = YES;
         _contentView.hidden = NO;
