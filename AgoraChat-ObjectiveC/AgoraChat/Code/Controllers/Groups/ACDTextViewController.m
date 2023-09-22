@@ -51,7 +51,8 @@
     self.navigationItem.leftBarButtonItem = [ACDUtil customBarButtonItem:@"Cancel" action:@selector(goBack) actionTarget:self];
     
     if (self.isEditable) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"done", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"common.done", nil) style:UIBarButtonItemStylePlain target:self action:@selector(doneAction)];
+        self.navigationItem.rightBarButtonItem.tintColor = ButtonEnableBlueColor;
     }
     
     self.view.backgroundColor = UIColor.whiteColor;

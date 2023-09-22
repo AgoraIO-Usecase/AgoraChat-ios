@@ -30,7 +30,7 @@ static ACDDemoOptions *sharedOptions = nil;
         self.loggedInUsername = @"";
         self.loggedInPassword = @"";
         
-        self.isChatTyping = NO;
+        self.isChatTyping = YES;
         self.isAutoDeliveryAck = YES;
         
         self.isOfflineHangup = NO;

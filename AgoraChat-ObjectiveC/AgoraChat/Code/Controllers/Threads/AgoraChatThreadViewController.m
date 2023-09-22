@@ -159,7 +159,7 @@
 }
 - (void)peerTyping
 {
-    self.titleDetailLabel.text = @"other party is typing";
+    self.titleDetailLabel.text = @"Typing...";
 }
 
 //1v1 single chat only

@@ -109,12 +109,6 @@ static NSString *cellIndentifier = @"AgoraBlackListCellIndentifier";
     }];
     [alertController addAction:unBlockAction];
 
-    
-    UIAlertAction *deleteContactAction = [UIAlertAction alertActionWithTitle:@"Delete Contact" iconImage:ImageWithName(@"remove") textColor:TextLabelPinkColor alignment:NSTextAlignmentLeft completion:^{
-        [self deleteActionWithUserId:userId];
-    }];
-    [alertController addAction:deleteContactAction];
-
     [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
     }]];
     

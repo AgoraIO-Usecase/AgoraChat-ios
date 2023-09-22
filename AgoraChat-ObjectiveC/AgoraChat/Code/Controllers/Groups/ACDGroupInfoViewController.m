@@ -20,19 +20,18 @@
 #import "ACDTextViewController.h"
 #import "ACDTextViewController.h"
 #import "ACDGroupSharedFilesViewController.h"
-#import "ACDImageTitleContentCell.h"
 #import "ACDContainerSearchTableViewController+GroupMemberList.h"
 #import "ACDGroupMemberNickNameViewController.h"
 #import "ACDGroupMemberAttributesCache.h"
 
-#define kGroupInfoHeaderViewHeight 400.0
+#define kGroupInfoHeaderViewHeight 336
 
 @interface ACDGroupInfoViewController ()
 @property (nonatomic, strong) ACDInfoHeaderView *groupInfoHeaderView;
 @property (nonatomic, strong) ACDJoinGroupCell *joinGroupCell;
 @property (nonatomic, strong) ACDInfoDetailCell *membersCell;
-@property (nonatomic, strong) ACDImageTitleContentCell *notificationCell;
-@property (nonatomic, strong) ACDImageTitleContentCell *groupNoticesCell;
+@property (nonatomic, strong) ACDInfoDetailCell *notificationCell;
+@property (nonatomic, strong) ACDInfoDetailCell *groupNoticesCell;
 @property (nonatomic, strong) ACDInfoDetailCell *groupFilesCell;
 @property (nonatomic, strong) ACDInfoDetailCell *groupNicknameCell;
 @property (nonatomic, strong) ACDInfoSwitchCell *allowSearchCell;
@@ -180,7 +179,7 @@
     self.groupInfoHeaderView.userIdLabel.text = [NSString stringWithFormat:@"GroupID: %@",self.group.groupId];
     self.groupInfoHeaderView.describeLabel.text = self.group.description;
     self.membersCell.detailLabel.text = [@(self.group.occupantsCount) stringValue];
-    self.groupNoticesCell.contentLabel.text = self.group.announcement;
+    self.groupNoticesCell.detailLabel.text = self.group.announcement;
     self.groupNicknameCell.detailLabel.text = self.groupNickname;
     [self.table reloadData];
 }
@@ -541,9 +540,6 @@
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 1 || indexPath.row == 2) {
-        return UITableViewAutomaticDimension;
-    }
     return 54.0f;
 }
 
@@ -627,10 +623,10 @@
     return _membersCell;
 }
 
-- (ACDImageTitleContentCell *)notificationCell
+- (ACDInfoDetailCell *)notificationCell
 {
     if (_notificationCell == nil) {
-        _notificationCell = [[ACDImageTitleContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDImageTitleContentCell reuseIdentifier]];
+        _notificationCell = [[ACDInfoDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDInfoDetailCell reuseIdentifier]];
         _notificationCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [_notificationCell.iconImageView setImage:ImageWithName(@"notifications_yellow")];
         _notificationCell.nameLabel.text = @"Notifications";
@@ -642,13 +638,13 @@
     return _notificationCell;
 }
 
-- (ACDImageTitleContentCell *)groupNoticesCell {
+- (ACDInfoDetailCell *)groupNoticesCell {
     if (_groupNoticesCell == nil) {
-        _groupNoticesCell = [[ACDImageTitleContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDImageTitleContentCell reuseIdentifier]];
+        _groupNoticesCell = [[ACDInfoDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDInfoDetailCell reuseIdentifier]];
         _groupNoticesCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [_groupNoticesCell.iconImageView setImage:ImageWithName(@"groupInfo_notice")];
         _groupNoticesCell.nameLabel.text = @"Group Notice";
-        _groupNoticesCell.contentLabel.text = self.group.announcement;
+        _groupNoticesCell.detailLabel.text = self.group.announcement;
         ACD_WS
         _groupNoticesCell.tapCellBlock = ^{
             [weakSelf goGroupNotice];

@@ -45,11 +45,11 @@ static ACDGroupMemberAttributesCache *instance = nil;
 
 - (void)updateCacheWithGroupId:(NSString *)groupId userName:(NSString *)userName key:(NSString *)key value:(NSString *)value {
     NSMutableDictionary<NSString*,NSString*> *usesAttributes = [self.attributes objectForKeySafely:groupId];
-    if (usesAttributes == nil || ![usesAttributes isKindOfClass:[NSDictionary class]]) {
+    if (usesAttributes == nil || ![usesAttributes isKindOfClass:[NSMutableDictionary class]]) {
         usesAttributes = [NSMutableDictionary dictionary];
     }
     NSMutableDictionary<NSString*,NSString*> *attributes = [usesAttributes objectForKeySafely:userName];
-    if (attributes == nil) {
+    if (attributes == nil || ![attributes isKindOfClass:[NSMutableDictionary class]]) {
         attributes = [NSMutableDictionary dictionary];
     }
     [attributes setObject:value forKeySafely:key];
@@ -59,7 +59,7 @@ static ACDGroupMemberAttributesCache *instance = nil;
 
 - (void)updateCacheWithGroupId:(NSString *)groupId userName:(NSString *)userName attributes:(NSDictionary<NSString*,NSString*>*)attributes {
     NSMutableDictionary<NSString*,NSString*> *usesAttributes = [self.attributes objectForKeySafely:groupId];
-    if (usesAttributes == nil || ![usesAttributes isKindOfClass:[NSDictionary class]]) {
+    if (usesAttributes == nil || ![usesAttributes isKindOfClass:[NSMutableDictionary class]]) {
         usesAttributes = [NSMutableDictionary dictionary];
     }
     [usesAttributes setObject:attributes forKeySafely:userName];
@@ -71,7 +71,7 @@ static ACDGroupMemberAttributesCache *instance = nil;
 }
 
 - (void)removeCacheWithGroupId:(NSString *)groupId userId:(NSString *)userId {
-    [[self.attributes objectForKeySafely:groupId] setObject:@{} forKeySafely:userId];
+    [[self.attributes objectForKeySafely:groupId] setObject:[@{} mutableCopy] forKeySafely:userId];
 }
 
 - (void)fetchCacheValueGroupId:(NSString *)groupId userName:(NSString *)userName key:(NSString *)key completion:(void(^)(AgoraChatError *_Nullable error,NSString * _Nullable value))completion {

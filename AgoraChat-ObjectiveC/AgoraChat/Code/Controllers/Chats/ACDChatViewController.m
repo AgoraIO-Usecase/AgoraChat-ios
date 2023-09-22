@@ -299,9 +299,9 @@
 //typing 1v1 single chat only
 - (void)peerTyping
 {
-    NSAttributedString *titleString = [ACDUtil attributeContent:self.navTitle color:TextLabelBlackColor font:BFont(18.0f)];
+    NSAttributedString *titleString = [ACDUtil attributeContent:self.navTitle color:TextLabelBlackColor font:BFont(14.0f)];
 
-    NSAttributedString *preTypingString = [ACDUtil attributeContent:@" (other party is typing)" color:TextLabelGrayColor font:Font(@"PingFang SC",14.0)];
+    NSAttributedString *preTypingString = [ACDUtil attributeContent:@"  Typing..." color:TextLabelGrayColor font:Font(@"PingFang SC",14.0)];
     
     NSMutableAttributedString *mutAttributeString = [[NSMutableAttributedString alloc] init];
     [mutAttributeString appendAttributedString:titleString];
