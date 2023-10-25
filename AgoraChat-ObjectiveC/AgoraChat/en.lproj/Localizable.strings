@@ -260,7 +260,7 @@
 "group.new.publicGroups" = "Public Groups";
 "group.new.NewGroup" = "New Group";
 "group.desc.placeholder" = "Group description is not required";
-"group.maxMemberSize" = "Maximum group size";
+"group.maxMemberSize" = "Maximum Group Size";
 "group.setAsPublic" = "Set as a Public Group";
 "group.allowMemberInvite" = "Allow Members to Invite";
 

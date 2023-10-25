@@ -103,7 +103,7 @@
 #define kACDGroupMemberListType @"kACDGroupMemberListType"
 #define kACDGroupId @"kACDGroupId"
 #define kACDThreadId @"kACDThreadId"
-#define KACDGroupCreateMemberLimit @"Member quantity: 3 to 2000"
+#define KACDGroupCreateMemberLimit @"Member quantity: 3 to 3000"
 
 //add group / add friend ID
 #define kNOTI_EXT_USERID @"agora_notiUserID"

@@ -354,7 +354,7 @@ static AgoraChatDemoHelper *helper = nil;
 {
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.declineInvitation", @"%@ decline to join the group [%@]"), aInvitee, aGroup.groupName];
   
-    [self showHint:NSLocalizedString(@"group.notifications", @"Group Notification")];
+    [self showHint:message];
 }
 
 - (void)groupInvitationDidAccept:(AgoraChatGroup *)aGroup
@@ -362,7 +362,7 @@ static AgoraChatDemoHelper *helper = nil;
 {
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.acceptInvitation", @"%@ has agreed to join the group [%@]"), aInvitee, aGroup.groupName];
     
-    [self showHint:NSLocalizedString(@"group.notifications", @"Group Notification")];
+    [self showHint:message];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
 
@@ -380,7 +380,7 @@ static AgoraChatDemoHelper *helper = nil;
         [message appendFormat:@" %@", username];
     }
     
-    [self showHint:[NSString stringWithFormat:@"%@ %@", aGroup.groupName, NSLocalizedString(@"group.notifications", @"Group Notification")]];
+    [self showHint:[NSString stringWithFormat:@"%@ %@", aGroup.groupName, message]];
 }
 
 - (void)groupMuteListDidUpdate:(AgoraChatGroup *)aGroup
@@ -392,7 +392,7 @@ static AgoraChatDemoHelper *helper = nil;
     for (NSString *username in aMutedMembers) {
         [message appendFormat:@" %@", username];
     }
-    [self showHint:[NSString stringWithFormat:@"%@ %@", aGroup.groupName, NSLocalizedString(@"group.notifications", @"Group Notification")]];
+    [self showHint:[NSString stringWithFormat:@"%@ %@", aGroup.groupName, message]];
 }
 
 - (void)groupAdminListDidUpdate:(AgoraChatGroup *)aGroup
@@ -401,7 +401,7 @@ static AgoraChatDemoHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
     
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.memberToAdmin", @"%@ is upgraded to administrator"), aAdmin];
-    [self showHint:NSLocalizedString(@"group.notifications", @"Group Notification")];
+    [self showHint:message];
 
 }
 
@@ -411,7 +411,7 @@ static AgoraChatDemoHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
     
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.AdminToMember", @"%@ is downgraded to members"), aAdmin];
-    [self showHint:NSLocalizedString(@"group.notifications", @"Group Notification")];
+    [self showHint:message];
 
 }
 
@@ -422,7 +422,7 @@ static AgoraChatDemoHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
     
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.owner.updated", @"The group owner changed from %@ to %@"), aOldOwner, aNewOwner];
-    [self showAlertWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message];
+    [self showHint:message];
     
     [self notificationMsg:aGroup.groupId aUserName:aNewOwner conversationType:AgoraChatConversationTypeGroupChat hintMsg:[NSString stringWithFormat:@"%@ becomes the new Group Owner.", aNewOwner]];
 }
@@ -433,7 +433,7 @@ static AgoraChatDemoHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
 
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.member.joined", @"%@ has joined to the group [%@]"), aUsername, aGroup.groupName];
-    [self showHint:NSLocalizedString(@"group.notifications", @"Group Notification")];
+    [self showHint:message];
 
     [self notificationMsg:aGroup.groupId aUserName:aUsername conversationType:AgoraChatConversationTypeGroupChat hintMsg:[NSString stringWithFormat:@"%@ joined the Group.", aUsername]];
 }
@@ -444,7 +444,7 @@ static AgoraChatDemoHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
     
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.member.leaved", @"%@ has leaved from the group [%@]"), aUsername, aGroup.groupName];
-    [self showHint:NSLocalizedString(@"group.notifications", @"Group Notification")];
+    [self showHint:message];
     [[ACDGroupMemberAttributesCache shareInstance] removeCacheWithGroupId:aGroup.groupId userId:aUsername];
     
     [self notificationMsg:aGroup.groupId aUserName:aUsername conversationType:AgoraChatConversationTypeGroupChat hintMsg:[NSString stringWithFormat:@"%@ left the Group.", aUsername]];

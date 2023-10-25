@@ -42,7 +42,7 @@
     
     [self.placeholderLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentTextView).offset(8.0f);
-        make.left.equalTo(self.contentTextView);
+        make.left.equalTo(self.contentTextView).offset(5.0f);
     }];
     
     [self.textCountLabel mas_makeConstraints:^(MASConstraintMaker *make) {

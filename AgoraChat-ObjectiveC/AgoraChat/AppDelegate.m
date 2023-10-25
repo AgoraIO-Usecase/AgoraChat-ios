@@ -439,9 +439,17 @@
 {
     if (aError) {
         [self loadLoginPage];
+        
+    }else {
+        [self test];
     }
 }
 
-
+- (void)test
+{
+    AgoraChatConversation* conversation = [AgoraChatClient.sharedClient.chatManager getConversationWithConvId:@"conversatinsId"];
+    NSInteger ts = NSDate.date.timeIntervalSince1970 * 1000;
+    [conversation removeMessagesStart:(ts - 60*60*1000) to:ts];
+}
 
 @end

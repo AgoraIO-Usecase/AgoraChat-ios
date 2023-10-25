@@ -87,10 +87,10 @@
         cell.nameLabel.text = @"Need approval when invited to join a group";
         cell.nameLabel.numberOfLines = 0;
 
-        [cell.aSwitch setOn:options.isAutoAcceptGroupInvitation animated:NO];
+        [cell.aSwitch setOn:!options.isAutoAcceptGroupInvitation animated:NO];
         cell.switchActionBlock = ^(BOOL isOn) {
-            [AgoraChatClient.sharedClient.options setAutoAcceptGroupInvitation:isOn];
-            options.isAutoAcceptGroupInvitation = isOn;
+            [AgoraChatClient.sharedClient.options setAutoAcceptGroupInvitation:!isOn];
+            options.isAutoAcceptGroupInvitation = !isOn;
             [options archive];
             [self.table reloadData];
         };
