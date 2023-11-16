@@ -39,6 +39,13 @@
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor colorWithHexString:@"154dfe"];
     [self.view addSubview:[self nickNameField]];
     [self.view addSubview:[self countLabel]];
+    
+}
+
+- (void)viewDidLayoutSubviews
+{
+    self.nickNameField.frame = CGRectMake(0, 0, CGRectGetWidth(self.view.bounds) - 60, 50);
+    self.countLabel.frame = CGRectMake(CGRectGetWidth(self.view.bounds) - 60, 0, 60, 50);
 }
 
 - (void)goBack
@@ -48,7 +55,7 @@
 
 - (UITextField *)nickNameField {
     if (!_nickNameField) {
-        _nickNameField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds) - 60, 50)];
+        _nickNameField = [[UITextField alloc] init];
         _nickNameField.placeholder = @"Please input your nick name in group";
         _nickNameField.text = self.nickName.length > 0 ? self.nickName:@"";
         _nickNameField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 50)];
@@ -63,7 +70,7 @@
 
 - (UILabel *)countLabel {
     if (!_countLabel) {
-        _countLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.bounds) - 60, 0, 60, 50)];
+        _countLabel = [[UILabel alloc] init];
         _countLabel.textColor = [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1];
         _countLabel.text = [NSString stringWithFormat:@"%ld/%d",self.nickName.length,MAX_GROUPNICKNAME_LENGTH];
         _countLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightRegular];
