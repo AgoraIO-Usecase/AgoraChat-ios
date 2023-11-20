@@ -235,7 +235,7 @@
                     return weakHintCell;
                 }
                 AgoraChatCallCell *cell = [[AgoraChatCallCell alloc] initWithDirection:messageModel.direction chatType:messageModel.message.chatType messageType:messageModel.type viewModel:_viewModel];
-                cell.delegate = self;
+                cell.delegate = self.chatController;
                 cell.model = messageModel;
                 return cell;
             }
@@ -277,7 +277,7 @@
                     }
                 }
                 AgoraChatCallCell *cell = [[AgoraChatCallCell alloc] initWithDirection:messageModel.direction chatType:messageModel.message.chatType messageType:messageModel.type viewModel:_viewModel];
-                cell.delegate = self;
+                cell.delegate = self.chatController;
                 cell.model = messageModel;
                 return cell;
             }
