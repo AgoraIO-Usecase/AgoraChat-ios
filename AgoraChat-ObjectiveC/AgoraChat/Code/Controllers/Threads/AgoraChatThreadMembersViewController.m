@@ -145,6 +145,15 @@
     return cell;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    ACDContactCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell && cell.tapCellBlock) {
+        cell.tapCellBlock();
+    }
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.dataArray.count - 2 == indexPath.row && self.loadMoreFinished && self.cursor.list.count == 20) {
         [self didStartLoadMore];

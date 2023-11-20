@@ -14,11 +14,15 @@
 
 @property (nonatomic, strong) NSString *detail;
 
+@property (nonatomic, strong) UIButton *back;
+
 @property (nonatomic, copy) void (^backBlock)(void);
 
 @property (nonatomic, copy) void (^moreBlock)(void);
 
 - (void)hiddenMore:(BOOL)hidden;
+
+- (void)editMode:(BOOL)edit;
 
 @end
 

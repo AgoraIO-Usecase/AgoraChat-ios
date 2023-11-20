@@ -139,7 +139,7 @@
     [_collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.searchBar.mas_bottom);
         make.left.right.equalTo(self.view);
-        make.height.equalTo(@90);
+        make.height.equalTo(@120);
     }];
     
     _tableView = [[UITableView alloc] init];
@@ -196,8 +196,8 @@
     
     NSString *username = self.isSearching ? [self.searchDataArray objectAtIndex:indexPath.row] : [self.dataArray objectAtIndex:indexPath.row];
     ConfInviteUserCell *cell = (ConfInviteUserCell *)[tableView cellForRowAtIndexPath:indexPath];
-    if (self.inviteUsers.count + self.excludeUsers.count >= 3 && !cell.isChecked) {
-        [self showHint:@"There can only be 3 people in the channel"];
+    if (self.inviteUsers.count + self.excludeUsers.count >= 16 && !cell.isChecked) {
+        [self showHint:@"There can only be 16 people in the channel"];
         return;
     }
     BOOL isChecked = [self.inviteUsers containsObject:username];

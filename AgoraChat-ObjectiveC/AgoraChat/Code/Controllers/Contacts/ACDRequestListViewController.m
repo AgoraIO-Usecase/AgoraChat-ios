@@ -118,7 +118,7 @@
         [[AgoraApplyManager defaultManager] removeApplyRequest:model];
         
         AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:@"You agreed the friend request"];
-        AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:model.applyHyphenateId from:model.applyHyphenateId to:AgoraChatClient.sharedClient.currentUsername body:body ext:@{kMSG_EXT_NEWNOTI : kNOTI_EXT_ADDFRIEND}];
+        AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:model.applyHyphenateId from:model.applyHyphenateId to:AgoraChatClient.sharedClient.currentUsername body:body ext:@{MSG_EXT_NEWNOTI : NOTI_EXT_ADDFRIEND}];
         message.chatType = AgoraChatTypeGroupChat;
         message.isRead = YES;
         AgoraChatConversation *conversation = [[AgoraChatClient sharedClient].chatManager getConversation:model.applyHyphenateId type:AgoraChatConversationTypeChat createIfNotExist:YES];

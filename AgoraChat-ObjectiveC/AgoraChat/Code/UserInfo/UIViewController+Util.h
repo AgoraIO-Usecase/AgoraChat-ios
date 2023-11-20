@@ -24,4 +24,8 @@
 
 - (void)showAlertControllerWithMessage:(NSString *)aMsg;
 
+- (UIViewController *)currentViewController;
+
+
+
 @end

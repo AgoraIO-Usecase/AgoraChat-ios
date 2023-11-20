@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ACDGroupCell : ACDCustomCell
 @property (nonatomic, strong) AgoraGroupModel *model;
 @property (nonatomic, assign) id<AgoraGroupUIProtocol> delegate;
+@property (nonatomic, strong) UIButton *sender;
 
 @end
 

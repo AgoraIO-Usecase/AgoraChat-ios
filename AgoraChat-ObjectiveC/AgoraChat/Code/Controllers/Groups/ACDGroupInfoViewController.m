@@ -16,20 +16,24 @@
 #import "ACDChatViewController.h"
 #import "ACDGroupTransferOwnerViewController.h"
 #import "ACDNotificationSettingViewController.h"
+#import "ACDGroupNoticeViewController.h"
 #import "ACDTextViewController.h"
 #import "ACDTextViewController.h"
 #import "ACDGroupSharedFilesViewController.h"
-#import "ACDImageTitleContentCell.h"
 #import "ACDContainerSearchTableViewController+GroupMemberList.h"
+#import "ACDGroupMemberNickNameViewController.h"
+#import "ACDGroupMemberAttributesCache.h"
 
-#define kGroupInfoHeaderViewHeight 360.0
+#define kGroupInfoHeaderViewHeight 336
 
 @interface ACDGroupInfoViewController ()
 @property (nonatomic, strong) ACDInfoHeaderView *groupInfoHeaderView;
 @property (nonatomic, strong) ACDJoinGroupCell *joinGroupCell;
 @property (nonatomic, strong) ACDInfoDetailCell *membersCell;
-@property (nonatomic, strong) ACDImageTitleContentCell *groupNoticesCell;
+@property (nonatomic, strong) ACDInfoDetailCell *notificationCell;
+@property (nonatomic, strong) ACDInfoDetailCell *groupNoticesCell;
 @property (nonatomic, strong) ACDInfoDetailCell *groupFilesCell;
+@property (nonatomic, strong) ACDInfoDetailCell *groupNicknameCell;
 @property (nonatomic, strong) ACDInfoSwitchCell *allowSearchCell;
 @property (nonatomic, strong) ACDInfoSwitchCell *allowInviteCell;
 @property (nonatomic, strong) ACDInfoCell *leaveCell;
@@ -39,6 +43,7 @@
 @property (nonatomic, strong) AgoraChatGroup *group;
 @property (nonatomic, strong) NSString *groupId;
 @property (nonatomic, strong) ACDGroupMembersViewController *groupMembersVC;
+@property (nonatomic, strong) NSString* groupNickname;
 
 @end
 
@@ -158,11 +163,11 @@
         self.groupInfoHeaderView.isHideChatButton = YES;
     }else {
         if (self.group.permissionType == AgoraChatGroupPermissionTypeOwner) {
-            self.cells = @[self.membersCell,self.groupNoticesCell,self.groupFilesCell,self.transferOwnerCell,self.disbandCell];
+            self.cells = @[self.membersCell,self.groupNicknameCell,self.notificationCell,self.groupNoticesCell,self.groupFilesCell ,self.transferOwnerCell,self.disbandCell];
         } else if(self.group.permissionType == AgoraChatGroupPermissionTypeAdmin){
-            self.cells = @[self.membersCell,self.groupNoticesCell,self.groupFilesCell,self.leaveCell];
+            self.cells = @[self.membersCell,self.groupNicknameCell,self.notificationCell,self.groupNoticesCell,self.groupFilesCell,self.leaveCell];
         }else {
-            self.cells = @[self.membersCell,self.groupNoticesCell,self.groupFilesCell,self.leaveCell];
+            self.cells = @[self.membersCell,self.groupNicknameCell,self.notificationCell,self.groupNoticesCell,self.groupFilesCell,self.leaveCell];
         }
     }
 
@@ -174,7 +179,8 @@
     self.groupInfoHeaderView.userIdLabel.text = [NSString stringWithFormat:@"GroupID: %@",self.group.groupId];
     self.groupInfoHeaderView.describeLabel.text = self.group.description;
     self.membersCell.detailLabel.text = [@(self.group.occupantsCount) stringValue];
-    self.groupNoticesCell.contentLabel.text = self.group.announcement;
+    self.groupNoticesCell.detailLabel.text = self.group.announcement;
+    self.groupNicknameCell.detailLabel.text = self.groupNickname;
     [self.table reloadData];
 }
 
@@ -200,7 +206,12 @@
             [weakSelf showHint:NSLocalizedString(@"group.fetchInfoFail", @"failed to get the group details, please try again later")];
         }
     }];
-    
+    [[ACDGroupMemberAttributesCache shareInstance] fetchCacheValueGroupId:self.groupId userName:AgoraChatClient.sharedClient.currentUsername key:GROUP_NICKNAME_KEY completion:^(AgoraChatError * _Nullable error, NSString * _Nullable value) {
+        if (!error) {
+            weakSelf.groupNickname = value;
+            [weakSelf.table reloadData];
+        }
+    }];
     
 }
 
@@ -253,7 +264,7 @@
 //                [[AgoraChatClient sharedClient].chatManager deleteConversation:groupId isDeleteMessages:YES completion:nil];
 //                [[AgoraChatClient sharedClient].chatManager deleteServerConversation:groupId conversationType:AgoraChatConversationTypeGroupChat isDeleteServerMessages:YES completion:nil];
 //                [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_UPDATE_CONVERSATIONS object:nil];
-                
+                [ACDGroupMemberAttributesCache.shareInstance removeCacheWithGroupId:groupId];
                 [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_END_CHAT object:groupId];
                 [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
                 [self.navigationController popToRootViewControllerAnimated:YES];
@@ -277,7 +288,7 @@
 //                [[AgoraChatClient sharedClient].chatManager deleteConversation:groupId isDeleteMessages:YES completion:nil];
 //                [[AgoraChatClient sharedClient].chatManager deleteServerConversation:groupId conversationType:AgoraChatConversationTypeGroupChat isDeleteServerMessages:YES completion:nil];
 //                [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_UPDATE_CONVERSATIONS object:nil];
-                
+                [ACDGroupMemberAttributesCache.shareInstance removeCacheWithGroupId:groupId];
                 [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_END_CHAT object:groupId];
                 [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
                 [self.navigationController popViewControllerAnimated:YES];
@@ -414,10 +425,19 @@
     [self.navigationController pushViewController:chatViewController animated:YES];
 }
 
-- (void)goGroupNotice {
+- (void)goNotification {
     ACDNotificationSettingViewController *controller = [[ACDNotificationSettingViewController alloc] init];
     controller.notificationType = AgoraNotificationSettingTypeGroup;
     controller.conversationID = self.groupId;
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)goGroupNotice {
+    ACDGroupNoticeViewController *controller = [[ACDGroupNoticeViewController alloc] initWithGroup:self.group];
+    WEAK_SELF
+    controller.updateNoticeBlock = ^(AgoraChatGroup* group) {
+        [weakSelf updateUI];
+    };
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -425,6 +445,17 @@
     ACDGroupSharedFilesViewController *vc = [[ACDGroupSharedFilesViewController alloc] initWithGroup:self.group];
     [self.navigationController pushViewController:vc animated:YES];
 
+}
+
+- (void)goGroupNickname
+{
+    ACD_WS
+    ACDGroupMemberNickNameViewController *VC = [[ACDGroupMemberNickNameViewController alloc] initWithGroupId:self.groupId nickName:self.groupNickname];
+    [VC setChangeResult:^(NSString * _Nonnull nickname) {
+        weakSelf.groupNickname = nickname;
+        [weakSelf updateUI];
+    }];
+    [self.navigationController pushViewController:VC animated:YES];
 }
 
 #pragma mark - Join Public Group
@@ -509,9 +540,6 @@
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 1) {
-        return UITableViewAutomaticDimension;
-    }
     return 54.0f;
 }
 
@@ -595,12 +623,28 @@
     return _membersCell;
 }
 
-- (ACDImageTitleContentCell *)groupNoticesCell {
+- (ACDInfoDetailCell *)notificationCell
+{
+    if (_notificationCell == nil) {
+        _notificationCell = [[ACDInfoDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDInfoDetailCell reuseIdentifier]];
+        _notificationCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        [_notificationCell.iconImageView setImage:ImageWithName(@"notifications_yellow")];
+        _notificationCell.nameLabel.text = @"Notifications";
+        ACD_WS
+        _notificationCell.tapCellBlock = ^{
+            [weakSelf goNotification];
+        };
+    }
+    return _notificationCell;
+}
+
+- (ACDInfoDetailCell *)groupNoticesCell {
     if (_groupNoticesCell == nil) {
-        _groupNoticesCell = [[ACDImageTitleContentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDImageTitleContentCell reuseIdentifier]];
+        _groupNoticesCell = [[ACDInfoDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDInfoDetailCell reuseIdentifier]];
         _groupNoticesCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [_groupNoticesCell.iconImageView setImage:ImageWithName(@"groupInfo_notice")];
         _groupNoticesCell.nameLabel.text = @"Group Notice";
+        _groupNoticesCell.detailLabel.text = self.group.announcement;
         ACD_WS
         _groupNoticesCell.tapCellBlock = ^{
             [weakSelf goGroupNotice];
@@ -623,6 +667,22 @@
         
     }
     return _groupFilesCell;
+}
+
+- (ACDInfoDetailCell *)groupNicknameCell {
+    if (_groupNicknameCell == nil) {
+        _groupNicknameCell = [[ACDInfoDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDInfoDetailCell reuseIdentifier]];
+        _groupNicknameCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        [_groupNicknameCell.iconImageView setImage:ImageWithName(@"group_Nickname")];
+        _groupNicknameCell.nameLabel.text = @"My Alias in Group";
+        _groupNicknameCell.detailLabel.text = self.groupNickname;
+        ACD_WS
+        _groupNicknameCell.tapCellBlock = ^{
+            [weakSelf goGroupNickname];
+            
+        };
+    }
+    return _groupNicknameCell;
 }
     
     

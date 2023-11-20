@@ -12,13 +12,13 @@
 
 - (void)addPopBackLeftItem
 {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_left_black"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(popBackLeftItemAction)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"black_goBack"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(popBackLeftItemAction)];
 }
 
 - (void)addPopBackLeftItemWithTarget:(id _Nullable )aTarget
                               action:(SEL _Nullable )aAction
 {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"back_left_black"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:aTarget action:aAction];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"black_goBack"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:aTarget action:aAction];
 }
 
 - (void)addKeyboardNotificationsWithShowSelector:(SEL)aShowSelector
@@ -47,6 +47,35 @@
     [alertController addAction:okAction];
     alertController.modalPresentationStyle = 0;
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (UIViewController *)currentViewController {
+    if (@available(iOS 13.0, *)) {
+        for (UIWindowScene *scene in [[UIApplication sharedApplication] connectedScenes]) {
+            if (scene.activationState == UISceneActivationStateForegroundActive) {
+                for (UIWindow* window in scene.windows) {
+                    if(window.isKeyWindow) {
+                        UIViewController* vc =  window.rootViewController;
+                        if ([vc isKindOfClass:[UINavigationController class]]) {
+                            return ((UINavigationController*)vc).visibleViewController;
+                        } else if ([vc isKindOfClass:[UITabBarController class]]) {
+                            UIViewController* selectVC = ((UITabBarController*)vc).selectedViewController;
+                            if ([selectVC isKindOfClass:[UINavigationController class]]) {
+                                return ((UINavigationController*)selectVC).visibleViewController;
+                            } else {
+                                return selectVC;
+                            }
+                        } else {
+                            return vc;
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        return [UIApplication sharedApplication].keyWindow.rootViewController;
+    }
+    return nil;
 }
 
 @end

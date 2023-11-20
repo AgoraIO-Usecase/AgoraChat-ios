@@ -288,7 +288,7 @@
         hintMsg = [NSString stringWithFormat:@"You have created a group %@", group.groupName];
     }
     AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:hintMsg];
-    AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:group.groupId from:AgoraChatClient.sharedClient.currentUsername to:AgoraChatClient.sharedClient.currentUsername body:body ext:@{kMSG_EXT_NEWNOTI : kNOTI_EXT_ADDGROUP, kNOTI_EXT_USERID : mutableStr}];
+    AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:group.groupId from:AgoraChatClient.sharedClient.currentUsername to:AgoraChatClient.sharedClient.currentUsername body:body ext:@{MSG_EXT_NEWNOTI:NOTI_EXT_ADDGROUP, kNOTI_EXT_USERID : mutableStr}];
     message.chatType = AgoraChatTypeGroupChat;
     message.isRead = YES;
     AgoraChatConversation *conversation = [[AgoraChatClient sharedClient].chatManager getConversation:group.groupId type:AgoraChatConversationTypeGroupChat createIfNotExist:YES];
@@ -678,8 +678,12 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     NSString * str = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    if(str.length > 64)
+    if(str.length > 10)
         return NO;
+    UILabel* rightLabel = (UILabel*)textField.rightView;
+    if ([rightLabel isKindOfClass:[UILabel class]]) {
+        rightLabel.text = [NSString stringWithFormat:@"%ld/10",str.length];
+    }
     return YES;
 }
 
@@ -687,14 +691,20 @@
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Custom Status" message:nil preferredStyle:UIAlertControllerStyleAlert];
     [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-        textField.placeholder = @"Input custom status";
+        textField.placeholder = @"Custom Status";
+        UILabel* rightLabel = [[UILabel alloc] init];
+        rightLabel.font = [UIFont systemFontOfSize:10];
+        rightLabel.textColor = [UIColor grayColor];
+        rightLabel.text = @"0/10";
+        textField.rightView = rightLabel;
+        textField.rightViewMode = UITextFieldViewModeAlways;
         textField.delegate = self;
     }];
     
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", nil) style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     [alertController addAction:cancelAction];
 
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         UITextField *textField = alertController.textFields.firstObject;
         [[PresenceManager sharedInstance] publishPresenceWithDescription:textField.text completion:nil];
     }];

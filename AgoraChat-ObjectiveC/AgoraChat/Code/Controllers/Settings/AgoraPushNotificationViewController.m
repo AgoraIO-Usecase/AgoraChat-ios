@@ -177,7 +177,7 @@
             [cell.contentView addSubview:self.displaySwitch];
         } else if (indexPath.row == 1) {
             
-            cell.textLabel.text = NSLocalizedString(@"setting.push.nodisturb", @"Do not disturb");
+            cell.textLabel.text = NSLocalizedString(@"setting.push.nodisturb", @"Do Not disturb");
             self.pushSwitch.frame = CGRectMake(self.tableView.frame.size.width - 65, 8, 50, 30);
             [cell.contentView addSubview:self.pushSwitch];
         } else {

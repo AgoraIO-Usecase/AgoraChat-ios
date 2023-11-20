@@ -10,8 +10,6 @@
 #import "EaseDefines.h"
 @interface AgoraChatThreadListNavgation ()
 
-@property (nonatomic, strong) UIButton *back;
-
 @property (nonatomic, strong) UILabel *titleLabel;
 
 @property (nonatomic, strong) UILabel *detailLabel;
@@ -36,6 +34,7 @@
     if (_rightButton == nil) {
         _rightButton = [[UIButton alloc] initWithFrame:CGRectMake(EMScreenWidth - 36, EaseVIEWBOTTOMMARGIN > 0 ? 49:29, 28, 28)];
         [_rightButton setImage:ImageWithName(@"thread_more") forState:UIControlStateNormal];
+        [_rightButton setTitleColor:[UIColor systemBlueColor] forState:UIControlStateNormal];
         _rightButton.contentMode = UIViewContentModeScaleAspectFill;
         [_rightButton addTarget:self action:@selector(rightButtonAction) forControlEvents:UIControlEventTouchUpInside];
         _rightButton.hidden = YES;
@@ -100,6 +99,19 @@
 
 - (void)hiddenMore:(BOOL)hidden {
     self.rightButton.hidden = hidden;
+}
+
+- (void)editMode:(BOOL)edit {
+    self.back.hidden = edit;
+    if (edit) {
+        _rightButton.frame = CGRectMake(EMScreenWidth - 66, EaseVIEWBOTTOMMARGIN > 0 ? 49:29, 56, 28);
+        [_rightButton setTitle:@"Cancel" forState:UIControlStateNormal];
+        [_rightButton setImage:nil forState:UIControlStateNormal];
+    } else {
+        _rightButton.frame = CGRectMake(EMScreenWidth - 36, EaseVIEWBOTTOMMARGIN > 0 ? 49:29, 28, 28);
+        [_rightButton setImage:ImageWithName(@"thread_more") forState:UIControlStateNormal];
+        [_rightButton setTitle:nil forState:UIControlStateNormal];
+    }
 }
 
 @end

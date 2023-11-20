@@ -57,7 +57,12 @@
 
     [self.members addObjectsFromArray:sourceList];
     
-    [self sortContacts:self.members];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            [self sortGroupMembers:self.group.groupId members:self.members];
+            dispatch_async(dispatch_get_main_queue(), ^(){
+                [self.table reloadData];
+            });
+        });
 
     dispatch_async(dispatch_get_main_queue(), ^(){
         [self.table reloadData];
@@ -142,9 +147,13 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+    ACDContactCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell && cell.tapCellBlock) {
+        cell.tapCellBlock();
+    }
 }
 
 #pragma mark refresh and load more

@@ -118,14 +118,14 @@ static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell
 - (void)reloadPermissions {
     _groupPermissions = [NSMutableArray array];
     AgoraGroupPermissionModel *model = [[AgoraGroupPermissionModel alloc] init];
-    model.title = @"Set to a Public Group";
+    model.title = NSLocalizedString(@"group.setAsPublic", nil);
     model.isEdit = YES;
     model.switchState = NO;
     model.type = AgoraGroupInfoType_groupType;
     [_groupPermissions addObject:model];
     
     model = [[AgoraGroupPermissionModel alloc] init];
-    model.title = @"Allow members to invite";
+    model.title = NSLocalizedString(@"group.allowMemberInvite", nil);
     model.isEdit = YES;
     model.switchState = NO;
     model.type = AgoraGroupInfoType_canAllInvite;
@@ -357,7 +357,7 @@ static NSString *agoraGroupPermissionCellIdentifier = @"AgoraGroupPermissionCell
 - (ACDMAXGroupNumberCell *)maxGroupNumberCell {
     if (_maxGroupNumberCell == nil) {
         _maxGroupNumberCell = ACDMAXGroupNumberCell.new;
-        _maxGroupNumberCell.nameLabel.text = @"Maximum Member";
+        _maxGroupNumberCell.nameLabel.text = NSLocalizedString(@"group.maxMemberSize", nil);
         _maxGroupNumberCell.maxGroupMemberField.delegate = self;
     }
     return _maxGroupNumberCell;

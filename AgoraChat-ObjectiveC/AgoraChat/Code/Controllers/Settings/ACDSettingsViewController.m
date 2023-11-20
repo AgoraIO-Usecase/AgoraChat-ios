@@ -100,7 +100,7 @@ typedef enum : NSUInteger {
 - (void)updateHeaderView {
     self.userInfoHeaderView.nameLabel.text = self.myNickName;
     NSString *userId = self.userInfo.userId ?:self.myNickName;
-    self.userInfoHeaderView.userIdLabel.text = [NSString stringWithFormat:@"AgoraID: %@",userId];
+    self.userInfoHeaderView.userIdLabel.text = [NSString stringWithFormat:@"Agora ID: %@",userId];
 
     if (self.userInfo.avatarUrl && self.userInfo.avatarUrl.length > 0) {
         [self.userInfoHeaderView.avatarImageView sd_setImageWithURL:[NSURL URLWithString:self.userInfo.avatarUrl] placeholderImage:ImageWithName(@"defatult_avatar_1")];
@@ -236,7 +236,7 @@ typedef enum : NSUInteger {
         [self changeNickName];
     }];
 
-    UIAlertAction *copyAction = [UIAlertAction alertActionWithTitle:@"Copy AgoraID" iconImage:ImageWithName(@"action_icon_copy") textColor:TextLabelBlackColor alignment:NSTextAlignmentLeft completion:^{
+    UIAlertAction *copyAction = [UIAlertAction alertActionWithTitle:@"Copy Agora ID" iconImage:ImageWithName(@"action_icon_copy") textColor:TextLabelBlackColor alignment:NSTextAlignmentLeft completion:^{
         [UIPasteboard generalPasteboard].string = self.userInfo.userId;
     }];
     

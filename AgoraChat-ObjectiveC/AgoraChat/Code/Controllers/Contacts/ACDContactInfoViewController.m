@@ -17,7 +17,7 @@
 #import "AgoraContactsUIProtocol.h"
 #import "ACDNotificationSettingViewController.h"
 
-#define kContactInfoHeaderViewHeight 360.0
+#define kContactInfoHeaderViewHeight 410.0
 
 typedef enum : NSUInteger {
     AgoraContactInfoActionNone,
@@ -84,7 +84,7 @@ typedef enum : NSUInteger {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
     
-    UIAlertAction *copyAction = [UIAlertAction alertActionWithTitle:@"Copy AgoraID" iconImage:ImageWithName(@"action_icon_copy") textColor:TextLabelBlackColor alignment:NSTextAlignmentLeft completion:^{
+    UIAlertAction *copyAction = [UIAlertAction alertActionWithTitle:@"Copy Agora ID" iconImage:ImageWithName(@"action_icon_copy") textColor:TextLabelBlackColor alignment:NSTextAlignmentLeft completion:^{
         [UIPasteboard generalPasteboard].string = _model.hyphenateId;
     }];
    
@@ -202,7 +202,6 @@ typedef enum : NSUInteger {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];    
 }
-
 
 
 #pragma mark - UIActionSheetDelegate

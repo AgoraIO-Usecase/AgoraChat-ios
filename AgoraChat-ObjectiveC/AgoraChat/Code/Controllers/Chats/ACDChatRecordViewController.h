@@ -13,7 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ACDChatRecordViewController : AgoraChatSearchViewController
 
-- (instancetype)initWithCoversationModel:(AgoraChatConversation *)conversation;
+@property (nonatomic,strong) void (^searchDoneBlock)(NSString*);
+
+- (instancetype)initWithConversationModel:(AgoraChatConversation *)conversation;
 
 @end
 

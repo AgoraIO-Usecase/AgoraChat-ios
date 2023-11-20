@@ -276,7 +276,7 @@
         }];
         
         aButton.tag = 1;
-        [self.loginButton setTitle:@"Set Up" forState:UIControlStateNormal];
+        [self.loginButton setTitle:NSLocalizedString(@"login.signupButton.signup", nil) forState:UIControlStateNormal];
         [self.operateTypeButton setAttributedTitle:[self attributeText:@"Back to Login" key:@"Back to Login"] forState:UIControlStateNormal];
     } else {
 //        self.titleRegisterMarkLabel.hidden = YES;
@@ -681,7 +681,7 @@
         _usernameTextField.backgroundColor = COLOR_HEX(0xF2F2F2);
         _usernameTextField.delegate = self;
         _usernameTextField.borderStyle = UITextBorderStyleNone;
-        _usernameTextField.attributedPlaceholder = [self textFieldAttributeString:@"AgoraID"];
+        _usernameTextField.attributedPlaceholder = [self textFieldAttributeString:@"Agora ID"];
         
         _usernameTextField.returnKeyType = UIReturnKeyDone;
         _usernameTextField.font = [UIFont fontWithName:@"PingFang SC" size:14.0];

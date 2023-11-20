@@ -38,6 +38,7 @@
     
     if (self.isEditable) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", nil) style:UIBarButtonItemStylePlain target:self action:@selector(editAction)];
+        self.navigationItem.rightBarButtonItem.tintColor = ButtonEnableBlueColor;
     }
 
     [self placeAndLayoutSubviews];

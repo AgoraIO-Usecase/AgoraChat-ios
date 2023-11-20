@@ -71,7 +71,7 @@
 
 #define ImageWithName(imageName) [UIImage imageNamed:imageName]
 
-#define kAgroaPadding 10.0f
+#define kAgroaPadding 16.0f
 #define kAvatarHeight 32.0f
 #define kContactAvatarHeight 40.0f
 #define kSearchBarHeight 32.0
@@ -103,14 +103,7 @@
 #define kACDGroupMemberListType @"kACDGroupMemberListType"
 #define kACDGroupId @"kACDGroupId"
 #define kACDThreadId @"kACDThreadId"
-#define KACDGroupCreateMemberLimit @"Member quantity: 3 to 2000"
-
-//noti
-#define kMSG_EXT_NEWNOTI @"agora_noti"
-
-//add group / add feiend
-#define kNOTI_EXT_ADDFRIEND @"agora_addFriend"
-#define kNOTI_EXT_ADDGROUP @"agora_addGroup"
+#define KACDGroupCreateMemberLimit @"Member quantity: 3 to 3000"
 
 //add group / add friend ID
 #define kNOTI_EXT_USERID @"agora_notiUserID"

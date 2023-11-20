@@ -107,7 +107,7 @@
     
     if(self.notificationType != AgoraNotificationSettingTypeSingleChat)
     {
-        UIAlertAction *metionAction = [UIAlertAction actionWithTitle:@"Only @Metions" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *metionAction = [UIAlertAction actionWithTitle:@"Only @Mentions" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self remindTypeChange:AgoraChatPushRemindTypeMentionOnly];
         }];
         [alertController addAction:metionAction];
@@ -261,11 +261,11 @@
             return 3;
         }
         return 2;
-        
     }else if (self.notificationType == AgoraNotificationSettingTypeSingleChat)
     {
         return 2;
     }else{
+        // hide 'Frequency Mute' setting
         return 2;
     }
 }
@@ -368,7 +368,7 @@
             typeStr = @"All Messages";
             break;
         case AgoraChatPushRemindTypeMentionOnly:
-            typeStr = @"Only @Metions";
+            typeStr = @"Only @Mentions";
             break;
         case AgoraChatPushRemindTypeNone:
             typeStr = @"Nothing";
@@ -404,7 +404,7 @@
 -(ACDTitleDetailCell *)remindTypeCell
 {
     if (_remindTypeCell == nil) {
-        _remindTypeCell = [[ACDTitleDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDTitleDetailCell reuseIdentifier]];
+        _remindTypeCell = [[ACDSubDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDSubDetailCell reuseIdentifier]];
         _remindTypeCell.nameLabel.text = self.remindCellNameTitle;
         _remindTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         ACD_WS
@@ -497,12 +497,12 @@
             case AgoraNotificationSettingTypeGroup:
                 _navTitle = @"Group Notifications";
                 self.muteCellNameTitle = @"Mute this Group";
-                self.remindCellNameTitle = @"Frequency";
+                self.remindCellNameTitle = @"Notification Setting";
                 break;
             case AgoraNotificationSettingTypeThread:
                 _navTitle = @"Thead Notifications";
                 self.muteCellNameTitle = @"Mute this Thread";
-                self.remindCellNameTitle = @"Frequency";
+                self.remindCellNameTitle = @"Notification Setting";
                 break;
             default:
                 break;

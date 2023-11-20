@@ -56,7 +56,7 @@
     }
     if (indexPath.row == 0) {
         
-        cell.nameLabel.attributedText = [self titleAttribute:@"UI Library Version"];
+        cell.nameLabel.attributedText = [self titleAttribute:@"UIKit Version"];
         NSString *ver = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
         
         NSString *detailContent = [NSString stringWithFormat:@"AgoraChat v:%@",ver];

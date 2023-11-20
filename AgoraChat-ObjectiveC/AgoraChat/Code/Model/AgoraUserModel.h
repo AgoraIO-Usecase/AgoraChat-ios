@@ -15,9 +15,10 @@
 @property (nonatomic, strong, readonly) NSString *hyphenateId;
 @property (nonatomic, strong) NSString *nickname;
 @property (nonatomic, strong) NSString *avatarURLPath;
-@property (nonatomic, strong, readonly) UIImage *defaultAvatarImage;
+@property (nonatomic, strong) UIImage *defaultAvatarImage;
 @property (nonatomic, assign) BOOL  selected;
 
 - (instancetype)initWithHyphenateId:(NSString *)hyphenateId;
+- (instancetype)initWithHyphenateId:(NSString *)hyphenateId nickname:(NSString*)nickname;
 
 @end

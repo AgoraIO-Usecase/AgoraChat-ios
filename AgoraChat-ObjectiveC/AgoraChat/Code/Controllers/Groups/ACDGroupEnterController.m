@@ -336,6 +336,14 @@ static NSString *cellIdentifier = @"AgoraGroupEnterCell";
     return cell;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ACDContactCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell && cell.tapCellBlock) {
+        cell.tapCellBlock();
+    }
+}
+
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 54.0f;
