@@ -28,7 +28,7 @@ target 'AgoraChat-Demo' do
     pod 'WHToast'
     pod 'FMDB'
     pod 'Agora_Chat_iOS'
-    pod 'chat-uikit', :path => '../../AgoraChat-UIKit-ios'
+    pod 'chat-uikit', '~> 1.2.0'
     pod 'AgoraChatCallKit', '~> 1.1.0'
     pod 'TFHpple'
     

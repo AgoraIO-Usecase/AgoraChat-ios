@@ -332,7 +332,6 @@ static NSString *cellIdentifier = @"AgoraGroupEnterCell";
             };
         }
     }
-
     return cell;
 }
 
@@ -342,6 +341,7 @@ static NSString *cellIdentifier = @"AgoraGroupEnterCell";
     if (cell && cell.tapCellBlock) {
         cell.tapCellBlock();
     }
+    cell.selected = NO;
 }
 
 #pragma mark - UITableViewDelegate
