@@ -60,7 +60,7 @@
     [self.leftLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.leftButton);
         make.left.equalTo(self.chatButton.mas_right).offset(kAgroaPadding);
-        make.right.equalTo(self.rightButton.mas_left);
+        make.right.equalTo(self.rightButton3.mas_left);
     }];
     
     [self.presenceLabel mas_makeConstraints:^(MASConstraintMaker *make) {

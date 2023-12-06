@@ -12,6 +12,7 @@
 #import <UserNotifications/UserNotifications.h>
 #import "AgoraNotificationNames.h"
 #import "ACDChatViewController.h"
+#import "ACDGroupMemberAttributesCache.h"
 
 static AgoraChatDemoHelper *helper = nil;
 
@@ -204,6 +205,7 @@ static AgoraChatDemoHelper *helper = nil;
     if (msgstr.length > 0) {
         [self showHint:msgstr];
     }
+    [ACDGroupMemberAttributesCache.shareInstance removeCacheWithGroupId:aGroup.groupId];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
 
@@ -277,7 +279,7 @@ static AgoraChatDemoHelper *helper = nil;
              message:(NSString *)aMessage
 {
     NSString *msgstr = [NSString stringWithFormat:NSLocalizedString(@"group.invite", @"%@ invite you to group: %@ [%@]"), aInviter, aGroup.groupName, aGroup.groupId];
-    [self showAlertWithMessage:msgstr];
+    [self showHint:msgstr];
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
     
     [self notificationMsg:aGroup.groupId aUserName:aInviter conversationType:AgoraChatConversationTypeGroupChat hintMsg:[NSString stringWithFormat:@"You have automatically agreed to %@ group invitation.", aInviter]];
@@ -295,7 +297,7 @@ static AgoraChatDemoHelper *helper = nil;
 - (void)joinGroupRequestDidApprove:(AgoraChatGroup *)aGroup
 {
     NSString *msgstr = [NSString stringWithFormat:NSLocalizedString(@"group.agreedAndJoined", @"agreed to join the group of \'%@\'"), aGroup.groupName];
-    [self showAlertWithMessage:msgstr];
+    [self showHint:msgstr];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUPLIST_NOTIFICATION object:nil];
 
@@ -352,7 +354,7 @@ static AgoraChatDemoHelper *helper = nil;
 {
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.declineInvitation", @"%@ decline to join the group [%@]"), aInvitee, aGroup.groupName];
   
-    [self showAlertWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message];
+    [self showHint:message];
 }
 
 - (void)groupInvitationDidAccept:(AgoraChatGroup *)aGroup
@@ -360,7 +362,7 @@ static AgoraChatDemoHelper *helper = nil;
 {
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.acceptInvitation", @"%@ has agreed to join the group [%@]"), aInvitee, aGroup.groupName];
     
-    [self showAlertWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message];
+    [self showHint:message];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
 
@@ -378,7 +380,7 @@ static AgoraChatDemoHelper *helper = nil;
         [message appendFormat:@" %@", username];
     }
     
-    [self showAlertWithTitle:[NSString stringWithFormat:@"%@ %@", aGroup.groupName, NSLocalizedString(@"group.notifications", @"Group Notification")] message:message];
+    [self showHint:[NSString stringWithFormat:@"%@ %@", aGroup.groupName, message]];
 }
 
 - (void)groupMuteListDidUpdate:(AgoraChatGroup *)aGroup
@@ -390,7 +392,7 @@ static AgoraChatDemoHelper *helper = nil;
     for (NSString *username in aMutedMembers) {
         [message appendFormat:@" %@", username];
     }
-    [self showAlertWithTitle:[NSString stringWithFormat:@"%@ %@", aGroup.groupName, NSLocalizedString(@"group.notifications", @"Group Notification")] message:message];
+    [self showHint:[NSString stringWithFormat:@"%@ %@", aGroup.groupName, message]];
 }
 
 - (void)groupAdminListDidUpdate:(AgoraChatGroup *)aGroup
@@ -399,7 +401,7 @@ static AgoraChatDemoHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
     
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.memberToAdmin", @"%@ is upgraded to administrator"), aAdmin];
-    [self showAlertWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message];
+    [self showHint:message];
 
 }
 
@@ -409,7 +411,7 @@ static AgoraChatDemoHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
     
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.AdminToMember", @"%@ is downgraded to members"), aAdmin];
-    [self showAlertWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message];
+    [self showHint:message];
 
 }
 
@@ -420,7 +422,7 @@ static AgoraChatDemoHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
     
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.owner.updated", @"The group owner changed from %@ to %@"), aOldOwner, aNewOwner];
-    [self showAlertWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message];
+    [self showHint:message];
     
     [self notificationMsg:aGroup.groupId aUserName:aNewOwner conversationType:AgoraChatConversationTypeGroupChat hintMsg:[NSString stringWithFormat:@"%@ becomes the new Group Owner.", aNewOwner]];
 }
@@ -431,7 +433,7 @@ static AgoraChatDemoHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
 
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.member.joined", @"%@ has joined to the group [%@]"), aUsername, aGroup.groupName];
-    [self showAlertWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message];
+    [self showHint:message];
 
     [self notificationMsg:aGroup.groupId aUserName:aUsername conversationType:AgoraChatConversationTypeGroupChat hintMsg:[NSString stringWithFormat:@"%@ joined the Group.", aUsername]];
 }
@@ -442,7 +444,8 @@ static AgoraChatDemoHelper *helper = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_REFRESH_GROUP_INFO object:aGroup];
     
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"group.member.leaved", @"%@ has leaved from the group [%@]"), aUsername, aGroup.groupName];
-    [self showAlertWithTitle:NSLocalizedString(@"group.notifications", @"Group Notification") message:message];
+    [self showHint:message];
+    [[ACDGroupMemberAttributesCache shareInstance] removeCacheWithGroupId:aGroup.groupId userId:aUsername];
     
     [self notificationMsg:aGroup.groupId aUserName:aUsername conversationType:AgoraChatConversationTypeGroupChat hintMsg:[NSString stringWithFormat:@"%@ left the Group.", aUsername]];
 }
@@ -453,7 +456,7 @@ static AgoraChatDemoHelper *helper = nil;
     
     NSString *message = aAnnouncement == nil ? [NSString stringWithFormat:NSLocalizedString(@"group.clearAnnouncement", @"Group:%@ Announcement is clear"), aGroup.groupName] : [NSString stringWithFormat:NSLocalizedString(@"group.updateAnnouncement", @"Group:%@ Announcement: %@"), aGroup.groupName, aAnnouncement];
     
-    [self showAlertWithTitle:NSLocalizedString(@"group.announcementUpdate", @"Group Announcement Update") message:message];
+    [self showHint:NSLocalizedString(@"group.announcementUpdate", @"Group Announcement Update")];
 
 }
 
@@ -467,16 +470,22 @@ static AgoraChatDemoHelper *helper = nil;
     AgoraChatMessage *message;
     if (conversationType == AgoraChatTypeChat) {
         body = [[AgoraChatTextMessageBody alloc] initWithText:aHintMsg];
-        message = [[AgoraChatMessage alloc] initWithConversationID:to from:AgoraChatClient.sharedClient.currentUsername to:to body:body ext:@{kMSG_EXT_NEWNOTI : kNOTI_EXT_ADDFRIEND, kNOTI_EXT_USERID : aUserName}];
+        message = [[AgoraChatMessage alloc] initWithConversationID:to from:AgoraChatClient.sharedClient.currentUsername to:to body:body ext:@{MSG_EXT_NEWNOTI : NOTI_EXT_ADDFRIEND, kNOTI_EXT_USERID : aUserName}];
     } else if (conversationType == AgoraChatTypeGroupChat) {
         body = [[AgoraChatTextMessageBody alloc] initWithText:aHintMsg];
-        message = [[AgoraChatMessage alloc] initWithConversationID:to from:aUserName to:to body:body ext:@{kMSG_EXT_NEWNOTI : kNOTI_EXT_ADDGROUP, kNOTI_EXT_USERID : aUserName}];
+        message = [[AgoraChatMessage alloc] initWithConversationID:to from:aUserName to:to body:body ext:@{MSG_EXT_NEWNOTI : NOTI_EXT_ADDGROUP, kNOTI_EXT_USERID : aUserName}];
     }
     message.chatType = (AgoraChatType)conversation.type;
     message.isRead = YES;
     [conversation insertMessage:message error:nil];
     //refresh conversation list
     [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_UPDATE_CONVERSATIONS object:nil];
+}
+
+- (void)onAttributesChangedOfGroupMember:(NSString *)groupId userId:(NSString *)userId attributes:(NSDictionary<NSString *,NSString *> *)attributes operatorId:(NSString *)operatorId {
+    for (NSString *key in attributes.allKeys) {
+        [[ACDGroupMemberAttributesCache shareInstance] updateCacheWithGroupId:groupId userName:userId key:key value:attributes[key]];
+    }
 }
 
 #pragma mark - AgoraChatroomManagerDelegate

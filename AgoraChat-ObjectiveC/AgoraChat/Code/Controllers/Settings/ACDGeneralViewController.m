@@ -10,6 +10,7 @@
 #import "ACDTitleDetailCell.h"
 #import "ACDNoDisturbViewController.h"
 #import "ACDTitleSwitchCell.h"
+#import "AgoraTranslateSettingViewController.h"
 
 
 @interface ACDGeneralViewController ()
@@ -49,23 +50,32 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    return 4;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
    
-    
-    ACDTitleSwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:[ACDTitleSwitchCell reuseIdentifier]];
-    if (cell == nil) {
-        cell =[[ACDTitleSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDTitleSwitchCell reuseIdentifier]];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    ACDTitleSwitchCell *cell = nil;
+    if(indexPath.row < 3)
+    {
+        cell = [tableView dequeueReusableCellWithIdentifier:[ACDTitleSwitchCell reuseIdentifier]];
+        if (cell == nil) {
+            cell =[[ACDTitleSwitchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDTitleSwitchCell reuseIdentifier]];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+    } else {
+        cell = [tableView dequeueReusableCellWithIdentifier:[ACDTitleDetailCell reuseIdentifier]];
+        if (cell == nil) {
+            cell = [[ACDTitleDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[ACDTitleDetailCell reuseIdentifier]];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
     }
     
     ACDDemoOptions *options = [ACDDemoOptions sharedOptions];
 
     if(indexPath.row == 0) {
-        cell.nameLabel.text = @"Show Typing";
+        cell.nameLabel.text = @"Typing Indicator";
         [cell.aSwitch setOn:options.isChatTyping animated:NO];
         
         cell.switchActionBlock  = ^(BOOL isOn) {
@@ -74,17 +84,18 @@
             [self.table reloadData];
         };
     }else if(indexPath.row == 1) {
-        cell.nameLabel.text = @"Add Group Request";
+        cell.nameLabel.text = @"Need approval when invited to join a group";
+        cell.nameLabel.numberOfLines = 0;
 
-        [cell.aSwitch setOn:options.isAutoAcceptGroupInvitation animated:NO];
+        [cell.aSwitch setOn:!options.isAutoAcceptGroupInvitation animated:NO];
         cell.switchActionBlock = ^(BOOL isOn) {
-            [AgoraChatClient.sharedClient.options setIsAutoAcceptGroupInvitation:isOn];
-            options.isAutoAcceptGroupInvitation = isOn;
+            [AgoraChatClient.sharedClient.options setAutoAcceptGroupInvitation:!isOn];
+            options.isAutoAcceptGroupInvitation = !isOn;
             [options archive];
             [self.table reloadData];
         };
-    }else {
-        cell.nameLabel.text = @"Delete the Chat after Leaving Group";
+    }else if(indexPath.row == 2) {
+        cell.nameLabel.text = NSLocalizedString(@"setting.deleteChatAfterLeaveGroup", nil);
         [cell.aSwitch setOn:options.deleteMessagesOnLeaveGroup animated:NO];
         cell.switchActionBlock  = ^(BOOL isOn) {
             [AgoraChatClient.sharedClient.options setDeleteMessagesOnLeaveGroup:isOn];
@@ -93,9 +104,22 @@
 
             [self.table reloadData];
         };
+    } else if(indexPath.row == 3){
+        cell.nameLabel.text = NSLocalizedString(@"translate.setting", nil);
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        WEAK_SELF
+        cell.tapCellBlock = ^{
+            [weakSelf pushTranslateSettingVC];
+        };
     }
     
     return cell;
+}
+
+- (void)pushTranslateSettingVC
+{
+    AgoraTranslateSettingViewController* translateVC = [[AgoraTranslateSettingViewController alloc] initWithNibName:@"AgoraTranslateSettingViewController" bundle:nil];
+    [self.navigationController pushViewController:translateVC animated:YES];
 }
 
 @end

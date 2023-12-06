@@ -45,8 +45,13 @@
     NSMutableArray *tempArray = NSMutableArray.new;
     [tempArray addObject:self.group.owner];
     [tempArray addObjectsFromArray:self.group.adminList];
-    
-    [self sortContacts:tempArray];
+
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            [self sortGroupMembers:self.group.groupId members:tempArray];
+            dispatch_async(dispatch_get_main_queue(), ^(){
+                [self.table reloadData];
+            });
+        });
     
     dispatch_async(dispatch_get_main_queue(), ^(){
         [self.table reloadData];
@@ -107,8 +112,13 @@
 }
 
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    ACDContactCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell && cell.tapCellBlock) {
+        cell.tapCellBlock();
+    }
 }
 
 #pragma mark NSNotification

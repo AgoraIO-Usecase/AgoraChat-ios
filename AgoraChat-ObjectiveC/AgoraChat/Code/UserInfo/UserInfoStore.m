@@ -58,7 +58,7 @@ static UserInfoStore *userInfoStoreInstance = nil;
                     info.avatarUrl = aUserInfo.avatarUrl;
                     break;
                 case AgoraChatUserInfoTypeNickName:
-                    info.nickName = aUserInfo.nickName;
+                    info.nickname = aUserInfo.nickname;
                     break;
                 case AgoraChatUserInfoTypeMail:
                     info.mail = aUserInfo.mail;
@@ -134,8 +134,17 @@ static UserInfoStore *userInfoStoreInstance = nil;
 
 - (void)loadInfosFromLocal
 {
-    NSArray<AgoraChatUserInfo*>* array = [[DBManager sharedInstance] loadUserInfos];
-    [self addUserInfos:array];
+    NSArray<AgoraChatUserInfo*>* aUserInfos = [[DBManager sharedInstance] loadUserInfos];
+    [self.userInfolock lock];
+    if(aUserInfos.count > 0) {
+        for (AgoraChatUserInfo* userInfo in aUserInfos) {
+            if(userInfo && userInfo.userId.length > 0 )
+            {
+                [self.dicUsersInfo setObject:userInfo forKey:userInfo.userId];
+            }
+        }
+    }
+    [self.userInfolock unlock];
 }
 
 - (void)fetchUserInfosFromServer:(NSArray<NSString*>*)aUids
@@ -148,7 +157,7 @@ static UserInfoStore *userInfoStoreInstance = nil;
     }
     [self.lock unlock];
     __weak typeof(self) weakself = self;
-    dispatch_after(DISPATCH_TIME_NOW+200, self.workQueue, ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), self.workQueue, ^{
         [weakself.lock lock];
         if(weakself.userIds.count > 0) {
             [[[AgoraChatClient sharedClient] userInfoManager] fetchUserInfoById:[weakself.userIds copy] completion:^(NSDictionary *aUserDatas, AgoraChatError *aError) {

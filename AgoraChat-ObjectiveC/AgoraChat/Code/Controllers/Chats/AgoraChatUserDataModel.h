@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *avatarURL;        // 显示头像的url
 
 - (instancetype)initWithUserInfo:(AgoraChatUserInfo *)userInfo;
+- (instancetype)initWithUserId:(NSString*)userId showName:(NSString *)showName;
 @end
 
 NS_ASSUME_NONNULL_END

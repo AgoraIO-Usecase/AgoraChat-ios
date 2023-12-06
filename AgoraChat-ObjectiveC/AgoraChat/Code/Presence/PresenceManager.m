@@ -67,8 +67,8 @@ static PresenceManager *presenceManager = nil;
         @PRESENCESTATUS_ONLINE:@"Online_whitestroke",
         @PRESENCESTATUS_OFFLINE:@"Offline_whitestroke",
         @PRESENCESTATUS_BUSY:@"Busy_whitestroke",
-        @PRESENCESTATUS_DONOTDISTURB:@"Do not Disturb_whitestroke",
-        @PRESENCESTATUS_LEAVE:@"Leave_whitestroke",
+        @PRESENCESTATUS_DONOTDISTURB:@"Do Not Disturb_whitestroke",
+        @PRESENCESTATUS_LEAVE:@"Away_whitestroke",
         @PRESENCESTATUS_CUSTOM:@"custom_whitestroke"
     };
 }

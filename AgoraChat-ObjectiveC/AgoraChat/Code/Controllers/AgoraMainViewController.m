@@ -21,7 +21,7 @@
 #import "ACDChatsViewController.h"
 
 #define kGroupMessageAtList      @"em_at_list"
-#define kGroupMessageAtAll       @"all"
+#define kGroupMessageAtAll       @"ALL"
 
 static const CGFloat kDefaultPlaySoundInterval = 1.0;
 

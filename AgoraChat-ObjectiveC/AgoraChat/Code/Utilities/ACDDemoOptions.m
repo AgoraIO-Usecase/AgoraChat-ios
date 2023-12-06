@@ -30,8 +30,8 @@ static ACDDemoOptions *sharedOptions = nil;
         self.loggedInUsername = @"";
         self.loggedInPassword = @"";
         
-        self.isChatTyping = NO;
-        self.isAutoDeliveryAck = NO;
+        self.isChatTyping = YES;
+        self.isAutoDeliveryAck = YES;
         
         self.isOfflineHangup = NO;
         
@@ -53,6 +53,11 @@ static ACDDemoOptions *sharedOptions = nil;
         self.playVibration = YES;
         self.playNewMsgSound = YES;
         self.tokenExpiredTimestamp = 0;
+
+        self.enableTranslate = NO;
+        self.demandLanguage = nil;
+        self.pushLanguage = nil;
+        self.autoLanguages = [NSDictionary dictionary];
     }
     
     return self;
@@ -114,6 +119,11 @@ static ACDDemoOptions *sharedOptions = nil;
         self.playVibration = [aDecoder decodeBoolForKey:kOptions_playVibration];
         self.playNewMsgSound = [aDecoder decodeBoolForKey:kOptions_playNewMsgSound];
         self.tokenExpiredTimestamp = 0;
+        
+        self.enableTranslate = [aDecoder decodeBoolForKey:kOptions_enableTranslate];
+        self.autoLanguages = [aDecoder decodeObjectForKey:kOptions_autoLanguages];
+        self.demandLanguage = [aDecoder decodeObjectForKey:kOptions_demandLanguage];
+        self.pushLanguage = [aDecoder decodeObjectForKey:kOptions_pushLanguage];
 
     }
     return self;
@@ -167,6 +177,10 @@ static ACDDemoOptions *sharedOptions = nil;
     [aCoder encodeBool:self.playVibration forKey:kOptions_playVibration];
     [aCoder encodeBool:self.playNewMsgSound forKey:kOptions_playNewMsgSound];
 
+    [aCoder encodeObject:self.autoLanguages forKey:kOptions_autoLanguages];
+    [aCoder encodeObject:self.demandLanguage forKey:kOptions_demandLanguage];
+    [aCoder encodeBool:self.enableTranslate forKey:kOptions_enableTranslate];
+    [aCoder encodeObject:self.pushLanguage forKey:kOptions_pushLanguage];
 }
 
 - (id)copyWithZone:(nullable NSZone *)zone
@@ -208,6 +222,10 @@ static ACDDemoOptions *sharedOptions = nil;
     retModel.playVibration = self.playVibration;
     retModel.playNewMsgSound = self.playNewMsgSound;
     retModel.tokenExpiredTimestamp = self.tokenExpiredTimestamp;
+    retModel.autoLanguages = self.autoLanguages;
+    retModel.demandLanguage = self.demandLanguage;
+    retModel.pushLanguage = self.pushLanguage;
+    retModel.enableTranslate = self.enableTranslate;
     
     return retModel;
 }

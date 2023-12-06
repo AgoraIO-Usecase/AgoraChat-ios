@@ -22,6 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSString *timestamp;
 
+@property (nonatomic, strong) AgoraChatMessage* msg;
+
 - (instancetype)initWithInfo:(NSString *)keyWord img:(UIImage *)img msg:(AgoraChatMessage *)msg time:(NSString *)timestamp;
 
 @end

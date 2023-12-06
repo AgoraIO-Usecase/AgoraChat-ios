@@ -11,6 +11,7 @@
 #import "ACDDateHelper.h"
 #import "AgoraChatAvatarNameModel.h"
 #import "ACDChatViewController.h"
+#import "UIViewController+Util.h"
 
 @interface ACDChatRecordViewController ()<AgoraChatSearchBarDelegate, AgoraChatAvatarNameCellDelegate>
 
@@ -24,7 +25,7 @@
 
 @implementation ACDChatRecordViewController
 
-- (instancetype)initWithCoversationModel:(AgoraChatConversation *)conversation
+- (instancetype)initWithConversationModel:(AgoraChatConversation *)conversation
 {
     if (self = [super init]) {
         _conversation = conversation;
@@ -35,8 +36,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"Search Message History";
     self.msgTimelTag = -1;
     [self _setupChatSubviews];
+    [self addPopBackLeftItem];
 }
 
 #pragma mark - Subviews
@@ -84,6 +87,17 @@
     cell.model = model;
     cell.delegate = self;
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    AgoraChatAvatarNameModel* model = [self.searchResults objectAtIndex:indexPath.row];
+    if (model && [model isKindOfClass:[AgoraChatAvatarNameModel class]]) {
+        [self.navigationController popViewControllerAnimated:YES];
+        if (self.searchDoneBlock) {
+            self.searchDoneBlock(model.msg.messageId);
+        }
+    }
 }
 
 #pragma mark - ACDAvatarNameCellDelegate

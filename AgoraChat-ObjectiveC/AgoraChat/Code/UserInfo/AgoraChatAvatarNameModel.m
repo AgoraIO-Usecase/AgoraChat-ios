@@ -16,6 +16,7 @@
     if (self) {
         _avatarImg = [UIImage imageWithColor:AvatarLightGreenColor size:CGSizeMake(40.0, 40.0)];
         _from = msg.from;
+        _msg = msg;
         NSString *text = ((AgoraChatTextMessageBody *)msg.body).text;
         NSRange range = [text rangeOfString:keyWord options:NSCaseInsensitiveSearch];
         

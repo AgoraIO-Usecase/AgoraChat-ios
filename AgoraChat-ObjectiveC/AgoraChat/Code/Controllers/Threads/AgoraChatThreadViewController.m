@@ -18,6 +18,13 @@
 #import "AgoraChatThreadEditViewController.h"
 #import "AgoraChatThreadMembersViewController.h"
 #import "ACDNotificationSettingViewController.h"
+#import "ACDContactListController.h"
+#import "ACDGroupListViewController.h"
+#import "AgoraChat_Demo-Swift.h"
+#import "EaseDefines.h"
+#import "AgoraChatMessage+ShowText.h"
+#import "AgoraChatURLPreviewCell.h"
+#import "ACDReportMessageViewController.h"
 @interface AgoraChatThreadViewController ()<EaseChatViewControllerDelegate,AgoraChatroomManagerDelegate,EMBottomMoreFunctionViewDelegate>
 @property (nonatomic, strong) EaseConversationModel *conversationModel;
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -29,6 +36,11 @@
 @property (nonatomic, assign) AgoraChatConversationType conversationType;
 @property (nonatomic, strong) NSString *conversationId;
 @property (nonatomic) AgoraChatGroup *group;
+@property (nonatomic) NSMutableArray <__kindof AgoraChatMessage*> *forwardMessages;
+
+@property (nonatomic) AgoraEditBar *editBar;
+
+@property (nonatomic) BOOL editMode;
 
 @end
 
@@ -73,6 +85,7 @@
     if (_conversation.unreadMessagesCount > 0) {
         [[AgoraChatClient sharedClient].chatManager ackConversationRead:_conversation.conversationId completion:nil];
     }
+    self.forwardMessages = [NSMutableArray array];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -127,36 +140,26 @@
 
 #pragma mark - EaseChatViewControllerDelegate
 
-//- (UITableViewCell *)cellForItem:(UITableView *)tableView messageModel:(EaseMessageModel *)messageModel
-//{
-////    if (messageModel.type == AgoraChatMessageTypePictMixText) {
-////        AgoraChatMsgPicMixTextBubbleView* picMixBV = [[AgoraChatMsgPicMixTextBubbleView alloc] init];
-////        [picMixBV setModel:messageModel];
-////        AgoraChatMessageCell *cell = [[AgoraChatMessageCell alloc] initWithDirection:messageModel.direction type:messageModel.type msgView:picMixBV];
-////        cell.model = messageModel;
-////        cell.delegate = self;
-////        return cell;
-////    }
-//
-//    if(messageModel.message.body.type == AgoraChatMessageBodyTypeCustom) {
-//        AgoraChatCustomMessageBody* body = (AgoraChatCustomMessageBody*)messageModel.message.body;
-//        if([body.event isEqualToString:@"userCard"]){
-////            AgoraChatUserCardMsgView* userCardMsgView = [[AgoraChatUserCardMsgView alloc] init];
-////            userCardMsgView.backgroundColor = [UIColor whiteColor];
-////            [userCardMsgView setModel:messageModel];
-////            AgoraChatMessageCell* userCardCell = [[AgoraChatMessageCell alloc] initWithDirection:messageModel.direction type:messageModel.type msgView:userCardMsgView];
-////            userCardCell.model = messageModel;
-////            userCardCell.delegate = self;
-////            return userCardCell;
-//        }
-//    }
-//    return nil;
-//}
-
-//typing 1v1 single chat only
+#pragma mark - EaseChatViewControllerDelegate
+- (UITableViewCell *)cellForItem:(UITableView *)tableView messageModel:(EaseMessageModel *)messageModel {
+    switch (messageModel.message.body.type) {
+        case AgoraChatMessageTypeText:
+            if (messageModel.isUrl) {
+                AgoraChatURLPreviewCell *cell = [[AgoraChatURLPreviewCell alloc] initWithDirection:messageModel.direction chatType:messageModel.message.chatType messageType:messageModel.type viewModel:self.chatController.viewModel];
+                messageModel.type = AgoraChatMessageTypeExtURLPreview;
+                cell.delegate = self.chatController;
+                cell.model = messageModel;
+                return cell;
+            }
+            break;
+        default:
+            break;
+    }
+    return nil;
+}
 - (void)peerTyping
 {
-    self.titleDetailLabel.text = @"other party is typing";
+    self.titleDetailLabel.text = @"Typing...";
 }
 
 //1v1 single chat only
@@ -195,6 +198,147 @@
         [self showHint:error.errorDescription];
     }
 }
+
+- (NSMutableArray<EaseExtendMenuModel *> *)messageLongPressExtMenuItemArray:(NSMutableArray<EaseExtendMenuModel*>*)defaultLongPressItems messageModel:(nonnull EaseMessageModel *)messageModel{
+    __weak typeof(self) weakSelf = self;
+    __block EaseMessageModel *msgModel = messageModel;
+    if(msgModel.direction == AgoraChatMessageDirectionReceive) {
+        if (msgModel.message.body.type == AgoraChatMessageBodyTypeText || msgModel.message.body.type == AgoraChatMessageBodyTypeImage || msgModel.message.body.type == AgoraChatMessageBodyTypeFile || msgModel.message.body.type == AgoraChatMessageBodyTypeVideo || msgModel.message.body.type == AgoraChatMessageBodyTypeVoice) {
+            EaseExtendMenuModel *reportItem = [[EaseExtendMenuModel alloc]initWithData:[UIImage imageNamed:@"report"] funcDesc:@"Report" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+                [weakSelf pushToReportMessageViewController:messageModel];
+            }];
+            [defaultLongPressItems addObject:reportItem];
+        }
+    }
+    return defaultLongPressItems;
+}
+
+- (void)pushToReportMessageViewController:(EaseMessageModel *)messageModel {
+    ACDReportMessageViewController *vc = [[ACDReportMessageViewController alloc] initWithReportMessage:messageModel];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (AgoraEditBar *)editBar {
+    if (!_editBar) {
+        _editBar = [[AgoraEditBar alloc] initWithFrame:CGRectMake(0, EMScreenHeight-kBottomSafeHeight-54, EMScreenWidth, kBottomSafeHeight+54)];
+        [_editBar hiddenWithTag:AgoraEditBarOperationDelete];
+    }
+    return _editBar;
+}
+
+
+- (void)messageListEntryEditModeThenOperation:(EditBarOperationType)type {
+    switch (type) {
+        case EditBarOperationTypeDelete: {
+            [self removeLocalHistoryMessages];
+        }
+            break;
+        case EditBarOperationTypeForward: {
+            [self chooseForwardTargets];
+        }
+            break;
+        default:
+            break;
+    }
+
+}
+
+- (BOOL)messageListEntryEditModeWhetherShowBottom {
+    [self.view addSubview:self.chatController.toolBar];
+    [self.chatController.toolBar hiddenWithOperation:EditBarOperationTypeDelete];
+    [self.navBar editMode:YES];
+    return YES;
+}
+
+
+- (void)chooseForwardTargets {
+    [self fillForwardMessages];
+    [self recoverNormalState];
+    ACDContactListController *contact = [[ACDContactListController alloc] init];
+    ACDGroupListViewController *group = [[ACDGroupListViewController alloc] init];
+    contact.forward = YES;
+    group.forward = YES;
+    contact.selectedBlock = ^(NSString * _Nonnull contactId) {
+        [self forwardCombineMessages:contactId chat:YES];
+    };
+    group.selectedBlock = ^(NSString * _Nonnull groupId) {
+        [self forwardCombineMessages:groupId chat:NO];
+    };
+    
+    ForwardTargetsViewController *vc = [[ForwardTargetsViewController alloc] initWithViewControllers:@[contact,group] indicators:@[@"Contact",@"Group"]];
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
+- (void)forwardCombineMessages:(NSString *)target chat:(BOOL)chat{
+    NSMutableArray <__kindof NSString*>*ids = [NSMutableArray array];
+    for (AgoraChatMessage *message in self.forwardMessages) {
+        [ids addObject:message.messageId];
+    }
+    NSString *summary = @"";
+    for (int i = 0; i < self.forwardMessages.count; i++) {
+        if (i > 2) {
+            if (IsStringEmpty(summary)) {
+                summary = @"Introduction to merge forwarded messages summary,to show combine message detail";
+            }
+            break;
+        } else {
+            AgoraChatMessage *message = self.forwardMessages[i];
+            AgoraChatUserInfo* userInfo = [[UserInfoStore sharedInstance] getUserInfoById:message.from];
+            AgoraChatUserDataModel *model = [[AgoraChatUserDataModel alloc]initWithUserInfo:userInfo];
+            NSString *nickName = IsStringEmpty(model.showName) ? message.from:model.showName;
+            if (i == 0) {
+                summary = [NSString stringWithFormat:@"%@:%@",nickName,message.showText];
+            } else {
+                summary = [NSString stringWithFormat:@"%@\n%@:%@",summary,nickName,message.showText];
+            }
+        }
+    }
+    AgoraChatCombineMessageBody *body = [[AgoraChatCombineMessageBody alloc] initWithTitle:@"Chat History" summary:summary compatibleText:@"The version is low and unable to display the content." messageIdList:ids];
+    AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:target body:body ext:nil];
+    message.chatType = chat ? AgoraChatTypeChat:AgoraChatTypeGroupChat;
+    [AgoraChatClient.sharedClient.chatManager sendMessage:message progress:nil completion:^(AgoraChatMessage * _Nullable message, AgoraChatError * _Nullable error) {
+        if (!error && message != nil) {
+            [self showHint:@"Forward successful!"];
+        } else {
+            [self showHint:error.errorDescription];
+        }
+    }];
+}
+
+- (void)fillForwardMessages {
+    [self.forwardMessages removeAllObjects];
+    for (id obj in self.chatController.dataArray) {
+        if ([obj isKindOfClass:[EaseMessageModel class]]) {
+            if (((EaseMessageModel *)obj).selected) {
+                AgoraChatMessage *message = ((EaseMessageModel *)obj).message;
+                [self.forwardMessages addObject:message];
+            }
+        }
+    }
+}
+
+- (void)removeLocalHistoryMessages {
+    if (self.forwardMessages.count >= 50) {
+        [self showHint:@"Remove history message reach limit."];
+        return;
+    }
+    [self fillForwardMessages];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Delete Message" message:[NSString stringWithFormat:@"Delete %lu messages form database",(unsigned long)self.forwardMessages.count] preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Delete" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        NSMutableArray <__kindof NSString *>* ids = [NSMutableArray array];
+        for (AgoraChatMessage *message in self.forwardMessages) {
+            [ids addObject:message.messageId];
+        }
+        [AgoraChatClient.sharedClient.chatManager removeMessagesFromServerWithConversation:self.conversation messageIds:ids completion:^(AgoraChatError * _Nullable aError) {
+            if (aError) {
+                [self showHint:aError.errorDescription];
+            }
+        }];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) { }]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
 
 #pragma mark - AgoraChatMessageCellDelegate
 
@@ -393,13 +537,34 @@
         }];
         [_navBar hiddenMore:NO];
         [_navBar setMoreBlock:^{
-            [weakSelf showSheet];
+            [weakSelf navBarMoreAction];
         }];
         
     }
     return _navBar;
 }
 
+- (void)navBarMoreAction {
+    if (self.navBar.back.isHidden) {
+        [self recoverNormalState];
+    } else {
+        [self showSheet];
+    }
+}
+
+- (void)recoverNormalState {
+    self.editMode = NO;
+    [self.navBar editMode:NO];
+    for (id model in self.chatController.dataArray) {
+        if ([model isKindOfClass:[EaseMessageModel class]]) {
+            ((EaseMessageModel *)model).selected = NO;
+        }
+    }
+    [self.editBar removeFromSuperview];
+    self.chatController.editMode = NO;
+    [self.chatController.toolBar dismiss];
+    [self.chatController.tableView reloadData];
+}
 
 - (void)popDestinationVC {
     UIViewController *tmp;

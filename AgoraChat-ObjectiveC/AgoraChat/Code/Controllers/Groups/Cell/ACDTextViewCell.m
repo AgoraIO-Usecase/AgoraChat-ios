@@ -42,7 +42,7 @@
     
     [self.placeholderLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentTextView).offset(8.0f);
-        make.left.equalTo(self.contentTextView);
+        make.left.equalTo(self.contentTextView).offset(5.0f);
     }];
     
     [self.textCountLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -85,7 +85,7 @@
         _placeholderLabel = UILabel.new;
         _placeholderLabel.font = NFont(14.0);
         _placeholderLabel.textColor = COLOR_HEX(0xE6E6E6);
-        _placeholderLabel.text = @"Group Description, not required";
+        _placeholderLabel.text = NSLocalizedString(@"group.desc.placeholder", nil);
     }
     return _placeholderLabel;
 }

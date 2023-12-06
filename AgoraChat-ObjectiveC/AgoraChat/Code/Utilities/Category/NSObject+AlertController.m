@@ -7,6 +7,7 @@
 //
 
 #import "NSObject+AlertController.h"
+#import "UIViewController+Util.h"
 
 @implementation NSObject (AlertController)
 - (void)_showAlertController:(UIAlertController *)aAlert
@@ -14,10 +15,9 @@
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"common.ok", @"OK") style:UIAlertActionStyleCancel handler:nil];
     [aAlert addAction:okAction];
     
-    UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-    UIViewController *rootViewController = window.rootViewController;
+    UIViewController *currentViewController = [aAlert currentViewController];
     aAlert.modalPresentationStyle = 0;
-    [rootViewController presentViewController:aAlert animated:YES completion:nil];
+    [currentViewController presentViewController:aAlert animated:YES completion:nil];
 }
 
 - (void)showAlertWithMessage:(NSString *)aMsg

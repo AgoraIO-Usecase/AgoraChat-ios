@@ -124,7 +124,7 @@
 //    }];
     
     [self.avatarImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self).offset(kAgroaPadding *6.0);
+        make.top.equalTo(self).offset(kAgroaPadding *2.0);
         make.centerX.equalTo(self);
         make.size.mas_equalTo(kMeHeaderImageViewHeight);
     }];

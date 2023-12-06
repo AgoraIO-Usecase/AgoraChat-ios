@@ -27,6 +27,8 @@
 
 @property (nonatomic, strong) AgoraChatCallKitManager *callKitManager;
 
+@property (nonatomic, strong) UIImageView* lockView;
+
 @end
 
 @implementation AppDelegate
@@ -288,11 +290,14 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+    [self.window addSubview:self.lockView];
+    self.lockView.frame = self.window.frame;
     [[AgoraChatClient sharedClient] applicationDidEnterBackground:application];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+    [self.lockView removeFromSuperview];
     do {
         NSInteger tokenExpiredTs = ACDDemoOptions.sharedOptions.tokenExpiredTimestamp;
         if(ACDDemoOptions.sharedOptions.tokenExpiredTimestamp > 1600000000000) {
@@ -314,6 +319,14 @@
             [[AgoraChatDemoHelper shareHelper].settingsVC reloadNotificationStatus];
         }
     } while(0);
+}
+
+- (UIImageView *)lockView
+{
+    if (!_lockView) {
+        _lockView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LaunchImage"]];
+    }
+    return _lockView;
 }
 
 #pragma mark - Remote Notification Registration
@@ -426,9 +439,17 @@
 {
     if (aError) {
         [self loadLoginPage];
+        
+    }else {
+        [self test];
     }
 }
 
-
+- (void)test
+{
+    AgoraChatConversation* conversation = [AgoraChatClient.sharedClient.chatManager getConversationWithConvId:@"conversatinsId"];
+    NSInteger ts = NSDate.date.timeIntervalSince1970 * 1000;
+    [conversation removeMessagesStart:(ts - 60*60*1000) to:ts];
+}
 
 @end
