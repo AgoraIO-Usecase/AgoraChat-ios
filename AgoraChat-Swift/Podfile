@@ -17,7 +17,7 @@ target 'AgoraChat-Swift' do
   pod 'MBProgressHUD'
   pod 'MJRefresh'
   pod 'Agora_Chat_iOS'
-  pod 'chat-uikit', '~> 1.0.9'
+  pod 'chat-uikit', '~> 1.2.0'
   pod 'AgoraChatCallKit', '~> 1.0.9'
   pod 'SnapKit'
   pod 'SwiftLint'
