@@ -7,7 +7,7 @@
 
 import UIKit
 
-private let Appkey = "41117440#383391"
+private let Appkey = "61717166#1069763"
 
 @objcMembers
 class ACDDemoOptions: NSObject, NSCoding, NSSecureCoding {

@@ -7,7 +7,7 @@
 
 import UIKit
 
-fileprivate let AppServerHost = "https://a41.chat.agora.io"
+fileprivate let AppServerHost = "https://ea14-118-167-14-13.ngrok-free.app"
 
 class AgoraChatHttpRequest: NSObject {
 

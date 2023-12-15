@@ -255,9 +255,9 @@ class AgoraLoginViewController: UIViewController {
     }
     
     @IBAction private func doLogin() {
-        if self.isEmpty() {
-            return
-        }
+//        if self.isEmpty() {
+//            return
+//        }
         if self.operateTypeButton.tag == 1 {
             if self.passwordTextField.text != self.passwordConfirmTextField.text {
                 self.hintView.isHidden = false

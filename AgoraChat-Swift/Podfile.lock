@@ -1,0 +1,73 @@
+PODS:
+  - Agora_Chat_iOS (1.2.0)
+  - AgoraChatCallKit (1.0.9):
+    - Agora_Chat_iOS
+    - AgoraRtcEngine_iOS/RtcBasic (~> 3.6.3)
+    - Masonry
+    - SDWebImage
+  - AgoraRtcEngine_iOS/RtcBasic (3.6.3)
+  - Bugly (2.5.93)
+  - chat-uikit (1.2.0):
+    - Agora_Chat_iOS (>= 1.2.0)
+    - EMVoiceConvert (= 0.1.0)
+    - MJRefresh
+  - EMVoiceConvert (0.1.0)
+  - Kingfisher (6.3.1)
+  - Masonry (1.1.0)
+  - MBProgressHUD (1.2.0)
+  - MJExtension (3.4.1)
+  - MJRefresh (3.7.6)
+  - SDWebImage (5.18.6):
+    - SDWebImage/Core (= 5.18.6)
+  - SDWebImage/Core (5.18.6)
+  - SnapKit (5.6.0)
+  - SwiftLint (0.54.0)
+
+DEPENDENCIES:
+  - Agora_Chat_iOS
+  - AgoraChatCallKit (~> 1.0.9)
+  - Bugly
+  - chat-uikit (~> 1.2.0)
+  - Kingfisher
+  - MBProgressHUD
+  - MJExtension
+  - MJRefresh
+  - SnapKit
+  - SwiftLint
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Agora_Chat_iOS
+    - AgoraChatCallKit
+    - AgoraRtcEngine_iOS
+    - Bugly
+    - chat-uikit
+    - EMVoiceConvert
+    - Kingfisher
+    - Masonry
+    - MBProgressHUD
+    - MJExtension
+    - MJRefresh
+    - SDWebImage
+    - SnapKit
+    - SwiftLint
+
+SPEC CHECKSUMS:
+  Agora_Chat_iOS: e11aa75b290e5e8a6b90c1c73642ac1172a71b97
+  AgoraChatCallKit: 644cb0b6e4ac3d13835685eb984250f3ca2bd7db
+  AgoraRtcEngine_iOS: c62828bfdf95b0a505d796122d7a1e6bb17fdf21
+  Bugly: b8715e6ec4004b7f7fbffab0643ba80545aee3da
+  chat-uikit: 44becefb94fdbcb87d26a78e1685fa98a92e13ce
+  EMVoiceConvert: 32a0eaada94d93c151a5abd53ee174cd4e63b01f
+  Kingfisher: 016c8b653a35add51dd34a3aba36b580041acc74
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
+  MJExtension: 21c5f6f8c4d5d8844b7ae8fbae08fed0b501f961
+  MJRefresh: 2fe7fb43a5167ceda20bb7e63f130c04fd1814a5
+  SDWebImage: 3d8caa2430f3d674dbb3e515df4a100a2105af5f
+  SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
+  SwiftLint: c1de071d9d08c8aba837545f6254315bc900e211
+
+PODFILE CHECKSUM: 876e7023e7f8b7a98d743d4d7886dd071c1d3f18
+
+COCOAPODS: 1.12.0
