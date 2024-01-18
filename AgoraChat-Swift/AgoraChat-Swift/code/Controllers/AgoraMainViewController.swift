@@ -164,7 +164,7 @@ class AgoraMainViewController: UITabBarController {
         }
         
         let userInfo: [String: Any] = [
-            "MessageType": message.chatType,
+            "MessageType": message.chatType.rawValue,
             "ConversationChatter": message.conversationId
         ]
     
