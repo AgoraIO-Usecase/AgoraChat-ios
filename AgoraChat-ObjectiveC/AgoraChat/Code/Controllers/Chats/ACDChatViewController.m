@@ -170,7 +170,9 @@
     }];
  
     self.view.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
-
+    if(self.conversation.type == AgoraChatConversationTypeChat) {
+        [[PresenceManager sharedInstance] subscribe:@[self.conversationId] completion:nil];
+    }
 }
 
 - (void)_setupNavigationBarTitle
