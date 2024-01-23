@@ -199,7 +199,7 @@
     __block NSString* nickName = nil;
     if (aErrorCode == AgoraChatErrorTokenExpire || aErrorCode == 401) {
         void (^finishBlock) (NSString *aName, AgoraChatError *aError) = ^(NSString *aName, AgoraChatError *aError) {
-            if (!aError) {
+            if (!aError || aError.code == AgoraChatErrorUserAlreadyLoginSame) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_UPDATE_CONVERSATIONS object:nil];
                 return ;
             }

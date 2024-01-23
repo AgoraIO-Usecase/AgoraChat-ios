@@ -336,7 +336,7 @@
     }
     
     void (^finishBlock) (NSString *aName, NSString *nickName, NSInteger agoraUid, AgoraChatError *aError) = ^(NSString *aName, NSString *nickName, NSInteger agoraUid, AgoraChatError *aError) {
-        if (!aError) {
+        if (!aError || aError.code == AgoraChatErrorUserAlreadyLoginSame) {
             if (nickName) {
                 [AgoraChatClient.sharedClient.userInfoManager updateOwnUserInfo:nickName withType:AgoraChatUserInfoTypeNickName completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
                     if (!aError) {
