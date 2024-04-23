@@ -15,6 +15,7 @@ fileprivate var helper: AgoraChatDemoHelper? = nil
     
     weak var contactsVC: ACDContactsViewController?
     weak var mainVC: AgoraMainViewController?
+    var groupIdHasLocalPinnedMessages: Set<String> = []
     
     override init() {
         super.init()
@@ -94,6 +95,30 @@ extension AgoraChatDemoHelper: AgoraChatManagerDelegate {
     func messagesDidRecall(_ aMessages: [Any]!) {
         self.mainVC?.setupUnreadMessageCount()
     }
+    func onMessagePinChanged(_ messageId: String, conversationId: String, operation pinOperation: AgoraChatMessagePinOperation, pinInfo: AgoraChatMessagePinInfo) {
+        if let message = AgoraChatClient.shared().chatManager?.getMessageWithMessageId(messageId) {
+            self.addPinNotifiMsg(pinOperation == .pin, userId: pinInfo.operatorId, groupId: message.conversationId, messageId: messageId)
+        }
+    }
+    
+    func addPinNotifiMsg(_ isPinned: Bool, userId: String, groupId: String, messageId: String) {
+    var info = ""
+    if isPinned {
+        info = "\(userId == AgoraChatClient.shared().currentUsername ? "You" : userId) pinned a message"
+    } else {
+        info = "\(userId == AgoraChatClient.shared().currentUsername ? "You" : userId) removed a pin message"
+    }
+    let body = AgoraChatTextMessageBody(text: info)
+    let message = AgoraChatMessage(conversationID: groupId, body: body, ext: [MSG_EXT_NEWNOTI: NOTI_EXT_ADDGROUP, "agora_notiUserID": userId])
+    message.chatType = .groupChat
+    message.isRead = true
+        if let conversation = AgoraChatClient.shared().chatManager?.getConversation(groupId, type: .groupChat, createIfNotExist: true) {
+            conversation.insert(message, error: nil)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "UpdateConversations"), object: nil)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "PinnedMessages"), object: ["tipMessageId": message.messageId])
+        }
+    }
+
 }
 
 extension AgoraChatDemoHelper: AgoraChatContactManagerDelegate {

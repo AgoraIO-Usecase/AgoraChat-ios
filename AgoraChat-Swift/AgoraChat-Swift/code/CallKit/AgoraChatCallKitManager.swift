@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 @objcMembers
 class AgoraChatCallKitManager: NSObject {

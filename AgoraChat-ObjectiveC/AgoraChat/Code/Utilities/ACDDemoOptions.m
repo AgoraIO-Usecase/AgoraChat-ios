@@ -305,7 +305,6 @@ static ACDDemoOptions *sharedOptions = nil;
     [retOpt setApnsCertName:apnsCertName];
     retOpt.enableDeliveryAck = self.isAutoDeliveryAck;
     retOpt.enableConsoleLog = YES;
-    retOpt.enableFpa = YES;
     return retOpt;
 }
 

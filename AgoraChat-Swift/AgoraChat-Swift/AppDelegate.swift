@@ -52,7 +52,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private func initUIKit() {
 //        let options = AgoraChatOptions(appkey: "41117440#383391")
-        EaseChatKitManager.initWith(ACDDemoOptions.shared.toOptions())
+        let options = ACDDemoOptions.shared.toOptions()
+//        options.setValue(false, forKey: "enableDnsConfig")
+//        options.setValue(6717, forKey: "chatPort")
+//        options.setValue("180.184.143.60", forKey: "chatServer")
+//        options.setValue("https://a1-hsb.easemob.com", forKey: "restServer")
+        EaseChatKitManager.initWith(options)
     }
 
     private func loadViewController() {
@@ -177,7 +182,7 @@ extension AppDelegate: AgoraChatClientDelegate {
             guard let password = UserDefaults.standard.object(forKey: "user_pwd") as? String, password.count > 0, let username = self.username, username.count > 0 else {
                 return
             }
-            
+                    
             AgoraChatHttpRequest.shared.loginToApperServer(username: username, password: password) { statusCode, responseData in
                 DispatchQueue.main.async {
                     var alertStr: String?
@@ -222,5 +227,64 @@ extension AppDelegate {
 extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         AgoraChatClient.shared().application(UIApplication.shared, didReceiveRemoteNotification: notification.request.content.userInfo)
+    }
+    
+    func test() {
+        let markType: AgoraChatMarkType = .type0
+        let marked0Conversations = AgoraChatClient.shared().chatManager?.getAllConversations()?.filter { $0.marks.contains(NSNumber(value: markType.rawValue))
+        }
+        
+        if let message = AgoraChatClient.shared().chatManager?.getMessageWithMessageId("messageId") {
+            let pinnedInfo = message.pinnedInfo
+        }
+        let textMessage = AgoraChatMessage(conversationId: "conversationId", body: .text(content: "hello"), ext: nil)
+        // whether to deliver message only when the recipient online
+        textMessage.deliverOnlineOnly = true
+        AgoraChatClient.shared().chatManager?.send(textMessage, progress: nil, completion: { message, err in
+            if err == nil {
+                // send message success
+            }
+        })
+        
+        AgoraChatClient.shared().groupManager?.getJoinedGroupsCountFromServer(completion: { count, err in
+            if err == nil {
+                // get joined groups count success
+            }
+        })
+        
+        AgoraChatClient.shared().chatManager?.getPinnedMessages(fromServer: "conversationId", completion: { pinnedMessages, err in
+            if err == nil {
+                // get pinnedMessages from server success
+            }
+        })
+        
+        AgoraChatClient.shared().chatManager?.markAllConversationsAsRead()
+        
+        // message to be forwarded
+        if let message = AgoraChatClient.shared().chatManager?.getMessageWithMessageId("messageId") {
+            // create new message with origin body and ext
+            let newMessage = AgoraChatMessage(conversationID: "conversationId", body: message.body, ext: message.ext)
+            AgoraChatClient.shared().chatManager?.send(newMessage, progress: nil, completion: { messageResult, err in
+                if err == nil {
+                    // forward message success
+                }
+            })
+        }
+    }
+    func handleQuotedMessage(_ message: AgoraChatMessage) {
+        if let quotedInfo = message.ext?["msgQuote"] as? [String: AnyObject] {
+            // 读取msgQuote中的源消息信息
+            if let quotedMessageId = quotedInfo["msgID"] as? String,
+               let msgPreview = quotedInfo["msgPreview"] as? String,
+               let msgSender = quotedInfo["msgSender"] as? String,
+               let msgType = quotedInfo["msgType"] as? String {
+               // 消息引用了其他消息，需要更新UI
+            }
+        }
+    }
+    func messagesDidReceive(_ aMessages: [AgoraChatMessage]) {
+        for msg in aMessages {
+            handleQuotedMessage(msg)
+        }
     }
 }

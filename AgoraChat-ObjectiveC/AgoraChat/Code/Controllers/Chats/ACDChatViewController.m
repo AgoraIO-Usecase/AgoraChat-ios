@@ -43,8 +43,10 @@
 #import "AgoraChatMessage+ShowText.h"
 #import "AutoTranslateLanguageTableViewController.h"
 #import "AgoraTranslateSettingViewController.h"
+#import "ACDPinMessagesViewController.h"
+#import "AgoraChatDemoHelper.h"
 
-@interface ACDChatViewController ()<EaseChatViewControllerDelegate, AgoraChatroomManagerDelegate, AgoraChatGroupManagerDelegate, EaseMessageCellDelegate,TranslationCellDelegate,EaseUserUtilsDelegate>
+@interface ACDChatViewController ()<EaseChatViewControllerDelegate, AgoraChatroomManagerDelegate, AgoraChatGroupManagerDelegate, EaseMessageCellDelegate,TranslationCellDelegate,EaseUserUtilsDelegate,AgoraChatManagerDelegate>
 
 
 @property (nonatomic, strong) EaseConversationModel *conversationModel;
@@ -52,6 +54,7 @@
 @property (nonatomic, strong) UILabel *titleDetailLabel;
 @property (nonatomic, strong) UIView* fullScreenView;
 @property (strong, nonatomic) UIButton *backButton;
+@property (strong, nonatomic) UIButton *pinMessageButton;
 
 @property (nonatomic, strong) ACDChatNavigationView *navigationView;
 @property (nonatomic, assign) AgoraChatConversationType conversationType;
@@ -68,6 +71,7 @@
 @property (nonatomic) AgoraEditBar *editBar;
 
 @property (nonatomic) AgoraEditNavigation *editNavigation;
+@property (nonatomic, strong) ACDPinMessagesViewController* pinMessageVC;
 
 @end
 
@@ -103,9 +107,11 @@
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetUserInfo:) name:USERINFO_UPDATE object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presencesUpdated:) name:PRESENCES_UPDATE object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pinnedMessageChanged:) name:KAgora_PINNED_MESSAGE object:nil];
     [[AgoraChatClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
     [[AgoraChatClient sharedClient].groupManager addDelegate:self delegateQueue:nil];
     [self _setupChatSubviews];
+    [AgoraChatClient.sharedClient.chatManager addDelegate:self delegateQueue:nil];
     EaseUserUtils.shared.delegate = self;
     [ACDGroupMemberAttributesCache.shareInstance fetchCacheValueGroupId:self.conversationId userName:AgoraChatClient.sharedClient.currentUsername key:GROUP_NICKNAME_KEY completion:^(AgoraChatError * _Nullable error, NSString * _Nullable value) {
         [self.chatController refreshTableView:YES];
@@ -154,6 +160,153 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)addPinMessageButton
+{
+    [self.view addSubview:self.pinMessageButton];
+    [self.pinMessageButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.navigationView.mas_bottom);
+        make.left.equalTo(self.view).offset(12);
+        make.right.equalTo(self.view).offset(-12);
+        make.height.equalTo(@35);
+    }];
+    [self.view bringSubviewToFront:self.pinMessageButton];
+}
+
+- (UIButton *)pinMessageButton
+{
+    if (_pinMessageButton == nil) {
+        _pinMessageButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        UIImage *image = [UIImage imageNamed:@"pin"];
+        [_pinMessageButton setImage:image forState:UIControlStateNormal];
+
+        NSString *title = @"Pin Message";
+        [_pinMessageButton setTitle:title forState:UIControlStateNormal];
+        [_pinMessageButton setBackgroundColor:[UIColor colorWithRed:(245.0/255.0) green:(245.0/255.0) blue:(245.0/255.0) alpha:1.0]];
+        _pinMessageButton.layer.cornerRadius = 8;
+        [_pinMessageButton setTitleColor:[UIColor colorWithRed:23.0/255.0 green:26.0/255.0 blue:28.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+        _pinMessageButton.titleLabel.font = [UIFont fontWithName:@"SFCompact-Medium" size:14.0];
+
+        // 设置图片和标题的偏移量
+        int buttonWith = self.view.width - 24;
+        [_pinMessageButton setImageEdgeInsets:UIEdgeInsetsMake(0, -(buttonWith/2+20), 0, 0)];
+        [_pinMessageButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -(buttonWith/2+20) + 20, 0, 0)];
+        // 设置按钮阴影
+        UIColor* shadowColor = [UIColor colorWithRed:(235.0/255.0) green:(235.0/255.0) blue:(235.0/255.0) alpha:1.0];
+        shadowColor = UIColor.blackColor;
+        _pinMessageButton.layer.shadowColor = shadowColor.CGColor;
+        _pinMessageButton.layer.shadowOffset = CGSizeMake(0, 6);
+        _pinMessageButton.layer.shadowOpacity = 0.1;
+        _pinMessageButton.layer.shadowRadius = 2.0;
+        
+        [_pinMessageButton addTarget:self action:@selector(pinMessagesAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _pinMessageButton;
+}
+
+- (void)pinMessagesAction
+{
+    UIView* textView = (UIView*)[self.chatController.inputBar valueForKey:@"textView"];
+    if (textView && [textView isKindOfClass:[UIView class]]) {
+        [textView resignFirstResponder];
+    }
+    ACD_WS
+    if ([AgoraChatDemoHelper.shareHelper.groupIdHasLocalPinnedMessages containsObject:self.conversation.conversationId]) {
+        NSArray<AgoraChatMessage*>* messages = [self.conversation.pinnedMessages sortedArrayUsingComparator:^NSComparisonResult(AgoraChatMessage*  _Nonnull obj1, AgoraChatMessage*  _Nonnull obj2) {
+            return obj1.pinnedInfo.pinTime < obj2.pinnedInfo.pinTime;
+        }];
+        [self showPinnedMessagesVC:messages];
+    } else {
+        [AgoraChatClient.sharedClient.chatManager getPinnedMessagesFromServer:self.conversation.conversationId completion:^(NSArray<AgoraChatMessage *> * _Nullable messages, AgoraChatError * _Nullable aError) {
+            if (aError == nil) {
+                [AgoraChatDemoHelper.shareHelper.groupIdHasLocalPinnedMessages addObject:weakSelf.conversation.conversationId];
+                [weakSelf showPinnedMessagesVC:messages];
+            } else {
+                [weakSelf showHint:[NSString stringWithFormat:@"failed:%@",aError.errorDescription]];
+            }
+        }];
+    }
+}
+- (void)showPinnedMessagesVC:(NSArray<AgoraChatMessage*>*)messages {
+    ACDPinMessagesViewController* pinMessageVC = [[ACDPinMessagesViewController alloc] initWithNibName:@"ACDPinMessagesViewController" bundle:nil];
+    [self addChildViewController:pinMessageVC];
+    [self.view addSubview:pinMessageVC.view];
+    [pinMessageVC didMoveToParentViewController:self];
+    
+    [pinMessageVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.right.bottom.equalTo(self.view);
+                make.top.equalTo(self.navigationView.mas_bottom);
+    }];
+    ACD_WS
+    pinMessageVC.selectMessageCompletion = ^(NSString * _Nonnull selectedMessageId) {
+        // jump to pinned message cell
+        if (selectedMessageId.length > 0) {
+            AgoraChatMessage* msg = [AgoraChatClient.sharedClient.chatManager getMessageWithMessageId:selectedMessageId];
+            if (msg) {
+                AgoraChatMessage* moreMessage = [AgoraChatClient.sharedClient.chatManager getMessageWithMessageId:weakSelf.chatController.moreMsgId];
+                // if message not in dataArray,need load messages from db,max 400 messages
+                if (moreMessage && (moreMessage.timestamp > msg.timestamp)) {
+                    [weakSelf.conversation loadMessagesFrom:(msg.timestamp-1) to:moreMessage.timestamp count:400 completion:^(NSArray<AgoraChatMessage *> * _Nullable aMessages, AgoraChatError * _Nullable aError) {
+                        if (aError == nil) {
+                            NSMutableArray<EaseMessageModel*>* array = [NSMutableArray array];
+                            
+                            for (AgoraChatMessage* msg in aMessages) {
+                                EaseMessageModel* model = [[EaseMessageModel alloc] initWithAgoraChatMessage:msg];
+                                [array addObject:model];
+                            }
+                            NSIndexSet* indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [array count])];
+                            weakSelf.chatController.moreMsgId = [aMessages firstObject].messageId;
+                            [weakSelf.chatController.dataArray insertObjects:array atIndexes:indexSet];
+                            [weakSelf.chatController refreshTableView:NO];
+                            
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                NSIndexPath* indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+                                [weakSelf.chatController.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+                                UITableViewCell* cell = [weakSelf.chatController.tableView cellForRowAtIndexPath:indexPath];
+                                if (cell) {
+                                    cell.backgroundColor = [UIColor colorWithRed:0.96 green:0.96 blue:0.96 alpha:1];
+                                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                        cell.backgroundColor = UIColor.whiteColor;
+                                    });
+                                }
+                            });
+                        }
+                    }];
+                } else {
+                    int row = 0;
+                    NSIndexPath* indexPath = nil;
+                    for (EaseMessageModel* model in weakSelf.chatController.dataArray) {
+                        if ([model isKindOfClass:[EaseMessageModel class]] && [model.message.messageId isEqualToString:msg.messageId]) {
+                            indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+                            break;
+                        }
+                        row++;
+                    }
+                    if (indexPath) {
+                        [weakSelf.chatController.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+                        UITableViewCell* cell = [weakSelf.chatController.tableView cellForRowAtIndexPath:indexPath];
+                        if (cell) {
+                            cell.backgroundColor = [UIColor colorWithRed:0.96 green:0.96 blue:0.96 alpha:1];
+                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                cell.backgroundColor = UIColor.whiteColor;
+                            });
+                        }
+                    }
+                }
+                
+            } else {
+                [weakSelf showHint:@"Pinned message not exist"];
+            }
+        }
+    };
+    pinMessageVC.pinMessages = messages;
+    pinMessageVC.unpinMessageCompletion = ^(NSString * _Nonnull messageId) {
+        if (messageId.length > 0) {
+            [weakSelf addPinNotifiMsg:NO userId:AgoraChatClient.sharedClient.currentUsername groupId:weakSelf.conversation.conversationId];
+        }
+    };
+    weakSelf.pinMessageVC = pinMessageVC;
+}
+
 - (void)_setupChatSubviews
 {
     [self addChildViewController:_chatController];
@@ -172,6 +325,9 @@
     self.view.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0];
     if(self.conversation.type == AgoraChatConversationTypeChat) {
         [[PresenceManager sharedInstance] subscribe:@[self.conversationId] completion:nil];
+    }
+    if(self.conversation.type == AgoraChatConversationTypeGroupChat /*&& self.conversation.pinnedMessages.count > 0*/) {
+        [self addPinMessageButton];
     }
 }
 
@@ -482,6 +638,19 @@
             [weakSelf translateMessage:messageModel];
         }];
         [defaultLongPressItems addObject:reportItem];
+    }
+    if (msgModel.message.chatType == AgoraChatTypeGroupChat) {
+        EaseExtendMenuModel *pinItem = [[EaseExtendMenuModel alloc] initWithData:[UIImage imageNamed:@"pin"] funcDesc:@"Pin" handle:^(NSString * _Nonnull itemDesc, BOOL isExecuted) {
+            [AgoraChatClient.sharedClient.chatManager pinMessage:msgModel.message.messageId completion:^(AgoraChatMessage * _Nullable message, AgoraChatError * _Nullable aError) {
+                if (aError == nil) {
+                    [weakSelf showHint:(@"Pin message success") ];
+                    [weakSelf addPinNotifiMsg:YES userId:AgoraChatClient.sharedClient.currentUsername groupId:self.conversation.conversationId];
+                } else {
+                    [weakSelf showHint:[@"Pin failed, " stringByAppendingString:aError.errorDescription] ];
+                }
+            }];
+        }];
+        [defaultLongPressItems addObject:pinItem];
     }
     return defaultLongPressItems;
 }
@@ -1010,6 +1179,7 @@
 - (ACDChatNavigationView *)navigationView {
     if (_navigationView == nil) {
         _navigationView = [[ACDChatNavigationView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, 80.0f)];
+        _navigationView.backgroundColor = UIColor.whiteColor;
         _navigationView.leftLabel.text = self.navTitle;
         if (self.conversationType == AgoraChatConversationTypeGroupChat) {
             _navigationView.chatImageView.layer.cornerRadius = 0;
@@ -1237,6 +1407,20 @@
     
 }
 
+- (void)pinnedMessageChanged:(NSNotification*)noti
+{
+    NSDictionary* userInfo = noti.object;
+    if ([userInfo isKindOfClass:[NSDictionary class]]) {
+        NSString* tipMessageId = [userInfo objectForKey:@"tipMessageId"];
+        AgoraChatMessage* message = [AgoraChatClient.sharedClient.chatManager getMessageWithMessageId:tipMessageId];
+        if (message && [message.conversationId isEqualToString:self.conversation.conversationId]) {
+            EaseMessageModel* model = [[EaseMessageModel alloc] initWithAgoraChatMessage:message];
+            [self.chatController.dataArray addObject:model];
+            [self.chatController refreshTableView:YES];
+        }
+    }
+}
+
 - (void)_updatePresenceStatus
 {
     if(self.conversation.type == AgoraChatConversationTypeChat && self.conversation.conversationId.length > 0) {
@@ -1300,6 +1484,40 @@
         if (path)
             [weakSelf.chatController.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
     }];
+}
+
+- (void)onMessagePinChanged:(NSString *)messageId conversationId:(NSString * _Nonnull)conversationId operation:(AgoraChatMessagePinOperation)pinOperation pinInfo:(AgoraChatMessagePinInfo * _Nonnull)pinInfo
+{
+    AgoraChatMessage* message = [AgoraChatClient.sharedClient.chatManager getMessageWithMessageId:messageId];
+    if (message && [message.conversationId isEqualToString:self.conversation.conversationId]) {
+        if (self.pinMessageVC.parentViewController) {
+            NSArray<AgoraChatMessage*>* messages = [self.conversation.pinnedMessages sortedArrayUsingComparator:^NSComparisonResult(AgoraChatMessage*  _Nonnull obj1, AgoraChatMessage*  _Nonnull obj2) {
+                return obj1.pinnedInfo.pinTime > obj2.pinnedInfo.pinTime;
+            }];
+            self.pinMessageVC.pinMessages = messages;
+        }
+    }
+}
+
+- (void)addPinNotifiMsg:(BOOL)isPinned userId:(NSString*)userId groupId:(NSString*)groupId
+{
+    NSString* info = @"";
+    if (isPinned) {
+        info = [NSString stringWithFormat:@"%@ pinned a message",[userId isEqualToString:AgoraChatClient.sharedClient.currentUsername] ? @"You" : userId];
+    } else {
+        info = [NSString stringWithFormat:@"%@ removed a pin message",[userId isEqualToString:AgoraChatClient.sharedClient.currentUsername] ? @"You" : userId];
+    }
+    AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:info];
+    AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:groupId body:body ext:@{MSG_EXT_NEWNOTI:NOTI_EXT_ADDGROUP, kNOTI_EXT_USERID : userId}];
+    message.chatType = AgoraChatTypeGroupChat;
+    message.isRead = YES;
+    AgoraChatConversation *conversation = [[AgoraChatClient sharedClient].chatManager getConversation:groupId type:AgoraChatConversationTypeGroupChat createIfNotExist:YES];
+    if (conversation) {
+        [conversation insertMessage:message error:nil];
+        EaseMessageModel *newModel = [[EaseMessageModel alloc] initWithAgoraChatMessage:message];
+        [self.chatController.dataArray addObject:newModel];
+        [self.chatController refreshTableView:YES];
+    }
 }
 
 @end

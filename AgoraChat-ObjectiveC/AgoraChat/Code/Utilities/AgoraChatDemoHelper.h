@@ -26,6 +26,9 @@
 
 @property (nonatomic, weak)  ACDChatsViewController  *chatsVC;
 
+// groupIds which doesn't need get pinned messages from server
+@property (nonatomic, strong) NSMutableSet<NSString*>* groupIdHasLocalPinnedMessages;
+
 + (instancetype)shareHelper;
 
 - (void)setupUntreatedApplyCount;

@@ -412,7 +412,7 @@
                 ACDDemoOptions.sharedOptions.tokenExpiredTimestamp = expireTime;
 
                 if (token && token.length > 0) {
-                    [[AgoraChatClient sharedClient] loginWithUsername:[loginName lowercaseString] agoraToken:token completion:^(NSString *aUsername, AgoraChatError *aError) {
+                    [[AgoraChatClient sharedClient] loginWithUsername:[loginName lowercaseString] token:token completion:^(NSString *aUsername, AgoraChatError *aError) {
                         finishBlock(aUsername, nickName, agoraUid, aError);
                     }];
                     return;

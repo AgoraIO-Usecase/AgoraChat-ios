@@ -310,6 +310,10 @@
 		C0968CE92A6805C000A4604E /* AutoTranslateLanguageTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0968CE12A6805C000A4604E /* AutoTranslateLanguageTableViewController.m */; };
 		C0968CEC2A68087000A4604E /* ACDTextTranslationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C0968CEB2A68087000A4604E /* ACDTextTranslationCell.m */; };
 		C0968CEF2A680B8700A4604E /* ACDTextTranslationBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0968CEE2A680B8700A4604E /* ACDTextTranslationBubbleView.m */; };
+		C098657D2BA0319C0057319B /* ACDPinMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C098657B2BA0319C0057319B /* ACDPinMessagesViewController.m */; };
+		C098657E2BA0319C0057319B /* ACDPinMessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C098657C2BA0319C0057319B /* ACDPinMessagesViewController.xib */; };
+		C09865812BA04A0D0057319B /* ACDPinMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C09865802BA04A0D0057319B /* ACDPinMessageCell.m */; };
+		C09865842BA04C720057319B /* ACDPinMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C09865832BA04C720057319B /* ACDPinMessageModel.m */; };
 		C0C6D3702A778A53005D4BB2 /* ACDAtGroupMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C6D36E2A778A53005D4BB2 /* ACDAtGroupMembersViewController.m */; };
 		C0CCE49627CB58B3008131B2 /* ACDPresenceSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0CCE49527CB58B3008131B2 /* ACDPresenceSettingViewController.m */; };
 		C0E298B52A65117000F55EBF /* chat_setting_top@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0E298B32A65117000F55EBF /* chat_setting_top@3x.png */; };
@@ -1244,6 +1248,13 @@
 		C0968CEB2A68087000A4604E /* ACDTextTranslationCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACDTextTranslationCell.m; sourceTree = "<group>"; };
 		C0968CED2A680B8700A4604E /* ACDTextTranslationBubbleView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACDTextTranslationBubbleView.h; sourceTree = "<group>"; };
 		C0968CEE2A680B8700A4604E /* ACDTextTranslationBubbleView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACDTextTranslationBubbleView.m; sourceTree = "<group>"; };
+		C098657A2BA0319C0057319B /* ACDPinMessagesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACDPinMessagesViewController.h; sourceTree = "<group>"; };
+		C098657B2BA0319C0057319B /* ACDPinMessagesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACDPinMessagesViewController.m; sourceTree = "<group>"; };
+		C098657C2BA0319C0057319B /* ACDPinMessagesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACDPinMessagesViewController.xib; sourceTree = "<group>"; };
+		C098657F2BA04A0D0057319B /* ACDPinMessageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACDPinMessageCell.h; sourceTree = "<group>"; };
+		C09865802BA04A0D0057319B /* ACDPinMessageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACDPinMessageCell.m; sourceTree = "<group>"; };
+		C09865822BA04C720057319B /* ACDPinMessageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACDPinMessageModel.h; sourceTree = "<group>"; };
+		C09865832BA04C720057319B /* ACDPinMessageModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACDPinMessageModel.m; sourceTree = "<group>"; };
 		C0C6D36E2A778A53005D4BB2 /* ACDAtGroupMembersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACDAtGroupMembersViewController.m; sourceTree = "<group>"; };
 		C0C6D36F2A778A53005D4BB2 /* ACDAtGroupMembersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACDAtGroupMembersViewController.h; sourceTree = "<group>"; };
 		C0CCE49427CB58B3008131B2 /* ACDPresenceSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACDPresenceSettingViewController.h; sourceTree = "<group>"; };
@@ -2682,6 +2693,9 @@
 				7F6CC87726568C0000BA60BB /* AgoraLocationViewController.xib */,
 				05B4CF5F2A739712004E86D0 /* ForwardTargetsViewController.swift */,
 				D2AA4DE81D92712400967E0E /* Views */,
+				C098657A2BA0319C0057319B /* ACDPinMessagesViewController.h */,
+				C098657B2BA0319C0057319B /* ACDPinMessagesViewController.m */,
+				C098657C2BA0319C0057319B /* ACDPinMessagesViewController.xib */,
 			);
 			path = Chats;
 			sourceTree = "<group>";
@@ -3209,6 +3223,10 @@
 				7F6CC89C26568C3600BA60BB /* AgoraChatVideoBubbleView.m */,
 				05CA942D2A665CFA0036E199 /* AgoraChatURLPreviewBubbleView.h */,
 				05CA942E2A665CFA0036E199 /* AgoraChatURLPreviewBubbleView.m */,
+				C098657F2BA04A0D0057319B /* ACDPinMessageCell.h */,
+				C09865802BA04A0D0057319B /* ACDPinMessageCell.m */,
+				C09865822BA04C720057319B /* ACDPinMessageModel.h */,
+				C09865832BA04C720057319B /* ACDPinMessageModel.m */,
 			);
 			path = ChatCell;
 			sourceTree = "<group>";
@@ -3975,6 +3993,7 @@
 				EC54DD002721739400ABEE3E /* contact_add_contacts@3x.png in Resources */,
 				C00A004B27C61F4900C7E1BE /* Do Not Disturb_whitestroke@2x.png in Resources */,
 				7F6CC87D26568C0000BA60BB /* AgoraLocationViewController.xib in Resources */,
+				C098657E2BA0319C0057319B /* ACDPinMessagesViewController.xib in Resources */,
 				D2BF7E771D914DB30090AA66 /* Button_Speaker active.png in Resources */,
 				D28360041D95009C00EC7A4A /* Icon_File_disable.png in Resources */,
 				C0968CE82A6805C000A4604E /* AgoraTranslateSettingViewController.xib in Resources */,
@@ -4286,6 +4305,7 @@
 				7F6CC93826568DDF00BA60BB /* AgoraVoiceConverter.mm in Sources */,
 				D28345041D8FD1D400FD48A9 /* main.m in Sources */,
 				EC54DD532722A45100ABEE3E /* ACDMAXGroupNumberCell.m in Sources */,
+				C09865842BA04C720057319B /* ACDPinMessageModel.m in Sources */,
 				9ECE6701273CBF5F007CF85F /* ACDChatViewController.m in Sources */,
 				EC54DE21272A8AD800ABEE3E /* ACDGroupMembersViewController.m in Sources */,
 				EC1B2C2C27465A9100A6FA6E /* UITabBar+RedPoint.m in Sources */,
@@ -4295,6 +4315,7 @@
 				3A4BB1CA1ED43D7700B07FCA /* AgoraChatroomAdminsViewController.m in Sources */,
 				5D3B8B2B280D68E100A471BF /* ConfInviteUsersViewController.m in Sources */,
 				9ECE66C9273B6E7C007CF85F /* UIImageView+UserInfo.m in Sources */,
+				C09865812BA04A0D0057319B /* ACDPinMessageCell.m in Sources */,
 				EC54DCEC2721502200ABEE3E /* MISScrollPageSegmentTitleView.m in Sources */,
 				5DFED0CA28193D0900C82F90 /* AgoraChatCallCell.m in Sources */,
 				9EED2FE92818EE0A00D6B11C /* ACDGroupShareFileModel.m in Sources */,
@@ -4325,6 +4346,7 @@
 				C0968CEF2A680B8700A4604E /* ACDTextTranslationBubbleView.m in Sources */,
 				C061CB712A7BB4EC00214B0B /* NSDictionary+Safely.m in Sources */,
 				9ECE6704274271DB007CF85F /* Reachability.m in Sources */,
+				C098657D2BA0319C0057319B /* ACDPinMessagesViewController.m in Sources */,
 				EC54DCED2721502200ABEE3E /* MISScrollPageControllerDelegate.m in Sources */,
 				EC54DDFE272A45B100ABEE3E /* ACDInfoDetailCell.m in Sources */,
 				EC19F52D273558C500F88012 /* ACDModifyAvatarViewController.m in Sources */,
@@ -4525,9 +4547,10 @@
 				CODE_SIGN_ENTITLEMENTS = AgoraChat/AgoraChat.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Agora Lab, Inc. (48TB6ZZL5S)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 45;
-				DEVELOPMENT_TEAM = JC854K845H;
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 48TB6ZZL5S;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
 				EXLUDED_ARCHS = "";
@@ -4565,7 +4588,7 @@
 					"$(PROJECT_DIR)/AgoraChat/Code/Utilities/DeviceHelper/VoiceConvert/opencore-amrwb",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.3.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -4626,6 +4649,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = agora_chat_release;
 				SWIFT_OBJC_BRIDGING_HEADER = "AgoraChat/Code/Controllers/Chats/Views/AgoraChat-Demo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -4744,7 +4768,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = JC854K845H;
 				ENABLE_BITCODE = NO;
@@ -4780,7 +4804,7 @@
 					"$(PROJECT_DIR)/AgoraChat/Code/Utilities/DeviceHelper/VoiceConvert/opencore-amrwb",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.3.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -4862,7 +4886,7 @@
 				CODE_SIGN_ENTITLEMENTS = AgoraChat/AgoraChat.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = JC854K845H;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -4896,7 +4920,7 @@
 					"$(PROJECT_DIR)/AgoraChat/Code/Utilities/DeviceHelper/VoiceConvert/opencore-amrwb",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.3.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"$(inherited)",
