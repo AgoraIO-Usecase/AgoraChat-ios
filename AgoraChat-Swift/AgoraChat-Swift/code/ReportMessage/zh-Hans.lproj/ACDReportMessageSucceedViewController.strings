@@ -1,9 +1,0 @@
-
-/* Class = "UIButton"; normalTitle = "Done"; ObjectID = "C5U-Bc-CLD"; */
-"C5U-Bc-CLD.normalTitle" = "完成";
-
-/* Class = "UILabel"; text = "has been submitted"; ObjectID = "Fm1-Dx-wc3"; */
-"Fm1-Dx-wc3.text" = "已提交完成";
-
-/* Class = "UILabel"; text = "Your Report"; ObjectID = "wYs-1a-cBf"; */
-"wYs-1a-cBf.text" = "你的举报";

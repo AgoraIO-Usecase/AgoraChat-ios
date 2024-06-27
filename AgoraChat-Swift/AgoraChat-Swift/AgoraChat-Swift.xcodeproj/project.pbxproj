@@ -1,0 +1,721 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		05A30C9F2C2BB7980083D293 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30C9E2C2BB7980083D293 /* AppDelegate.swift */; };
+		05A30CA12C2BB7980083D293 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CA02C2BB7980083D293 /* SceneDelegate.swift */; };
+		05A30CA32C2BB7980083D293 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CA22C2BB7980083D293 /* LoginViewController.swift */; };
+		05A30CA62C2BB7980083D293 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 05A30CA52C2BB7980083D293 /* Base */; };
+		05A30CA82C2BB7990083D293 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 05A30CA72C2BB7990083D293 /* Assets.xcassets */; };
+		05A30CAB2C2BB7990083D293 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 05A30CAA2C2BB7990083D293 /* Base */; };
+		05A30CBE2C2BE1BE0083D293 /* MineCallInviteUsersController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CB42C2BE1BE0083D293 /* MineCallInviteUsersController.swift */; };
+		05A30CBF2C2BE1BE0083D293 /* MineContactDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CB52C2BE1BE0083D293 /* MineContactDetailViewController.swift */; };
+		05A30CC02C2BE1BE0083D293 /* MineContactRemarkEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CB62C2BE1BE0083D293 /* MineContactRemarkEditViewController.swift */; };
+		05A30CC12C2BE1BE0083D293 /* MineContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CB72C2BE1BE0083D293 /* MineContactsViewController.swift */; };
+		05A30CC22C2BE1BE0083D293 /* MineConversationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CB82C2BE1BE0083D293 /* MineConversationsController.swift */; };
+		05A30CC32C2BE1BE0083D293 /* MineGroupDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CB92C2BE1BE0083D293 /* MineGroupDetailViewController.swift */; };
+		05A30CC42C2BE1BE0083D293 /* MineMessageListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CBA2C2BE1BE0083D293 /* MineMessageListViewController.swift */; };
+		05A30CC72C2BE1D20083D293 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CC52C2BE1D20083D293 /* MainViewController.swift */; };
+		05A30CE02C2BE1D90083D293 /* AboutAgoraChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CC82C2BE1D90083D293 /* AboutAgoraChatCell.swift */; };
+		05A30CE12C2BE1D90083D293 /* ColorHueSettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CC92C2BE1D90083D293 /* ColorHueSettingCell.swift */; };
+		05A30CE22C2BE1D90083D293 /* FeatureSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CCA2C2BE1D90083D293 /* FeatureSwitchCell.swift */; };
+		05A30CE32C2BE1D90083D293 /* LanguageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CCB2C2BE1D90083D293 /* LanguageCell.swift */; };
+		05A30CE42C2BE1D90083D293 /* MeMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CCC2C2BE1D90083D293 /* MeMenuCell.swift */; };
+		05A30CE52C2BE1D90083D293 /* PersonalInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CCD2C2BE1D90083D293 /* PersonalInfoCell.swift */; };
+		05A30CE62C2BE1D90083D293 /* AboutAgoraChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CCF2C2BE1D90083D293 /* AboutAgoraChatController.swift */; };
+		05A30CE72C2BE1D90083D293 /* ColorSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CD02C2BE1D90083D293 /* ColorSettingViewController.swift */; };
+		05A30CE82C2BE1D90083D293 /* FeatureSwitchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CD12C2BE1D90083D293 /* FeatureSwitchViewController.swift */; };
+		05A30CE92C2BE1D90083D293 /* GeneralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CD22C2BE1D90083D293 /* GeneralViewController.swift */; };
+		05A30CEA2C2BE1D90083D293 /* LanguageSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CD32C2BE1D90083D293 /* LanguageSettingViewController.swift */; };
+		05A30CEB2C2BE1D90083D293 /* MeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CD42C2BE1D90083D293 /* MeViewController.swift */; };
+		05A30CEC2C2BE1D90083D293 /* NotificationSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CD52C2BE1D90083D293 /* NotificationSettingViewController.swift */; };
+		05A30CED2C2BE1D90083D293 /* PersonalInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CD62C2BE1D90083D293 /* PersonalInfoViewController.swift */; };
+		05A30CEE2C2BE1D90083D293 /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CD72C2BE1D90083D293 /* PrivacyPolicyViewController.swift */; };
+		05A30CEF2C2BE1D90083D293 /* PrivacySettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CD82C2BE1D90083D293 /* PrivacySettingViewController.swift */; };
+		05A30CF02C2BE1D90083D293 /* ThemesSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CD92C2BE1D90083D293 /* ThemesSettingViewController.swift */; };
+		05A30CF12C2BE1D90083D293 /* TranslateLanguageSettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CDA2C2BE1D90083D293 /* TranslateLanguageSettingController.swift */; };
+		05A30CF22C2BE1D90083D293 /* AboutAgoraChatHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CDC2C2BE1D90083D293 /* AboutAgoraChatHeader.swift */; };
+		05A30CF32C2BE1D90083D293 /* GradientSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CDD2C2BE1D90083D293 /* GradientSlider.swift */; };
+		05A30CFC2C2BE1E20083D293 /* DemoLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CF42C2BE1E20083D293 /* DemoLanguage.swift */; };
+		05A30CFD2C2BE1E20083D293 /* EaseChatBusinessApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CF52C2BE1E20083D293 /* EaseChatBusinessApi.swift */; };
+		05A30CFE2C2BE1E20083D293 /* EaseChatBusinessRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CF62C2BE1E20083D293 /* EaseChatBusinessRequest.swift */; };
+		05A30D002C2BE1E20083D293 /* EaseChatRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CF82C2BE1E20083D293 /* EaseChatRequest.swift */; };
+		05A30D012C2BE1E20083D293 /* GCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CF92C2BE1E20083D293 /* GCDTimer.swift */; };
+		05A30D022C2BE1E20083D293 /* PresenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30CFA2C2BE1E20083D293 /* PresenceManager.swift */; };
+		05A30D072C2BE4E50083D293 /* PublicDefines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A30D052C2BE4E50083D293 /* PublicDefines.swift */; };
+		05A30D0F2C2BE70C0083D293 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 05A30D0D2C2BE70C0083D293 /* Localizable.strings */; };
+		A5419BDBD1F12CF4A2090401 /* Pods_AgoraChat_Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F22927CD0315701B2E92254F /* Pods_AgoraChat_Swift.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		05A30C9B2C2BB7980083D293 /* AgoraChat-Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AgoraChat-Swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		05A30C9E2C2BB7980083D293 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		05A30CA02C2BB7980083D293 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		05A30CA22C2BB7980083D293 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		05A30CA52C2BB7980083D293 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		05A30CA72C2BB7990083D293 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		05A30CAA2C2BB7990083D293 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		05A30CAC2C2BB7990083D293 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		05A30CB22C2BB7D80083D293 /* AgoraChat-Swift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "AgoraChat-Swift.entitlements"; sourceTree = "<group>"; };
+		05A30CB42C2BE1BE0083D293 /* MineCallInviteUsersController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MineCallInviteUsersController.swift; sourceTree = "<group>"; };
+		05A30CB52C2BE1BE0083D293 /* MineContactDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MineContactDetailViewController.swift; sourceTree = "<group>"; };
+		05A30CB62C2BE1BE0083D293 /* MineContactRemarkEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MineContactRemarkEditViewController.swift; sourceTree = "<group>"; };
+		05A30CB72C2BE1BE0083D293 /* MineContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MineContactsViewController.swift; sourceTree = "<group>"; };
+		05A30CB82C2BE1BE0083D293 /* MineConversationsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MineConversationsController.swift; sourceTree = "<group>"; };
+		05A30CB92C2BE1BE0083D293 /* MineGroupDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MineGroupDetailViewController.swift; sourceTree = "<group>"; };
+		05A30CBA2C2BE1BE0083D293 /* MineMessageListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MineMessageListViewController.swift; sourceTree = "<group>"; };
+		05A30CC52C2BE1D20083D293 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		05A30CC82C2BE1D90083D293 /* AboutAgoraChatCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutAgoraChatCell.swift; sourceTree = "<group>"; };
+		05A30CC92C2BE1D90083D293 /* ColorHueSettingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorHueSettingCell.swift; sourceTree = "<group>"; };
+		05A30CCA2C2BE1D90083D293 /* FeatureSwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureSwitchCell.swift; sourceTree = "<group>"; };
+		05A30CCB2C2BE1D90083D293 /* LanguageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageCell.swift; sourceTree = "<group>"; };
+		05A30CCC2C2BE1D90083D293 /* MeMenuCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeMenuCell.swift; sourceTree = "<group>"; };
+		05A30CCD2C2BE1D90083D293 /* PersonalInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalInfoCell.swift; sourceTree = "<group>"; };
+		05A30CCF2C2BE1D90083D293 /* AboutAgoraChatController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutAgoraChatController.swift; sourceTree = "<group>"; };
+		05A30CD02C2BE1D90083D293 /* ColorSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSettingViewController.swift; sourceTree = "<group>"; };
+		05A30CD12C2BE1D90083D293 /* FeatureSwitchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureSwitchViewController.swift; sourceTree = "<group>"; };
+		05A30CD22C2BE1D90083D293 /* GeneralViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralViewController.swift; sourceTree = "<group>"; };
+		05A30CD32C2BE1D90083D293 /* LanguageSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageSettingViewController.swift; sourceTree = "<group>"; };
+		05A30CD42C2BE1D90083D293 /* MeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeViewController.swift; sourceTree = "<group>"; };
+		05A30CD52C2BE1D90083D293 /* NotificationSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingViewController.swift; sourceTree = "<group>"; };
+		05A30CD62C2BE1D90083D293 /* PersonalInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalInfoViewController.swift; sourceTree = "<group>"; };
+		05A30CD72C2BE1D90083D293 /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
+		05A30CD82C2BE1D90083D293 /* PrivacySettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacySettingViewController.swift; sourceTree = "<group>"; };
+		05A30CD92C2BE1D90083D293 /* ThemesSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemesSettingViewController.swift; sourceTree = "<group>"; };
+		05A30CDA2C2BE1D90083D293 /* TranslateLanguageSettingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TranslateLanguageSettingController.swift; sourceTree = "<group>"; };
+		05A30CDC2C2BE1D90083D293 /* AboutAgoraChatHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutAgoraChatHeader.swift; sourceTree = "<group>"; };
+		05A30CDD2C2BE1D90083D293 /* GradientSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientSlider.swift; sourceTree = "<group>"; };
+		05A30CF42C2BE1E20083D293 /* DemoLanguage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoLanguage.swift; sourceTree = "<group>"; };
+		05A30CF52C2BE1E20083D293 /* EaseChatBusinessApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EaseChatBusinessApi.swift; sourceTree = "<group>"; };
+		05A30CF62C2BE1E20083D293 /* EaseChatBusinessRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EaseChatBusinessRequest.swift; sourceTree = "<group>"; };
+		05A30CF82C2BE1E20083D293 /* EaseChatRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EaseChatRequest.swift; sourceTree = "<group>"; };
+		05A30CF92C2BE1E20083D293 /* GCDTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDTimer.swift; sourceTree = "<group>"; };
+		05A30CFA2C2BE1E20083D293 /* PresenceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresenceManager.swift; sourceTree = "<group>"; };
+		05A30D052C2BE4E50083D293 /* PublicDefines.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicDefines.swift; sourceTree = "<group>"; };
+		05A30D0E2C2BE70C0083D293 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		05A30D102C2BE7290083D293 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		05A30D112C2BE7290083D293 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		05A30D122C2BE7290083D293 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		26352DF0D3F4ADDDD8D053D8 /* Pods-AgoraChat-Swift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgoraChat-Swift.release.xcconfig"; path = "Target Support Files/Pods-AgoraChat-Swift/Pods-AgoraChat-Swift.release.xcconfig"; sourceTree = "<group>"; };
+		44DAD76E57C8D1B48B2902BF /* Pods-AgoraChat-Swift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgoraChat-Swift.debug.xcconfig"; path = "Target Support Files/Pods-AgoraChat-Swift/Pods-AgoraChat-Swift.debug.xcconfig"; sourceTree = "<group>"; };
+		F22927CD0315701B2E92254F /* Pods_AgoraChat_Swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgoraChat_Swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		05A30C982C2BB7980083D293 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A5419BDBD1F12CF4A2090401 /* Pods_AgoraChat_Swift.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		05A30C922C2BB7980083D293 = {
+			isa = PBXGroup;
+			children = (
+				05A30C9D2C2BB7980083D293 /* AgoraChat-Swift */,
+				05A30C9C2C2BB7980083D293 /* Products */,
+				F18AC6D40F59F01436E18AF9 /* Pods */,
+				42752DF4B1E143C7681E55BD /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		05A30C9C2C2BB7980083D293 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				05A30C9B2C2BB7980083D293 /* AgoraChat-Swift.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		05A30C9D2C2BB7980083D293 /* AgoraChat-Swift */ = {
+			isa = PBXGroup;
+			children = (
+				05A30CB22C2BB7D80083D293 /* AgoraChat-Swift.entitlements */,
+				05A30D062C2BE4E50083D293 /* CustomConstants */,
+				05A30CFB2C2BE1E20083D293 /* Utils */,
+				05A30CDF2C2BE1D90083D293 /* Me */,
+				05A30CC62C2BE1D20083D293 /* Main */,
+				05A30CBD2C2BE1BE0083D293 /* IntegratedFromEaseChatUIKit */,
+				05A30C9E2C2BB7980083D293 /* AppDelegate.swift */,
+				05A30CA02C2BB7980083D293 /* SceneDelegate.swift */,
+				05A30CA22C2BB7980083D293 /* LoginViewController.swift */,
+				05A30CA42C2BB7980083D293 /* Main.storyboard */,
+				05A30CA72C2BB7990083D293 /* Assets.xcassets */,
+				05A30CA92C2BB7990083D293 /* LaunchScreen.storyboard */,
+				05A30CAC2C2BB7990083D293 /* Info.plist */,
+				05A30D0D2C2BE70C0083D293 /* Localizable.strings */,
+			);
+			path = "AgoraChat-Swift";
+			sourceTree = "<group>";
+		};
+		05A30CB32C2BE1BE0083D293 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		05A30CBB2C2BE1BE0083D293 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				05A30CB42C2BE1BE0083D293 /* MineCallInviteUsersController.swift */,
+				05A30CB52C2BE1BE0083D293 /* MineContactDetailViewController.swift */,
+				05A30CB62C2BE1BE0083D293 /* MineContactRemarkEditViewController.swift */,
+				05A30CB72C2BE1BE0083D293 /* MineContactsViewController.swift */,
+				05A30CB82C2BE1BE0083D293 /* MineConversationsController.swift */,
+				05A30CB92C2BE1BE0083D293 /* MineGroupDetailViewController.swift */,
+				05A30CBA2C2BE1BE0083D293 /* MineMessageListViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		05A30CBC2C2BE1BE0083D293 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		05A30CBD2C2BE1BE0083D293 /* IntegratedFromEaseChatUIKit */ = {
+			isa = PBXGroup;
+			children = (
+				05A30CB32C2BE1BE0083D293 /* Cells */,
+				05A30CBB2C2BE1BE0083D293 /* Controllers */,
+				05A30CBC2C2BE1BE0083D293 /* ViewModels */,
+			);
+			path = IntegratedFromEaseChatUIKit;
+			sourceTree = "<group>";
+		};
+		05A30CC62C2BE1D20083D293 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				05A30CC52C2BE1D20083D293 /* MainViewController.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		05A30CCE2C2BE1D90083D293 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				05A30CC82C2BE1D90083D293 /* AboutAgoraChatCell.swift */,
+				05A30CC92C2BE1D90083D293 /* ColorHueSettingCell.swift */,
+				05A30CCA2C2BE1D90083D293 /* FeatureSwitchCell.swift */,
+				05A30CCB2C2BE1D90083D293 /* LanguageCell.swift */,
+				05A30CCC2C2BE1D90083D293 /* MeMenuCell.swift */,
+				05A30CCD2C2BE1D90083D293 /* PersonalInfoCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		05A30CDB2C2BE1D90083D293 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				05A30CCF2C2BE1D90083D293 /* AboutAgoraChatController.swift */,
+				05A30CD02C2BE1D90083D293 /* ColorSettingViewController.swift */,
+				05A30CD12C2BE1D90083D293 /* FeatureSwitchViewController.swift */,
+				05A30CD22C2BE1D90083D293 /* GeneralViewController.swift */,
+				05A30CD32C2BE1D90083D293 /* LanguageSettingViewController.swift */,
+				05A30CD42C2BE1D90083D293 /* MeViewController.swift */,
+				05A30CD52C2BE1D90083D293 /* NotificationSettingViewController.swift */,
+				05A30CD62C2BE1D90083D293 /* PersonalInfoViewController.swift */,
+				05A30CD72C2BE1D90083D293 /* PrivacyPolicyViewController.swift */,
+				05A30CD82C2BE1D90083D293 /* PrivacySettingViewController.swift */,
+				05A30CD92C2BE1D90083D293 /* ThemesSettingViewController.swift */,
+				05A30CDA2C2BE1D90083D293 /* TranslateLanguageSettingController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		05A30CDE2C2BE1D90083D293 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				05A30CDC2C2BE1D90083D293 /* AboutAgoraChatHeader.swift */,
+				05A30CDD2C2BE1D90083D293 /* GradientSlider.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		05A30CDF2C2BE1D90083D293 /* Me */ = {
+			isa = PBXGroup;
+			children = (
+				05A30CCE2C2BE1D90083D293 /* Cells */,
+				05A30CDB2C2BE1D90083D293 /* Controllers */,
+				05A30CDE2C2BE1D90083D293 /* Views */,
+			);
+			path = Me;
+			sourceTree = "<group>";
+		};
+		05A30CFB2C2BE1E20083D293 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				05A30CF42C2BE1E20083D293 /* DemoLanguage.swift */,
+				05A30CF52C2BE1E20083D293 /* EaseChatBusinessApi.swift */,
+				05A30CF62C2BE1E20083D293 /* EaseChatBusinessRequest.swift */,
+				05A30CF82C2BE1E20083D293 /* EaseChatRequest.swift */,
+				05A30CF92C2BE1E20083D293 /* GCDTimer.swift */,
+				05A30CFA2C2BE1E20083D293 /* PresenceManager.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		05A30D062C2BE4E50083D293 /* CustomConstants */ = {
+			isa = PBXGroup;
+			children = (
+				05A30D052C2BE4E50083D293 /* PublicDefines.swift */,
+			);
+			path = CustomConstants;
+			sourceTree = "<group>";
+		};
+		42752DF4B1E143C7681E55BD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F22927CD0315701B2E92254F /* Pods_AgoraChat_Swift.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F18AC6D40F59F01436E18AF9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				44DAD76E57C8D1B48B2902BF /* Pods-AgoraChat-Swift.debug.xcconfig */,
+				26352DF0D3F4ADDDD8D053D8 /* Pods-AgoraChat-Swift.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		05A30C9A2C2BB7980083D293 /* AgoraChat-Swift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 05A30CAF2C2BB7990083D293 /* Build configuration list for PBXNativeTarget "AgoraChat-Swift" */;
+			buildPhases = (
+				2ED7177F4A9073FE46A2007E /* [CP] Check Pods Manifest.lock */,
+				05A30C972C2BB7980083D293 /* Sources */,
+				05A30C982C2BB7980083D293 /* Frameworks */,
+				05A30C992C2BB7980083D293 /* Resources */,
+				F897E82265A32F4FC223662E /* [CP] Embed Pods Frameworks */,
+				23C5F3D766E8618CBBB556D3 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AgoraChat-Swift";
+			productName = "AgoraChat-Swift";
+			productReference = 05A30C9B2C2BB7980083D293 /* AgoraChat-Swift.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		05A30C932C2BB7980083D293 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1530;
+				LastUpgradeCheck = 1530;
+				TargetAttributes = {
+					05A30C9A2C2BB7980083D293 = {
+						CreatedOnToolsVersion = 15.3;
+					};
+				};
+			};
+			buildConfigurationList = 05A30C962C2BB7980083D293 /* Build configuration list for PBXProject "AgoraChat-Swift" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				"zh-Hans",
+			);
+			mainGroup = 05A30C922C2BB7980083D293;
+			productRefGroup = 05A30C9C2C2BB7980083D293 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				05A30C9A2C2BB7980083D293 /* AgoraChat-Swift */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		05A30C992C2BB7980083D293 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				05A30CA82C2BB7990083D293 /* Assets.xcassets in Resources */,
+				05A30D0F2C2BE70C0083D293 /* Localizable.strings in Resources */,
+				05A30CAB2C2BB7990083D293 /* Base in Resources */,
+				05A30CA62C2BB7980083D293 /* Base in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		23C5F3D766E8618CBBB556D3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AgoraChat-Swift/Pods-AgoraChat-Swift-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AgoraChat-Swift/Pods-AgoraChat-Swift-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AgoraChat-Swift/Pods-AgoraChat-Swift-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2ED7177F4A9073FE46A2007E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AgoraChat-Swift-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F897E82265A32F4FC223662E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AgoraChat-Swift/Pods-AgoraChat-Swift-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AgoraChat-Swift/Pods-AgoraChat-Swift-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AgoraChat-Swift/Pods-AgoraChat-Swift-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		05A30C972C2BB7980083D293 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				05A30CC02C2BE1BE0083D293 /* MineContactRemarkEditViewController.swift in Sources */,
+				05A30CF12C2BE1D90083D293 /* TranslateLanguageSettingController.swift in Sources */,
+				05A30D022C2BE1E20083D293 /* PresenceManager.swift in Sources */,
+				05A30CC72C2BE1D20083D293 /* MainViewController.swift in Sources */,
+				05A30CE42C2BE1D90083D293 /* MeMenuCell.swift in Sources */,
+				05A30CC32C2BE1BE0083D293 /* MineGroupDetailViewController.swift in Sources */,
+				05A30D072C2BE4E50083D293 /* PublicDefines.swift in Sources */,
+				05A30CEF2C2BE1D90083D293 /* PrivacySettingViewController.swift in Sources */,
+				05A30CE32C2BE1D90083D293 /* LanguageCell.swift in Sources */,
+				05A30CBE2C2BE1BE0083D293 /* MineCallInviteUsersController.swift in Sources */,
+				05A30CEC2C2BE1D90083D293 /* NotificationSettingViewController.swift in Sources */,
+				05A30CF32C2BE1D90083D293 /* GradientSlider.swift in Sources */,
+				05A30CED2C2BE1D90083D293 /* PersonalInfoViewController.swift in Sources */,
+				05A30CE02C2BE1D90083D293 /* AboutAgoraChatCell.swift in Sources */,
+				05A30CA32C2BB7980083D293 /* LoginViewController.swift in Sources */,
+				05A30CE62C2BE1D90083D293 /* AboutAgoraChatController.swift in Sources */,
+				05A30CE22C2BE1D90083D293 /* FeatureSwitchCell.swift in Sources */,
+				05A30D002C2BE1E20083D293 /* EaseChatRequest.swift in Sources */,
+				05A30CEB2C2BE1D90083D293 /* MeViewController.swift in Sources */,
+				05A30C9F2C2BB7980083D293 /* AppDelegate.swift in Sources */,
+				05A30CC12C2BE1BE0083D293 /* MineContactsViewController.swift in Sources */,
+				05A30CE72C2BE1D90083D293 /* ColorSettingViewController.swift in Sources */,
+				05A30CF02C2BE1D90083D293 /* ThemesSettingViewController.swift in Sources */,
+				05A30CF22C2BE1D90083D293 /* AboutAgoraChatHeader.swift in Sources */,
+				05A30CC22C2BE1BE0083D293 /* MineConversationsController.swift in Sources */,
+				05A30CFE2C2BE1E20083D293 /* EaseChatBusinessRequest.swift in Sources */,
+				05A30D012C2BE1E20083D293 /* GCDTimer.swift in Sources */,
+				05A30CFC2C2BE1E20083D293 /* DemoLanguage.swift in Sources */,
+				05A30CEE2C2BE1D90083D293 /* PrivacyPolicyViewController.swift in Sources */,
+				05A30CE52C2BE1D90083D293 /* PersonalInfoCell.swift in Sources */,
+				05A30CEA2C2BE1D90083D293 /* LanguageSettingViewController.swift in Sources */,
+				05A30CE92C2BE1D90083D293 /* GeneralViewController.swift in Sources */,
+				05A30CE82C2BE1D90083D293 /* FeatureSwitchViewController.swift in Sources */,
+				05A30CBF2C2BE1BE0083D293 /* MineContactDetailViewController.swift in Sources */,
+				05A30CA12C2BB7980083D293 /* SceneDelegate.swift in Sources */,
+				05A30CFD2C2BE1E20083D293 /* EaseChatBusinessApi.swift in Sources */,
+				05A30CE12C2BE1D90083D293 /* ColorHueSettingCell.swift in Sources */,
+				05A30CC42C2BE1BE0083D293 /* MineMessageListViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		05A30CA42C2BB7980083D293 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				05A30CA52C2BB7980083D293 /* Base */,
+				05A30D102C2BE7290083D293 /* zh-Hans */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		05A30CA92C2BB7990083D293 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				05A30CAA2C2BB7990083D293 /* Base */,
+				05A30D112C2BE7290083D293 /* zh-Hans */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		05A30D0D2C2BE70C0083D293 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				05A30D0E2C2BE70C0083D293 /* en */,
+				05A30D122C2BE7290083D293 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		05A30CAD2C2BB7990083D293 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		05A30CAE2C2BB7990083D293 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		05A30CB02C2BB7990083D293 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 44DAD76E57C8D1B48B2902BF /* Pods-AgoraChat-Swift.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = "AgoraChat-Swift/AgoraChat-Swift.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JC854K845H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "AgoraChat-Swift/Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "For usage";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "For usage";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.agorachat.demo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		05A30CB12C2BB7990083D293 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 26352DF0D3F4ADDDD8D053D8 /* Pods-AgoraChat-Swift.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = "AgoraChat-Swift/AgoraChat-Swift.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JC854K845H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "AgoraChat-Swift/Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "For usage";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "For usage";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.agorachat.demo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		05A30C962C2BB7980083D293 /* Build configuration list for PBXProject "AgoraChat-Swift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				05A30CAD2C2BB7990083D293 /* Debug */,
+				05A30CAE2C2BB7990083D293 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		05A30CAF2C2BB7990083D293 /* Build configuration list for PBXNativeTarget "AgoraChat-Swift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				05A30CB02C2BB7990083D293 /* Debug */,
+				05A30CB12C2BB7990083D293 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 05A30C932C2BB7980083D293 /* Project object */;
+}
