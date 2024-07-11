@@ -10,7 +10,7 @@ import Foundation
 public enum EaseChatBusinessApi {
     case login(Void)
     case fetchGroupAvatar(String)
-    case fetchRTCToken(String,String,String)
+    case fetchRTCToken(String,String)
     case mirrorCallUserIdToChatUserId(String,String)
 }
 

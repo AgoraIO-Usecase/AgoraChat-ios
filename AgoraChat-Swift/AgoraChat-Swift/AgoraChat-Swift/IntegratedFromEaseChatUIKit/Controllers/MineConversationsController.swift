@@ -35,12 +35,7 @@ final class MineConversationsController: ConversationListController {
     }
     
     private func listenToUserStatus() {
-        PresenceManager.shared.usersStatusChanged = { [weak self] users in
-            if let user = users.first(where: { EaseChatUIKitContext.shared?.currentUserId ?? "" == $0
-            }) {
-                self?.showUserStatus()
-            }
-        }
+        PresenceManager.shared.addHandler(handler: self)
     }
     
     private func showUserStatus() {
@@ -146,6 +141,14 @@ final class MineConversationsController: ConversationListController {
     
     override func create(profiles: [EaseProfileProtocol]) {
         var name = ""
+        var users = [EaseProfileProtocol]()
+        let ownerId = EaseChatUIKitContext.shared?.currentUserId ?? ""
+        let owner = EaseChatProfile()
+        owner.id = ownerId
+        owner.avatarURL = EaseChatUIKitContext.shared?.currentUser?.avatarURL ?? ""
+        owner.nickname = EaseChatUIKitContext.shared?.currentUser?.nickname ?? ""
+        users.append(owner)
+        users.append(contentsOf: profiles)
         var ids = [String]()
         for (index,profile) in profiles.enumerated() {
             if index <= 2 {
@@ -225,4 +228,12 @@ extension MineConversationsController: UITextFieldDelegate {
         }
         return true
     }
+}
+
+extension MineConversationsController: PresenceDidChangedListener {
+    func presenceStatusChanged(users: [String]) {
+        self.showUserStatus()
+    }
+    
+    
 }

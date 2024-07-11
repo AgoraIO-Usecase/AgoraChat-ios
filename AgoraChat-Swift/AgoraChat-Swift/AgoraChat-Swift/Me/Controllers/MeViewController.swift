@@ -14,7 +14,7 @@ final class MeViewController: UIViewController {
     private var menusData: [[String:Any]] {
         [
             ["sectionTitle":"Setting".localized(),"sectionData":[["title":"online_status".localized(),"icon":"online_status","detail":PresenceManager.shared.currentUserStatus],["title":"Personal info".localized(),"icon":"userinfo"],["title":"General".localized(),"icon":"general"],["title":"Notification".localized(),"icon":"notification"],["title":"Privacy".localized(),"icon":"privacy"],["title":"About".localized(),"icon":"about"]]],
-            ["sectionTitle":"Login".localized(),"sectionData":[["title":"Logout".localized()]]]
+            ["sectionTitle":"Account".localized(),"sectionData":[["title":"Logout".localized()]]]
         ]
     }
     
@@ -172,21 +172,11 @@ extension MeViewController: UITableViewDelegate,UITableViewDataSource {
             let detail = rowDatas[safe:indexPath.row]?["detail"] as? String
             let imageName = rowDatas[safe:indexPath.row]?["icon"] ?? ""
             cell?.icon.image = UIImage(named: imageName)
+            cell?.content.text = title
             if let rowTitle = title,rowTitle == "Logout".localized() {
-                cell?.textLabel?.text = title
-                cell?.textLabel?.isHidden = false
-                cell?.icon.isHidden = true
-                cell?.content.isHidden = true
-                cell?.detail.isHidden = true
+                cell?.refreshViews(hasIcon: false)
             } else {
-                cell?.content.text = title
-                cell?.detail.text = detail
-                cell?.icon.isHidden = false
-                cell?.textLabel?.isHidden = true
-                cell?.content.isHidden = false
-                cell?.detail.isHidden = false
-                cell?.accessoryType = .disclosureIndicator
-                cell?.content.textColor = Theme.style == .dark ? UIColor.theme.neutralColor98:UIColor.theme.neutralColor1
+                cell?.refreshViews(hasIcon: true)
             }
         }
         

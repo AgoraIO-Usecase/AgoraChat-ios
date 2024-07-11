@@ -61,7 +61,22 @@ final class MineContactDetailViewController: ContactInfoViewController {
         
     }
     
+    private func updateHeader() {
+        if let user = EaseChatUIKitContext.shared?.userCache?[self.profile.id] {
+            if !user.nickname.isEmpty {
+                self.header.nickName.text = user.nickname
+            }
+            if !user.remark.isEmpty {
+                self.header.nickName.text = user.remark
+            }
+            if !user.avatarURL.isEmpty {
+                self.header.avatarURL = user.avatarURL
+            }
+        }
+    }
+    
     private func requestInfo() {
+        self.updateHeader()
         ChatClient.shared().userInfoManager?.fetchUserInfo(byId: [self.profile.id], type: [0,1],completion: { [weak self] infoMap, error in
             guard let userId = self?.profile.id else { return }
             DispatchQueue.main.async {
@@ -71,15 +86,14 @@ final class MineContactDetailViewController: ContactInfoViewController {
                     if remark.isEmpty {
                         remark = info.nickname ?? userId
                     }
-                    self?.header.nickName.text = remark
-                    self?.header.detailText = userId
-                    self?.header.avatarURL = info.avatarUrl
                     if let profiles = EaseChatProfile.select(where: "id = ?",values: [userId]) as? [EaseChatProfile],let profile = profiles.first(where: { $0.id == userId }) {
                         profile.nickname = info.nickname ?? ""
                         profile.avatarURL = info.avatarUrl ?? ""
                         profile.updateFFDB()
                         EaseChatUIKitContext.shared?.userCache?[userId]?.nickname = info.nickname ?? ""
                         EaseChatUIKitContext.shared?.userCache?[userId]?.avatarURL = info.avatarUrl ?? ""
+                        EaseChatUIKitContext.shared?.chatCache?[userId]?.nickname = info.nickname ?? ""
+                        EaseChatUIKitContext.shared?.chatCache?[userId]?.avatarURL = info.avatarUrl ?? ""
                     } else {
                         let profile = EaseChatProfile()
                         profile.id = userId
@@ -92,7 +106,11 @@ final class MineContactDetailViewController: ContactInfoViewController {
                         } else {
                             EaseChatUIKitContext.shared?.userCache?[userId] = profile
                         }
+                        EaseChatUIKitContext.shared?.chatCache?[userId]?.nickname = info.nickname ?? ""
+                        EaseChatUIKitContext.shared?.chatCache?[userId]?.avatarURL = info.avatarUrl ?? ""
                     }
+                    
+                    self?.updateHeader()
                 } else {
                     self?.showToast(toast: "fetchUserInfo error:\(error?.errorDescription ?? "")")
                 }

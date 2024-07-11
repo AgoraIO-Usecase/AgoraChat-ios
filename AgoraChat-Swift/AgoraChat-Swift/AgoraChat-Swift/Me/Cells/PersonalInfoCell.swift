@@ -26,11 +26,15 @@ final class PersonalInfoCell: UITableViewCell {
         UIView(frame: CGRect(x: self.titleLabel.frame.minX, y: self.contentView.frame.height - 0.5, width: self.frame.width-self.titleLabel.frame.minX, height: 0.5))
     }()
     
+    lazy var indicator: UIImageView = {
+        UIImageView(frame: CGRect(x: self.frame.width-37, y: 0, width: 20, height: 20)).contentMode(.scaleAspectFill).backgroundColor(.clear)
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = .clear
         self.contentView.backgroundColor = .clear
-        self.contentView.addSubViews([self.titleLabel,self.detailLabel,self.detailImage,self.separatorLine])
+        self.contentView.addSubViews([self.titleLabel,self.detailLabel,self.detailImage,self.indicator,self.separatorLine])
         Theme.registerSwitchThemeViews(view: self)
         self.switchTheme(style: Theme.style)
     }
@@ -45,6 +49,7 @@ final class PersonalInfoCell: UITableViewCell {
         self.detailLabel.frame = CGRect(x: self.frame.width/2.0, y: 16, width: self.frame.width/2.0-30, height: 22)
         self.detailImage.frame = CGRect(x: self.frame.width-76, y: 7, width: 40, height: 40)
         self.separatorLine.frame = CGRect(x: self.titleLabel.frame.minX, y: self.contentView.frame.height - 0.5, width: self.frame.width, height: 0.5)
+        self.indicator.frame = CGRect(x: self.frame.width-28, y: (self.frame.height-20)/2.0, width: 10, height: 20)
     }
     
     func refresh(title: String, detail: String) {
@@ -67,7 +72,7 @@ extension PersonalInfoCell: ThemeSwitchProtocol {
         self.titleLabel.textColor(style == .dark ? UIColor.theme.neutralColor98:UIColor.theme.neutralColor1)
         self.detailLabel.textColor(style == .dark ? UIColor.theme.neutralColor6:UIColor.theme.neutralColor5)
         self.separatorLine.backgroundColor = style == .dark ? UIColor.theme.neutralColor2:UIColor.theme.neutralColor9
-        self.accessoryView?.tintColor = style == .dark ? UIColor.theme.neutralColor5:UIColor.theme.neutralColor3
-        self.accessoryView?.subviews.first?.tintColor = style == .dark ? UIColor.theme.neutralColor5:UIColor.theme.neutralColor3
+        let image = UIImage(named: "chevron_right", in: .chatBundle, with: nil)?.withTintColor(style == .dark ? UIColor.theme.neutralColor5:UIColor.theme.neutralColor3)
+        self.indicator.image = image
     }
 }

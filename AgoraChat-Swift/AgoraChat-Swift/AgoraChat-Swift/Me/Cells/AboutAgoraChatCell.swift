@@ -26,8 +26,18 @@ final class AboutAgoraChatCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let axisX = self.textLabel?.frame.minX ?? 16
-        self.separatorLine.frame = CGRect(x: axisX, y: self.contentView.frame.height - 0.5, width: self.frame.width-axisX, height: 0.5)
+        self.refreshViews()
+    }
+    
+    func refreshViews() {
+        var axisX = self.textLabel?.frame.minX ?? 16
+        if self.imageView?.image == nil {
+            self.separatorLine.frame = CGRect(x: axisX, y: self.contentView.frame.height - 0.5, width: self.frame.width-axisX, height: 0.5)
+        } else {
+            axisX = 16
+            self.separatorLine.frame = CGRect(x: axisX, y: self.contentView.frame.height - 0.5, width: self.frame.width-axisX, height: 0.5)
+        }
+        
     }
     
     required init?(coder: NSCoder) {

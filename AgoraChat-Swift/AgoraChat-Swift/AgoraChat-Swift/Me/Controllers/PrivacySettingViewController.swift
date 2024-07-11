@@ -71,7 +71,6 @@ extension PrivacySettingViewController: UITableViewDelegate,UITableViewDataSourc
         cell?.valueChanged = { [weak self] in
             self?.switchChanged(isOn: $0, indexPath: $1)
         }
-        cell?.accessoryType = withSwitch ? .none:.disclosureIndicator
         return cell ?? UITableViewCell()
     }
         

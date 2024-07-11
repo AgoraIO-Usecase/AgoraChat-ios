@@ -72,7 +72,6 @@ extension PersonalInfoViewController: UITableViewDelegate,UITableViewDataSource 
             cell?.refresh(title: title, detail: detail)
         }
         
-        cell?.accessoryType = .disclosureIndicator
         cell?.selectionStyle = .none
         return cell ?? UITableViewCell()
     }

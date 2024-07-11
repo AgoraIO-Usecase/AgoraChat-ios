@@ -34,10 +34,6 @@ final class MainViewController: UITabBarController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        if UIApplication.shared.chat.keyWindow != nil {
-            tabBar.frame = CGRect(x: 0, y: ScreenHeight-BottomBarHeight-49, width: ScreenWidth, height: BottomBarHeight+49)
-        }
     }
 
     override func viewDidLoad() {
@@ -64,7 +60,7 @@ final class MainViewController: UITabBarController {
     
     private func callKitSet() {
         let callConfig = AgoraChatCallConfig()
-        callConfig.agoraAppId = "15cb0d28b87b425ea613fc46f7c9f974"
+        callConfig.agoraAppId = CallKitAppId
         callConfig.enableRTCTokenValidate = true
         AgoraChatCallManager.shared().initWith(callConfig, delegate: self)
     }
@@ -81,20 +77,11 @@ final class MainViewController: UITabBarController {
         nav3.interactivePopGestureRecognizer?.isEnabled = true
         nav3.interactivePopGestureRecognizer?.delegate = self
         self.viewControllers = [nav1, nav2,nav3]
-//        self.tabBar.isTranslucent = false
         self.view.backgroundColor = UIColor.theme.neutralColor98
         self.tabBar.backgroundColor = UIColor.theme.barrageDarkColor8
         self.tabBar.barTintColor = UIColor.theme.barrageDarkColor8
-//        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
-//        blurView.frame = CGRect(x: 0, y: 0, width: ScreenWidth, height: BottomBarHeight+49)
-//        blurView.alpha = 0.8
-//        blurView.insetsLayoutMarginsFromSafeArea = false
-//        blurView.layoutMargins = .zero
-//        self.tabBar.insertSubview(blurView, at: 0)
         self.tabBar.isTranslucent = true
         self.tabBar.barStyle = .default
-        self.tabBar.backgroundImage = UIImage()
-        self.tabBar.shadowImage = UIImage()
     }
 
 }
@@ -104,6 +91,9 @@ extension MainViewController: UIGestureRecognizerDelegate {
         if gestureRecognizer == self.navigationController?.interactivePopGestureRecognizer {
             return self.navigationController!.viewControllers.count > 1
         }
+        if UIViewController.currentController is MineConversationsController || UIViewController.currentController is MineContactsViewController || UIViewController.currentController is MeViewController {
+            return false
+        }
         return true
     }
 }
@@ -111,10 +101,6 @@ extension MainViewController: UIGestureRecognizerDelegate {
 extension MainViewController: ThemeSwitchProtocol {
     
     func switchTheme(style: ThemeStyle) {
-//        if let blur = self.tabBar.viewWithTag(0) as? UIVisualEffectView {
-//            blur.effect = style == .dark ? UIBlurEffect(style: .dark): UIBlurEffect(style: .light)
-//            blur.alpha = style == .dark ? 1:0.8
-//        }
         self.tabBar.barTintColor = style == .dark ? UIColor.theme.barrageLightColor8:UIColor.theme.barrageDarkColor8
         self.view.backgroundColor = style == .dark ? UIColor.theme.neutralColor1:UIColor.theme.neutralColor98
         self.tabBar.backgroundColor = style == .dark ? UIColor.theme.barrageLightColor8:UIColor.theme.barrageDarkColor8
@@ -347,15 +333,19 @@ extension MainViewController: AgoraChatCallDelegate {
     }
     
     func callDidOccurError(_ aError: AgoraChatCallError) {
-        
+        DispatchQueue.main.async {
+            UIViewController.currentController?.showToast(toast: "call error occur code:\(aError.errCode) description:\(aError.errDescription)  type:\(aError.aErrorType)")
+        }
     }
     
     func callDidRequestRTCToken(forAppId aAppId: String, channelName aChannelName: String, account aUserAccount: String, uid aAgoraUid: Int) {
-        EaseChatBusinessRequest.shared.sendGETRequest(api: .fetchRTCToken(aChannelName, aUserAccount,"\(aAgoraUid)"), params: [:]) { result, error in
+        EaseChatBusinessRequest.shared.sendGETRequest(api: .fetchRTCToken(aChannelName, aUserAccount), params: [:]) { result, error in
             if error == nil {
-                if let code = result?["code"] as? String,code == "RES_OK" {
+                if let code = result?["statusCode"] as? Int,code == 200 {
                     if let token = result?["accessToken"] as? String{
-                        AgoraChatCallManager.shared().setRTCToken(token, channelName: aChannelName, uid: UInt(aAgoraUid))
+                        if let callUserId = result?["agoraUid"] as? String {
+                            AgoraChatCallManager.shared().setRTCToken(token, channelName: aChannelName, uid: UInt(callUserId) ?? 0)
+                        }
                     }
                 }
             } else {

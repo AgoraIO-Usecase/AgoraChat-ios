@@ -9,17 +9,19 @@
 "Chats" = "Chats";
 "Contacts" = "Contacts";
 " and " = " and ";
-"Login" = "Login";
-"Logout" = "Logout";
+"Login" = "Log In";
+"Logout" = "Log out";
 "Service" = "Service";
-"Setting" = "Setting";
+"Setting" = "Settings";
 "Privacy Policy" = "Privacy Policy";
 "Get Code" = "Get Code";
 "Get After" = "Get After";
 "Mobile Number" = "Phone Number";
 "PinCodePlaceHolder" = "Verification code";
 "PhoneError" = "Please enter the correct mobile number.";
+"AgreeProtocol" = "Agree to Easemob Terms & Privacy";
 "PinCodeError" = "Please enter the correct verification code";
+"Login Easemob Chat" = "Easemob IM";
 "Please tick to agree" = "Please tick to agree ";
 
 "Official Website" = "Official Website";
@@ -28,7 +30,6 @@
 "Channel Cooperation" = "Channel Cooperation";
 "Suggestions" = "Suggestions";
 
-"Personal Info" = "Personal Info";
 "Avatar" = "Avatar";
 "Nickname" = "Nickname";
 
@@ -58,10 +59,10 @@
 "PasswordError" = "Please enter the correct password.";
 "UserIdError" = "Please enter the correct user id.";
 
+"EeaseMobID" = "EeaseMob ID";
 "Password" = "Password";
-"Personal info" = "Personal info";
 "General" = "General";
-"Notification" = "Notification";
+"Notification" = "Message Notifications";
 "About" = "About";
 "message_translate" = "Translation";
 "group_topic" = "Thread";
@@ -99,8 +100,9 @@
 "block_list" = "Block List";
 "Target Language" = "Target Language";
 "After setting, long-pressing a message will translate it into the specified target language." = "After setting, long-pressing a message will translate it into the specified target language.";
-"online_status" = "Online Status";
+"online_status" = "User Status";
 "Custom Status" = "Custom";
+"Personal Info" = "Profile";
 "Away" = "Away";
 "Busy" = "Busy";
 "The length of the custom status should be less than 20 characters" = "The length of the custom status should be less than 20 characters";
@@ -112,9 +114,9 @@
 "translate_language_setting_alert" = "After setting, long-pressing a message will translate it into the specified target language.";
 "Typing Alert" = "Turn on,other party'll saw your typing";
 "Block Alert" = "Enable the friend blacklist feature";
-"Login Alert" = "you'll be registered as a new user upon you first login.";
 
-"Agora Chat Documentation" = "Agora Chat Documentation";
-"Contact Sales" = "Contact Sales";
-"Demo App Github Repo" = "Demo App Github Repo";
-"More" = "More";
+
+"Account" = "Account";
+"Login Alert" = "you'll be registered as a new user on you first login";
+
+"and the call duration is " = "and the call duration is ";

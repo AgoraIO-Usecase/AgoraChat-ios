@@ -82,8 +82,8 @@ public class EaseChatError: Error,Convertible {
             if error == nil,response?.statusCode ?? 0 == 200 {
                 callBack(data?.chat.toDictionary(),nil)
             } else {
-                if error == nil {
-                    let errorMap = data?.chat.toDictionary() ?? [:]
+                if error == nil,let data = data,!data.isEmpty {
+                    let errorMap = data.chat.toDictionary() ?? [:]
                     let someError = model(from: errorMap, type: EaseChatError.self) as? Error
                     if let code = errorMap["code"] as? String,code == "401" {
                         NotificationCenter.default.post(name: Notification.Name("BackLogin"), object: nil)
@@ -339,16 +339,16 @@ public extension EaseChatBusinessRequest {
     /// - Parameter api: ``EaseChatBusinessApi``
     /// - Returns: uri string
     func convertApi(api: EaseChatBusinessApi) -> String {
-        var uri = ""
+        var uri = "/app/chat/"
         switch api {
         case .login(_):
-            uri += "/app/chat/user/login"
+            uri += "user/login"
         case .fetchGroupAvatar(let groupId):
-            uri += "/group/\(groupId)/avatarurl"
-        case .fetchRTCToken(let channelId,let userId,let agoraUserId):
-            uri = "/token/rtc/channel/\(channelId)/agorauid/\(agoraUserId)?userAccount=\(userId)"
+            uri += "group/\(groupId)/avatarurl"
+        case .fetchRTCToken(let channelId,let userId):
+            uri += "token/rtc/channel/\(channelId)?userAccount=\(userId)"
         case .mirrorCallUserIdToChatUserId(let channelId,let userId):
-            uri = "/agora/channel/mapper?channelName=\(channelId)&userAccount=\(userId)"
+            uri += "agora/channel/mapper?channelName=\(channelId)&userAccount=\(userId)"
         }
         return uri
     }

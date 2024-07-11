@@ -62,7 +62,6 @@
 
 "Password" = "密码";
 
-"Personal info" = "个人信息";
 "General" = "通用";
 "Notification" = "消息通知";
 "About" = "关于";
@@ -106,7 +105,7 @@
 "block_list" = "黑名单";
 "Target Language" = "目标语言";
 "After setting, long-pressing a message will translate it into the specified target language." = "设置后，长按消息将翻译为指定的目标语言";
-"online_status" = "在线状态";
+"online_status" = "用户状态";
 "Custom Status" = "自定义";
 "Away" = "离开";
 "Busy" = "忙碌";
@@ -128,3 +127,9 @@
 "Contact Sales" = "联系销售";
 "Demo App Github Repo" = "Demo源码地址";
 "More" = "更多";
+
+
+"Account" = "账号";
+
+
+"and the call duration is " = "通话时长";

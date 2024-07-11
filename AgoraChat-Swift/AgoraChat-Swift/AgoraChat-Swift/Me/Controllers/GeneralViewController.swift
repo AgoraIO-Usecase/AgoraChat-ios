@@ -95,7 +95,6 @@ extension GeneralViewController: UITableViewDelegate,UITableViewDataSource {
         }
         cell?.indexPath = indexPath
         if let info = self.datas[safe: indexPath.section]?[safe: indexPath.row] {
-            cell?.accessoryType = info.withSwitch ? .none:.disclosureIndicator
             cell?.refresh(info: info)
         }
         cell?.valueChanged = { [weak self] in
@@ -107,6 +106,7 @@ extension GeneralViewController: UITableViewDelegate,UITableViewDataSource {
     
     func switchChanged(isOn: Bool, indexPath: IndexPath) {
         if let title = self.datas[safe: indexPath.section]?[safe: indexPath.row]?.title {
+            self.datas[safe: indexPath.section]?[safe: indexPath.row]?.switchValue = isOn
             switch title {
             case "dark_mode".localized():
                 Theme.switchTheme(style: isOn ? .dark:.light)
@@ -186,6 +186,6 @@ extension GeneralViewController: QLPreviewControllerDataSource {
 extension GeneralViewController: ThemeSwitchProtocol {
     func switchTheme(style: ThemeStyle) {
         self.view.backgroundColor = style == .dark ? UIColor.theme.neutralColor1:UIColor.theme.neutralColor98
-        self.menuList.reloadData()
+        self.menuList.reloadSections(IndexSet(arrayLiteral: 0), with: .none)
     }
 }

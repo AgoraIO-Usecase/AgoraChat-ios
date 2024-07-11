@@ -16,6 +16,8 @@ let callValue = "rtcCallWithAgora"
 final class MineMessageListViewController: MessageListController {
     
     private var otherPartyStatus = ""
+    
+    private var imageEntity = MessageEntity()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,12 +36,7 @@ final class MineMessageListViewController: MessageListController {
     }
     
     @objc func subscribeUserStatus() {
-        PresenceManager.shared.usersStatusChanged = { [weak self] users in
-            guard let `self` = self else { return }
-            if users.contains(self.profile.id), let presence = PresenceManager.shared.presences[self.profile.id] {
-                self.showUserStatus(state: PresenceManager.fetchStatus(presence: presence))
-            }
-        }
+        PresenceManager.shared.addHandler(handler: self)
         PresenceManager.shared.subscribe(members: [self.profile.id]) { [weak self] presences, error in
             if let presence = presences?.first {
                 self?.showUserStatus(state: PresenceManager.fetchStatus(presence: presence))
@@ -109,11 +106,9 @@ final class MineMessageListViewController: MessageListController {
     override func rightItemsAction(indexPath: IndexPath?) {
         guard let idx = indexPath else { return }
         switch idx.row {
-        case 0: self.showPinnedMessages()
+        case 0: self.chatType == .chat ? self.callAction():self.showPinnedMessages()
         case 1:
-            if self.chatType == .chat {
-                self.callAction()
-            } else {
+            if self.chatType == .group {
                 !Appearance.chat.contentStyle.contains(.withMessageThread) ? self.callAction():self.viewTopicList()
             }
         case 2: self.callAction()
@@ -124,19 +119,15 @@ final class MineMessageListViewController: MessageListController {
     
     
     private func callAction() {
-        if self.chatType == .chat {
-            DialogManager.shared.showActions(actions: [ActionSheetItem(title: "Audio Call".localized(), type: .normal, tag: "AudioCall"),ActionSheetItem(title: "Video Call".localized(), type: .normal, tag: "VideoCall")]) { [weak self] item in
-                self?.processItemAction(item: item)
-            }
-        } else {
-            self.processItemAction(item: ActionSheetItem())
+        DialogManager.shared.showActions(actions: [ActionSheetItem(title: "Audio Call".localized(), type: .normal, tag: "AudioCall"),ActionSheetItem(title: "Video Call".localized(), type: .normal, tag: "VideoCall")]) { [weak self] item in
+            self?.processItemAction(item: item)
         }
     }
     
     private func processItemAction(item: ActionSheetItemProtocol) {
-        var callType = AgoraChatCallType.type1v1Audio
+        var callType = self.chatType == .chat ? AgoraChatCallType.type1v1Audio:AgoraChatCallType.typeMultiAudio
         if item.tag == "VideoCall".localized() {
-            callType = .type1v1Video
+            callType = self.chatType == .chat ? AgoraChatCallType.type1v1Video:AgoraChatCallType.typeMultiVideo
         }
         
         if self.chatType == .chat {
@@ -210,4 +201,65 @@ final class MineMessageListViewController: MessageListController {
         }
     }
 
+    override func messageBubbleClicked(message: MessageEntity) {
+        switch message.message.body.type {
+        case .image:
+            if let body = message.message.body as? ChatImageMessageBody {
+                self.filePath = body.localPath
+                self.viewImage(entity: message)
+            }
+        case .file,.video:
+            if let body = message.message.body as? ChatFileMessageBody {
+                self.filePath = body.localPath ?? ""
+            }
+            self.openFile()
+        case .custom:
+            if let body = message.message.body as? ChatCustomMessageBody,body.event == EaseChatUIKit_user_card_message {
+                self.viewContact(body: body)
+            }
+            if let body = message.message.body as? ChatCustomMessageBody,body.event == EaseChatUIKit_alert_message {
+                self.viewAlertDetail(message: message.message)
+            }
+        case .combine:
+            self.viewHistoryMessages(entity: message)
+        default:
+            break
+        }
+    }
+    
+    func viewImage(entity: MessageEntity) {
+        self.imageEntity = entity
+        let preview = ImagePreviewController(with: self)
+        preview.selectedIndex = 0
+        preview.presentDuration = 0.3
+        preview.dissmissDuration = 0.3
+        self.present(preview, animated: true)
+        
+    }
+}
+
+extension MineMessageListViewController: ImageBrowserProtocol {
+    
+    func numberOfPhotos(with browser: ImagePreviewController) -> Int {
+        1
+    }
+    
+    func photo(of index: Int, with browser: ImagePreviewController) -> PreviewImage {
+        if let row = self.messageContainer.messages.firstIndex(of: self.imageEntity),let cell = self.messageContainer.messageList.cellForRow(at: IndexPath(item: row, section: 0)) as? ImageMessageCell,let image = cell.content.image {
+            return PreviewImage(image: image, originalView: cell.content)
+        }
+        return PreviewImage(image: UIImage())
+    }
+    
+    
+}
+
+extension MineMessageListViewController: PresenceDidChangedListener {
+    func presenceStatusChanged(users: [String]) {
+        if users.contains(self.profile.id), let presence = PresenceManager.shared.presences[self.profile.id] {
+            self.showUserStatus(state: PresenceManager.fetchStatus(presence: presence))
+        }
+    }
+    
+    
 }

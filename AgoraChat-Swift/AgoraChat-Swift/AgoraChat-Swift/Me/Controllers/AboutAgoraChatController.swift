@@ -58,6 +58,7 @@ extension AboutAgoraChatController: UITableViewDelegate,UITableViewDataSource {
         }
         cell?.selectionStyle =  .none
         cell?.textLabel?.text = self.infos[safe:indexPath.row]?["title"]
+        cell?.textLabel?.font = UIFont.theme.labelLarge
         cell?.detailTextLabel?.text = self.infos[safe:indexPath.row]?["content"]
         return cell ?? AboutAgoraChatCell()
     }

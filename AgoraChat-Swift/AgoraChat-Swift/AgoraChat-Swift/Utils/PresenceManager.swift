@@ -1,6 +1,6 @@
 //
 //  PresenceManager.swift
-//  AgoraChat-Swift
+//  EaseChatDemo
 //
 //  Created by 朱继超 on 2024/6/6.
 //
@@ -9,12 +9,30 @@ import UIKit
 import chat_uikit
 import AgoraChat
 
+@objc public protocol PresenceDidChangedListener: NSObjectProtocol {
+    func presenceStatusChanged(users: [String])
+}
+
 class PresenceManager: NSObject {
+    
+    private var handlers:NSHashTable<PresenceDidChangedListener> = NSHashTable<PresenceDidChangedListener>.weakObjects()
+    
+    func addHandler(handler: PresenceDidChangedListener) {
+        if self.handlers.contains(handler) {
+            return
+        }
+        self.handlers.add(handler)
+    }
+    
+    func removeHandler(handler: PresenceDidChangedListener) {
+        self.handlers.remove(handler)
+    }
+    
     enum State: String {
         case offline = "Offline"
         case online = "Online"
         case busy = "Busy"
-        case doNotDisturb = "Do not disturb"
+        case doNotDisturb = "Do Not Disturb"
         case away = "Away"
         case custom = "Custom status"
     }
@@ -171,7 +189,9 @@ extension PresenceManager: AgoraChatPresenceManagerDelegate {
         }
         if presences.count > 0 {
             DispatchQueue.main.async {
-                self.usersStatusChanged?(users)
+                for handler in self.handlers.allObjects {
+                    handler.presenceStatusChanged(users: users)
+                }
             }
         }
     }
@@ -186,7 +206,11 @@ extension PresenceManager: AgoraChatClientDelegate {
             for detail in statusDetails {
                 detail.status = 0
             }
-            self.usersStatusChanged?([currentUsername])
+            DispatchQueue.main.async {
+                for handler in self.handlers.allObjects {
+                    handler.presenceStatusChanged(users: [currentUsername])
+                }
+            }
         }
     }
 }

@@ -9,11 +9,8 @@ import Foundation
 
 
 public protocol GCDTimer {
-    // 启动
     func resume()
-    // 暂停
     func suspend()
-    // 取消
     func cancel()
 }
 
@@ -35,9 +32,8 @@ public class GCDTimerMaker {
 
 private class TimerMaker: GCDTimer {
     
-    /// 当前Timer 运行状态
     enum TimerState {
-        case runing
+        case running
         case stoped
     }
     
@@ -63,8 +59,8 @@ private class TimerMaker: GCDTimer {
     
     
     func resume() {
-        guard state != .runing else { return }
-        state = .runing
+        guard state != .running else { return }
+        state = .running
         timer?.resume()
     }
     

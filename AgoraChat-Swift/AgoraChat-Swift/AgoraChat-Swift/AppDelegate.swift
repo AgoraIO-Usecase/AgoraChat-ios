@@ -56,6 +56,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         //Set up EaseChatUIKit
         _ = EaseChatUIKitClient.shared.setup(option: options)
         EaseChatUIKitClient.shared.registerUserStateListener(self)
+        _ = PresenceManager.shared
     }
     
     private func setupEaseChatUIKitConfig() {
@@ -100,6 +101,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         ComponentsRegister.shared.MessageViewController = MineMessageListViewController.self
         ComponentsRegister.shared.ContactInfoController = MineContactDetailViewController.self
         ComponentsRegister.shared.GroupInfoController = MineGroupDetailViewController.self
+        ComponentsRegister.shared.MessageRenderEntity = MineMessageEntity.self
     }
     
     
