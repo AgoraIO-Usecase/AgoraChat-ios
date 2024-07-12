@@ -40,17 +40,18 @@ final class MineContactDetailViewController: ContactInfoViewController {
             case .online: self?.updateUserState(state: .online)
             case .offline: self?.updateUserState(state: .offline)
             case .busy:
-                self?.navigation.status.backgroundColor = .clear
-                self?.navigation.status.image(PresenceManager.presenceImagesMap[.busy] as? UIImage)
+                self?.header.status.image = nil
+                self?.header.status.backgroundColor = Theme.style == .dark ? UIColor.theme.errorColor5:UIColor.theme.errorColor6
+                self?.header.status.image(PresenceManager.presenceImagesMap[.busy] as? UIImage)
             case .away:
-                self?.navigation.status.backgroundColor = .clear
-                self?.navigation.status.image(PresenceManager.presenceImagesMap[.away] as? UIImage)
+                self?.header.status.backgroundColor = Theme.style == .dark ? UIColor.theme.neutralColor1:UIColor.theme.neutralColor98
+                self?.header.status.image(PresenceManager.presenceImagesMap[.away] as? UIImage)
             case .doNotDisturb:
-                self?.navigation.status.backgroundColor = .clear
-                self?.navigation.status.image(PresenceManager.presenceImagesMap[.doNotDisturb] as? UIImage)
+                self?.header.status.backgroundColor = Theme.style == .dark ? UIColor.theme.neutralColor1:UIColor.theme.neutralColor98
+                self?.header.status.image(PresenceManager.presenceImagesMap[.doNotDisturb] as? UIImage)
             case .custom:
-                self?.navigation.status.backgroundColor = .clear
-                self?.navigation.status.image(PresenceManager.presenceImagesMap[.custom] as? UIImage)
+                self?.header.status.backgroundColor = Theme.style == .dark ? UIColor.theme.neutralColor1:UIColor.theme.neutralColor98
+                self?.header.status.image(PresenceManager.presenceImagesMap[.custom] as? UIImage)
             }
             
         }
