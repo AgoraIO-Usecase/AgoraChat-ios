@@ -13,7 +13,7 @@ final class MeViewController: UIViewController {
     
     private var menusData: [[String:Any]] {
         [
-            ["sectionTitle":"Setting".localized(),"sectionData":[["title":"online_status".localized(),"icon":"online_status","detail":PresenceManager.shared.currentUserStatus],["title":"Personal info".localized(),"icon":"userinfo"],["title":"General".localized(),"icon":"general"],["title":"Notification".localized(),"icon":"notification"],["title":"Privacy".localized(),"icon":"privacy"],["title":"About".localized(),"icon":"about"]]],
+            ["sectionTitle":"Setting".localized(),"sectionData":[["title":"online_status".localized(),"icon":"online_status","detail":PresenceManager.shared.currentUserStatus],["title":"Personal Info".localized(),"icon":"userinfo"],["title":"General".localized(),"icon":"general"],["title":"Notification".localized(),"icon":"notification"],["title":"Privacy".localized(),"icon":"privacy"],["title":"About".localized(),"icon":"about"]]],
             ["sectionTitle":"Account".localized(),"sectionData":[["title":"Logout".localized()]]]
         ]
     }
@@ -188,7 +188,7 @@ extension MeViewController: UITableViewDelegate,UITableViewDataSource {
         if let rowDatas = self.menusData[safe:indexPath.section]?["sectionData"] as? Array<Dictionary<String,String>>,let title = rowDatas[safe:indexPath.row]?["title"] as? String {
             switch title {
             case "online_status".localized(): self.showOnlineStatusDialog()
-            case "Personal info".localized(): self.viewProfile()
+            case "Personal Info".localized(): self.viewProfile()
             case "General".localized(): self.viewGeneral()
             case "Notification".localized(): self.viewNotification()
             case "About".localized(): self.viewAbout()
