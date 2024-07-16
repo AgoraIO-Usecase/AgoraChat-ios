@@ -6,7 +6,7 @@ This guide introduce for chat_uikit(V2.0.0).The new chat_uikit is committed to p
 
 If you want to experience the functions of chat_uikit, you can scan the following QR code to try the demo.
 
-![Demo](./Documentation/demo.png)
+![Demo](./AgoraChat-Swift/Documentation/demo.png)
 
 # chat_uikit Guide
 
