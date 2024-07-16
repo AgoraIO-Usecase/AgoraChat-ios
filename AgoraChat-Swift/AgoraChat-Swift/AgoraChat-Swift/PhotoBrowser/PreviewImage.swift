@@ -29,14 +29,12 @@ import UIKit
 
 @objc public protocol ImageBrowserProtocol {
     
-    //需要显示图片的数量
     func numberOfPhotos(with browser: ImagePreviewController) -> Int
-    //序号对应显示的图片
-    func photo(of index: Int, with browser: ImagePreviewController) -> PreviewImage
     
-    //当前显示的图片序号
+    func photo(of index: Int, with browser: ImagePreviewController) -> PreviewImage
+
     @objc optional func didDisplayPhoto(at index: Int, with browser: ImagePreviewController) -> Void
-    //长按序号为index的图片，可以自己在这里添加一些菜单操作
+    
     @objc optional func didLongPressPhoto(at index: Int, with browser: ImagePreviewController) -> Void
     
 }

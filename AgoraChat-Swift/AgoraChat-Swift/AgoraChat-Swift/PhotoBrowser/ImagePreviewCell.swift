@@ -61,7 +61,6 @@ class ImagePreviewCell: UICollectionViewCell {
     }
     
     deinit {
-//        print("PhotoCell销毁")
     }
     
     override func layoutSubviews() {
