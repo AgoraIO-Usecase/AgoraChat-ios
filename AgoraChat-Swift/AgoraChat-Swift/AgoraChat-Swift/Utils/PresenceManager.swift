@@ -122,11 +122,6 @@ class PresenceManager: NSObject {
                             self?.presences[presence.publisher] = presence
                         }
                     }
-                    if presences.count > 0 {
-                        DispatchQueue.main.async {
-                            self?.usersStatusChanged?(users)
-                        }
-                    }
                 }
                 DispatchQueue.main.async {
                     completion?(presences, error)
@@ -163,7 +158,6 @@ class PresenceManager: NSObject {
         }
         ChatClient.shared().presenceManager?.publishPresence(withDescription: description, completion: { [weak self] error in
             DispatchQueue.main.async {
-                self?.usersStatusChanged?([EaseChatUIKitContext.shared?.currentUserId ?? ""])
                 completion?(error)
             }
         })
