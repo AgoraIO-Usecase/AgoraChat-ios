@@ -667,11 +667,12 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "AgoraChat-Swift/AgoraChat-Swift.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 30;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = JC854K845H;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "AgoraChat-Swift/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = AgoraChat;
 				INFOPLIST_KEY_NSCameraUsageDescription = "For usage";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "For usage";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "For usage";
@@ -704,11 +705,12 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "AgoraChat-Swift/AgoraChat-Swift.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 30;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = JC854K845H;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "AgoraChat-Swift/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = AgoraChat;
 				INFOPLIST_KEY_NSCameraUsageDescription = "For usage";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "For usage";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "For usage";
