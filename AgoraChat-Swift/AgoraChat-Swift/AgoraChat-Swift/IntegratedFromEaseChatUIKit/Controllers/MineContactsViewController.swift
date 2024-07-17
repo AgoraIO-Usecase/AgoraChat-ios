@@ -93,7 +93,7 @@ final class MineContactsViewController: ContactViewController {
         self.limitCount.text = "0/20"
         PresenceManager.shared.publishPresence(description: status) { [weak self] error in
             if error != nil {
-                self?.showToast(toast: "发布状态失败！")
+                self?.showToast(toast: "Publish status failed!")
             }
         }
     }
@@ -116,7 +116,7 @@ final class MineContactsViewController: ContactViewController {
                 self.limitCount.text = "0/20"
                 PresenceManager.shared.publishPresence(description: self.customStatus) { [weak self] error in
                     if error != nil {
-                        self?.showToast(toast: "发布状态失败！")
+                        self?.showToast(toast: "Publish status failed!")
                     }
                 }
             }
@@ -131,7 +131,7 @@ final class MineContactsViewController: ContactViewController {
     private func publishCustomStatus() {
         PresenceManager.shared.publishPresence(description: self.customStatus) { [weak self] error in
             if error != nil {
-                self?.showToast(toast: "自定义状态设置失败")
+                self?.showToast(toast: "Publish status failed!")
             }
         }
     }
