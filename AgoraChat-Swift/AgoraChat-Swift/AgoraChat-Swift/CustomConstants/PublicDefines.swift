@@ -17,4 +17,4 @@ public let ServerHost: String = <#Your App Server Host#>
 
 // https://docs.agora.io/en/agora-chat/get-started/enable?platform=ios
 // Create a new app in the Agora Console, and use the App Id in the following code
-public let CallKitAppId = <#Agora App ID#>
+public let CallKitAppId: String = <#Agora App ID#>

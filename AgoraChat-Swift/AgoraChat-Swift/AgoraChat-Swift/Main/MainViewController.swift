@@ -281,7 +281,7 @@ extension MainViewController: ContactEmergencyListener {
     }
 }
 
-//MARK: - EaseCallDelegate
+//MARK: - AgoraChatCallDelegate
 extension MainViewController: AgoraChatCallDelegate {
     func multiCallDidInviting(withCurVC vc: UIViewController, callType: AgoraChatCallType, excludeUsers users: [String]?, ext aExt: [AnyHashable : Any]?) {
         if let groupId = aExt?["groupId"] as? String {
