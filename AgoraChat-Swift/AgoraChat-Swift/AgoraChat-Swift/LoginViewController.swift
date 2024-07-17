@@ -81,7 +81,7 @@ final class LoginViewController: UIViewController {
         super.viewDidLoad()
         self.view.addSubViews([self.background,self.appName,self.sdkVersion,self.userNameField,self.passwordField,self.loginContainer,self.login,self.protocolContainer,self.loadingView])
         self.loadingView.isHidden = true
-        self.sdkVersion.text = "V\(ChatClient.shared().version)"
+        self.sdkVersion.text = "V\(EaseChatUIKit_VERSION)"
         self.setContainerShadow()
         Theme.registerSwitchThemeViews(view: self)
         self.switchTheme(style: Theme.style)
