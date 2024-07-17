@@ -107,12 +107,7 @@ final class MeViewController: UIViewController {
     }
     
     private func listenToUserStatus() {
-        PresenceManager.shared.usersStatusChanged = { [weak self] users in
-            if let user = users.first(where: { EaseChatUIKitContext.shared?.currentUserId ?? "" == $0
-            }) {
-                self?.showUserStatus()
-            }
-        }
+        PresenceManager.shared.addHandler(handler: self)
     }
     
     private func showUserStatus() {
@@ -138,6 +133,14 @@ final class MeViewController: UIViewController {
         
     }
 
+}
+
+extension MeViewController: PresenceDidChangedListener {
+    func presenceStatusChanged(users: [String]) {
+        self.showUserStatus()
+    }
+    
+    
 }
 
 extension MeViewController: UITableViewDelegate,UITableViewDataSource {
