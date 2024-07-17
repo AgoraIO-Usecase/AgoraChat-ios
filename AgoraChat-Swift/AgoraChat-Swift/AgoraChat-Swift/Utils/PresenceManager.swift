@@ -57,7 +57,7 @@ class PresenceManager: NSObject {
         
     static let shared = PresenceManager()
     
-    class func fetchStatus(presence: AgoraChatPresence?) -> State {
+    class func status(with presence: AgoraChatPresence?) -> State {
         guard let presence = presence, let statusDetails = presence.statusDetails else {
             return .offline
         }
@@ -156,7 +156,7 @@ class PresenceManager: NSObject {
         if description == PresenceManager.showStatusMap[.online] {
             description = nil
         }
-        ChatClient.shared().presenceManager?.publishPresence(withDescription: description, completion: { [weak self] error in
+        ChatClient.shared().presenceManager?.publishPresence(withDescription: description, completion: { error in
             DispatchQueue.main.async {
                 completion?(error)
             }
@@ -164,9 +164,9 @@ class PresenceManager: NSObject {
     }
     
     func fetchPresenceStatus(userId: String, completion: @escaping (_ presence: AgoraChatPresence?, _ error: ChatError?) -> Void) {
-        ChatClient.shared().presenceManager?.fetchPresenceStatus([userId], completion: { presences, error in
+        ChatClient.shared().presenceManager?.fetchPresenceStatus([userId], completion: { [weak self] presences, error in
             if let presence = presences?.first {
-                self.presences[userId] = presence
+                self?.presences[userId] = presence
                 DispatchQueue.main.async {
                     completion(presence,error)
                 }
