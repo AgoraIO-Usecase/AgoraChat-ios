@@ -62,9 +62,6 @@ extension PrivacySettingViewController: UITableViewDelegate,UITableViewDataSourc
         if cell == nil {
             cell = DetailInfoListCell(style: .value2, reuseIdentifier: "PrivacySettingCell")
         }
-        let info = self.jsons[indexPath.row]
-        let withSwitch = info["withSwitch"] as? Bool ?? false
-        let switchValue = info["switchValue"] as? Bool ?? false
         if let info = self.datas[safe: indexPath.row] {
             cell?.refresh(info: info)
         }
@@ -81,7 +78,7 @@ extension PrivacySettingViewController: UITableViewDelegate,UITableViewDataSourc
     }
     
     func switchChanged(isOn: Bool, indexPath: IndexPath) {
-        if let title = self.datas[safe: indexPath.row]?.title {
+//        if let title = self.datas[safe: indexPath.row]?.title {
 //            switch title {
 //            case "typing_indicator".localized():
 //                Appearance.chat.enableTyping = isOn
@@ -90,7 +87,7 @@ extension PrivacySettingViewController: UITableViewDelegate,UITableViewDataSourc
 //                break
 //            }
             
-        }
+//        }
     }
     
 }

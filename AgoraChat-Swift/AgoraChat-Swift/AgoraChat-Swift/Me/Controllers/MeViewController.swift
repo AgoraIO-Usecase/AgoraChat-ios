@@ -172,7 +172,6 @@ extension MeViewController: UITableViewDelegate,UITableViewDataSource {
         
         if let rowDatas = self.menusData[safe:indexPath.section]?["sectionData"] as? Array<Dictionary<String,String>> {
             let title = rowDatas[safe:indexPath.row]?["title"] as? String
-            let detail = rowDatas[safe:indexPath.row]?["detail"] as? String
             let imageName = rowDatas[safe:indexPath.row]?["icon"] ?? ""
             cell?.icon.image = UIImage(named: imageName)
             cell?.content.text = title

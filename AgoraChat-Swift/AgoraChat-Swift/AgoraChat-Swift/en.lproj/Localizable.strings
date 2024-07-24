@@ -88,7 +88,7 @@
 "Modify Nickname" = "Modify nickname";
 "Modify failed" = "Modify failed";
 
-"message_translate_description" = "Long press a message translate into system language";
+"message_translate_description" = "Long press a message to translate it into your preferred language";
 "group_topic_description" = "Create a thread from a message within the group";
 "message_reaction_description" = "Long press a message to add emoji reactions";
 
@@ -112,7 +112,7 @@
 "typing_indicator" = "Typing Indicator";
 "translate_language_setting" = "Target Language";
 "translate_language_setting_alert" = "After setting, long-pressing a message will translate it into the specified target language.";
-"Typing Alert" = "Turn on,other party'll saw your typing";
+"Typing Alert" = "Let others know when you are typing a message.";
 "Block Alert" = "Enable the friend blacklist feature";
 
 

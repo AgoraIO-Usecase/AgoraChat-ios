@@ -85,6 +85,7 @@ public class EaseChatError: Error,Convertible {
                 if error == nil,let data = data,!data.isEmpty {
                     let errorMap = data.chat.toDictionary() ?? [:]
                     let someError = model(from: errorMap, type: EaseChatError.self) as? Error
+                    callBack(nil,someError)
                     if let code = errorMap["code"] as? String,code == "401" {
                         NotificationCenter.default.post(name: Notification.Name("BackLogin"), object: nil)
                     }

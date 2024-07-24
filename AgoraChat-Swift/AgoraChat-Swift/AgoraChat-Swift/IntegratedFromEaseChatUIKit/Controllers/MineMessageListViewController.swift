@@ -296,7 +296,7 @@ extension MineMessageListViewController: ImageBrowserProtocol {
     }
     
     @objc func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
-        if let error = error {
+        if error != nil {
             // Handle the error
             UIViewController.currentController?.showToast(toast: "Failed to save image.")
         } else {
