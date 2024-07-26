@@ -66,16 +66,16 @@ final class MeViewController: UIViewController {
                     profile.nickname = info.nickname ?? ""
                     profile.avatarURL = info.avatarUrl ?? ""
                     profile.updateFFDB()
-                    EaseChatUIKitContext.shared?.currentUser = profile
-                    EaseChatUIKitContext.shared?.userCache?[profile.id] = profile
+                    EaseChatUIKitContext.shared?.currentUser?.avatarURL = info.avatarUrl ?? ""
+                    EaseChatUIKitContext.shared?.currentUser?.nickname = info.nickname ?? ""
                 } else {
                     let profile = EaseChatProfile()
                     profile.id = userId
                     profile.nickname = info.nickname ?? ""
                     profile.avatarURL = info.avatarUrl ?? ""
                     profile.insert()
-                    EaseChatUIKitContext.shared?.currentUser = profile
-                    EaseChatUIKitContext.shared?.userCache?[profile.id] = profile
+                    EaseChatUIKitContext.shared?.currentUser?.avatarURL = info.avatarUrl ?? ""
+                    EaseChatUIKitContext.shared?.currentUser?.nickname = info.nickname ?? ""
                 }
             } else {
                 DispatchQueue.main.async {

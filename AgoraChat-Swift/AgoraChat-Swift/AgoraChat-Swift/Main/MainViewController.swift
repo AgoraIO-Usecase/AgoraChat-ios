@@ -366,7 +366,7 @@ extension MainViewController: AgoraChatCallDelegate {
     private func setUserInfos(channelName: String) {
         EaseChatBusinessRequest.shared.sendGETRequest(api: .mirrorCallUserIdToChatUserId(channelName,EaseChatUIKitContext.shared?.currentUserId ?? ""), params: [:]) { result, error in
             if error == nil {
-                if let code = result?["code"] as? Int,code == 200 {
+                if let code = result?["statusCode"] as? Int,code == 200 {
                     if let users = result?["result"] as? Dictionary<String,String>,let channelName = result?["channelName"] as? String {
                         var userMap = [NSNumber:String]()
                         for (callUserId, chatUserId) in users {
@@ -374,6 +374,7 @@ extension MainViewController: AgoraChatCallDelegate {
                             userMap[NSNumber(integerLiteral: uid)] = chatUserId
                             self.mapUserDisplayInfo(userId: chatUserId)
                         }
+                        print("userMap :\(userMap)")
                         AgoraChatCallManager.shared().setUsers(userMap, channelName: channelName)
                     }
                 }
@@ -384,6 +385,7 @@ extension MainViewController: AgoraChatCallDelegate {
     }
     
     private func mapUserDisplayInfo(userId: String) {
+        
         if let cacheUser = EaseChatUIKitContext.shared?.chatCache?[userId] {
             var nickname = cacheUser.remark
             if nickname.isEmpty {

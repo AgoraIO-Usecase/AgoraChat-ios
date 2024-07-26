@@ -107,6 +107,9 @@ final class MineCallInviteUsersController: GroupParticipantsRemoveController {
                 }
                 self.cursor = result?.cursor ?? ""
                 self.participants.removeAll { $0.id == EaseChatUIKitContext.shared?.currentUserId ?? "" }
+                self.existProfiles.forEach { exist in
+                    self.participants.removeAll { $0.id == exist.id }
+                }
                 self.participantsList.reloadData()
                 if !self.cursor.isEmpty {
                     self.fetchParticipants()
