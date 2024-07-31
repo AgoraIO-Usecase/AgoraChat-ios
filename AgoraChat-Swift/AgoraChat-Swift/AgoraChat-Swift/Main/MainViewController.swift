@@ -333,9 +333,8 @@ extension MainViewController: AgoraChatCallDelegate {
     }
     
     func callDidOccurError(_ aError: AgoraChatCallError) {
-        DispatchQueue.main.async {
-            UIViewController.currentController?.showToast(toast: "call error occur code:\(aError.errCode) description:\(aError.errDescription)  type:\(aError.aErrorType)")
-        }
+        consoleLogInfo("callDidOccurError:\(aError.errDescription)", type: .error)
+        UIViewController.currentController?.showToast(toast: "callDidOccurError:\(aError.errDescription)")
     }
     
     func callDidRequestRTCToken(forAppId aAppId: String, channelName aChannelName: String, account aUserAccount: String, uid aAgoraUid: Int) {
