@@ -1,9 +1,0 @@
-
-/* Class = "UILabel"; text = "Select Members"; ObjectID = "6LF-mq-yp9"; */
-"6LF-mq-yp9.text" = "选择成员";
-
-/* Class = "UIButton"; normalTitle = "Done"; ObjectID = "qVS-i1-Ndn"; */
-"qVS-i1-Ndn.normalTitle" = "完成";
-
-/* Class = "UISearchBar"; placeholder = "Search"; ObjectID = "sLr-65-UrR"; */
-"sLr-65-UrR.placeholder" = "搜索";

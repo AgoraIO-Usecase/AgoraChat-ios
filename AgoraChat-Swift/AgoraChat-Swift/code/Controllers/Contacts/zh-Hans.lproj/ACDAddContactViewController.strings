@@ -1,9 +1,0 @@
-
-/* Class = "UILabel"; text = "Add Contact"; ObjectID = "AOc-g5-Bb5"; */
-"AOc-g5-Bb5.text" = "添加联系人";
-
-/* Class = "UIButton"; disabledTitle = "Applied"; ObjectID = "FJG-OQ-sc5"; */
-"FJG-OQ-sc5.disabledTitle" = "已添加";
-
-/* Class = "UIButton"; normalTitle = "Apply"; ObjectID = "FJG-OQ-sc5"; */
-"FJG-OQ-sc5.normalTitle" = "添加";
