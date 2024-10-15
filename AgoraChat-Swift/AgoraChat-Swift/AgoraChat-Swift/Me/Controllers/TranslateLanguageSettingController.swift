@@ -8,13 +8,13 @@
 import UIKit
 import chat_uikit
 
+
 final class TranslateLanguageSettingController: UIViewController {
 
     @UserDefault("EaseChatDemoTranslateTargetLanguage", defaultValue: "zh-Hans") var language: String
 
-    private var infos = ["Chinese".localized(),"English".localized()]
+    private var infos = [MessageTranslateTargetLanguage]()
     
-    private var languageRawValues = ["zh-Hans","en"]
     
     private lazy var navigation: EaseChatNavigationBar = {
         EaseChatNavigationBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: NavigationHeight),textAlignment: .left)
@@ -23,11 +23,15 @@ final class TranslateLanguageSettingController: UIViewController {
     private lazy var infoList: UITableView = {
         UITableView(frame: CGRect(x: 0, y: self.navigation.frame.maxY, width: self.view.frame.width, height: self.view.frame.height-NavigationHeight), style: .plain).separatorStyle(.none).tableFooterView(UIView()).backgroundColor(.clear).delegate(self).dataSource(self).rowHeight(54)
     }()
+    
+    public private(set) lazy var loadingView: LoadingView = {
+        LoadingView(frame: self.view.bounds)
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.addSubViews([self.navigation,self.infoList])
+        self.view.addSubViews([self.navigation,self.infoList,self.loadingView])
         self.navigation.title = "translate_language_setting".localized()
         self.navigation.clickClosure = { [weak self] in
             consoleLogInfo("\($1?.row ?? 0)", type: .debug)
@@ -42,8 +46,21 @@ final class TranslateLanguageSettingController: UIViewController {
         // Do any additional setup after loading the view.
         Theme.registerSwitchThemeViews(view: self)
         self.switchTheme(style: Theme.style)
+        self.requestTranslateLanguage()
     }
 
+    private func requestTranslateLanguage() {
+        self.loadingView.startAnimating()
+        ChatClient.shared().chatManager?.fetchSupportedLanguages({ [weak self] (languages, error) in
+            if let languages = languages {
+                DispatchQueue.main.async {
+                    self?.loadingView.stopAnimating()
+                    self?.infos = languages
+                    self?.infoList.reloadData()
+                }
+            }
+        })
+    }
 }
 
 extension TranslateLanguageSettingController: UITableViewDelegate,UITableViewDataSource {
@@ -57,9 +74,9 @@ extension TranslateLanguageSettingController: UITableViewDelegate,UITableViewDat
         if cell == nil {
             cell = LanguageCell(style: .default, reuseIdentifier: "LanguageCell")
         }
-        if let title = self.infos[safe:indexPath.row],let languageCode = self.languageRawValues[safe: indexPath.row] {
-            cell?.content.text = title
-            if self.language == languageCode {
+        if let title = self.infos[safe:indexPath.row] {
+            cell?.content.text = title.languageNativeName
+            if self.language == title.languageCode {
                 cell?.checkbox.isSelected = true
             } else {
                 cell?.checkbox.isSelected = false
@@ -72,10 +89,10 @@ extension TranslateLanguageSettingController: UITableViewDelegate,UITableViewDat
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if let code = self.languageRawValues[safe:indexPath.row] {
-            self.language = code
+        if let selectedLanguage = self.infos[safe:indexPath.row] {
+            self.language = selectedLanguage.languageCode
+            Appearance.chat.targetLanguage = LanguageType(rawValue: selectedLanguage.languageCode) ?? Appearance.chat.targetLanguage
         }
-        Appearance.chat.targetLanguage = LanguageType(rawValue: self.language) ?? .Chinese
         self.infoList.reloadData()
     }
 }
