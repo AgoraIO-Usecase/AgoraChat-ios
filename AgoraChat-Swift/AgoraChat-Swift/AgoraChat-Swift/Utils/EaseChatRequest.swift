@@ -131,7 +131,7 @@ public struct EaseChatRequestHTTPMethod: RawRepresentable, Equatable, Hashable {
 
         guard let imageData = image.jpegData(compressionQuality: 0.1) else { return }
         // 创建上传的 URLRequest
-        guard let userId = EaseChatUIKitContext.shared?.currentUserId  else { return }
+        guard let userId = ChatUIKitContext.shared?.currentUserId  else { return }
         var request = URLRequest(url: URL(string: ServerHost+"/app/chat/user/\(userId)/avatar/upload")!)
         request.httpMethod = "POST"
         let boundary = Date().timeIntervalSince1970*1000

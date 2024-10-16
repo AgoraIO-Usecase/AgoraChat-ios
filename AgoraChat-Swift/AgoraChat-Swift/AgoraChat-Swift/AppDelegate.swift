@@ -54,8 +54,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         //Set up EaseChatUIKit
-        _ = EaseChatUIKitClient.shared.setup(option: options)
-        EaseChatUIKitClient.shared.registerUserStateListener(self)
+        _ = ChatUIKitClient.shared.setup(option: options)
+        ChatUIKitClient.shared.registerUserStateListener(self)
         _ = PresenceManager.shared
     }
     
@@ -163,7 +163,7 @@ extension AppDelegate {
 extension AppDelegate: UserStateChangedListener {
     
     private func logoutUser() {
-        EaseChatUIKitClient.shared.logout(unbindNotificationDeviceToken: true) { error in
+        ChatUIKitClient.shared.logout(unbindNotificationDeviceToken: true) { error in
             if error != nil {
                 consoleLogInfo("Logout failed:\(error?.errorDescription ?? "")", type: .error)
             }
@@ -189,7 +189,7 @@ extension AppDelegate: UserStateChangedListener {
                 }
             } else {
                 if let result = result,let token = result["accessToken"] as? String {
-                    EaseChatUIKitClient.shared.refreshToken(token: token)
+                    ChatUIKitClient.shared.refreshToken(token: token)
                 }
             }
         }
@@ -227,11 +227,11 @@ extension AppDelegate: UserStateChangedListener {
                     profile.avatarURL = group.settings.ext
                     profiles.append(profile)
                 }
-                EaseChatUIKitContext.shared?.updateCaches(type: .group, profiles: profiles)
+                ChatUIKitContext.shared?.updateCaches(type: .group, profiles: profiles)
             }
-            if let users = EaseChatUIKitContext.shared?.userCache {
+            if let users = ChatUIKitContext.shared?.userCache {
                 for user in users.values {
-                    EaseChatUIKitContext.shared?.userCache?[user.id]?.remark = ChatClient.shared().contactManager?.getContact(user.id)?.remark ?? ""
+                    ChatUIKitContext.shared?.userCache?[user.id]?.remark = ChatClient.shared().contactManager?.getContact(user.id)?.remark ?? ""
                 }
             }
             NotificationCenter.default.post(name: Notification.Name(loginSuccessfulSwitchMainPage), object: nil)

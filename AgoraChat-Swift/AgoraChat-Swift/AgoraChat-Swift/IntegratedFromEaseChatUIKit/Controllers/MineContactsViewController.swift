@@ -29,7 +29,7 @@ final class MineContactsViewController: ContactViewController {
     }
     
     private func showUserStatus() {
-        if let presence = PresenceManager.shared.presences[EaseChatUIKitContext.shared?.currentUserId ?? ""] {
+        if let presence = PresenceManager.shared.presences[ChatUIKitContext.shared?.currentUserId ?? ""] {
             let state = PresenceManager.status(with: presence)
             switch state {
             case .online:
@@ -54,7 +54,7 @@ final class MineContactsViewController: ContactViewController {
         
     }
     
-    override func navigationClick(type: EaseChatNavigationBarClickEvent, indexPath: IndexPath?) {
+    override func navigationClick(type: ChatNavigationBarClickEvent, indexPath: IndexPath?) {
         switch type {
         case .back: self.pop()
         case .rightTitle: self.confirmAction()

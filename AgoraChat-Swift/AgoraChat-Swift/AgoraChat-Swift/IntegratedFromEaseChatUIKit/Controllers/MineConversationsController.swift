@@ -24,7 +24,7 @@ final class MineConversationsController: ConversationListController {
         self.previewRequestContact()
     }
     
-    override func navigationClick(type: EaseChatNavigationBarClickEvent, indexPath: IndexPath?) {
+    override func navigationClick(type: ChatNavigationBarClickEvent, indexPath: IndexPath?) {
         switch type {
         case .back: self.pop()
         case .rightItems: self.rightActions(indexPath: indexPath ?? IndexPath())
@@ -39,7 +39,7 @@ final class MineConversationsController: ConversationListController {
     }
     
     private func showUserStatus() {
-        if let presence = PresenceManager.shared.presences[EaseChatUIKitContext.shared?.currentUserId ?? ""] {
+        if let presence = PresenceManager.shared.presences[ChatUIKitContext.shared?.currentUserId ?? ""] {
             let state = PresenceManager.status(with: presence)
             switch state {
             case .online:
@@ -138,15 +138,15 @@ final class MineConversationsController: ConversationListController {
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-        self.navigation.avatarURL = EaseChatUIKitContext.shared?.currentUser?.avatarURL
+        self.navigation.avatarURL = ChatUIKitContext.shared?.currentUser?.avatarURL
     }
     
     
-    override func create(profiles: [EaseProfileProtocol]) {
+    override func create(profiles: [ChatUserProfileProtocol]) {
         var name = ""
-        var users = [EaseProfileProtocol]()
-        let ownerId = EaseChatUIKitContext.shared?.currentUserId ?? ""
-        if let owner = EaseChatUIKitContext.shared?.userCache?[ownerId] {
+        var users = [ChatUserProfileProtocol]()
+        let ownerId = ChatUIKitContext.shared?.currentUserId ?? ""
+        if let owner = ChatUIKitContext.shared?.userCache?[ownerId] {
             users.append(owner)
             users.append(contentsOf: profiles)
         }
@@ -167,7 +167,7 @@ final class MineConversationsController: ConversationListController {
         option.style = .privateMemberCanInvite
         ChatClient.shared().groupManager?.createGroup(withSubject: name, description: "", invitees: ids, message: nil, setting: option, completion: { [weak self] group, error in
             if error == nil,let group = group {
-                let profile = EaseProfile()
+                let profile = ChatUserProfile()
                 profile.id = group.groupId
                 profile.nickname = group.groupName
                 self?.createChat(profile: profile, type: .groupChat,info: name)
@@ -184,11 +184,11 @@ final class MineConversationsController: ConversationListController {
                 consoleLogInfo("fetchGroupAvatar error:\(error?.localizedDescription ?? "")", type: .error)
             } else {
                 if let avatarURL = result?["avatarUrl"] as? String {
-                    if let info = EaseChatUIKitContext.shared?.groupCache?[groupId] {
+                    if let info = ChatUIKitContext.shared?.groupCache?[groupId] {
                         info.avatarURL = avatarURL
                         self?.viewModel?.renderDriver(infos: [info])
                     } else {
-                        let info = EaseProfile()
+                        let info = ChatUserProfile()
                         info.id = groupId
                         info.avatarURL = avatarURL
                         self?.viewModel?.renderDriver(infos: [info])

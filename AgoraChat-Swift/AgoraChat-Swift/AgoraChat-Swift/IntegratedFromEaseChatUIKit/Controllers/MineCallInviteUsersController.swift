@@ -16,15 +16,15 @@ final class MineCallInviteUsersController: GroupParticipantsRemoveController {
         
     private var confirmClosure: (([String]) -> Void)?
     
-    private var existProfiles = [EaseProfileProtocol]()
+    private var existProfiles = [ChatUserProfileProtocol]()
     
-    public required init(groupId: String, profiles: [EaseProfileProtocol],usersClosure: @escaping ([String]) -> Void) {
+    public required init(groupId: String, profiles: [ChatUserProfileProtocol],usersClosure: @escaping ([String]) -> Void) {
         super.init(group: ChatGroup(id: groupId), profiles: profiles, removeClosure: usersClosure)
         self.existProfiles = profiles
         self.confirmClosure = usersClosure
     }
     
-    required init(group: ChatGroup, profiles: [EaseProfileProtocol], removeClosure: @escaping ([String]) -> Void) {
+    required init(group: ChatGroup, profiles: [ChatUserProfileProtocol], removeClosure: @escaping ([String]) -> Void) {
         super.init(group: group, profiles: profiles, removeClosure: removeClosure)
     }
     
@@ -32,8 +32,8 @@ final class MineCallInviteUsersController: GroupParticipantsRemoveController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func createNavigation() -> EaseChatNavigationBar {
-        EaseChatNavigationBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44),textAlignment: .left,rightTitle: "Confirm".chat.localize)
+    override func createNavigation() -> ChatNavigationBar {
+        ChatNavigationBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44),textAlignment: .left,rightTitle: "Confirm".chat.localize)
     }
     
     public private(set) lazy var loadingView: LoadingView = {
@@ -62,14 +62,14 @@ final class MineCallInviteUsersController: GroupParticipantsRemoveController {
                     if self.cursor.isEmpty {
                         self.participants.removeAll()
                         self.participants = list.map({
-                            let profile = EaseProfile()
+                            let profile = ChatUserProfile()
                             let id = $0 as String
                             profile.id = id
-                            if let user = EaseChatUIKitContext.shared?.userCache?[id] {
+                            if let user = ChatUIKitContext.shared?.userCache?[id] {
                                 profile.nickname = user.nickname
                                 profile.avatarURL = user.avatarURL
                             }
-                            if let user = EaseChatUIKitContext.shared?.chatCache?[id] {
+                            if let user = ChatUIKitContext.shared?.chatCache?[id] {
                                 profile.nickname = user.nickname
                                 profile.avatarURL = user.avatarURL
                             }
@@ -77,13 +77,13 @@ final class MineCallInviteUsersController: GroupParticipantsRemoveController {
                             return profile
                         })
                         if list.count <= self.pageSize {
-                            let profile = EaseProfile()
+                            let profile = ChatUserProfile()
                             profile.id = self.chatGroup.owner
-                            if let user = EaseChatUIKitContext.shared?.userCache?[self.chatGroup.owner] {
+                            if let user = ChatUIKitContext.shared?.userCache?[self.chatGroup.owner] {
                                 profile.nickname = user.nickname
                                 profile.avatarURL = user.avatarURL
                             }
-                            if let user = EaseChatUIKitContext.shared?.chatCache?[self.chatGroup.owner] {
+                            if let user = ChatUIKitContext.shared?.chatCache?[self.chatGroup.owner] {
                                 profile.nickname = user.nickname
                                 profile.avatarURL = user.avatarURL
                             }
@@ -91,13 +91,13 @@ final class MineCallInviteUsersController: GroupParticipantsRemoveController {
                         }
                     } else {
                         self.participants.append(contentsOf: list.map({
-                            let profile = EaseProfile()
+                            let profile = ChatUserProfile()
                             profile.id = $0 as String
-                            if let user = EaseChatUIKitContext.shared?.userCache?[profile.id] {
+                            if let user = ChatUIKitContext.shared?.userCache?[profile.id] {
                                 profile.nickname = user.nickname
                                 profile.avatarURL = user.avatarURL
                             }
-                            if let user = EaseChatUIKitContext.shared?.chatCache?[profile.id] {
+                            if let user = ChatUIKitContext.shared?.chatCache?[profile.id] {
                                 profile.nickname = user.nickname
                                 profile.avatarURL = user.avatarURL
                             }
@@ -106,7 +106,7 @@ final class MineCallInviteUsersController: GroupParticipantsRemoveController {
                     }
                 }
                 self.cursor = result?.cursor ?? ""
-                self.participants.removeAll { $0.id == EaseChatUIKitContext.shared?.currentUserId ?? "" }
+                self.participants.removeAll { $0.id == ChatUIKitContext.shared?.currentUserId ?? "" }
                 self.existProfiles.forEach { exist in
                     self.participants.removeAll { $0.id == exist.id }
                 }

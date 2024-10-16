@@ -51,11 +51,11 @@ final class MainViewController: UITabBarController {
     
     private func setupDataProvider() {
         //userProfileProvider为用户数据的提供者，使用协程实现与userProfileProviderOC不能同时存在userProfileProviderOC使用闭包实现
-        EaseChatUIKitContext.shared?.userProfileProvider = self
-        EaseChatUIKitContext.shared?.userProfileProviderOC = nil
+        ChatUIKitContext.shared?.userProfileProvider = self
+        ChatUIKitContext.shared?.userProfileProviderOC = nil
         //groupProvider原理同上
-        EaseChatUIKitContext.shared?.groupProfileProvider = self
-        EaseChatUIKitContext.shared?.groupProfileProviderOC = nil
+        ChatUIKitContext.shared?.groupProfileProvider = self
+        ChatUIKitContext.shared?.groupProfileProviderOC = nil
     }
     
     private func callKitSet() {
@@ -135,13 +135,13 @@ extension MainViewController: ThemeSwitchProtocol {
 
 //MARK: - EaseProfileProvider for conversations&contacts usage.
 //For example using conversations controller,as follows.
-extension MainViewController: EaseProfileProvider,EaseGroupProfileProvider {
+extension MainViewController: ChatProfileProvider,ChatGroupProfileProvider {
     //MARK: - EaseProfileProvider
-    func fetchProfiles(profileIds: [String]) async -> [any EaseProfileProtocol] {
-        return await withTaskGroup(of: [EaseProfileProtocol].self, returning: [EaseProfileProtocol].self) { group in
-            var resultProfiles: [EaseProfileProtocol] = []
+    func fetchProfiles(profileIds: [String]) async -> [any ChatUserProfileProtocol] {
+        return await withTaskGroup(of: [ChatUserProfileProtocol].self, returning: [ChatUserProfileProtocol].self) { group in
+            var resultProfiles: [ChatUserProfileProtocol] = []
             group.addTask {
-                var resultProfiles: [EaseProfileProtocol] = []
+                var resultProfiles: [ChatUserProfileProtocol] = []
                 let result = await self.requestUserInfos(profileIds: profileIds)
                 if let infos = result {
                     resultProfiles.append(contentsOf: infos)
@@ -156,12 +156,12 @@ extension MainViewController: EaseProfileProvider,EaseGroupProfileProvider {
         }
     }
     //MARK: - EaseGroupProfileProvider
-    func fetchGroupProfiles(profileIds: [String]) async -> [any EaseProfileProtocol] {
+    func fetchGroupProfiles(profileIds: [String]) async -> [any ChatUserProfileProtocol] {
         
-        return await withTaskGroup(of: [EaseProfileProtocol].self, returning: [EaseProfileProtocol].self) { group in
-            var resultProfiles: [EaseProfileProtocol] = []
+        return await withTaskGroup(of: [ChatUserProfileProtocol].self, returning: [ChatUserProfileProtocol].self) { group in
+            var resultProfiles: [ChatUserProfileProtocol] = []
             group.addTask {
-                var resultProfiles: [EaseProfileProtocol] = []
+                var resultProfiles: [ChatUserProfileProtocol] = []
                 let result = await self.requestGroupsInfo(groupIds: profileIds)
                 if let infos = result {
                     resultProfiles.append(contentsOf: infos)
@@ -176,11 +176,11 @@ extension MainViewController: EaseProfileProvider,EaseGroupProfileProvider {
         }
     }
     
-    private func requestUserInfos(profileIds: [String]) async -> [EaseProfileProtocol]? {
+    private func requestUserInfos(profileIds: [String]) async -> [ChatUserProfileProtocol]? {
         var unknownIds = [String]()
-        var resultProfiles = [EaseProfileProtocol]()
+        var resultProfiles = [ChatUserProfileProtocol]()
         for profileId in profileIds {
-            if let profile = EaseChatUIKitContext.shared?.userCache?[profileId] {
+            if let profile = ChatUIKitContext.shared?.userCache?[profileId] {
                 if profile.nickname.isEmpty {
                     unknownIds.append(profile.id)
                 } else {
@@ -205,20 +205,20 @@ extension MainViewController: EaseProfileProvider,EaseGroupProfileProvider {
                 }
                 profile.avatarURL = info.avatarUrl ?? ""
                 resultProfiles.append(profile)
-                if (EaseChatUIKitContext.shared?.userCache?[userId]) != nil {
+                if (ChatUIKitContext.shared?.userCache?[userId]) != nil {
                     profile.updateFFDB()
                 } else {
                     profile.insert()
                 }
-                EaseChatUIKitContext.shared?.userCache?[userId] = profile
+                ChatUIKitContext.shared?.userCache?[userId] = profile
             }
             return resultProfiles
         }
         return []
     }
     
-    private func requestGroupsInfo(groupIds: [String]) async -> [EaseProfileProtocol]? {
-        var resultProfiles = [EaseProfileProtocol]()
+    private func requestGroupsInfo(groupIds: [String]) async -> [ChatUserProfileProtocol]? {
+        var resultProfiles = [ChatUserProfileProtocol]()
         let groups = ChatClient.shared().groupManager?.getJoinedGroups() ?? []
         for groupId in groupIds {
             if let group = groups.first(where: { $0.groupId == groupId }) {
@@ -227,7 +227,7 @@ extension MainViewController: EaseProfileProvider,EaseGroupProfileProvider {
                 profile.nickname = group.groupName
                 profile.avatarURL = group.settings.ext
                 resultProfiles.append(profile)
-                EaseChatUIKitContext.shared?.groupCache?[groupId] = profile
+                ChatUIKitContext.shared?.groupCache?[groupId] = profile
             }
 
         }
@@ -286,7 +286,7 @@ extension MainViewController: AgoraChatCallDelegate {
     func multiCallDidInviting(withCurVC vc: UIViewController, callType: AgoraChatCallType, excludeUsers users: [String]?, ext aExt: [AnyHashable : Any]?) {
         if let groupId = aExt?["groupId"] as? String {
             let inviteVC = MineCallInviteUsersController(groupId: groupId, profiles: users == nil ? []:users!.map({
-                let profile = EaseProfile()
+                let profile = ChatUserProfile()
                 profile.id = $0
                 return profile
             })) { users in
@@ -363,7 +363,7 @@ extension MainViewController: AgoraChatCallDelegate {
     }
     
     private func setUserInfos(channelName: String) {
-        EaseChatBusinessRequest.shared.sendGETRequest(api: .mirrorCallUserIdToChatUserId(channelName,EaseChatUIKitContext.shared?.currentUserId ?? ""), params: [:]) { result, error in
+        EaseChatBusinessRequest.shared.sendGETRequest(api: .mirrorCallUserIdToChatUserId(channelName,ChatUIKitContext.shared?.currentUserId ?? ""), params: [:]) { result, error in
             if error == nil {
                 if let code = result?["statusCode"] as? Int,code == 200 {
                     if let users = result?["result"] as? Dictionary<String,String>,let channelName = result?["channelName"] as? String {
@@ -385,7 +385,7 @@ extension MainViewController: AgoraChatCallDelegate {
     
     private func mapUserDisplayInfo(userId: String) {
         
-        if let cacheUser = EaseChatUIKitContext.shared?.chatCache?[userId] {
+        if let cacheUser = ChatUIKitContext.shared?.chatCache?[userId] {
             var nickname = cacheUser.remark
             if nickname.isEmpty {
                 nickname = cacheUser.nickname
@@ -397,7 +397,7 @@ extension MainViewController: AgoraChatCallDelegate {
             let user = AgoraChatCallUser(nickName: nickname, image: URL(string: cacheUser.avatarURL) ?? URL(string: "https://www.baidu.com")!)
             AgoraChatCallManager.shared().getAgoraChatCallConfig().setUser(userId, info: user)
         } else {
-            if let cacheUser = EaseChatUIKitContext.shared?.userCache?[userId] {
+            if let cacheUser = ChatUIKitContext.shared?.userCache?[userId] {
                 var nickname = cacheUser.remark
                 if nickname.isEmpty {
                     nickname = cacheUser.nickname
@@ -424,7 +424,7 @@ extension MainViewController: AgoraChatCallDelegate {
                 cache.nickname = user.nickname ?? ""
                 cache.avatarURL = user.avatarUrl ?? ""
                 cache.insert()
-                EaseChatUIKitContext.shared?.userCache?[userId] = cache
+                ChatUIKitContext.shared?.userCache?[userId] = cache
             } else {
                 consoleLogInfo("EaseCallKit mapUserDisplayInfo error:\(error?.errorDescription ?? "")", type: .error)
             }
@@ -432,7 +432,7 @@ extension MainViewController: AgoraChatCallDelegate {
     }
     
     func callDidJoinChannel(_ aChannelName: String, uid aUid: UInt) {
-        if let profile = EaseChatUIKitContext.shared?.currentUser {
+        if let profile = ChatUIKitContext.shared?.currentUser {
             let user = AgoraChatCallUser(nickName: profile.nickname, image: URL(string: profile.avatarURL) ?? URL(string: "https://www.baidu.com")!)
             AgoraChatCallManager.shared().getAgoraChatCallConfig().setUser(profile.id, info: user)
         }
