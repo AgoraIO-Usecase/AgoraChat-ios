@@ -6,7 +6,7 @@ target 'AgoraChat-Swift' do
   use_frameworks!
 
   # Pods for AgoraChat-Swift
-  pod 'chat-uikit',:path => '../../../AgoraChat-UIKit-ios/'
+  pod 'chat-uikit', '~> 1.2.0'
   pod 'AgoraChatCallKit', '~> 1.1.0'
   pod 'KakaJSON', '~> 1.1.2'
   pod 'SwiftFFDBHotFix'
