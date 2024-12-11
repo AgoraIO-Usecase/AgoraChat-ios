@@ -181,7 +181,7 @@ typedef enum : NSUInteger {
 {
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     WEAK_SELF
-    [[AgoraChatClient sharedClient] logout:YES completion:^(AgoraChatError *aError) {
+    [[AgoraChatClient sharedClient] logout:NO completion:^(AgoraChatError *aError) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (!aError) {
             [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@NO userInfo:@{@"userName":@"",@"nickName":@""}];
@@ -189,6 +189,7 @@ typedef enum : NSUInteger {
             [shareDefault setObject:@"" forKey:USER_NAME];
             [shareDefault setObject:@"" forKey:USER_NICKNAME];
             [shareDefault synchronize];
+            [AgoraChatDemoHelper.shareHelper.groupIdHasLocalPinnedMessages removeAllObjects];
             
         } else {
             [weakSelf showHint:[NSString stringWithFormat:@"%@:%u",NSLocalizedString(@"logout.failed", @"Logout failed"), aError.code]];

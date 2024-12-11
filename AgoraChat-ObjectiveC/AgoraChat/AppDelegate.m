@@ -121,13 +121,9 @@
 
 - (void)internalSpecOption:(AgoraChatOptions *)option {
     option.enableDnsConfig = NO;
-    option.restServer = @"https://a1-test.easemob.com";
-    option.chatServer = @"52.80.99.104";
+    option.restServer = @"https://a1-hsb.easemob.com";
+    option.chatServer = @"180.184.143.60";
     option.chatPort = 6717;
-    
-    [option setRestServer:@"http://a1-test.easemob.com"];
-    [option setChatServer:@"52.80.99.104"];
-    [option setChatPort:6717];
 }
 
 - (void)loadViewController {
@@ -199,7 +195,7 @@
     __block NSString* nickName = nil;
     if (aErrorCode == AgoraChatErrorTokenExpire || aErrorCode == 401) {
         void (^finishBlock) (NSString *aName, AgoraChatError *aError) = ^(NSString *aName, AgoraChatError *aError) {
-            if (!aError) {
+            if (!aError || aError.code == AgoraChatErrorUserAlreadyLoginSame) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_UPDATE_CONVERSATIONS object:nil];
                 return ;
             }
@@ -244,7 +240,7 @@
                     NSInteger expireTime = [[responsedict objectForKey:@"expireTimestamp"] integerValue];
                     ACDDemoOptions.sharedOptions.tokenExpiredTimestamp = expireTime;
                     if (token && token.length > 0) {
-                        [[AgoraChatClient sharedClient] loginWithUsername:[loginName lowercaseString] agoraToken:token completion:finishBlock];
+                        [[AgoraChatClient sharedClient] loginWithUsername:[loginName lowercaseString] token:token completion:finishBlock];
                         return;
                     } else {
                         alertStr = NSLocalizedString(@"login analysis token failure", @"analysis token failure");
@@ -440,16 +436,7 @@
     if (aError) {
         [self loadLoginPage];
         
-    }else {
-        [self test];
     }
-}
-
-- (void)test
-{
-    AgoraChatConversation* conversation = [AgoraChatClient.sharedClient.chatManager getConversationWithConvId:@"conversatinsId"];
-    NSInteger ts = NSDate.date.timeIntervalSince1970 * 1000;
-    [conversation removeMessagesStart:(ts - 60*60*1000) to:ts];
 }
 
 @end

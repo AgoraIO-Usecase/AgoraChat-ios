@@ -336,7 +336,7 @@
     }
     
     void (^finishBlock) (NSString *aName, NSString *nickName, NSInteger agoraUid, AgoraChatError *aError) = ^(NSString *aName, NSString *nickName, NSInteger agoraUid, AgoraChatError *aError) {
-        if (!aError) {
+        if (!aError || aError.code == AgoraChatErrorUserAlreadyLoginSame) {
             if (nickName) {
                 [AgoraChatClient.sharedClient.userInfoManager updateOwnUserInfo:nickName withType:AgoraChatUserInfoTypeNickName completion:^(AgoraChatUserInfo *aUserInfo, AgoraChatError *aError) {
                     if (!aError) {
@@ -412,7 +412,7 @@
                 ACDDemoOptions.sharedOptions.tokenExpiredTimestamp = expireTime;
 
                 if (token && token.length > 0) {
-                    [[AgoraChatClient sharedClient] loginWithUsername:[loginName lowercaseString] agoraToken:token completion:^(NSString *aUsername, AgoraChatError *aError) {
+                    [[AgoraChatClient sharedClient] loginWithUsername:[loginName lowercaseString] token:token completion:^(NSString *aUsername, AgoraChatError *aError) {
                         finishBlock(aUsername, nickName, agoraUid, aError);
                     }];
                     return;

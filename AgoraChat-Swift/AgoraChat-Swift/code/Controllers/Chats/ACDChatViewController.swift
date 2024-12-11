@@ -20,6 +20,8 @@ class ACDChatViewController: UIViewController {
     private var conversationModel: EaseConversationModel? = nil
     private let viewModel = EaseChatViewModel()
     private let chatController: EaseChatViewController
+    private let pinMessageButton = UIButton()
+    private var pinMessageVC: ACDPinMessagesViewController? = nil;
     
     private var navigationView: ACDChatNavigationView!
 
@@ -57,6 +59,7 @@ class ACDChatViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(resetUserInfo(_:)), name: UserInfoDidChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(presencesUpdated(_:)), name: PresenceUpdateNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(insertLocalCallRecord(_:)), name: CallKitRecordMessageNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(pinnedMessageChanged(_:)), name: NSNotification.Name("PinnedMessages"), object: nil)
 
         AgoraChatClient.shared().groupManager?.add(self, delegateQueue: nil)
         if let conversation = self.conversation, conversation.unreadMessagesCount > 0 {
@@ -85,6 +88,174 @@ class ACDChatViewController: UIViewController {
             }
             self.chatController.tableView.reloadData()
         }
+    }
+    
+    func setupPinMessageButton() {
+        if let image = UIImage(named: "pin") {
+            pinMessageButton.setImage(image, for: .normal)
+        }
+
+        let title = "Pin Message"
+        pinMessageButton.setTitle(title, for: .normal)
+        pinMessageButton.backgroundColor = UIColor(red: 245.0/255.0, green: 245.0/255.0, blue: 245.0/255.0, alpha: 1.0)
+        pinMessageButton.layer.cornerRadius = 8
+        pinMessageButton.setTitleColor(UIColor(red: 23.0/255.0, green: 26.0/255.0, blue: 28.0/255.0, alpha: 1.0), for: .normal)
+        pinMessageButton.titleLabel?.font = UIFont(name: "SFCompact-Medium", size: 14.0)
+
+        // Set image and title edge insets
+        let buttonWidth = self.view.bounds.width - 24
+        pinMessageButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -(buttonWidth/2 + 20), bottom: 0, right: 0)
+        pinMessageButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: -(buttonWidth/2 + 20) + 20, bottom: 0, right: 0)
+
+        // Set button shadow
+        let shadowColor = UIColor(red: 205.0/255.0, green: 205.0/255.0, blue: 205.0/255.0, alpha: 1.0)
+        pinMessageButton.layer.shadowColor = shadowColor.cgColor
+        pinMessageButton.layer.shadowOffset = CGSize(width: 0, height: 6)
+        pinMessageButton.layer.shadowOpacity = 0.8
+        pinMessageButton.layer.shadowRadius = 2.0
+
+        pinMessageButton.addTarget(self, action: #selector(pinMessagesAction), for: .touchUpInside)
+        self.view.addSubview(pinMessageButton)
+    }
+    
+    @objc func pinnedMessageChanged(_ notification: Notification) {
+        if let userInfo = notification.object as? [String: Any] {
+            if let tipMessageId = userInfo["tipMessageId"] as? String {
+                if let message = AgoraChatClient.shared().chatManager?.getMessageWithMessageId(tipMessageId) {
+                    if message.conversationId == self.conversation?.conversationId {
+                        let model = EaseMessageModel(agoraChatMessage: message)
+                        self.chatController.dataArray.add(model)
+                        self.chatController.refreshTableView(true)
+                    }
+                }
+            }
+        }
+    }
+    
+    func showPinnedMessagesView() {
+        let pinMessageVC = ACDPinMessagesViewController()
+        addChild(pinMessageVC)
+        view.addSubview(pinMessageVC.view)
+        pinMessageVC.didMove(toParent: self)
+
+        pinMessageVC.view.snp.makeConstraints({ make in
+            make.left.right.bottom.equalTo(view)
+            make.top.equalTo(navigationView.snp.bottom)
+        })
+
+        pinMessageVC.selectMessageCompletion = { [weak self] selectedMessageId in
+            // jump to pinned message cell
+            if selectedMessageId.count > 0 {
+                if let msg = AgoraChatClient.shared().chatManager?.getMessageWithMessageId(selectedMessageId) {
+                    if let moreMsgId = self?.chatController.moreMsgId,let moreMessage = AgoraChatClient.shared().chatManager?.getMessageWithMessageId( moreMsgId), moreMessage.timestamp > msg.timestamp {
+                        self?.conversation?.loadMessages(from: msg.timestamp - 1, to: moreMessage.timestamp, count: 400, completion: { aMessages, aError in
+                            if aError == nil,
+                               let aMessages = aMessages {
+                                var array = [EaseMessageModel]()
+                                
+                                for msg in aMessages {
+                                    let model = EaseMessageModel(agoraChatMessage: msg)
+                                    array.append(model)
+                                }
+                                let indexSet = IndexSet(integersIn: 0..<array.count)
+                                self?.chatController.moreMsgId = aMessages.first?.messageId ?? ""
+                                self?.chatController.dataArray.insert(array, at: indexSet)
+                                self?.chatController.refreshTableView(false)
+                                
+                                DispatchQueue.main.async {
+                                    let indexPath = IndexPath(row: 0, section: 0)
+                                    self?.chatController.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
+                                    if let cell = self?.chatController.tableView.cellForRow(at: indexPath) {
+                                        cell.backgroundColor = UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                            cell.backgroundColor = UIColor.white
+                                        }
+                                    }
+                                }
+                            }
+                        })
+                    } else {
+                        var row = 0
+                        var indexPath: IndexPath? = nil
+                        guard let dataArray = self?.chatController.dataArray else {
+                            return
+                        }
+                        for model in dataArray {
+                            if let model = model as? EaseMessageModel, model.message.messageId == msg.messageId {
+                                indexPath = IndexPath(row: row, section: 0)
+                                break
+                            }
+                            row += 1
+                        }
+                        if let indexPath = indexPath {
+                            self?.chatController.tableView.scrollToRow(at: indexPath, at: .middle, animated: false)
+                            if let cell = self?.chatController.tableView.cellForRow(at: indexPath) {
+                                cell.backgroundColor = UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                    cell.backgroundColor = UIColor.white
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    self?.showHint("Pinned message not exist")
+                }
+            }
+        }
+        pinMessageVC.unpinMessageCompletion = { [weak self] messageId in
+            if messageId.count > 0 {
+                self?.addPinNotifiMsg(false, userId: AgoraChatClient.shared().currentUsername ?? "", groupId: self?.conversation?.conversationId ?? "")
+            }
+        }
+        pinMessageVC.pinMessages = self.conversation?.pinnedMessages()
+        self.pinMessageVC = pinMessageVC
+    }
+    
+    @objc func pinMessagesAction() {
+        if let textView = self.chatController.inputBar.value(forKey: "textView") as? UIView {
+            textView.resignFirstResponder()
+        }
+        if let conversationId = self.conversation?.conversationId {
+            if !AgoraChatDemoHelper.shared.groupIdHasLocalPinnedMessages.contains(conversationId) {
+                AgoraChatClient.shared().chatManager?.getPinnedMessages(fromServer: conversationId, completion: { [weak self] pinnedMessages, err in
+                    self?.showPinnedMessagesView()
+                    AgoraChatDemoHelper.shared.groupIdHasLocalPinnedMessages.insert(conversationId)
+                })
+            } else {
+                self.showPinnedMessagesView()
+            }
+        }
+    }
+    
+    func addPinNotifiMsg(_ isPinned: Bool, userId: String, groupId: String) {
+        var info = ""
+        if isPinned {
+            info = "\(userId) pinned a message"
+        } else {
+            info = "\(userId) removed a pin message"
+        }
+        let body = AgoraChatTextMessageBody(text: info)
+        let message = AgoraChatMessage(conversationID: groupId, body: body, ext: [MSG_EXT_NEWNOTI: NOTI_EXT_ADDGROUP, "agora_notiUserID": userId])
+        message.chatType = .groupChat
+        message.isRead = true
+        if let conversation = AgoraChatClient.shared().chatManager?.getConversation(groupId, type: .groupChat, createIfNotExist: true) {
+            self.conversation?.insert(message, error: nil)
+            let newModel = EaseMessageModel(agoraChatMessage: message)
+            self.chatController.dataArray.add(newModel)
+            self.chatController.refreshTableView(true)
+        }
+    }
+    
+    func addPinMessageButton() {
+        self.view.addSubview(self.pinMessageButton)
+        self.pinMessageButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.pinMessageButton.topAnchor.constraint(equalTo: self.navigationView.bottomAnchor, constant: 0),
+            self.pinMessageButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 12),
+            self.pinMessageButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -12),
+            self.pinMessageButton.heightAnchor.constraint(equalToConstant: 35)
+        ])
+        self.view.bringSubviewToFront(self.pinMessageButton)
     }
     
     private func setupSubviews() {
@@ -141,6 +312,10 @@ class ACDChatViewController: UIViewController {
         self.chatController.view.snp.makeConstraints { make in
             make.left.right.bottom.equalTo(self.view)
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(44)
+        }
+        if self.conversation?.type == .groupChat {
+            setupPinMessageButton()
+            addPinMessageButton()
         }
     }
     
@@ -426,6 +601,20 @@ extension ACDChatViewController: EaseChatViewControllerDelegate {
                 defaultLongPressItems.add(reportItem)
             }
         }
+        if self.conversation?.type == .groupChat,messageModel.message.status == .succeed {
+            let pinItem = EaseExtendMenuModel(data: UIImage(named: "pin")!, funcDesc: "Pin") { [weak self] (itemDesc, isExecuted) in
+            AgoraChatClient.shared().chatManager?.pinMessage(messageModel.message.messageId) { [weak self] (message, aError) in
+                if aError == nil {
+                    self?.showHint("Pin message success")
+                    self?.addPinMessageButton()
+                    self?.addPinNotifiMsg(true, userId: AgoraChatClient.shared().currentUsername ?? "", groupId: self?.conversation?.conversationId ?? "")
+                } else {
+                    self?.showHint("Pin failed, \(aError?.errorDescription ?? "")")
+                    }
+                }
+            }
+            defaultLongPressItems.add(pinItem)
+        }
         return defaultLongPressItems
     }
 }
@@ -442,6 +631,20 @@ extension ACDChatViewController: AgoraChatGroupManagerDelegate {
     func didLeave(_ aGroup: AgoraChatGroup, reason aReason: AgoraChatGroupLeaveReason) {
         if self.conversationType == .groupChat, self.conversationId == aGroup.groupId {
             self.backAction()
+        }
+    }
+    
+    func joinGroupRequestDidDecline(_ aGroupId: String, reason aReason: String?, decliner aDecliner: String?, applicant aApplicant: String) {
+        
+    }
+}
+
+extension ACDChatViewController: AgoraChatManagerDelegate {
+    func onMessagePinChanged(_ messageId: String, conversationId: String, operation pinOperation: AgoraChatMessagePinOperation, pinInfo: AgoraChatMessagePinInfo) {
+        if let message = AgoraChatClient.shared().chatManager?.getMessageWithMessageId(messageId),message.conversationId == self.conversation?.conversationId {
+            if let pinMessageVC = self.pinMessageVC {
+                pinMessageVC.pinMessages = self.conversation?.pinnedMessages()
+            }
         }
     }
 }
