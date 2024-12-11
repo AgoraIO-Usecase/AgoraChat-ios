@@ -54,6 +54,14 @@ static AgoraChatDemoHelper *helper = nil;
     [[AgoraChatClient sharedClient].roomManager addDelegate:self delegateQueue:nil];
 }
 
+- (NSMutableSet<NSString *> *)groupIdHasLocalPinnedMessages
+{
+    if (!_groupIdHasLocalPinnedMessages) {
+        _groupIdHasLocalPinnedMessages = [NSMutableSet set];
+    }
+    return _groupIdHasLocalPinnedMessages;
+}
+
 
 #pragma mark - public
 
@@ -104,6 +112,34 @@ static AgoraChatDemoHelper *helper = nil;
     if (_chatsVC) {
         [_chatsVC tableViewDidTriggerHeaderRefresh];
     }
+}
+
+- (void)onMessagePinChanged:(NSString *)messageId conversationId:(NSString * _Nonnull)conversationId operation:(AgoraChatMessagePinOperation)pinOperation pinInfo:(AgoraChatMessagePinInfo * _Nonnull)pinInfo
+{
+    AgoraChatMessage* message = [AgoraChatClient.sharedClient.chatManager getMessageWithMessageId:messageId];
+    if (message) {
+        [self addPinNotifiMsg:(pinOperation == AgoraChatMessagePin) userId:pinInfo.operatorId groupId:message.conversationId messageId:messageId];
+    } else {
+        [self.groupIdHasLocalPinnedMessages removeObject:conversationId];
+    }
+}
+
+- (void)addPinNotifiMsg:(BOOL)isPinned userId:(NSString*)userId groupId:(NSString*)groupId messageId:(NSString*)messageId
+{
+    NSString* info = @"";
+    if (isPinned) {
+        info = [NSString stringWithFormat:@"%@ pinned a message",[userId isEqualToString:AgoraChatClient.sharedClient.currentUsername] ? @"You" : userId];
+    } else {
+        info = [NSString stringWithFormat:@"%@ removed a pin message",[userId isEqualToString:AgoraChatClient.sharedClient.currentUsername] ? @"You" : userId];
+    }
+    AgoraChatTextMessageBody *body = [[AgoraChatTextMessageBody alloc] initWithText:info];
+    AgoraChatMessage *message = [[AgoraChatMessage alloc] initWithConversationID:groupId body:body ext:@{MSG_EXT_NEWNOTI:NOTI_EXT_ADDGROUP, kNOTI_EXT_USERID : userId}];
+    message.chatType = AgoraChatTypeGroupChat;
+    message.isRead = YES;
+    AgoraChatConversation *conversation = [[AgoraChatClient sharedClient].chatManager getConversation:groupId type:AgoraChatConversationTypeGroupChat createIfNotExist:YES];
+    [conversation insertMessage:message error:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_UPDATE_CONVERSATIONS object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_PINNED_MESSAGE object:@{@"tipMessageId":message.messageId}];
 }
 
 
@@ -194,6 +230,7 @@ static AgoraChatDemoHelper *helper = nil;
 //    [[AgoraChatClient sharedClient].chatManager deleteConversation:aGroup.groupId isDeleteMessages:YES completion:nil];
 //    [[AgoraChatClient sharedClient].chatManager deleteServerConversation:aGroup.groupId conversationType:AgoraChatConversationTypeGroupChat isDeleteServerMessages:YES completion:nil];
 //    [[NSNotificationCenter defaultCenter] postNotificationName:KAgora_UPDATE_CONVERSATIONS object:nil];
+    [self.groupIdHasLocalPinnedMessages removeObject:aGroup.groupId];
     
     NSString *msgstr = nil;
     if (aReason == AgoraChatGroupLeaveReasonBeRemoved) {

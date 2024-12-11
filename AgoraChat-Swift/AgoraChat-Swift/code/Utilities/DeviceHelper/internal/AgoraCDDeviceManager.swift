@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AudioToolbox
 
 func AgoraSystemSoundFinishedPlayingCallback(soundId: SystemSoundID, user_data: UnsafeMutableRawPointer?)
 {

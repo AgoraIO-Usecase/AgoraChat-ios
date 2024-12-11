@@ -158,7 +158,6 @@ class ACDDemoOptions: NSObject, NSCoding, NSSecureCoding {
         #endif
         opt.enableDeliveryAck = self.isAutoDeliveryAck
         opt.enableConsoleLog = true
-        opt.enableFpa = true
         return opt
     }
 }

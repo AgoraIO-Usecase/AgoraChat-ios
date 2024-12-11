@@ -161,6 +161,8 @@
 		5DD172CF28F8022900F2EDE0 /* ACDPrivacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD172CE28F8022900F2EDE0 /* ACDPrivacyViewController.swift */; };
 		5DF70698290B71A9004EA5C8 /* UserInfoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF70697290B71A9004EA5C8 /* UserInfoStore.swift */; };
 		A4C4E2963293E714E13474A5 /* libPods-AgoraChat-Swift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05D0818FD4923D4C761A6D93 /* libPods-AgoraChat-Swift.a */; };
+		C04C45FD2BA41899006E4A2F /* ACDPinMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04C45FB2BA41899006E4A2F /* ACDPinMessagesViewController.swift */; };
+		C04C46002BA435D5006E4A2F /* ACDPinMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04C45FF2BA435D5006E4A2F /* ACDPinMessageCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -362,6 +364,8 @@
 		5DD172CE28F8022900F2EDE0 /* ACDPrivacyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACDPrivacyViewController.swift; sourceTree = "<group>"; };
 		5DF70697290B71A9004EA5C8 /* UserInfoStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoStore.swift; sourceTree = "<group>"; };
 		7C0EBBCE4F96D7BE586D9F07 /* Pods-AgoraChat-Swift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgoraChat-Swift.debug.xcconfig"; path = "Target Support Files/Pods-AgoraChat-Swift/Pods-AgoraChat-Swift.debug.xcconfig"; sourceTree = "<group>"; };
+		C04C45FB2BA41899006E4A2F /* ACDPinMessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACDPinMessagesViewController.swift; sourceTree = "<group>"; };
+		C04C45FF2BA435D5006E4A2F /* ACDPinMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACDPinMessageCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -770,6 +774,8 @@
 				5DBE00EE28FD550A000AD030 /* AgoraChatConvUserDataModel.swift */,
 				5DBE01CB2907ED86000AD030 /* AgoraChatUserDataModel.swift */,
 				5D2D38DF28F40D3A00C34688 /* Views */,
+				C04C45FB2BA41899006E4A2F /* ACDPinMessagesViewController.swift */,
+				C04C45FF2BA435D5006E4A2F /* ACDPinMessageCell.swift */,
 			);
 			path = Chats;
 			sourceTree = "<group>";
@@ -1132,6 +1138,7 @@
 				5DBE01F0290A6847000AD030 /* AgoraApplyManager.swift in Sources */,
 				5D176460290BB42300E85B64 /* AgoraChatSearchResultController.swift in Sources */,
 				5DBE0185290666D9000AD030 /* ACDChatViewController.swift in Sources */,
+				C04C45FD2BA41899006E4A2F /* ACDPinMessagesViewController.swift in Sources */,
 				5DBE01722902A442000AD030 /* AgoraGroupMemberCell.swift in Sources */,
 				5DAAD06C28F2620C00027232 /* AppDelegate.swift in Sources */,
 				5DBE011A28FFFA68000AD030 /* ACDContactCell.swift in Sources */,
@@ -1141,6 +1148,7 @@
 				5DBE010028FE9D3B000AD030 /* ACDNameSwitchCell.swift in Sources */,
 				5D176470290FD23300E85B64 /* AgoraChatUserInfo+ShowName.swift in Sources */,
 				5DBE01C62907E1EE000AD030 /* AgoraChatThreadListNavgation.swift in Sources */,
+				C04C46002BA435D5006E4A2F /* ACDPinMessageCell.swift in Sources */,
 				5DBE00FB28FE7879000AD030 /* ACDNotificationSettingViewController.swift in Sources */,
 				5DBE018129066144000AD030 /* ACDMemberCollectionCell.swift in Sources */,
 				5DBE00E328FD0621000AD030 /* ACDAddContactViewController.swift in Sources */,
@@ -1460,7 +1468,7 @@
 				CODE_SIGN_ENTITLEMENTS = "AgoraChat-Swift/AgoraChat-Swift.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 499WYUV8Q2;
+				DEVELOPMENT_TEAM = JC854K845H;
 				GCC_PREFIX_HEADER = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "AgoraChat-Swift/Info.plist";
@@ -1482,7 +1490,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.demo.ui;
+				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.agorachat.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "AgoraChat-Swift/code/AgoraChat-Swift-Bridging-Header.h";
@@ -1502,7 +1510,7 @@
 				CODE_SIGN_ENTITLEMENTS = "AgoraChat-Swift/AgoraChat-Swift.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 499WYUV8Q2;
+				DEVELOPMENT_TEAM = JC854K845H;
 				GCC_PREFIX_HEADER = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "AgoraChat-Swift/Info.plist";
@@ -1524,7 +1532,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.enterprise.demo.ui;
+				PRODUCT_BUNDLE_IDENTIFIER = com.easemob.agorachat.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "AgoraChat-Swift/code/AgoraChat-Swift-Bridging-Header.h";

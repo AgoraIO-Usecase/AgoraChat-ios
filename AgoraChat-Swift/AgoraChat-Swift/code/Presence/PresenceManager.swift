@@ -112,14 +112,14 @@ class PresenceManager: NSObject {
             }
             count -= range.length
             let array = Array(members[range.location..<range.location + range.length])
-            AgoraChatClient.shared().presenceManager?.subscribe(array, expiry: 7 * 24 * 3600, completion: { presences, error in
+            AgoraChatClient.shared().presenceManager?.subscribe(array, expiry: 7 * 24 * 3600, completion: { [weak self] presences, error in
                 if let presences = presences {
-                    self.subscribedMembers.append(contentsOf: array)
+                    self?.subscribedMembers.append(contentsOf: array)
                     var users: [String] = []
                     for presence in presences {
                         if presence.publisher.count > 0 {
                             users.append(presence.publisher)
-                            self.presences[presence.publisher] = presence
+                            self?.presences[presence.publisher] = presence
                         }
                     }
                     if presences.count > 0 {
