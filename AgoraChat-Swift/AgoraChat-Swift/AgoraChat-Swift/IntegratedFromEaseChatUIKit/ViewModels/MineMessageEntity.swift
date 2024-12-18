@@ -138,13 +138,13 @@ class MineMessageEntity: MessageEntity {
                     })
                 }
             } else {
-                if self.message.mention == EaseChatUIKitContext.shared?.currentUserId ?? "" {
-                    let mentionUser = EaseChatUIKitContext.shared?.userCache?[EaseChatUIKitContext.shared?.currentUserId ?? ""]
+                if self.message.mention == ChatUIKitContext.shared?.currentUserId ?? "" {
+                    let mentionUser = ChatUIKitContext.shared?.userCache?[ChatUIKitContext.shared?.currentUserId ?? ""]
                     var nickname = mentionUser?.remark ?? ""
                     if nickname.isEmpty {
                         nickname = mentionUser?.nickname ?? ""
                         if nickname.isEmpty {
-                            nickname = EaseChatUIKitContext.shared?.currentUserId ?? ""
+                            nickname = ChatUIKitContext.shared?.currentUserId ?? ""
                         }
                     }
                     let content = result

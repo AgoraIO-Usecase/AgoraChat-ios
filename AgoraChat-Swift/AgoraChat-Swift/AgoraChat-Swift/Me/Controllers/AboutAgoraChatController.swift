@@ -17,8 +17,8 @@ final class AboutAgoraChatController: UIViewController {
         ["title":"More".localized(),"content":"agora.io","destination":"https://agora.io"]
     ]
     
-    private lazy var navigation: EaseChatNavigationBar = {
-        EaseChatNavigationBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: NavigationHeight), textAlignment: .left, rightTitle: nil)
+    private lazy var navigation: ChatNavigationBar = {
+        ChatNavigationBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: NavigationHeight), textAlignment: .left, rightTitle: nil)
     }()
     
      private lazy var header: AboutAgoraChatHeader = {

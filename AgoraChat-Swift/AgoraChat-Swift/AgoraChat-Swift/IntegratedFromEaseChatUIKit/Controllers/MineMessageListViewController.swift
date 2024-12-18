@@ -32,7 +32,7 @@ final class MineMessageListViewController: MessageListController {
     
     deinit {
         PresenceManager.shared.unsubscribe(members: [self.profile.id], completion: nil)
-        EaseChatUIKitContext.shared?.cleanCache(type: .chat)
+        ChatUIKitContext.shared?.cleanCache(type: .chat)
         URLPreviewManager.caches.removeAll()
     }
     
@@ -134,9 +134,9 @@ final class MineMessageListViewController: MessageListController {
         if self.chatType == .chat {
             self.startSingleCall(callType: callType)
         } else {
-            guard let userInfo = EaseChatUIKitContext.shared?.currentUser else { return }
+            guard let userInfo = ChatUIKitContext.shared?.currentUser else { return }
             let vc = MineCallInviteUsersController(groupId: self.profile.id,profiles: [userInfo]) { [weak self] users in
-                let user = EaseChatUIKitContext.shared?.chatCache?[EaseChatUIKitContext.shared?.currentUserId ?? ""]
+                let user = ChatUIKitContext.shared?.chatCache?[ChatUIKitContext.shared?.currentUserId ?? ""]
                 var nickname = user?.id ?? ""
                 if let realName = user?.nickname,!realName.isEmpty {
                     nickname = realName

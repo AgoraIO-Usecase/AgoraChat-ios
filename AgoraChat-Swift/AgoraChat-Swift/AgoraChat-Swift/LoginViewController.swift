@@ -81,7 +81,7 @@ final class LoginViewController: UIViewController {
         super.viewDidLoad()
         self.view.addSubViews([self.background,self.appName,self.sdkVersion,self.userNameField,self.passwordField,self.loginContainer,self.login,self.protocolContainer,self.loadingView])
         self.loadingView.isHidden = true
-        self.sdkVersion.text = "V\(EaseChatUIKit_VERSION)"
+        self.sdkVersion.text = "V\(ChatUIKit_VERSION)"
         self.setContainerShadow()
         Theme.registerSwitchThemeViews(view: self)
         self.switchTheme(style: Theme.style)
@@ -144,25 +144,25 @@ extension LoginViewController: UITextFieldDelegate {
         }
     }
     
-    private func login(user: EaseProfileProtocol,token: String) {
+    private func login(user: ChatUserProfileProtocol,token: String) {
         if let dbPath = FMDBConnection.databasePath,dbPath.isEmpty {
             FMDBConnection.databasePath = String.documentsPath+"/EaseChatDemo/"+"\(AppKey)/"+user.id+".db"
         }
         self.loadCache()
-        EaseChatUIKitClient.shared.login(user: user, token: token) { [weak self] error in
+        ChatUIKitClient.shared.login(user: user, token: token) { [weak self] error in
             if error == nil {
                 self?.loadingView.stopAnimating()
                 if let profiles = EaseChatProfile.select(where: "id = '\(user.id)'") as? [EaseChatProfile] {
                     if profiles.first != nil {
                         if let profile = profiles.first {
                             (user as? EaseChatProfile)?.update()
-                            EaseChatUIKitContext.shared?.currentUser = profiles.first
-                            EaseChatUIKitContext.shared?.userCache?[profile.id] = profile
+                            ChatUIKitContext.shared?.currentUser = profiles.first
+                            ChatUIKitContext.shared?.userCache?[profile.id] = profile
                         }
                     }
                 } else {
-                    EaseChatUIKitContext.shared?.currentUser = user
-                    EaseChatUIKitContext.shared?.userCache?[user.id] = user
+                    ChatUIKitContext.shared?.currentUser = user
+                    ChatUIKitContext.shared?.userCache?[user.id] = user
                 }
                 self?.fillCache()
                 self?.entryHome()
@@ -177,12 +177,12 @@ extension LoginViewController: UITextFieldDelegate {
             for profile in profiles {
                 if let conversation = ChatClient.shared().chatManager?.getConversationWithConvId(profile.id) {
                     if conversation.type == .chat {
-                        EaseChatUIKitContext.shared?.userCache?[profile.id] = profile
+                        ChatUIKitContext.shared?.userCache?[profile.id] = profile
                     }
                 }
                 if profile.id == ChatClient.shared().currentUsername ?? "" {
-                    EaseChatUIKitContext.shared?.currentUser = profile
-                    EaseChatUIKitContext.shared?.userCache?[profile.id] = profile
+                    ChatUIKitContext.shared?.currentUser = profile
+                    ChatUIKitContext.shared?.userCache?[profile.id] = profile
                 }
             }
         }
@@ -200,11 +200,11 @@ extension LoginViewController: UITextFieldDelegate {
                 profile.avatarURL = group.settings.ext
                 profiles.append(profile)
             }
-            EaseChatUIKitContext.shared?.updateCaches(type: .group, profiles: profiles)
+            ChatUIKitContext.shared?.updateCaches(type: .group, profiles: profiles)
         }
-        if let users = EaseChatUIKitContext.shared?.userCache {
+        if let users = ChatUIKitContext.shared?.userCache {
             for user in users.values {
-                EaseChatUIKitContext.shared?.userCache?[user.id]?.remark = ChatClient.shared().contactManager?.getContact(user.id)?.remark ?? ""
+                ChatUIKitContext.shared?.userCache?[user.id]?.remark = ChatClient.shared().contactManager?.getContact(user.id)?.remark ?? ""
             }
         }
     }
@@ -263,7 +263,7 @@ extension UIView {
     
 }
 
-final class EaseChatProfile:NSObject, EaseProfileProtocol, FFObject {
+final class EaseChatProfile:NSObject, ChatUserProfileProtocol, FFObject {
     
     static func ignoreProperties() -> [String]? {
         ["selected"]

@@ -17,8 +17,8 @@ final class MineContactRemarkEditViewController: UIViewController {
     
     private var modifySuccess: ((String) -> ())?
     
-    public private(set) lazy var navigation: EaseChatNavigationBar = {
-        EaseChatNavigationBar(textAlignment: .left,rightTitle: "Save".chat.localize)
+    public private(set) lazy var navigation: ChatNavigationBar = {
+        ChatNavigationBar(textAlignment: .left,rightTitle: "Save".chat.localize)
     }()
     
     lazy var container: UIView = {
@@ -63,7 +63,7 @@ final class MineContactRemarkEditViewController: UIViewController {
         self.contentEditor.becomeFirstResponder()
     }
     
-    private func navigationClick(type: EaseChatNavigationBarClickEvent,indexPath: IndexPath?) {
+    private func navigationClick(type: ChatNavigationBarClickEvent,indexPath: IndexPath?) {
         switch type {
         case .back: self.pop()
         case .rightTitle: self.save()

@@ -38,15 +38,15 @@ final class MeViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.view.addSubview(self.menuList)
-        let userId = EaseChatUIKitContext.shared?.currentUserId ?? ""
-        var nickName = EaseChatUIKitContext.shared?.currentUser?.nickname ?? ""
+        let userId = ChatUIKitContext.shared?.currentUserId ?? ""
+        var nickName = ChatUIKitContext.shared?.currentUser?.nickname ?? ""
         if nickName.isEmpty {
             nickName = userId
         }
         self.fetchUserInfo(userId: userId)
         self.header.nickName.text = nickName
         self.header.detailText = userId
-        self.header.avatarURL = EaseChatUIKitContext.shared?.currentUser?.avatarURL ?? ""
+        self.header.avatarURL = ChatUIKitContext.shared?.currentUser?.avatarURL ?? ""
         Theme.registerSwitchThemeViews(view: self)
         self.switchTheme(style: Theme.style)
         self.listenToUserStatus()
@@ -66,16 +66,16 @@ final class MeViewController: UIViewController {
                     profile.nickname = info.nickname ?? ""
                     profile.avatarURL = info.avatarUrl ?? ""
                     profile.updateFFDB()
-                    EaseChatUIKitContext.shared?.currentUser?.avatarURL = info.avatarUrl ?? ""
-                    EaseChatUIKitContext.shared?.currentUser?.nickname = info.nickname ?? ""
+                    ChatUIKitContext.shared?.currentUser?.avatarURL = info.avatarUrl ?? ""
+                    ChatUIKitContext.shared?.currentUser?.nickname = info.nickname ?? ""
                 } else {
                     let profile = EaseChatProfile()
                     profile.id = userId
                     profile.nickname = info.nickname ?? ""
                     profile.avatarURL = info.avatarUrl ?? ""
                     profile.insert()
-                    EaseChatUIKitContext.shared?.currentUser?.avatarURL = info.avatarUrl ?? ""
-                    EaseChatUIKitContext.shared?.currentUser?.nickname = info.nickname ?? ""
+                    ChatUIKitContext.shared?.currentUser?.avatarURL = info.avatarUrl ?? ""
+                    ChatUIKitContext.shared?.currentUser?.nickname = info.nickname ?? ""
                 }
             } else {
                 DispatchQueue.main.async {
@@ -88,22 +88,22 @@ final class MeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
-        let userId = EaseChatUIKitContext.shared?.currentUserId ?? ""
-        var nickName = EaseChatUIKitContext.shared?.currentUser?.nickname ?? ""
+        let userId = ChatUIKitContext.shared?.currentUserId ?? ""
+        var nickName = ChatUIKitContext.shared?.currentUser?.nickname ?? ""
         if nickName.isEmpty {
             nickName = userId
         }
         if self.header.nickName.text != nickName,!nickName.isEmpty {
             self.header.nickName.text = nickName
         }
-        if let url = EaseChatUIKitContext.shared?.currentUser?.avatarURL,!url.isEmpty  {
+        if let url = ChatUIKitContext.shared?.currentUser?.avatarURL,!url.isEmpty  {
             self.header.avatarURL = url
         }
         self.menuList.reloadData()
     }
     
     @objc private func refreshProfile() {
-        self.header.avatarURL = EaseChatUIKitContext.shared?.currentUser?.avatarURL
+        self.header.avatarURL = ChatUIKitContext.shared?.currentUser?.avatarURL
     }
     
     private func listenToUserStatus() {
@@ -111,7 +111,7 @@ final class MeViewController: UIViewController {
     }
     
     private func showUserStatus() {
-        if let presence = PresenceManager.shared.presences[EaseChatUIKitContext.shared?.currentUserId ?? ""] {
+        if let presence = PresenceManager.shared.presences[ChatUIKitContext.shared?.currentUserId ?? ""] {
             switch PresenceManager.status(with: presence) {
             case .online: self.header.userState = .online
             case .offline: self.header.userState = .offline
@@ -234,7 +234,7 @@ extension MeViewController: UITableViewDelegate,UITableViewDataSource {
     
     private func logout() {
         DialogManager.shared.showAlert(title: "Confirm Logout".localized(), content: "", showCancel: true, showConfirm: true) { _ in
-            EaseChatUIKitClient.shared.logout(unbindNotificationDeviceToken: true) { error in
+            ChatUIKitClient.shared.logout(unbindNotificationDeviceToken: true) { error in
                 if error == nil {
                     NotificationCenter.default.post(name: Notification.Name(backLoginPage), object: nil, userInfo: nil)
                 } else {

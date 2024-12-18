@@ -44,6 +44,7 @@ final class MeMenuCell: UITableViewCell {
         super.layoutSubviews()
         self.icon.frame = CGRect(x: 16, y: (self.frame.height-28)/2.0, width: 28, height: 28)
         self.indicator.frame = CGRect(x: self.frame.width-32, y: (self.frame.height-20)/2.0, width: 10, height: 20)
+        self.separatorLine.frame = CGRect(x: self.content.frame.minX, y: 53.5, width: ScreenWidth, height: 0.5)
     }
     
     func refreshViews(hasIcon: Bool) {

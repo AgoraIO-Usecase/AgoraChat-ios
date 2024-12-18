@@ -25,7 +25,7 @@ final class GeneralViewController: UIViewController {
              ["title":"color_setting".localized(),"detail":"","withSwitch": false,"switchValue":false],
              ["title":"feature_switch".localized(),"detail":"","withSwitch": false,"switchValue":false],
          ["title":"language_setting".localized(),"detail":self.language.hasPrefix("zh") ? "Chinese".localized():"English".localized(),"withSwitch": false,"switchValue":false],
-             ["title":"translate_language_setting".localized(),"detail":self.translate_language.hasPrefix("zh") ? "Chinese".localized():"English".localized(),"withSwitch": false,"switchValue":false],
+             ["title":"translate_language_setting".localized(),"detail":"","withSwitch": false,"switchValue":false],
              ["title":"Debug Log".localized(),"detail":"","withSwitch": false,"switchValue":false]]
     }()
     
@@ -37,8 +37,8 @@ final class GeneralViewController: UIViewController {
         }
     }()
     
-    private lazy var navigation: EaseChatNavigationBar = {
-        EaseChatNavigationBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: NavigationHeight), textAlignment: .left, rightTitle: nil)
+    private lazy var navigation: ChatNavigationBar = {
+        ChatNavigationBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: NavigationHeight), textAlignment: .left, rightTitle: nil)
     }()
     
     private lazy var menuList: UITableView = {

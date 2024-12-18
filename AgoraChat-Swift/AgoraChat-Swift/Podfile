@@ -6,10 +6,11 @@ target 'AgoraChat-Swift' do
   use_frameworks!
 
   # Pods for AgoraChat-Swift
-  pod 'chat-uikit',:path => '../../../AgoraChat-UIKit-ios/'
+  pod 'chat-uikit', '2.0.0RC'
   pod 'AgoraChatCallKit', '~> 1.1.0'
   pod 'KakaJSON', '~> 1.1.2'
   pod 'SwiftFFDBHotFix'
+  pod 'FMDB','2.7.11'
   post_install do |installer|
     installer.generated_projects.each do |project|
       project.targets.each do |target|
