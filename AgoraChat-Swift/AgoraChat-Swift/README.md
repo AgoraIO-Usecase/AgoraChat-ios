@@ -52,7 +52,7 @@ Then run the `cd` command on the terminal to navigate to the folder where `podfi
 
 2. Fill registered `AppKey` into the `AppKey` field in the `PublicFiles.swift` file.
 
-3. You need to deploy the [server source code](https://github.com/easemob/easemob-demo-appserver/tree/dev-aigc) and fill it into the `ServerHost` in the `PublicFiles.swift` file. App server mainly provides APIs for obtaining tokens and uploading user avatars.
+3. You need to deploy the [server source code](https://github.com/AgoraIO/Agora-Chat-API-Examples/tree/main/chat-app-server) and fill it into the `ServerHost` in the `PublicFiles.swift` file. App server mainly provides APIs for obtaining tokens and uploading user avatars.
    - The login API is mainly used to register and generate the token required for chat-uikit login based on the user information.
    - Uploading avatars is a common general function and will not be described in detail here.
    - The appkey of the client and the server must be the same.
