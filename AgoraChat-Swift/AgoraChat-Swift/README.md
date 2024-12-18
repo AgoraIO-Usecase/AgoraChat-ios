@@ -87,7 +87,7 @@ extension MainViewController: EaseProfileProvider,EaseGroupProfileProvider {
 
 4.1 How to inherit customizable classes in chat-uikit
 
-[See the IntegratedFromChatUIKit folder](./AgoraChat-Swift/IntegratedFromChatUIKit).
+[See the IntegratedFromChatUIKit folder](./AgoraChat-Swift/IntegratedFromEaseChatUIKit/).
 
 4.2 How to register a subclass inherited from chat-uikit into chat-uikit to replace the parent class
 
