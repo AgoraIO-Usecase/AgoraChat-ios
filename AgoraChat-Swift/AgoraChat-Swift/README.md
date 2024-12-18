@@ -63,17 +63,17 @@ Then run the `cd` command on the terminal to navigate to the folder where `podfi
 
 ## 1. Initialize
 
-[For details, see the steps in the `didFinishLaunchingWithOptions` method](./AgoraChat-Swift/AgoraChat-Swift//AppDelegate.swift).
+[For details, see the steps in the `didFinishLaunchingWithOptions` method](./AgoraChat-Swift/AppDelegate.swift).
 
 ## 2. Log in
 
-[For details, see the subsequent steps of the `loginRequest` method](./AgoraChat-Swift/AgoraChat-Swift/LoginViewController.swift).
+[For details, see the subsequent steps of the `loginRequest` method](./AgoraChat-Swift/LoginViewController.swift).
 
 ## 3. Use the Provider
 
 If your app already has a complete user system and user information that can be displayed (such as the avatar and nickname), you can implement the EaseChatProfileProvider protocol to provide UIKit with the data to be displayed.
 
-3.1 [For details on Provider initialization, see the `viewDidLoad` method](./AgoraChat-Swift/AgoraChat-Swift/Main/MainViewController.swift).
+3.1 [For details on Provider initialization, see the `viewDidLoad` method](./AgoraChat-Swift/Main/MainViewController.swift).
 
 3.2 To implement the Provider protocol and extend the `MainViewController` class, see the following sample code:
 
@@ -87,11 +87,11 @@ extension MainViewController: EaseProfileProvider,EaseGroupProfileProvider {
 
 4.1 How to inherit customizable classes in chat-uikit
 
-[See the IntegratedFromChatUIKit folder](./AgoraChat-Swift/AgoraChat-Swift/IntegratedFromChatUIKit).
+[See the IntegratedFromChatUIKit folder](./AgoraChat-Swift/IntegratedFromChatUIKit).
 
 4.2 How to register a subclass inherited from chat-uikit into chat-uikit to replace the parent class
 
-[For details, see](./AgoraChat-Swift/AgoraChat-Swift/AppDelegate.swift) in the `didFinishLaunchingWithOptions` method.
+[For details, see](./AgoraChat-Swift/AppDelegate.swift) in the `didFinishLaunchingWithOptions` method.
 
 # Demo UI Design
 
