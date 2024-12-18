@@ -71,14 +71,14 @@ Then run the `cd` command on the terminal to navigate to the folder where `podfi
 
 ## 3. Use the Provider
 
-If your app already has a complete user system and user information that can be displayed (such as the avatar and nickname), you can implement the EaseChatProfileProvider protocol to provide UIKit with the data to be displayed.
+If your app already has a complete user system and user information that can be displayed (such as the avatar and nickname), you can implement the ChatUserProfileProvider protocol to provide UIKit with the data to be displayed.
 
 3.1 [For details on Provider initialization, see the `viewDidLoad` method](./AgoraChat-Swift/Main/MainViewController.swift).
 
 3.2 To implement the Provider protocol and extend the `MainViewController` class, see the following sample code:
 
 ```Swift
-extension MainViewController: EaseProfileProvider,EaseGroupProfileProvider {
+extension MainViewController: ChatUserProfileProvider,ChatGroupProfileProvider {
 
 }
 ```
@@ -100,7 +100,7 @@ https://www.figma.com/community/file/1327193019424263350/chat-uikit-for-mobile
 # Known Issues
 
 1. When a user is invited to join a video call or audio call on group chat, a one-to-one chat message will be generated. 
-2. The conversation list and contact list are separate modules. To listen for contact events, you need to set `enableContact` in the `option_UI` property in the `option` property of `EaseChatUIKitClient` to `true` before login. 
+2. The conversation list and contact list are separate modules. To listen for contact events, you need to set `enableContact` in the `option_UI` property in the `option` property of `ChatUIKitClient` to `true` before login. 
 3. UserProvider and GroupProvider need to be implemented by the developer to obtain the user attributes and the group information and display them on the UI. If the two providers are not implemented, the default user ID and default user avatar are used for one-to-one chat and the default group ID and default group avatar are used for group chat. The default implementation in the Demo is only used to display some SDK functions. 
 4. When changing devices, logging in to multiple devices, getting the conversation list from the server, or displaying information such as group avatar that is not stored locally in the AgoraChat SDK, developers need to use Provider to provide it to chat-uikit to display the information properly on the UI.
 5. Since the Provider mechanism is triggered when the scrolling stops or the first page has less than 7 data items, updating the nickname or avatar displayed on the conversation list or contact list UI requires sliding and the Provider providing data to UIKit, and then UIKit will refresh the UI.
