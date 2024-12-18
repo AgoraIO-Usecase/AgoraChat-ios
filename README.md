@@ -1,6 +1,5 @@
 
 # Run the AgoraChat UIKit Demo 
-12
 
 ## Overview
 
